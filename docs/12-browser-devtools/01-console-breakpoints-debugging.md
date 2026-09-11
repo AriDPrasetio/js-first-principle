@@ -23,7 +23,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "Menambahkan `console.log()` di setiap baris adalah cara tercepat dan paling wajar untuk menemukan bug JavaScript."
-- ✅ **Masalah Sebenarnya (Core Problem)**: `console.log()` hanya memberikan sepotong teks statis di masa lalu; ia tidak dapat memberi tahu kita apa isi variabel lain di scope luar, bagaimana alur Call Stack saat itu, dan rawan tertinggal di kode produksi (mengakibatkan kebocoran memori karena console menahan referensi objek). Menggunakan *Breakpoints* membekukan browser pada kondisi hidup (*live state*) seketika.
+- ✅ **Masalah Sebenarnya (Core Problem)**: `console.log()` hanya memberikan sepotong teks statis di masa lalu; ia tidak dapat memberi tahu kita apa isi variabel lain di scope luar, bagaimana alur Call Stack saat itu, dan rawan tertinggal di kode produksi (mengakibatkan kebocoran memori karena console menahan referensi objek). Menggunakan _Breakpoints_ membekukan browser pada kondisi hidup (_live state_) seketika.
 
 ---
 
@@ -31,8 +31,8 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
-1. **Protokol DevTools dan Suspensi VM (*Chrome DevTools Protocol - CDP*)**:
-   Ketika kita memasang breakpoint atau menuliskan kata kunci `debugger;`, DevTools mengirim instruksi interupsi ke Virtual Machine (V8). VM menunda (*suspends*) eksekusi thread JavaScript tepat sebelum baris tersebut berjalan. Seluruh alur waktu terhenti, memberi developer akses langsung ke *Heap Memory*, *Scope Chain*, dan urutan *Call Stack*.
+1. **Protokol DevTools dan Suspensi VM (_Chrome DevTools Protocol - CDP_)**:
+   Ketika kita memasang breakpoint atau menuliskan kata kunci `debugger;`, DevTools mengirim instruksi interupsi ke Virtual Machine (V8). VM menunda (_suspends_) eksekusi thread JavaScript tepat sebelum baris tersebut berjalan. Seluruh alur waktu terhenti, memberi developer akses langsung ke _Heap Memory_, _Scope Chain_, dan urutan _Call Stack_.
 
 2. **Jenis-Jenis Breakpoint Terspesialisasi**:
    Browser menyediakan variasi breakpoint yang jauh melampaui kemampuan log teks biasa:
@@ -54,7 +54,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan dari dogma "best practice"._
 
 - **Pendekatan Optimal**:
-  Tinggalkan kebiasaan menabur `console.log` acak di seluruh file. Gunakan kata kunci terprogram `debugger;` selama fase pengembangan lokal untuk langsung melompat ke titik kritis dengan debugger terbuka. Kuasai panel navigasi eksekusi (*Step Over*, *Step Into*, *Step Out*) untuk melacak mutasi data baris demi baris.
+  Tinggalkan kebiasaan menabur `console.log` acak di seluruh file. Gunakan kata kunci terprogram `debugger;` selama fase pengembangan lokal untuk langsung melompat ke titik kritis dengan debugger terbuka. Kuasai panel navigasi eksekusi (_Step Over_, _Step Into_, _Step Out_) untuk melacak mutasi data baris demi baris.
 
 - **Contoh Konkret**:
 
@@ -70,14 +70,14 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
       // Daripada console.log(item), kita pasang instruksi interupsi jika ada harga aneh:
       if (item.price <= 0 || isNaN(item.price)) {
         // Otomatis membuka tab Sources dan membekukan thread browser:
-        debugger; 
+        debugger;
       }
 
       subtotal += item.price * item.quantity;
     }
 
     // Gunakan assertion untuk memverifikasi logika bisnis
-    console.assert(subtotal >= 0, 'Subtotal tidak boleh bernilai negatif!');
+    console.assert(subtotal >= 0, "Subtotal tidak boleh bernilai negatif!");
 
     return applyDiscount(subtotal, discountCoupon);
   }
@@ -85,16 +85,16 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   function applyDiscount(amount, coupon) {
     if (!coupon) return amount;
     // Pasang conditional breakpoint di sini via DevTools UI: "coupon.rate > 0.5"
-    return amount - (amount * coupon.rate);
+    return amount - amount * coupon.rate;
   }
 
   // Pengujian dengan data anomali:
   const orderList = [
-    { name: 'Kopi', price: 25000, quantity: 2 },
-    { name: 'Donat', price: -5000, quantity: 1 } // Data anomali memicu 'debugger;'!
+    { name: "Kopi", price: 25000, quantity: 2 },
+    { name: "Donat", price: -5000, quantity: 1 }, // Data anomali memicu 'debugger;'!
   ];
 
-  calculateOrderTotal(orderList, { code: 'PROMO50', rate: 0.5 });
+  calculateOrderTotal(orderList, { code: "PROMO50", rate: 0.5 });
   ```
 
 - **Mengapa ini lebih baik**:
@@ -106,9 +106,9 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 
 _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level saya saat ini:_
 
-- [ ] **Langkah 1**: Buka Chrome DevTools -> tab **Sources** -> buka file JavaScript Anda -> klik nomor baris untuk membuat *Line Breakpoint*.
+- [ ] **Langkah 1**: Buka Chrome DevTools -> tab **Sources** -> buka file JavaScript Anda -> klik nomor baris untuk membuat _Line Breakpoint_.
 - [ ] **Langkah 2**: Klik kanan pada nomor baris -> pilih **Add conditional breakpoint...** -> masukkan ekspresi pengecekan error untuk menangkap iterasi yang bermasalah saja.
-- [ ] **Langkah 3**: Saat program terjeda (*paused*), periksa panel kanan **Call Stack**: klik frame fungsi sebelumnya untuk melihat nilai variabel di fungsi yang memanggil fungsi saat ini.
+- [ ] **Langkah 3**: Saat program terjeda (_paused_), periksa panel kanan **Call Stack**: klik frame fungsi sebelumnya untuk melihat nilai variabel di fungsi yang memanggil fungsi saat ini.
 
 > [!TIP] Parameter Kesuksesan (Success Metric)
 > Topik ini selesai dieksekusi dengan benar jika: **Mampu melacak akar penyebab bug logika kompleks menggunakan breakpoints dan Call Stack inspector tanpa menuliskan satupun `console.log` tambahan di kode sumber**.

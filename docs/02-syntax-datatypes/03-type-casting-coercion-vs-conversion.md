@@ -14,7 +14,7 @@ official_docs_url:
 # First Principles Deep Dive: Type Casting (Coercion vs Conversion)
 
 > [!ABSTRACT] The Ground Truth
-> Komputasi hanya dapat terjadi di antara nilai-nilai dengan tipe data yang kompatibel; jika tipenya berlainan, engine JavaScript akan mengonversinya secara otomatis (*Implicit Coercion*) berdasarkan algoritma abstrak spesifikasi, atau developer melakukannya secara sengaja (*Explicit Conversion*).
+> Komputasi hanya dapat terjadi di antara nilai-nilai dengan tipe data yang kompatibel; jika tipenya berlainan, engine JavaScript akan mengonversinya secara otomatis (_Implicit Coercion_) berdasarkan algoritma abstrak spesifikasi, atau developer melakukannya secara sengaja (_Explicit Conversion_).
 
 ---
 
@@ -23,7 +23,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "Type coercion di JavaScript bersifat acak, magis, dan tidak masuk akal (seperti meme `'5' - 3 = 2`, tapi `'5' + 3 = '53'`)."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Coercion tidak acak sama sekali; perilakunya diatur secara deterministik oleh empat operasi abstrak formal di spesifikasi ECMA-262: `ToPrimitive`, `ToNumber`, `ToString`, dan `ToBoolean`. Kebingungan developer timbul karena operator `+` memiliki fungsi ganda (*overloaded*): penjumlahan aritmatika angka atau penyambungan teks string.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Coercion tidak acak sama sekali; perilakunya diatur secara deterministik oleh empat operasi abstrak formal di spesifikasi ECMA-262: `ToPrimitive`, `ToNumber`, `ToString`, dan `ToBoolean`. Kebingungan developer timbul karena operator `+` memiliki fungsi ganda (_overloaded_): penjumlahan aritmatika angka atau penyambungan teks string.
 
 ---
 
@@ -32,12 +32,12 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
 1. **Perbedaan Konversi Eksplisit vs Implisit (ECMA-262 §7.1)**:
-   - **Konversi Eksplisit (*Type Conversion*)**: Developer memanggil fungsi pembungkus secara sadar (`Number('42')`, `String(100)`, `Boolean(x)`) tanpa kata kunci `new`.
-   - **Konversi Implisit (*Type Coercion*)**: Engine secara otomatis mengeksekusi operasi abstrak di belakang layar ketika sebuah operator bertemu dengan operan yang tidak sesuai tipenya.
+   - **Konversi Eksplisit (_Type Conversion_)**: Developer memanggil fungsi pembungkus secara sadar (`Number('42')`, `String(100)`, `Boolean(x)`) tanpa kata kunci `new`.
+   - **Konversi Implisit (_Type Coercion_)**: Engine secara otomatis mengeksekusi operasi abstrak di belakang layar ketika sebuah operator bertemu dengan operan yang tidak sesuai tipenya.
 
 2. **Dua Wajah Operator Penjumlahan `+`**:
    Sesuai aturan evaluasi operasi penambahan [ECMA-262 §13.15.1](https://tc39.es/ecma262/#sec-addition-operator-plus):
-   - Jika **salah satu operan** menghasilkan string (setelah diproses lewat `ToPrimitive`), engine memaksa kedua operan dikonversi menjadi string via `ToString` dan menyambungkannya (*concatenation*). Contoh: `'5' + 3` -> `'5' + '3'` -> `'53'`.
+   - Jika **salah satu operan** menghasilkan string (setelah diproses lewat `ToPrimitive`), engine memaksa kedua operan dikonversi menjadi string via `ToString` dan menyambungkannya (_concatenation_). Contoh: `'5' + 3` -> `'5' + '3'` -> `'53'`.
    - Sebaliknya, operator aritmatika lain (`-`, `*`, `/`, `%`) **hanya terdefinisi untuk angka**. Engine langsung memanggil `ToNumber` pada kedua operan. Contoh: `'5' - 3` -> `5 - 3` -> `2`.
 
 3. **Algoritma Abstraksi `ToPrimitive` dan Nilai Objek**:
@@ -50,18 +50,18 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan dari dogma "best practice"._
 
 - **Pendekatan Optimal**:
-  Terapkan aturan *Zero Implicit Coercion* pada lapisan komputasi bisnis. Nilai dari input HTML (misalnya `<input type="number">` yang di browser selalu mengembalikan string melalui `inputElement.value`) WAJIB diubah secara eksplisit sebelum dilakukan kalkulasi, menggunakan fungsi standar `Number(val)` atau `parseInt(val, 10)`.
+  Terapkan aturan _Zero Implicit Coercion_ pada lapisan komputasi bisnis. Nilai dari input HTML (misalnya `<input type="number">` yang di browser selalu mengembalikan string melalui `inputElement.value`) WAJIB diubah secara eksplisit sebelum dilakukan kalkulasi, menggunakan fungsi standar `Number(val)` atau `parseInt(val, 10)`.
 
 - **Contoh Konkret**:
 
   ```javascript
   // Skenario: Form Belanja Total Harga
   const inputQuantity = "3"; // Nilai string dari input form
-  const itemPrice = 15000;    // Angka
+  const itemPrice = 15000; // Angka
 
   // ❌ Bahaya Coercion Implisit:
   const badTax = 500;
-  const badTotal = inputQuantity * itemPrice + badTax; 
+  const badTotal = inputQuantity * itemPrice + badTax;
   // Evaluasi: ("3" * 15000) -> 45000 (ToNumber), lalu 45000 + 500 -> 45500.
   // Tetapi jika badTax tidak sengaja berupa string "500", hasilnya: "45000500"!
 
@@ -72,12 +72,12 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
     throw new Error("Kuantitas harus berupa angka valid.");
   }
 
-  const cleanTotal = (parsedQuantity * itemPrice) + Number(badTax);
-  console.log(`Total: Rp${cleanTotal.toLocaleString('id-ID')}`);
+  const cleanTotal = parsedQuantity * itemPrice + Number(badTax);
+  console.log(`Total: Rp${cleanTotal.toLocaleString("id-ID")}`);
   ```
 
 - **Mengapa ini lebih baik**:
-  Menghilangkan ketergantungan pada *type coercion* implisit mencegah bug perhitungan finansial atau validasi logika. Kode menjadi *self-documenting*: pembaca kode langsung tahu bahwa tipe data yang diproses dijamin bertipe angka.
+  Menghilangkan ketergantungan pada _type coercion_ implisit mencegah bug perhitungan finansial atau validasi logika. Kode menjadi _self-documenting_: pembaca kode langsung tahu bahwa tipe data yang diproses dijamin bertipe angka.
 
 ---
 

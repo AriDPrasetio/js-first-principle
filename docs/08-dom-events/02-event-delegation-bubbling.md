@@ -14,7 +14,7 @@ official_docs_url:
 # First Principles Deep Dive: Event Delegation dan Event Bubbling
 
 > [!ABSTRACT] The Ground Truth
-> Event di DOM merambat melalui pohon dokumen dalam tiga fase fisik (Capturing $\to$ Target $\to$ Bubbling); *Event Delegation* adalah pola arsitektur yang memanfaatkan fase bubbling untuk menangani interaksi ratusan elemen anak hanya melalui satu listener tunggal pada elemen induk (*$O(1)$ memory allocation*).
+> Event di DOM merambat melalui pohon dokumen dalam tiga fase fisik (Capturing $\to$ Target $\to$ Bubbling); _Event Delegation_ adalah pola arsitektur yang memanfaatkan fase bubbling untuk menangani interaksi ratusan elemen anak hanya melalui satu listener tunggal pada elemen induk (_$O(1)$ memory allocation_).
 
 ---
 
@@ -23,7 +23,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "Setiap kali kita merender elemen tombol atau item daftar baru, kita wajib memasang `addEventListener('click')` langsung pada masing-masing elemen tersebut."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Memasang 1.000 listener pada 1.000 item daftar produk memboroskan ribuan alokasi memori fungsi closure dan mewajibkan pendaftaran ulang setiap kali ada item baru yang ditambahkan via API. Karena peramban secara otomatis meniupkan event ke atas (*bubbling*) hingga ke puncak dokumen, satu listener di induk sudah cukup untuk menangkap semuanya.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Memasang 1.000 listener pada 1.000 item daftar produk memboroskan ribuan alokasi memori fungsi closure dan mewajibkan pendaftaran ulang setiap kali ada item baru yang ditambahkan via API. Karena peramban secara otomatis meniupkan event ke atas (_bubbling_) hingga ke puncak dokumen, satu listener di induk sudah cukup untuk menangkap semuanya.
 
 ---
 
@@ -35,7 +35,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
    Setiap interaksi pengguna (misal klik mouse) memicu siklus perambatan terstandarisasi:
    - **Fase 1 (Capture Phase)**: Sinyal event meluncur turun dari puncak pohon dokumen (`window` $\to$ `document` $\to$ `<body>`) menuju elemen target.
    - **Fase 2 (Target Phase)**: Sinyal tiba pada elemen paling dalam yang diklik pengguna.
-   - **Fase 3 (Bubbling Phase)**: Sinyal memantul dan merambat naik (*bubble up*) menembus setiap elemen leluhur (*ancestor nodes*) hingga kembali ke `window`. Sebagian besar event antarmuka bergelembung, kecuali beberapa event khusus seperti `focus`, `blur`, dan `mouseenter`.
+   - **Fase 3 (Bubbling Phase)**: Sinyal memantul dan merambat naik (_bubble up_) menembus setiap elemen leluhur (_ancestor nodes_) hingga kembali ke `window`. Sebagian besar event antarmuka bergelembung, kecuali beberapa event khusus seperti `focus`, `blur`, dan `mouseenter`.
 
 2. **Pembedaan Presisi: `event.target` vs `event.currentTarget`**:
    - `event.target`: Elemen fisik paling spesifik yang diklik pengguna (misal ikon `<span>` atau tag `<strong>` di dalam sebuah tombol).
@@ -57,36 +57,36 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 
   ```javascript
   // Skenario: Daftar Belanja Dinamis (1 Listener untuk Ribuan Item)
-  const cartContainer = document.querySelector('.c-cart-list');
+  const cartContainer = document.querySelector(".c-cart-list");
 
   // Pasang HANYA 1 listener pada elemen induk kontainer:
-  cartContainer.addEventListener('click', (event) => {
+  cartContainer.addEventListener("click", (event) => {
     // 1. Panjat pohon dari elemen yang diklik ke tombol aksi terdekat
-    const actionButton = event.target.closest('[data-action]');
-    
+    const actionButton = event.target.closest("[data-action]");
+
     // Jika area yang diklik bukan tombol aksi (misal spasi kosong di kontainer), abaikan!
     if (!actionButton || !cartContainer.contains(actionButton)) {
       return;
     }
 
     // 2. Ambil elemen baris produk pemilik tombol
-    const itemRow = actionButton.closest('.c-cart-list__item');
+    const itemRow = actionButton.closest(".c-cart-list__item");
     const itemId = itemRow?.dataset.id;
     const actionType = actionButton.dataset.action;
 
     // 3. Tangani aksi secara terpusat
-    if (actionType === 'delete') {
+    if (actionType === "delete") {
       console.log(`Menghapus produk ID: ${itemId}`);
       itemRow.remove(); // Menghapus elemen tanpa takut memory leak listener!
-    } else if (actionType === 'increment') {
+    } else if (actionType === "increment") {
       console.log(`Menambah kuantitas produk ID: ${itemId}`);
     }
   });
 
   // Simulasi penambahan item dinamis di masa depan (Otomatis langsung berfungsi!):
-  const newItem = document.createElement('li');
-  newItem.className = 'c-cart-list__item';
-  newItem.dataset.id = '999';
+  const newItem = document.createElement("li");
+  newItem.className = "c-cart-list__item";
+  newItem.dataset.id = "999";
   newItem.innerHTML = `
     <span>Barang Baru Ditambahkan</span>
     <button type="button" data-action="delete">Hapus</button>

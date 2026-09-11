@@ -14,7 +14,7 @@ official_docs_url:
 # First Principles Deep Dive: Function Declaration, Expression, dan Arrow Function
 
 > [!ABSTRACT] The Ground Truth
-> Fungsi di JavaScript adalah objek tingkat pertama (*first-class object*) yang dilengkapi slot eksekusi internal `[[Call]]`; perbedaannya terletak pada waktu inisialisasi di memori (*Declaration* vs *Expression*) serta kehadiran konteks leksikal `this` dan kemampuan konstruktor (*Arrow Function*).
+> Fungsi di JavaScript adalah objek tingkat pertama (_first-class object_) yang dilengkapi slot eksekusi internal `[[Call]]`; perbedaannya terletak pada waktu inisialisasi di memori (_Declaration_ vs _Expression_) serta kehadiran konteks leksikal `this` dan kemampuan konstruktor (_Arrow Function_).
 
 ---
 
@@ -36,11 +36,11 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
    - Arrow function (`() => {}`) **hanya memiliki slot `[[Call]]`**. Memanggil arrow function dengan `new` melempar `TypeError: ... is not a constructor`. Arrow function juga tidak memiliki properti `.prototype`.
 
 2. **Perbedaan Fase Inisialisasi Memori (Declaration vs Expression)**:
-   - **Function Declaration (`function foo() {}`)**: Diinisialisasi utuh ke *Environment Record* saat *Creation Phase*. Dapat dipanggil di baris mana pun sebelum posisinya di kode.
-   - **Function Expression (`const foo = function() {}`)**: Diperlakukan sebagai ekspresi penugasan nilai biasa. Variabel penampung tunduk pada aturan *Temporal Dead Zone (TDZ)* dan baru berisi fungsi saat baris tersebut dieksekusi.
+   - **Function Declaration (`function foo() {}`)**: Diinisialisasi utuh ke _Environment Record_ saat _Creation Phase_. Dapat dipanggil di baris mana pun sebelum posisinya di kode.
+   - **Function Expression (`const foo = function() {}`)**: Diperlakukan sebagai ekspresi penugasan nilai biasa. Variabel penampung tunduk pada aturan _Temporal Dead Zone (TDZ)_ dan baru berisi fungsi saat baris tersebut dieksekusi.
 
 3. **Mekanisme Pewarisan Leksikal `this` pada Arrow Function**:
-   Spesifikasi [ECMA-262 §15.3](https://tc39.es/ecma262/#sec-arrow-function-definitions) mendefinisikan bahwa arrow function tidak mengevaluasi *ThisBinding* saat dipanggil. Nilai `this` di dalam arrow function diselesaikan secara leksikal dari *Scope Chain* terdekat persis seperti variabel biasa.
+   Spesifikasi [ECMA-262 §15.3](https://tc39.es/ecma262/#sec-arrow-function-definitions) mendefinisikan bahwa arrow function tidak mengevaluasi _ThisBinding_ saat dipanggil. Nilai `this` di dalam arrow function diselesaikan secara leksikal dari _Scope Chain_ terdekat persis seperti variabel biasa.
 
 ---
 
@@ -50,7 +50,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 
 - **Pendekatan Optimal**:
   - Gunakan **Function Declaration** untuk fungsi utama tingkat modul atau API publik komponen karena hoisting memungkinkan struktur keterbacaan kode dari atas ke bawah.
-  - Gunakan **Arrow Function** untuk *callback* sementara (seperti di `.map()`, `.filter()`, atau handler timer) di mana kita ingin mempertahankan nilai `this` dari lingkungan leksikal luarnya tanpa trik kuno `var that = this` atau pemanggilan `.bind(this)`.
+  - Gunakan **Arrow Function** untuk _callback_ sementara (seperti di `.map()`, `.filter()`, atau handler timer) di mana kita ingin mempertahankan nilai `this` dari lingkungan leksikal luarnya tanpa trik kuno `var that = this` atau pemanggilan `.bind(this)`.
   - Hindari Arrow Function untuk metode objek dinamis yang membutuhkan `this` merujuk ke objek pemanggilnya.
 
 - **Contoh Konkret**:
@@ -66,20 +66,20 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
       },
       // ❌ Jangan gunakan arrow function di sini:
       // greetArrow: () => `Halo, saya ${this.userName}` // 'this' bocor ke global/undefined!
-      
+
       // 3. Arrow Function: Sempurna untuk callback asinkron internal
       delayedGreet() {
         setTimeout(() => {
           // 'this' diwarisi secara leksikal dari konteks delayedGreet()!
           console.log(`[Asinkron] Selamat datang kembali, ${this.userName}`);
         }, 100);
-      }
+      },
     };
   }
 
-  const card = initUserCard('Aria');
+  const card = initUserCard("Aria");
   console.log(card.greetRegular()); // 'Halo, saya Aria'
-  card.delayedGreet();              // Menampilkan log dengan nama yang benar
+  card.delayedGreet(); // Menampilkan log dengan nama yang benar
   ```
 
 - **Mengapa ini lebih baik**:

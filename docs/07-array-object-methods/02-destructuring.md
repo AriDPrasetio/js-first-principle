@@ -13,7 +13,7 @@ official_docs_url:
 # First Principles Deep Dive: Destructuring Assignment (Array & Object)
 
 > [!ABSTRACT] The Ground Truth
-> Destructuring adalah sintaks pencocokan pola (*pattern matching*) deklaratif di mana engine memetakan properti objek melalui operasi leksikal `[[Get]]` atau memeras elemen larik melalui kontrak antarmuka *Iterator Protocol* langsung ke slot variabel lokal.
+> Destructuring adalah sintaks pencocokan pola (_pattern matching_) deklaratif di mana engine memetakan properti objek melalui operasi leksikal `[[Get]]` atau memeras elemen larik melalui kontrak antarmuka _Iterator Protocol_ langsung ke slot variabel lokal.
 
 ---
 
@@ -21,8 +21,8 @@ official_docs_url:
 
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
-- ❌ **Asumsi/Konvensi Industri**: "Destructuring hanyalah pemanis sintaksis (*syntactic sugar*) untuk mempersingkat penulisan `const a = obj.a`."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Tanpa pencocokan pola, ekstraksi data bersarang (*nested data*) dari respons API atau opsi fungsi memaksa penulisan deklarasi variabel repetitif yang rawan salah ketik. Selain itu, destructuring memungkinkan penetapan nilai default secara terpusat dan penamaan ulang (*aliasing*) variabel dalam satu langkah deklaratif.
+- ❌ **Asumsi/Konvensi Industri**: "Destructuring hanyalah pemanis sintaksis (_syntactic sugar_) untuk mempersingkat penulisan `const a = obj.a`."
+- ✅ **Masalah Sebenarnya (Core Problem)**: Tanpa pencocokan pola, ekstraksi data bersarang (_nested data_) dari respons API atau opsi fungsi memaksa penulisan deklarasi variabel repetitif yang rawan salah ketik. Selain itu, destructuring memungkinkan penetapan nilai default secara terpusat dan penamaan ulang (_aliasing_) variabel dalam satu langkah deklaratif.
 
 ---
 
@@ -31,8 +31,8 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
 1. **Perbedaan Mekanisme: Properti Objek vs Iterator Array**:
-   - **Object Destructuring (`const { a, b } = obj`)**: Beroperasi berdasarkan *nama kunci/properti*. Engine menjalankan operasi internal `[[Get]](key)` tanpa memedulikan urutan penulisan.
-   - **Array Destructuring (`const [x, y] = arr`)**: Beroperasi berdasarkan *posisi urutan*. Engine mengonsumsi iterator objek tersebut (`[Symbol.iterator]`) dan memanggil `.next()` hingga seluruh variabel pola terisi.
+   - **Object Destructuring (`const { a, b } = obj`)**: Beroperasi berdasarkan _nama kunci/properti_. Engine menjalankan operasi internal `[[Get]](key)` tanpa memedulikan urutan penulisan.
+   - **Array Destructuring (`const [x, y] = arr`)**: Beroperasi berdasarkan _posisi urutan_. Engine mengonsumsi iterator objek tersebut (`[Symbol.iterator]`) dan memanggil `.next()` hingga seluruh variabel pola terisi.
 
 2. **Kondisi Evaluasi Nilai Default**:
    Persis seperti parameter fungsi, nilai default destructuring (`const { theme = 'light' } = config`) **HANYA dievaluasi jika nilai properti yang dibaca bernilai strictly `=== undefined`**. Jika nilainya adalah `null`, `false`, atau `0`, nilai asli tersebut akan dipertahankan dan nilai default diabaikan.
@@ -47,7 +47,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan dari dogma "best practice"._
 
 - **Pendekatan Optimal**:
-  Terapkan pola *Destructuring Defensif*: selalu sertakan nilai fallback objek kosong `= {}` pada parameter fungsi yang menerima objek konfigurasi untuk mencegah crash saat pemanggil lupa mengirim argumen atau mengirim `undefined`. Manfaatkan fitur penamaan ulang (*aliasing*) saat kunci dari API bertabrakan dengan konvensi penamaan lokal.
+  Terapkan pola _Destructuring Defensif_: selalu sertakan nilai fallback objek kosong `= {}` pada parameter fungsi yang menerima objek konfigurasi untuk mencegah crash saat pemanggil lupa mengirim argumen atau mengirim `undefined`. Manfaatkan fitur penamaan ulang (_aliasing_) saat kunci dari API bertabrakan dengan konvensi penamaan lokal.
 
 - **Contoh Konkret**:
 
@@ -55,11 +55,11 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   // Skenario: Ekstraksi Data Respons API Pengguna
   const apiPayload = {
     user_id: 9812,
-    display_name: 'Ari',
+    display_name: "Ari",
     settings: {
       theme: null, // null = nilai sengaja (bukan undefined!)
-      notifications: undefined // tidak diatur
-    }
+      notifications: undefined, // tidak diatur
+    },
   };
 
   // ✅ Rekonstruksi Destructuring Defensif:
@@ -70,22 +70,22 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
       user_id: userId,
       display_name: userName,
       settings: {
-        theme = 'system-default',          // Nilai default TIDAK aktif karena bernilai null!
-        notifications = true               // Nilai default AKTIF karena bernilai undefined!
-      } = {} // Cadangan jika properti settings tidak ada
+        theme = "system-default", // Nilai default TIDAK aktif karena bernilai null!
+        notifications = true, // Nilai default AKTIF karena bernilai undefined!
+      } = {}, // Cadangan jika properti settings tidak ada
     } = payload;
 
     console.log(`ID Pengguna: ${userId}`);
     console.log(`Nama: ${userName}`);
-    console.log(`Tema: ${theme}`);                 // Menghasilkan: null
+    console.log(`Tema: ${theme}`); // Menghasilkan: null
     console.log(`Notifikasi Aktif: ${notifications}`); // Menghasilkan: true
   }
 
   renderUserProfile(apiPayload);
 
   // 3. Array Destructuring: Menukar Posisi Variabel Seketika (Swap Trick)
-  let firstTab = 'Beranda';
-  let secondTab = 'Profil';
+  let firstTab = "Beranda";
+  let secondTab = "Profil";
   [firstTab, secondTab] = [secondTab, firstTab];
   console.log(`Tab 1: ${firstTab}, Tab 2: ${secondTab}`); // Profil, Beranda
   ```
@@ -107,4 +107,4 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 > Topik ini selesai dieksekusi dengan benar jika: **Fungsi yang menerima parameter destructuring tidak crash saat dipanggil tanpa argumen (`fn()`), dan penamaan variabel lokal konsisten**.
 
 > [!WARNING] Batas Kepastian
-> Sintaks penamaan ulang `{ prop: newName }` sering kali membingungkan pemula karena mirip dengan sintaks penetapan pasangan key-value pada objek biasa; **ini adalah aturan tata bahasa formal spesifikasi ECMAScript**, di mana sisi kanan titik dua pada pola destructuring adalah *nama variabel baru*, bukan nilainya.
+> Sintaks penamaan ulang `{ prop: newName }` sering kali membingungkan pemula karena mirip dengan sintaks penetapan pasangan key-value pada objek biasa; **ini adalah aturan tata bahasa formal spesifikasi ECMAScript**, di mana sisi kanan titik dua pada pola destructuring adalah _nama variabel baru_, bukan nilainya.

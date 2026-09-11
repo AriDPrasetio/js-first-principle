@@ -14,7 +14,7 @@ official_docs_url:
 # First Principles Deep Dive: Default Parameters dan Rest Parameters
 
 > [!ABSTRACT] The Ground Truth
-> Parameter fungsi adalah deklarasi slot memori lokal yang diisi saat pemanggilan; *Default Parameters* mengevaluasi nilai cadangan HANYA jika argumen bernilai `undefined`, sedangkan *Rest Parameters* mengumpulkan sisa argumen tak terbatas ke dalam instans objek Array sejati.
+> Parameter fungsi adalah deklarasi slot memori lokal yang diisi saat pemanggilan; _Default Parameters_ mengevaluasi nilai cadangan HANYA jika argumen bernilai `undefined`, sedangkan _Rest Parameters_ mengumpulkan sisa argumen tak terbatas ke dalam instans objek Array sejati.
 
 ---
 
@@ -23,7 +23,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "Default parameter akan aktif jika kita memberikan nilai kosong apa pun (termasuk `null` atau string kosong `""`)."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Spesifikasi secara ketat menetapkan bahwa **hanya nilai `undefined`** (atau argumen yang tidak dilewatkan) yang memicu evaluasi nilai default. Memberikan `null` sengaja dianggap sebagai nilai eksplisit yang sah (*intentional absence of value*), sehingga default parameter tidak akan pernah tersentuh.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Spesifikasi secara ketat menetapkan bahwa **hanya nilai `undefined`** (atau argumen yang tidak dilewatkan) yang memicu evaluasi nilai default. Memberikan `null` sengaja dianggap sebagai nilai eksplisit yang sah (_intentional absence of value_), sehingga default parameter tidak akan pernah tersentuh.
 
 ---
 
@@ -32,10 +32,10 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
 1. **Kondisi Pemicu Default Parameter (ECMA-262 §15.1.1)**:
-   Engine mengevaluasi argumen ke dalam parameter dari kiri ke kanan. Jika operan bernilai persis `=== undefined`, barulah ekspresi default di sisi kanan dievaluasi saat waktu pemanggilan (*call-time*). Nilai falsy lain (`null`, `0`, `false`, `""`) **tidak memicu** default parameter.
+   Engine mengevaluasi argumen ke dalam parameter dari kiri ke kanan. Jika operan bernilai persis `=== undefined`, barulah ekspresi default di sisi kanan dievaluasi saat waktu pemanggilan (_call-time_). Nilai falsy lain (`null`, `0`, `false`, `""`) **tidak memicu** default parameter.
 
-2. **Ruang Lingkup Parameter Antara (*Intermediate Parameter Scope*)**:
-   Ketika sebuah fungsi memiliki parameter default, engine membuat *Lexical Environment* perantara khusus untuk parameter, terpisah dari *Environment Record* tubuh fungsi. Parameter di kanan dapat merujuk parameter di kirinya, namun tidak dapat mengakses variabel lokal di dalam tubuh fungsi.
+2. **Ruang Lingkup Parameter Antara (_Intermediate Parameter Scope_)**:
+   Ketika sebuah fungsi memiliki parameter default, engine membuat _Lexical Environment_ perantara khusus untuk parameter, terpisah dari _Environment Record_ tubuh fungsi. Parameter di kanan dapat merujuk parameter di kirinya, namun tidak dapat mengakses variabel lokal di dalam tubuh fungsi.
 
 3. **Rest Parameters (`...rest`) vs Objek Kuno `arguments`**:
    - `arguments` adalah objek pseudo-array warisan lama yang tidak memiliki metode bawaan seperti `.map()` atau `.filter()`, dan tidak tersedia di dalam arrow function.
@@ -48,33 +48,37 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan dari dogma "best practice"._
 
 - **Pendekatan Optimal**:
-  Gunakan sintaks *Default Parameters* bawaan bahasa alih-alih melakukan penugasan manual di dalam tubuh fungsi (`opts = opts || {}`). Manfaatkan *Rest Parameters* untuk membangun fungsi variadik (fungsi dengan jumlah parameter fleksibel) seperti agregator angka atau penggabung class CSS dinamis.
+  Gunakan sintaks _Default Parameters_ bawaan bahasa alih-alih melakukan penugasan manual di dalam tubuh fungsi (`opts = opts || {}`). Manfaatkan _Rest Parameters_ untuk membangun fungsi variadik (fungsi dengan jumlah parameter fleksibel) seperti agregator angka atau penggabung class CSS dinamis.
 
 - **Contoh Konkret**:
 
   ```javascript
   // Skenario: Utilitas Pembuat Kelas CSS BEM Dinamis
-  function createBemClasses(blockName, modifier = 'default', ...extraClasses) {
+  function createBemClasses(blockName, modifier = "default", ...extraClasses) {
     // 1. modifier bernilai 'default' HANYA jika dioper undefined atau dilewati
     // 2. extraClasses adalah instans Array sejati: Array.isArray(extraClasses) === true
 
     const baseClass = `${blockName}--${modifier}`;
 
     // Langsung gunakan metode array tanpa Array.prototype.slice.call()!
-    const validExtras = extraClasses.filter(cls => typeof cls === 'string' && cls.trim() !== '');
+    const validExtras = extraClasses.filter(
+      (cls) => typeof cls === "string" && cls.trim() !== "",
+    );
 
-    return [baseClass, ...validExtras].join(' ');
+    return [baseClass, ...validExtras].join(" ");
   }
 
   // Uji Coba:
-  console.log(createBemClasses('c-button')); 
+  console.log(createBemClasses("c-button"));
   // 'c-button--default' (Default parameter terpicu)
 
-  console.log(createBemClasses('c-button', 'primary', 'u-margin-top-sm', 'is-loading')); 
+  console.log(
+    createBemClasses("c-button", "primary", "u-margin-top-sm", "is-loading"),
+  );
   // 'c-button--primary u-margin-top-sm is-loading' (Rest parameter mengumpulkan sisa kelas)
 
   // Perbedaan krusial undefined vs null:
-  console.log(createBemClasses('c-card', null)); 
+  console.log(createBemClasses("c-card", null));
   // 'c-card--null' (Default TIDAK terpicu karena null adalah nilai eksplisit!)
   ```
 

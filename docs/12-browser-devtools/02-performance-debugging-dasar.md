@@ -14,7 +14,7 @@ official_docs_url:
 # First Principles Deep Dive: Debugging Performa Dasar (Rendering Pipeline & Layout Thrashing)
 
 > [!ABSTRACT] The Ground Truth
-> Performa rendering browser diikat oleh hukum batas waktu frame (*16.6ms frame budget*); kelambatan antarmuka (*jank*) terjadi ketika eksekusi JavaScript memicu pembacaan geometri yang memaksa peramban menghitung ulang tata letak secara sinkron berulang-ulang (*Layout Thrashing*).
+> Performa rendering browser diikat oleh hukum batas waktu frame (_16.6ms frame budget_); kelambatan antarmuka (_jank_) terjadi ketika eksekusi JavaScript memicu pembacaan geometri yang memaksa peramban menghitung ulang tata letak secara sinkron berulang-ulang (_Layout Thrashing_).
 
 ---
 
@@ -23,7 +23,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "Aplikasi web terasa lambat karena engine JavaScript lambat mengeksekusi kode perulangan kita."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Eksekusi komputasi angka murni di V8 luar biasa cepat. 90% masalah antarmuka lambat dan patah-patah di frontend berasal dari **pemicuan siklus render browser yang tidak efisien**: mengubah dimensi elemen di DOM yang memaksa peramban mengkalkulasi ulang geometri ratusan elemen di layar (*Reflow/Layout*) dan mengecat ulang piksel (*Repaint*) secara berlebihan.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Eksekusi komputasi angka murni di V8 luar biasa cepat. 90% masalah antarmuka lambat dan patah-patah di frontend berasal dari **pemicuan siklus render browser yang tidak efisien**: mengubah dimensi elemen di DOM yang memaksa peramban mengkalkulasi ulang geometri ratusan elemen di layar (_Reflow/Layout_) dan mengecat ulang piksel (_Repaint_) secara berlebihan.
 
 ---
 
@@ -31,17 +31,17 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
-1. **Jalur Render Kritis (*Critical Rendering Path*)**:
+1. **Jalur Render Kritis (_Critical Rendering Path_)**:
    Setiap kali layar diperbarui, browser menempuh 5 tahap fisik:
    - **JavaScript** $\to$ **Style Recalculation** $\to$ **Layout (Reflow)** $\to$ **Paint** $\to$ **Composite**.
    - Properti mahal (seperti `width`, `height`, `left`, `top`, `margin`) memicu seluruh rantai: Layout $\to$ Paint $\to$ Composite.
-   - Properti murah (hanya **`transform`** dan **`opacity`**) **melewati tahap Layout dan Paint**, langsung diproses oleh GPU di tahap *Composite* tanpa membebani thread utama CPU.
+   - Properti murah (hanya **`transform`** dan **`opacity`**) **melewati tahap Layout dan Paint**, langsung diproses oleh GPU di tahap _Composite_ tanpa membebani thread utama CPU.
 
-2. **Batas Waktu Frame (*The 16.6ms Frame Budget*)**:
-   Agar layar terlihat mulus di standar 60 frame per detik (60 FPS), browser harus menyelesaikan satu siklus penuh dalam waktu **16.6 milidetik**. Browser membutuhkan sekitar 6 milidetik untuk urusan internal, menyisakan anggaran waktu bersih sekitar **10 milidetik** untuk JavaScript dan render. Jika tugas JavaScript berjalan lebih dari 50 milidetik (*Long Task*), pengguna akan merasakan layar membeku (*input delay / INP buruk*).
+2. **Batas Waktu Frame (_The 16.6ms Frame Budget_)**:
+   Agar layar terlihat mulus di standar 60 frame per detik (60 FPS), browser harus menyelesaikan satu siklus penuh dalam waktu **16.6 milidetik**. Browser membutuhkan sekitar 6 milidetik untuk urusan internal, menyisakan anggaran waktu bersih sekitar **10 milidetik** untuk JavaScript dan render. Jika tugas JavaScript berjalan lebih dari 50 milidetik (_Long Task_), pengguna akan merasakan layar membeku (_input delay / INP buruk_).
 
-3. **Mekanisme *Layout Thrashing* (Forced Synchronous Layout)**:
-   Biasanya browser menumpuk (*batch*) perubahan style dan mengeksekusinya di akhir siklus. Namun, jika JavaScript menulis style lalu **langsung membaca properti geometri** (seperti `element.offsetWidth`, `element.clientHeight`, `getBoundingClientRect()`), browser terpaksa membatalkan antrean batching dan secara paksa menjalankan kalkulasi Layout detik itu juga. Jika dilakukan di dalam loop (Tulis $\to$ Baca $\to$ Tulis $\to$ Baca), CPU akan kehabisan waktu frame.
+3. **Mekanisme _Layout Thrashing_ (Forced Synchronous Layout)**:
+   Biasanya browser menumpuk (_batch_) perubahan style dan mengeksekusinya di akhir siklus. Namun, jika JavaScript menulis style lalu **langsung membaca properti geometri** (seperti `element.offsetWidth`, `element.clientHeight`, `getBoundingClientRect()`), browser terpaksa membatalkan antrean batching dan secara paksa menjalankan kalkulasi Layout detik itu juga. Jika dilakukan di dalam loop (Tulis $\to$ Baca $\to$ Tulis $\to$ Baca), CPU akan kehabisan waktu frame.
 
 ---
 
@@ -50,13 +50,13 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan dari dogma "best practice"._
 
 - **Pendekatan Optimal**:
-  Terapkan prinsip *Read-First, Write-Later (Batching Geometry)*: baca semua dimensi elemen yang diperlukan terlebih dahulu ke dalam variabel memori, baru kemudian tulis perubahan style secara serentak. Untuk animasi antarmuka visual (seperti modal pop-up atau sidebar transisi), gerakkan elemen hanya menggunakan `transform: translate()` dan `opacity` dengan kelas CSS BEM transisi.
+  Terapkan prinsip _Read-First, Write-Later (Batching Geometry)_: baca semua dimensi elemen yang diperlukan terlebih dahulu ke dalam variabel memori, baru kemudian tulis perubahan style secara serentak. Untuk animasi antarmuka visual (seperti modal pop-up atau sidebar transisi), gerakkan elemen hanya menggunakan `transform: translate()` dan `opacity` dengan kelas CSS BEM transisi.
 
 - **Contoh Konkret**:
 
   ```javascript
   // Skenario: Menyelaraskan Lebar 100 Kartu Antarmuka (Card Width Sync)
-  const cards = document.querySelectorAll('.c-card');
+  const cards = document.querySelectorAll(".c-card");
 
   // ❌ Bencana Layout Thrashing (Tulis -> Baca -> Tulis -> Baca berulang di dalam loop):
   /*
@@ -70,7 +70,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   // ✅ Rekonstruksi First Principles: Pisahkan Fase Baca dan Fase Tulis
   function batchUpdateCardWidths() {
     // 1. FASE BACA (Read Phase): Lakukan query geometri SATU KALI di awal
-    const container = document.querySelector('.c-card-container');
+    const container = document.querySelector(".c-card-container");
     if (!container) return;
 
     const measuredWidth = container.offsetWidth; // Satu-satunya reflow!
@@ -78,10 +78,10 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
     // 2. FASE TULIS (Write Phase): Terapkan style secara serentak tanpa membaca ulang
     // Manfaatkan requestAnimationFrame untuk menyelaraskan dengan refresh monitor
     requestAnimationFrame(() => {
-      cards.forEach(card => {
+      cards.forEach((card) => {
         card.style.width = `${measuredWidth}px`;
       });
-      console.log('Update layout berhasil di-batch dalam 1 siklus render!');
+      console.log("Update layout berhasil di-batch dalam 1 siklus render!");
     });
   }
 
@@ -97,12 +97,12 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 
 _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level saya saat ini:_
 
-- [ ] **Langkah 1**: Buka Chrome DevTools -> tab **Performance** -> klik ikon rekam (*Record*) -> lakukan interaksi pada UI -> klik *Stop*: perhatikan grafik *Main Thread* untuk mencari blok berwarna merah bertuliskan **Long Task (> 50ms)**.
-- [ ] **Langkah 2**: Periksa tab konsol DevTools: cari peringatan teks berwarna ungu bertuliskan *"Forced reflow is a likely performance bottleneck"*, klik tautan baris kode untuk menemukan lokasi layout thrashing.
+- [ ] **Langkah 1**: Buka Chrome DevTools -> tab **Performance** -> klik ikon rekam (_Record_) -> lakukan interaksi pada UI -> klik _Stop_: perhatikan grafik _Main Thread_ untuk mencari blok berwarna merah bertuliskan **Long Task (> 50ms)**.
+- [ ] **Langkah 2**: Periksa tab konsol DevTools: cari peringatan teks berwarna ungu bertuliskan _"Forced reflow is a likely performance bottleneck"_, klik tautan baris kode untuk menemukan lokasi layout thrashing.
 - [ ] **Langkah 3**: Gantikan seluruh animasi perubahan posisi berbasis `top`/`left` atau `margin` dengan animasi akselerasi hardware berbasis CSS `transform: translate3d(...)`.
 
 > [!TIP] Parameter Kesuksesan (Success Metric)
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada peringatan "Forced reflow" di DevTools Console saat interaksi berjalan, dan frame rate antarmuka stabil di 60 FPS**.
 
 > [!WARNING] Batas Kepastian
-> Pustaka optimasi batching seperti *FastDOM* pernah populer di industri, namun pada standar web modern, **disiplin arsitektur (memisahkan baca dan tulis secara sadar)** atau penggunaan CSS Modern (`transform`, `contain: layout`) sudah lebih dari cukup tanpa perlu menambah dependensi eksternal.
+> Pustaka optimasi batching seperti _FastDOM_ pernah populer di industri, namun pada standar web modern, **disiplin arsitektur (memisahkan baca dan tulis secara sadar)** atau penggunaan CSS Modern (`transform`, `contain: layout`) sudah lebih dari cukup tanpa perlu menambah dependensi eksternal.

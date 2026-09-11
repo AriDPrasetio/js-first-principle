@@ -14,7 +14,7 @@ official_docs_url:
 # First Principles Deep Dive: Penanganan Error pada Request HTTP (Fetch & AbortController)
 
 > [!ABSTRACT] The Ground Truth
-> `fetch()` tidak menganggap status HTTP 404 atau 500 sebagai error penolakan Promise; ia hanya me-reject pada kegagalan fisik jaringan (*Network Failure*), mewajibkan evaluasi manual properti `response.ok` dan pembatalan request usang via `AbortController`.
+> `fetch()` tidak menganggap status HTTP 404 atau 500 sebagai error penolakan Promise; ia hanya me-reject pada kegagalan fisik jaringan (_Network Failure_), mewajibkan evaluasi manual properti `response.ok` dan pembatalan request usang via `AbortController`.
 
 ---
 
@@ -23,7 +23,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "Jika server mengembalikan status 404 Not Found atau 500 Server Error, eksekusi `await fetch()` akan otomatis meloncat ke blok `catch`."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Dari kacamata browser, selama koneksi HTTP berhasil mengirim dan menerima pesan dari server, **proses jaringan dianggap sukses**. Status 404 atau 500 adalah status *aplikasi*, bukan kegagalan protokol jaringan. Blok `catch` pada `fetch` HANYA terpicu saat internet mati, DNS gagal, terjadi pelanggaran CORS, atau request dibatalkan.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Dari kacamata browser, selama koneksi HTTP berhasil mengirim dan menerima pesan dari server, **proses jaringan dianggap sukses**. Status 404 atau 500 adalah status _aplikasi_, bukan kegagalan protokol jaringan. Blok `catch` pada `fetch` HANYA terpicu saat internet mati, DNS gagal, terjadi pelanggaran CORS, atau request dibatalkan.
 
 ---
 
@@ -32,14 +32,14 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
 1. **Aturan Evaluasi Properti `response.ok` (WHATWG Fetch Standard)**:
-   Objek respons menyediakan getter boolean bawaan `response.ok`. Spesifikasi menetapkan bahwa `response.ok === true` **hanya jika kode status HTTP berada di rentang 200–299**. Jika server merespons dengan kode 400, 401, 403, 404, atau 500, Promise tetap berstatus *fulfilled* (sukses), dan developer wajib memeriksa `if (!response.ok)` secara manual untuk melempar error.
+   Objek respons menyediakan getter boolean bawaan `response.ok`. Spesifikasi menetapkan bahwa `response.ok === true` **hanya jika kode status HTTP berada di rentang 200–299**. Jika server merespons dengan kode 400, 401, 403, 404, atau 500, Promise tetap berstatus _fulfilled_ (sukses), dan developer wajib memeriksa `if (!response.ok)` secara manual untuk melempar error.
 
 2. **Dua Kategori Kegagalan yang Terpisah Secara Arsitektur**:
-   - **Kegagalan Protokol/Jaringan (Network Error)**: Kabel terputus, domain DNS tidak ditemukan, atau sertifikat SSL tidak valid. Menghasilkan Promise *rejected* langsung dari `fetch()`.
-   - **Kegagalan Logika/Aplikasi (HTTP Status Error)**: Server menerima pesan tetapi menolak memproses (misal 401 Unauthorized). Menghasilkan Promise *fulfilled* dengan `response.ok === false`.
+   - **Kegagalan Protokol/Jaringan (Network Error)**: Kabel terputus, domain DNS tidak ditemukan, atau sertifikat SSL tidak valid. Menghasilkan Promise _rejected_ langsung dari `fetch()`.
+   - **Kegagalan Logika/Aplikasi (HTTP Status Error)**: Server menerima pesan tetapi menolak memproses (misal 401 Unauthorized). Menghasilkan Promise _fulfilled_ dengan `response.ok === false`.
 
 3. **Mekanisme Pembatalan Request Menggunakan `AbortController`**:
-   Jika pengguna mengetik cepat di form pencarian atau berpindah halaman sebelum request sebelumnya selesai, respons yang datang terlambat dapat menimpa data baru (*Race Condition*). Antarmuka `AbortController` berkomunikasi langsung dengan stack jaringan browser melalui objek `AbortSignal`. Memanggil `controller.abort()` menghentikan transmisi paket seketika dan menolak Promise fetch dengan `DOMException: AbortError`.
+   Jika pengguna mengetik cepat di form pencarian atau berpindah halaman sebelum request sebelumnya selesai, respons yang datang terlambat dapat menimpa data baru (_Race Condition_). Antarmuka `AbortController` berkomunikasi langsung dengan stack jaringan browser melalui objek `AbortSignal`. Memanggil `controller.abort()` menghentikan transmisi paket seketika dan menolak Promise fetch dengan `DOMException: AbortError`.
 
 ---
 
@@ -50,7 +50,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 - **Pendekatan Optimal**:
   Bangun pola penanganan request lengkap yang:
   1. Selalu mengecek `!response.ok` dan melempar `Error` eksplisit.
-  2. Mengintegrasikan `AbortController` dengan batas waktu kedaluwarsa (*Timeout*) otomatis menggunakan `AbortSignal.timeout(ms)`.
+  2. Mengintegrasikan `AbortController` dengan batas waktu kedaluwarsa (_Timeout_) otomatis menggunakan `AbortSignal.timeout(ms)`.
   3. Memisahkan penanganan error pembatalan biasa (`AbortError`) dari error jaringan sejati agar antarmuka tidak menampilkan peringatan panik saat request sengaja dibatalkan.
 
 - **Contoh Konkret**:
@@ -66,21 +66,27 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 
       // 2. Evaluasi status aplikasi server secara manual
       if (!response.ok) {
-        throw new Error(`Server menolak dengan status: ${response.status} (${response.statusText})`);
+        throw new Error(
+          `Server menolak dengan status: ${response.status} (${response.statusText})`,
+        );
       }
 
       return await response.json();
-
     } catch (error) {
       // 3. Pembedaan jenis error secara kausal
-      if (error.name === 'TimeoutError') {
-        console.warn(`[Timeout]: Permintaan ke ${url} melebihi batas waktu ${timeoutMs}ms.`);
-      } else if (error.name === 'AbortError') {
-        console.info('[Dibatalkan]: Permintaan dibatalkan oleh pengguna.');
+      if (error.name === "TimeoutError") {
+        console.warn(
+          `[Timeout]: Permintaan ke ${url} melebihi batas waktu ${timeoutMs}ms.`,
+        );
+      } else if (error.name === "AbortError") {
+        console.info("[Dibatalkan]: Permintaan dibatalkan oleh pengguna.");
       } else {
-        console.error('[Network Error]: Gagal menghubungi server fisik:', error.message);
+        console.error(
+          "[Network Error]: Gagal menghubungi server fisik:",
+          error.message,
+        );
       }
-      
+
       // Kembalikan null atau lempar kembali sesuai kebutuhan UI
       throw error;
     }
@@ -89,8 +95,10 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   // Pengujian dengan simulasi penanganan UI:
   async function loadData() {
     try {
-      const data = await fetchWithTimeout('https://jsonplaceholder.typicode.com/invalid-route');
-      console.log('Data diterima:', data);
+      const data = await fetchWithTimeout(
+        "https://jsonplaceholder.typicode.com/invalid-route",
+      );
+      console.log("Data diterima:", data);
     } catch (err) {
       // Menampilkan pesan ramah pengguna di layar (misal Toast Notifikasi)
       console.log(`Pesan untuk UI: "Maaf, terjadi kesalahan: ${err.message}"`);
@@ -101,7 +109,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   ```
 
 - **Mengapa ini lebih baik**:
-  Memeriksa `response.ok` secara sistematis menjamin tidak ada respons 404 atau 500 yang lolos tanpa terdeteksi ke logika rendering UI. Pemakaian `AbortSignal.timeout()` melindungi aplikasi dari request gantung (*hanging requests*) saat koneksi pengguna melemah.
+  Memeriksa `response.ok` secara sistematis menjamin tidak ada respons 404 atau 500 yang lolos tanpa terdeteksi ke logika rendering UI. Pemakaian `AbortSignal.timeout()` melindungi aplikasi dari request gantung (_hanging requests_) saat koneksi pengguna melemah.
 
 ---
 

@@ -13,7 +13,7 @@ official_docs_url:
 # First Principles Deep Dive: Kata Kunci this dan Aturan Binding
 
 > [!ABSTRACT] The Ground Truth
-> Kata kunci `this` bukanlah pengikatan statis yang terikat pada tubuh fungsi; `this` adalah konteks dinamis yang ditentukan oleh cara fungsi tersebut dipanggil pada titik pemanggilannya (*Call-Site*), kecuali pada Arrow Function yang mewarisinya secara leksikal.
+> Kata kunci `this` bukanlah pengikatan statis yang terikat pada tubuh fungsi; `this` adalah konteks dinamis yang ditentukan oleh cara fungsi tersebut dipanggil pada titik pemanggilannya (_Call-Site_), kecuali pada Arrow Function yang mewarisinya secara leksikal.
 
 ---
 
@@ -22,7 +22,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "`this` selalu merujuk pada fungsi itu sendiri atau objek di mana fungsi tersebut ditulis."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Metode objek sering kali dipisahkan dari objek induknya saat dijadikan callback (misal event listener atau timer). Tanpa pemahaman aturan *Call-Site*, referensi konteks objek asal akan terlepas (*lost context*), menyebabkan `this` tiba-tiba bernilai `undefined` atau merujuk ke objek global `window`.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Metode objek sering kali dipisahkan dari objek induknya saat dijadikan callback (misal event listener atau timer). Tanpa pemahaman aturan _Call-Site_, referensi konteks objek asal akan terlepas (_lost context_), menyebabkan `this` tiba-tiba bernilai `undefined` atau merujuk ke objek global `window`.
 
 ---
 
@@ -30,18 +30,18 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
-1. **Evaluasi Titik Pemanggilan (*Call-Site Evaluation*) dan Tipe Referensi**:
-   Saat kita memanggil `user.getNama()`, engine mengevaluasi ekspresi tersebut menjadi spesifikasi internal bernama *Reference Record*. Reference Record mencatat `baseValue` (yaitu objek `user`). Karena ada titik pemanggilan properti, engine menetapkan `this` bernilai `user` (*Implicit Binding*). Jika metode tersebut disimpan ke variabel terpisah (`const fn = user.getNama; fn()`), *Reference Record* terputus, dan eksekusi jatuh ke aturan default.
+1. **Evaluasi Titik Pemanggilan (_Call-Site Evaluation_) dan Tipe Referensi**:
+   Saat kita memanggil `user.getNama()`, engine mengevaluasi ekspresi tersebut menjadi spesifikasi internal bernama _Reference Record_. Reference Record mencatat `baseValue` (yaitu objek `user`). Karena ada titik pemanggilan properti, engine menetapkan `this` bernilai `user` (_Implicit Binding_). Jika metode tersebut disimpan ke variabel terpisah (`const fn = user.getNama; fn()`), _Reference Record_ terputus, dan eksekusi jatuh ke aturan default.
 
 2. **Empat Aturan Prioritas Pengikatan `this`**:
    Sesuai spesifikasi ECMA-262, penentuan nilai `this` memiliki urutan hierarki mutlak:
    - **Prioritas 1 (New Binding)**: Dipanggil dengan `new` -> `this` adalah objek baru yang baru saja diinstansiasi.
    - **Prioritas 2 (Explicit Binding)**: Dipanggil via `.call()`, `.apply()`, atau dibungkus `.bind()` -> `this` dipaksa ke objek target.
    - **Prioritas 3 (Implicit Binding)**: Dipanggil melalui properti objek (`obj.method()`) -> `this` adalah objek konteksnya.
-   - **Prioritas 4 (Default Binding)**: Dipanggil mandiri (`fn()`) -> `this` bernilai `undefined` pada *Strict Mode* (atau objek global `window` pada non-strict mode).
+   - **Prioritas 4 (Default Binding)**: Dipanggil mandiri (`fn()`) -> `this` bernilai `undefined` pada _Strict Mode_ (atau objek global `window` pada non-strict mode).
 
 3. **Pengecualian Mutlak: Arrow Function**:
-   Arrow function **sama sekali tidak memiliki mekanisme pengikatan `this` dinamis**. Nilai `this` di dalam arrow function diselesaikan murni dari rantai leksikal (*Lexical Scope*) tempat fungsi didefinisikan saat kode ditulis.
+   Arrow function **sama sekali tidak memiliki mekanisme pengikatan `this` dinamis**. Nilai `this` di dalam arrow function diselesaikan murni dari rantai leksikal (_Lexical Scope_) tempat fungsi didefinisikan saat kode ditulis.
 
 ---
 
@@ -71,7 +71,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
       // Di dalam handleClick biasa, 'this' akan mengarah ke elemen DOM tombol, BUKAN class ini!
 
       // ✅ Rekonstruksi Aman dengan Arrow Function (Mempertahankan Leksikal 'this'):
-      this.element.addEventListener('click', (event) => {
+      this.element.addEventListener("click", (event) => {
         this.handleClick(event);
       });
     }
@@ -83,14 +83,14 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
     }
 
     updateUI() {
-      this.element.setAttribute('aria-pressed', String(this.isActive));
-      console.log(`Status komponen: ${this.isActive ? 'Aktif' : 'Non-aktif'}`);
+      this.element.setAttribute("aria-pressed", String(this.isActive));
+      console.log(`Status komponen: ${this.isActive ? "Aktif" : "Non-aktif"}`);
     }
   }
   ```
 
 - **Mengapa ini lebih baik**:
-  Mengetahui bahwa arrow function mewarisi `this` secara leksikal memutus rantai masalah *this-binding loss*. Penggunaan pembungkus arrow function pada listener DOM memberikan akses ganda yang jelas: objek komponen diakses via `this`, sedangkan elemen HTML diakses via parameter eksplisit `event.currentTarget`.
+  Mengetahui bahwa arrow function mewarisi `this` secara leksikal memutus rantai masalah _this-binding loss_. Penggunaan pembungkus arrow function pada listener DOM memberikan akses ganda yang jelas: objek komponen diakses via `this`, sedangkan elemen HTML diakses via parameter eksplisit `event.currentTarget`.
 
 ---
 
@@ -106,4 +106,4 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi error `TypeError: Cannot read properties of undefined (reading '...')` saat sebuah metode objek dioper sebagai callback**.
 
 > [!WARNING] Batas Kepastian
-> Kebiasaan mengikat konteks di konstruktor class (`this.fn = this.fn.bind(this)`) adalah **pola warisan dari era React Class Component awal**. Di JavaScript modern, penggunaan *arrow method* di body class (`fn = () => {}`) atau inline arrow wrapper adalah pendekatan yang jauh lebih dominan dan ringkas.
+> Kebiasaan mengikat konteks di konstruktor class (`this.fn = this.fn.bind(this)`) adalah **pola warisan dari era React Class Component awal**. Di JavaScript modern, penggunaan _arrow method_ di body class (`fn = () => {}`) atau inline arrow wrapper adalah pendekatan yang jauh lebih dominan dan ringkas.

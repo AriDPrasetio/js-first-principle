@@ -13,7 +13,7 @@ official_docs_url:
 # First Principles Deep Dive: Higher-Order Functions (HOF)
 
 > [!ABSTRACT] The Ground Truth
-> Higher-Order Function adalah turunan langsung dari status fungsi sebagai nilai kelas utama (*First-Class Citizen*): fungsi yang mampu menerima fungsi lain sebagai parameter input, mengembalikan fungsi baru sebagai output, atau keduanya untuk mengabstraksi mekanisme kontrol alur.
+> Higher-Order Function adalah turunan langsung dari status fungsi sebagai nilai kelas utama (_First-Class Citizen_): fungsi yang mampu menerima fungsi lain sebagai parameter input, mengembalikan fungsi baru sebagai output, atau keduanya untuk mengabstraksi mekanisme kontrol alur.
 
 ---
 
@@ -22,7 +22,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "Higher-Order Function adalah konsep matematika akademis yang rumit dari Functional Programming murni."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Tanpa kemampuan memperlakukan fungsi sebagai data, kita terpaksa menduplikasi struktur kontrol logika (seperti loop perulangan, pengecekan hak akses, atau pembatasan frekuensi klik) berulang kali di setiap fitur. HOF memisahkan *bagaimana cara mengontrol alur* dari *apa instruksi spesifik yang harus dijalankan*.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Tanpa kemampuan memperlakukan fungsi sebagai data, kita terpaksa menduplikasi struktur kontrol logika (seperti loop perulangan, pengecekan hak akses, atau pembatasan frekuensi klik) berulang kali di setiap fitur. HOF memisahkan _bagaimana cara mengontrol alur_ dari _apa instruksi spesifik yang harus dijalankan_.
 
 ---
 
@@ -31,7 +31,7 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
 1. **Prinsip First-Class Values**:
-   Di JavaScript, fungsi adalah entitas nilai yang setara dengan string atau angka. Objek fungsi dapat disimpan di variabel, dilewatkan sebagai argumen ke fungsi lain (*callback*), dan dihasilkan sebagai nilai balik (*return value*).
+   Di JavaScript, fungsi adalah entitas nilai yang setara dengan string atau angka. Objek fungsi dapat disimpan di variabel, dilewatkan sebagai argumen ke fungsi lain (_callback_), dan dihasilkan sebagai nilai balik (_return value_).
 
 2. **Pemisahan Mekanisme Kontrol dari Eksekusi Logika**:
    Struktur algoritma dibagi menjadi dua peran:
@@ -39,7 +39,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
    - **Fungsi Callback (The Worker/Transformer)**: Hanya menerima data masukan atomik dan mengembalikan hasil komputasi tanpa memedulikan bagaimana ia dipanggil.
 
 3. **Komposisi Fungsi dan Currying Berbasis Leksikal**:
-   Karena fungsi yang dikembalikan mempertahankan *closure* ke argumen fungsi induknya, kita dapat menciptakan fungsi-fungsi baru yang terspesialisasi dari sebuah fungsi umum secara modular (*partial application*).
+   Karena fungsi yang dikembalikan mempertahankan _closure_ ke argumen fungsi induknya, kita dapat menciptakan fungsi-fungsi baru yang terspesialisasi dari sebuah fungsi umum secara modular (_partial application_).
 
 ---
 
@@ -48,7 +48,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan dari dogma "best practice"._
 
 - **Pendekatan Optimal**:
-  Bangun utilitas antarmuka berbasis HOF untuk menangani masalah umum frontend seperti *Debounce* (menahan pemanggilan fungsi hingga pengguna berhenti mengetik pada kolom input pencarian) atau *Logger Interceptor* tanpa mengubah kode asli fungsi target.
+  Bangun utilitas antarmuka berbasis HOF untuk menangani masalah umum frontend seperti _Debounce_ (menahan pemanggilan fungsi hingga pengguna berhenti mengetik pada kolom input pencarian) atau _Logger Interceptor_ tanpa mengubah kode asli fungsi target.
 
 - **Contoh Konkret**:
 
@@ -74,21 +74,23 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 
   // Fungsi Worker Spesifik (Hanya fokus pada pengiriman query ke API):
   function performSearch(query) {
-    console.log(`[API Request] Mengirim pencarian untuk kata kunci: "${query}"`);
+    console.log(
+      `[API Request] Mengirim pencarian untuk kata kunci: "${query}"`,
+    );
   }
 
   // Rekonstruksi: Hasilkan fungsi pencarian yang tahan terhadap ketikan cepat
   const debouncedSearch = debounce(performSearch, 500);
 
   // Simulasi ketikan cepat pengguna:
-  debouncedSearch('rea');
-  debouncedSearch('reac');
-  debouncedSearch('react'); 
+  debouncedSearch("rea");
+  debouncedSearch("reac");
+  debouncedSearch("react");
   // Output hanya muncul SEKALI setelah jeda 500ms: "react"
   ```
 
 - **Mengapa ini lebih baik**:
-  Fungsi `performSearch` tetap murni dan tidak tercemar oleh logika `setTimeout` atau variabel state timer. Keduanya dapat diuji (*unit test*) secara terpisah, dan fungsi `debounce` dapat digunakan ulang untuk fungsi apa pun di seluruh aplikasi.
+  Fungsi `performSearch` tetap murni dan tidak tercemar oleh logika `setTimeout` atau variabel state timer. Keduanya dapat diuji (_unit test_) secara terpisah, dan fungsi `debounce` dapat digunakan ulang untuk fungsi apa pun di seluruh aplikasi.
 
 ---
 

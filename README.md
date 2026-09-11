@@ -1,42 +1,52 @@
-# JavaScript Fundamentals — First Principles Deep Dive
+# JavaScript Fundamentals — First Principles Curriculum
 
 Kurikulum dan jurnal belajar mandiri untuk menguasai fondasi inti **JavaScript modern (Scope Frontend Developer)** dari nol menggunakan pendekatan **First Principles (Richard Feynman style)** dan **Prinsip Pareto (80/20)**, sebagai landasan kokoh sebelum melangkah ke ekosistem React.
 
-Seluruh materi berakar langsung pada spesifikasi resmi web platform (**ECMA-262 Language Specification**, **WHATWG HTML & DOM**, dan **W3C**), bukan sekadar opini, konvensi industri, atau dogma tren framework.
+Tersedia **dua jalur dokumentasi** yang saling melengkapi:
+
+1. **🌱 Versi Pemula (`docs-beginner/`)**: Dirancang untuk pemula dewasa tanpa jargon rumit. Dilengkapi analogi logis dunia nyata, contoh interaktif minimal (`index.html` + `app.js`), dan komentar baris kode fungsional berbahasa Indonesia.
+2. **🔬 Versi First Principles Deep Dive (`docs/`)**: Analisis mendalam berakar langsung pada spesifikasi resmi web platform (**ECMA-262**, **WHATWG HTML & DOM**, dan **W3C**), membongkar arsitektur mesin C++, memori heap/stack, dan dekonstruksi masalah.
 
 ---
 
-## 🏛️ Kerangka Analisis (First Principles Framework)
+## 🏛️ Dua Format Panduan
 
-Setiap topik di dalam kurikulum ini dibedah menggunakan format baku 4-tahap yang siap diintegrasikan ke dalam **Obsidian Vault**:
+### 1. Jalur Pemula (`docs-beginner/`)
 
-1. **The Ground Truth (`[!ABSTRACT]`)**: Esensi mutlak konsep pada level mesin/memori terendah, bebas dari jargon-buzzword.
-2. **Dekonstruksi Masalah**: Membedakan antara mitos/asumsi umum industri dengan masalah fundamental yang sebenarnya diselesaikan browser.
-3. **Kebenaran Fundamental**: 2–3 prinsip tak terbantahkan yang berakar langsung pada aturan spesifikasi resmi peramban.
-4. **Rekonstruksi Logis**: Membangun solusi optimal dari nol murni memakai logika sebab-akibat (Vanilla JS, metodologi CSS BEM, Design Tokens, dan kepatuhan aksesibilitas WCAG 2.1 AA).
-5. **Strategi Eksekusi**: Checklist aksi teknis konkret, parameter kesuksesan terukur (`[!TIP]`), dan batas kepastian fakta vs konvensi (`[!WARNING]`).
+- **Inti Konsep (`[!ABSTRACT]`)**: Esensi 1–2 kalimat tanpa istilah membingungkan.
+- **Analogi Logis**: Perumpamaan nyata (misal: fotokopi vs alamat rumah, gelembung kolam renang, kasir kafe).
+- **First Principles Ringan**: Menjawab _"Mengapa JavaScript didesain seperti ini?"_.
+- **Praktik Interaktif (HTML + JS)**: Kode mini yang langsung bisa dijalankan di browser dengan komentar fungsional manusiawi di setiap baris kodenya.
+- **Checklist Praktik & Uji Pemahaman Mandiri**: Pertanyaan penguji pemahaman tanpa bocoran jawaban.
+
+### 2. Jalur Deep Dive (`docs/`)
+
+- **The Ground Truth (`[!ABSTRACT]`)**: Esensi mutlak konsep pada level mesin/memori terendah.
+- **Dekonstruksi Masalah**: Membedakan mitos industri vs masalah fundamental yang sebenarnya diselesaikan browser.
+- **Kebenaran Fundamental**: 2–3 prinsip baku berakar pada spesifikasi ECMA-262/WHATWG.
+- **Rekonstruksi Logis**: Membangun arsitektur solusi optimal dari nol.
 
 ---
 
 ## 🗺️ Peta Kurikulum (12 Modul — 31 Topik)
 
 > [!NOTE]
-> Seluruh 31 dokumen materi panduan telah selesai disusun dan siap dipelajari. Pelacakan progres belajar aktif Anda dilakukan melalui checklist di [`.agents/roadmap.md`](./.agents/roadmap.md).
+> Seluruh 31 topik telah lengkap tersedia baik di versi **Pemula** maupun **Deep Dive**. Pelacakan progres belajar aktif dilakukan melalui checklist di [`.agents/roadmap.md`](./.agents/roadmap.md).
 
-| Modul                                                             | Cakupan Materi                                                                                           | Panduan Belajar | Status Modul |
-| :---------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------- | :-------------: | :----------: |
-| [**01. Introduction**](./docs/01-introduction/)                   | Runtime JS, Host Environments, HTML Parser-blocking vs `defer`/`async`                                   |    1 Dokumen    |  `Tersedia`  |
-| [**02. Syntax & Data Types**](./docs/02-syntax-datatypes/)        | Primitives vs Objects, Stack/Heap, Operator `typeof`, Type Coercion, Equality `===`                      |    4 Dokumen    |  `Tersedia`  |
-| [**03. Variables & Scope**](./docs/03-variables-scope/)           | `var`/`let`/`const`, Hoisting, TDZ, Scope Chain, Closures & Lexical Scoping                              |    4 Dokumen    |  `Tersedia`  |
-| [**04. Control Flow**](./docs/04-control-flow/)                   | Conditionals (`??`), Iteration Protocols (`for...of`), Exception Handling (`try/catch/finally`)          |    3 Dokumen    |  `Tersedia`  |
-| [**05. Functions**](./docs/05-functions/)                         | Declarations vs Expressions, Arrow Functions, Default & Rest Params, HOF, IIFE                           |    4 Dokumen    |  `Tersedia`  |
-| [**06. `this` Context**](./docs/06-this-context/)                 | Call-site Binding, Explicit Binding (`call`/`apply`/`bind`), Function Borrowing                          |    3 Dokumen    |  `Tersedia`  |
-| [**07. Array & Object Methods**](./docs/07-array-object-methods/) | Pure Transformations (`map`/`filter`/`reduce`), Destructuring, Shallow vs Deep Clone (`structuredClone`) |    3 Dokumen    |  `Tersedia`  |
-| [**08. DOM & Events**](./docs/08-dom-events/)                     | DOM Tree C++, Selectors, Event Listeners (`AbortSignal`), Bubbling & Event Delegation                    |    2 Dokumen    |  `Tersedia`  |
-| [**09. Async JavaScript**](./docs/09-async-javascript/)           | Event Loop (Macrotask vs Microtask Queue), Promise State Machine, `async/await`                          |    2 Dokumen    |  `Tersedia`  |
-| [**10. Fetch & Errors**](./docs/10-fetch-error-handling/)         | Streaming Response, JSON Deserialization, HTTP Status Errors, `AbortController` Timeout                  |    2 Dokumen    |  `Tersedia`  |
-| [**11. ES Modules**](./docs/11-es-modules/)                       | Module Record Lifecycle, Live Read-Only Bindings, Static vs Dynamic `import()`                           |    1 Dokumen    |  `Tersedia`  |
-| [**12. Browser DevTools**](./docs/12-browser-devtools/)           | Chrome DevTools Protocol, Breakpoints vs Console, Rendering Pipeline & Layout Thrashing                  |    2 Dokumen    |  `Tersedia`  |
+| Modul                          | Topik Materi                                                              |                                         Versi Pemula                                          |                                   Versi Deep Dive                                    |
+| :----------------------------- | :------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
+| **01. Introduction**           | Runtime JS, Host Environment, Parser-blocking, `defer`/`async`            | [Buka](./docs-beginner/01-introduction/apa-itu-javascript-dan-cara-menjalankan-javascript.md) | [Buka](./docs/01-introduction/apa-itu-javascript-dan-cara-menjalankan-javascript.md) |
+| **02. Syntax & Data Types**    | Primitive vs Object, `typeof`, Coercion vs Conversion, Equality `===`     |                         [Buka](./docs-beginner/02-syntax-datatypes/)                          |                         [Buka](./docs/02-syntax-datatypes/)                          |
+| **03. Variables & Scope**      | `var`/`let`/`const`, Hoisting, Scope Chain, Closures                      |                          [Buka](./docs-beginner/03-variables-scope/)                          |                          [Buka](./docs/03-variables-scope/)                          |
+| **04. Control Flow**           | Conditionals (`??`), Loops (`for...of`), Exception Handling (`try/catch`) |                           [Buka](./docs-beginner/04-control-flow/)                            |                           [Buka](./docs/04-control-flow/)                            |
+| **05. Functions**              | Declaration vs Expression vs Arrow, Default/Rest, HOF, IIFE               |                             [Buka](./docs-beginner/05-functions/)                             |                             [Buka](./docs/05-functions/)                             |
+| **06. `this` Context**         | Binding Rules, Explicit (`call`/`apply`/`bind`), Function Borrowing       |                           [Buka](./docs-beginner/06-this-context/)                            |                           [Buka](./docs/06-this-context/)                            |
+| **07. Array & Object Methods** | `map`/`filter`/`reduce`, Destructuring, Spread/Rest                       |                       [Buka](./docs-beginner/07-array-object-methods/)                        |                       [Buka](./docs/07-array-object-methods/)                        |
+| **08. DOM & Events**           | `querySelector`, `addEventListener`, Event Delegation & Bubbling          |                            [Buka](./docs-beginner/08-dom-events/)                             |                            [Buka](./docs/08-dom-events/)                             |
+| **09. Async JavaScript**       | Event Loop & Timers, Promise & `async/await`                              |                         [Buka](./docs-beginner/09-async-javascript/)                          |                         [Buka](./docs/09-async-javascript/)                          |
+| **10. Fetch & Errors**         | Fetch API & JSON, Request Error Handling (`AbortController`)              |                       [Buka](./docs-beginner/10-fetch-error-handling/)                        |                       [Buka](./docs/10-fetch-error-handling/)                        |
+| **11. ES Modules**             | ES Modules (`import`/`export`, `<script type="module">`)                  |             [Buka](./docs-beginner/11-es-modules/01-es-modules-import-export.md)              |             [Buka](./docs/11-es-modules/01-es-modules-import-export.md)              |
+| **12. Browser DevTools**       | Breakpoints vs Console, Rendering Performance & Layout Thrashing          |                         [Buka](./docs-beginner/12-browser-devtools/)                          |                         [Buka](./docs/12-browser-devtools/)                          |
 
 👉 **Buka [`.agents/roadmap.md`](./.agents/roadmap.md)** untuk melihat rincian setiap topik dan menandai progres belajar harian Anda.
 
@@ -46,10 +56,11 @@ Setiap topik di dalam kurikulum ini dibedah menggunakan format baku 4-tahap yang
 
 Untuk menguasai materi secara optimal dan membangun _muscle memory_:
 
-1. **Deep Reading (Pahami Ground Truth)**: Baca berkas modul di `docs/`. Pahami _mengapa_ peramban berperilaku demikian.
-2. **Ketik Ulang Kode (Deliberate Typing)**: Jangan salin-tempel. Ketik contoh kode di editor teks dan jalankan.
-3. **Eksperimen di DevTools**: Sengaja buat error di konsol untuk menguji batas kepastian (misal: memicu TDZ atau layout thrashing).
-4. **Mulai Praktik UI**: Setelah menuntaskan **Modul 08 (DOM & Events)**, mulailah membuat komponen antarmuka mandiri (seperti Accordion, Modal, atau Theme Toggle). Setelah **Modul 10**, mulailah membuat project berbasis API (seperti Weather App atau User Finder).
+1. **Mulai dari Panduan Pemula (`docs-beginner/`)**: Pahami analogi logis dan amati contoh kode interaktifnya.
+2. **Ketik Ulang Kode (Deliberate Typing)**: Buat file `index.html` dan `app.js` di komputer Anda, ketik sendiri kodenya, dan buka di browser.
+3. **Eksperimen & Uji Pemahaman**: Jawab pertanyaan di bagian _"🎯 Uji Pemahaman Mandiri"_ untuk memperkuat _active recall_.
+4. **Perdalam dengan Deep Dive (`docs/`)**: Saat sudah merasa nyaman dengan konsep dasar, baca dokumen terkait di `docs/` untuk memahami cara kerja mesin browser di balik layar.
+5. **Mulai Proyek UI Mini**: Setelah menuntaskan **Modul 08 (DOM & Events)** dan **Modul 10 (Fetch)**, Anda sudah siap membangun komponen web interaktif mandiri.
 
 ---
 

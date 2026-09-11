@@ -15,7 +15,7 @@ official_docs_url:
 # First Principles Deep Dive: Array Transformation (map, filter, reduce)
 
 > [!ABSTRACT] The Ground Truth
-> `map`, `filter`, dan `reduce` adalah operator aljabar transformasi data murni yang memproses larik (*array*) tanpa memutasi array aslinya: `map` memetakan dimensi 1-ke-1, `filter` menyaring subset data berbasis predikat kebenaran, dan `reduce` melipat (*fold*) deret data menjadi satu entitas nilai akumulasi.
+> `map`, `filter`, dan `reduce` adalah operator aljabar transformasi data murni yang memproses larik (_array_) tanpa memutasi array aslinya: `map` memetakan dimensi 1-ke-1, `filter` menyaring subset data berbasis predikat kebenaran, dan `reduce` melipat (_fold_) deret data menjadi satu entitas nilai akumulasi.
 
 ---
 
@@ -24,7 +24,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "Loop `for` manual sudah usang dan terlarang; kita wajib merangkai rantai panjang `.map().filter().reduce()` di setiap manipulasi data agar kode terlihat modern."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Loop imperatif manual (`for`) rentan terhadap mutasi data tak disengaja (*in-place mutation*) dan variabel penampung sementara yang mengotori scope. Namun, merangkai `.filter().map()` pada dataset masif mengalokasikan array perantara di memori heap pada setiap tahapannya. Kuncinya adalah memahami kapan transformasi deklaratif murni dibutuhkan dan kapan satu lintasan *folding* `reduce` lebih efisien.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Loop imperatif manual (`for`) rentan terhadap mutasi data tak disengaja (_in-place mutation_) dan variabel penampung sementara yang mengotori scope. Namun, merangkai `.filter().map()` pada dataset masif mengalokasikan array perantara di memori heap pada setiap tahapannya. Kuncinya adalah memahami kapan transformasi deklaratif murni dibutuhkan dan kapan satu lintasan _folding_ `reduce` lebih efisien.
 
 ---
 
@@ -33,7 +33,7 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
 1. **Jaminan Immutability Array Asal (ECMA-262 §23.1.3)**:
-   Ketiga metode ini dijamin oleh spesifikasi **tidak pernah memutasi array pemanggil aslinya**. `map` dan `filter` selalu mengalokasikan instans array baru di heap memory, memastikan integritas data sumber tetap terjaga murni (*pure function principle*).
+   Ketiga metode ini dijamin oleh spesifikasi **tidak pernah memutasi array pemanggil aslinya**. `map` dan `filter` selalu mengalokasikan instans array baru di heap memory, memastikan integritas data sumber tetap terjaga murni (_pure function principle_).
 
 2. **Perbedaan Matematika Tiga Transformasi**:
    - **`map` (Proyeksi 1-ke-1)**: Mengubah setiap elemen dengan fungsi transformer. Ukuran array keluaran selalu tepat sama dengan ukuran array masukan ($N \to N$).
@@ -59,30 +59,42 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   ```javascript
   // Skenario: Pipeline Pemrosesan Keranjang Belanja UI
   const rawCartItems = [
-    { id: 101, name: 'Kaos Polos', price: 75000, quantity: 2, inStock: true },
-    { id: 102, name: 'Topi Snapback', price: 45000, quantity: 1, inStock: false },
-    { id: 103, name: 'Celana Jeans', price: 210000, quantity: 1, inStock: true }
+    { id: 101, name: "Kaos Polos", price: 75000, quantity: 2, inStock: true },
+    {
+      id: 102,
+      name: "Topi Snapback",
+      price: 45000,
+      quantity: 1,
+      inStock: false,
+    },
+    {
+      id: 103,
+      name: "Celana Jeans",
+      price: 210000,
+      quantity: 1,
+      inStock: true,
+    },
   ];
 
   // 1. FILTER: Saring hanya item yang tersedia stoknya
-  const availableItems = rawCartItems.filter(item => item.inStock);
+  const availableItems = rawCartItems.filter((item) => item.inStock);
 
   // 2. MAP: Transformasikan data menjadi markup HTML ramah aksesibilitas
-  const cartMarkupList = availableItems.map(item => {
+  const cartMarkupList = availableItems.map((item) => {
     return `
       <li class="c-cart__item" data-item-id="${item.id}">
         <span class="c-cart__name">${item.name}</span>
-        <span class="c-cart__price">Rp${item.price.toLocaleString('id-ID')}</span>
+        <span class="c-cart__price">Rp${item.price.toLocaleString("id-ID")}</span>
       </li>
     `;
   });
 
   // 3. REDUCE: Hitung total biaya belanja secara deterministik (WAJIB isi initialValue = 0)
   const grandTotal = availableItems.reduce((accumulator, item) => {
-    return accumulator + (item.price * item.quantity);
+    return accumulator + item.price * item.quantity;
   }, 0); // 0 adalah initialValue pencegah crash saat cart kosong!
 
-  console.log('Total Pembayaran: Rp' + grandTotal); // Rp360.000
+  console.log("Total Pembayaran: Rp" + grandTotal); // Rp360.000
   ```
 
 - **Mengapa ini lebih baik**:
@@ -95,7 +107,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level saya saat ini:_
 
 - [ ] **Langkah 1**: Pasang aturan linter ESLint atau kebiasaan pribadi: **tidak pernah menulis `.reduce()` tanpa parameter kedua (initialValue)**.
-- [ ] **Langkah 2**: Hindari memicu efek samping (*side effects*) di dalam `.map()`; jika tujuan kita hanya mengeksekusi operasi (misal menempelkan event listener atau `console.log`), gunakan `.forEach()` atau `for...of`, bukan `.map()`.
+- [ ] **Langkah 2**: Hindari memicu efek samping (_side effects_) di dalam `.map()`; jika tujuan kita hanya mengeksekusi operasi (misal menempelkan event listener atau `console.log`), gunakan `.forEach()` atau `for...of`, bukan `.map()`.
 - [ ] **Langkah 3**: Uji ketahanan array kosong: jalankan `[].reduce((a, b) => a + b, 0)` (sukses menghasilkan 0) vs `[].reduce((a, b) => a + b)` (crash TypeError) untuk membuktikan kebenaran fundamental nilai awal.
 
 > [!TIP] Parameter Kesuksesan (Success Metric)

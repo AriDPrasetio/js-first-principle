@@ -31,13 +31,13 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
 1. **Aturan Sintaksis Parser Dokumen (Declaration vs Expression)**:
-   Ketika parser JavaScript membaca kata kunci `function` di awal sebuah baris kalimat, parser mewajibkan itu sebagai *Function Declaration*. Menambahkan tanda kurung eksekusi langsung `function() {}()` menghasilkan kegagalan fatal: `SyntaxError: Function statements require a function name` atau `SyntaxError: Unexpected token ')'`.
+   Ketika parser JavaScript membaca kata kunci `function` di awal sebuah baris kalimat, parser mewajibkan itu sebagai _Function Declaration_. Menambahkan tanda kurung eksekusi langsung `function() {}()` menghasilkan kegagalan fatal: `SyntaxError: Function statements require a function name` atau `SyntaxError: Unexpected token ')'`.
 
 2. **Peran Operator Pengelompokan `( ... )` (ECMA-262 §13.2.9)**:
-   Operator tanda kurung `( ... )` secara gramatikal hanya menerima ekspresi (*expressions*). Dengan membungkus fungsi di dalam tanda kurung `(function() { ... })`, parser dipaksa mengubah mode parsing menjadi evaluasi ekspresi (*Function Expression*), menghasilkan objek fungsi di memori yang sah untuk langsung dipanggil dengan tanda kurung kedua `()`.
+   Operator tanda kurung `( ... )` secara gramatikal hanya menerima ekspresi (_expressions_). Dengan membungkus fungsi di dalam tanda kurung `(function() { ... })`, parser dipaksa mengubah mode parsing menjadi evaluasi ekspresi (_Function Expression_), menghasilkan objek fungsi di memori yang sah untuk langsung dipanggil dengan tanda kurung kedua `()`.
 
 3. **Isolasi Memori Sementara dan Eksekusi Sekali Pakai**:
-   Fungsi di dalam IIFE dieksekusi seketika, mengalokasikan lingkup leksikal privat, menjalankan inisialisasi, lalu konteksnya langsung di-pop dari *Call Stack*. Semua variabel internal yang tidak disimpan dalam closure luar akan langsung disapu oleh *Garbage Collector*.
+   Fungsi di dalam IIFE dieksekusi seketika, mengalokasikan lingkup leksikal privat, menjalankan inisialisasi, lalu konteksnya langsung di-pop dari _Call Stack_. Semua variabel internal yang tidak disimpan dalam closure luar akan langsung disapu oleh _Garbage Collector_.
 
 ---
 
@@ -47,8 +47,8 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 
 - **Pendekatan Optimal**:
   Pada aplikasi web modern yang sudah menggunakan modul resmi (`<script type="module">`), **IIFE tidak lagi dibutuhkan untuk isolasi berkas**. Namun, IIFE tetap memiliki kegunaan First Principles spesifik di dunia modern:
-  1. Inisialisasi logika kompleks asinkron saat lingkungan belum mendukung *Top-Level Await*.
-  2. Menghitung nilai konfigurasi kompleks satu kali (*one-time complex computation*) tanpa meninggalkan variabel penampung sementara di scope luar.
+  1. Inisialisasi logika kompleks asinkron saat lingkungan belum mendukung _Top-Level Await_.
+  2. Menghitung nilai konfigurasi kompleks satu kali (_one-time complex computation_) tanpa meninggalkan variabel penampung sementara di scope luar.
 
 - **Contoh Konkret**:
 
@@ -56,15 +56,18 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   // 1. Kasus Modern: Inisialisasi Nilai Konfigurasi Kompleks Satu Kali
   // Mencegah variabel sementara 'os', 'screen', dan 'rawSetting' mengotori modul
   const appCapabilities = (() => {
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     const pixelRatio = window.devicePixelRatio || 1;
 
     // Hanya mengembalikan hasil akhir yang terproses bersih
     return {
       touch: isTouchDevice,
       reducedMotion: prefersReducedMotion,
-      highDpi: pixelRatio > 1
+      highDpi: pixelRatio > 1,
     };
   })();
 
@@ -73,10 +76,10 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   // 2. Kasus Modern: Self-Executing Async Function Wrapper
   (async function bootstrapApp() {
     try {
-      console.log('Memulai inisialisasi modul UI...');
+      console.log("Memulai inisialisasi modul UI...");
       // await loadThemeTokens();
     } catch (err) {
-      console.error('Inisialisasi gagal:', err);
+      console.error("Inisialisasi gagal:", err);
     }
   })();
   ```
@@ -98,4 +101,4 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi file baru yang dibungkus IIFE manual tanpa tujuan spesifik, dan variabel sementara inisialisasi terisolasi sempurna**.
 
 > [!WARNING] Batas Kepastian
-> Variasi sintaks penulisan IIFE seperti `(function(){ ... }())` (gaya Douglas Crockford) vs `(function(){ ... })()` adalah **perdebatan konvensi estetika sintaksis**. Keduanya menghasilkan pohon sintaks (*AST*) dan eksekusi memori yang identik di semua engine browser.
+> Variasi sintaks penulisan IIFE seperti `(function(){ ... }())` (gaya Douglas Crockford) vs `(function(){ ... })()` adalah **perdebatan konvensi estetika sintaksis**. Keduanya menghasilkan pohon sintaks (_AST_) dan eksekusi memori yang identik di semua engine browser.

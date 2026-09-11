@@ -15,7 +15,7 @@ official_docs_url:
 # First Principles Deep Dive: var, let, dan const
 
 > [!ABSTRACT] The Ground Truth
-> Deklarasi variabel adalah mekanisme pendaftaran nama identifier ke dalam *Environment Record* memori; kata kunci yang dipilih menentukan apakah pengikatan (*binding*) bersifat dapat diubah (*mutable*), terikat pada cakupan blok atau fungsi, serta apakah ia mencemari objek global.
+> Deklarasi variabel adalah mekanisme pendaftaran nama identifier ke dalam _Environment Record_ memori; kata kunci yang dipilih menentukan apakah pengikatan (_binding_) bersifat dapat diubah (_mutable_), terikat pada cakupan blok atau fungsi, serta apakah ia mencemari objek global.
 
 ---
 
@@ -24,7 +24,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "`const` membuat nilai menjadi benar-benar konstan dan tidak bisa diubah sama sekali."
-- ✅ **Masalah Sebenarnya (Core Problem)**: `const` hanya mengunci *alamat pengikatan (variable binding)*, bukan isi nilainya. Jika nilai yang diikat adalah objek atau array di heap memory, isi propertinya tetap dapat dimutasi secara bebas kecuali dibekukan secara eksplisit menggunakan `Object.freeze()`.
+- ✅ **Masalah Sebenarnya (Core Problem)**: `const` hanya mengunci _alamat pengikatan (variable binding)_, bukan isi nilainya. Jika nilai yang diikat adalah objek atau array di heap memory, isi propertinya tetap dapat dimutasi secara bebas kecuali dibekukan secara eksplisit menggunakan `Object.freeze()`.
 
 ---
 
@@ -33,15 +33,15 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
 1. **Struktur Penyimpanan Environment Record (ECMA-262 §9.1.1)**:
-   - Variabel yang dideklarasikan dengan `var` di tingkat global didaftarkan langsung ke *Object Environment Record*, yang berarti variabel tersebut secara otomatis menjadi properti objek global browser (`window.namaVariabel = nilai`).
-   - Sebaliknya, `let` dan `const` didaftarkan ke *Declarative Environment Record*. Mereka disimpan dalam slot memori terisolasi yang tidak dapat diakses sebagai properti dari `window`.
+   - Variabel yang dideklarasikan dengan `var` di tingkat global didaftarkan langsung ke _Object Environment Record_, yang berarti variabel tersebut secara otomatis menjadi properti objek global browser (`window.namaVariabel = nilai`).
+   - Sebaliknya, `let` dan `const` didaftarkan ke _Declarative Environment Record_. Mereka disimpan dalam slot memori terisolasi yang tidak dapat diakses sebagai properti dari `window`.
 
 2. **Cakupan Pengikatan: Blok `{}` vs Fungsi `function()`**:
-   - `var` tidak mengenal cakupan blok kurung kurawal `{}` (seperti di dalam blok `if`, `for`, atau `while`). Variabel `var` "bocor" keluar blok dan terikat pada fungsi pembungkus terdekatnya (*Function Scope*).
-   - `let` dan `const` mengevaluasi setiap pasang tanda kurung kurawal `{}` sebagai batas wilayah leksikal baru (*Block Scope*), mencegah polusi nama ke lingkungan luar.
+   - `var` tidak mengenal cakupan blok kurung kurawal `{}` (seperti di dalam blok `if`, `for`, atau `while`). Variabel `var` "bocor" keluar blok dan terikat pada fungsi pembungkus terdekatnya (_Function Scope_).
+   - `let` dan `const` mengevaluasi setiap pasang tanda kurung kurawal `{}` sebagai batas wilayah leksikal baru (_Block Scope_), mencegah polusi nama ke lingkungan luar.
 
 3. **Immutability of Binding vs Immutability of Value**:
-   Sintaks `const` menciptakan *Immutable Binding*. Engine menolak re-assignment pada identifier tersebut (`TypeError: Assignment to constant variable`). Namun, sifat mutabilitas objek yang ditunjuk tetap tunduk pada aturan alokasi memori Heap (sebagaimana dibahas pada prinsip tipe data).
+   Sintaks `const` menciptakan _Immutable Binding_. Engine menolak re-assignment pada identifier tersebut (`TypeError: Assignment to constant variable`). Namun, sifat mutabilitas objek yang ditunjuk tetap tunduk pada aturan alokasi memori Heap (sebagaimana dibahas pada prinsip tipe data).
 
 ---
 
@@ -58,7 +58,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   // Skenario: Pengelolaan Keranjang Belanja UI
   const CART_CONFIG = {
     maxItems: 10,
-    currency: 'IDR'
+    currency: "IDR",
   };
 
   // ✅ const mengunci identifier:
@@ -70,7 +70,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   // Rekonstruksi jika ingin benar-benar konstan hingga ke isi nilainya:
   const IMMUTABLE_CONFIG = Object.freeze({
     maxItems: 10,
-    currency: 'IDR'
+    currency: "IDR",
   });
   // IMMUTABLE_CONFIG.maxItems = 50; // Gagal (melempar TypeError pada strict mode)
 

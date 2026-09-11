@@ -14,7 +14,7 @@ official_docs_url:
 # First Principles Deep Dive: Fetch API dan Penanganan Data JSON
 
 > [!ABSTRACT] The Ground Truth
-> `fetch()` adalah antarmuka aliran jaringan bertahap (*Stream-based I/O*): tahap pertama menyelesaikan penerimaan header HTTP, sedangkan tahap kedua mengonsumsi aliran data biner tubuh respons (*ReadableStream*) hanya satu kali untuk diubah menjadi struktur memori via `JSON.parse`.
+> `fetch()` adalah antarmuka aliran jaringan bertahap (_Stream-based I/O_): tahap pertama menyelesaikan penerimaan header HTTP, sedangkan tahap kedua mengonsumsi aliran data biner tubuh respons (_ReadableStream_) hanya satu kali untuk diubah menjadi struktur memori via `JSON.parse`.
 
 ---
 
@@ -23,7 +23,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "`fetch(url)` langsung mengunduh seluruh data server dan mengembalikan objek JavaScript yang siap dipakai dalam satu langkah."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Data jaringan berukuran besar tidak boleh ditimbun seluruhnya di memori sebelum dibaca. Browser mengimplementasikan model *Streaming*: Promise pertama dari `fetch()` selesai saat baris status dan header HTTP tiba, sedangkan pembacaan isi konten (`response.json()`) adalah operasi asinkron kedua yang membaca paket data yang mengalir secara bertahap.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Data jaringan berukuran besar tidak boleh ditimbun seluruhnya di memori sebelum dibaca. Browser mengimplementasikan model _Streaming_: Promise pertama dari `fetch()` selesai saat baris status dan header HTTP tiba, sedangkan pembacaan isi konten (`response.json()`) adalah operasi asinkron kedua yang membaca paket data yang mengalir secara bertahap.
 
 ---
 
@@ -33,14 +33,14 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 
 1. **Dua Fase Asinkron Fetch (WHATWG Fetch Standard)**:
    - **Fase 1 (`await fetch(url)`)**: Menghasilkan objek antarmuka `Response`. Pada titik ini, browser baru selesai menegosiasikan koneksi TCP/TLS dan menerima header HTTP.
-   - **Fase 2 (`await response.json()`)**: Membaca *ReadableStream* dari tubuh respons (`response.body`), menggabungkan paket biner yang masuk, dan mem-parsing string teks tersebut menjadi objek JavaScript.
+   - **Fase 2 (`await response.json()`)**: Membaca _ReadableStream_ dari tubuh respons (`response.body`), menggabungkan paket biner yang masuk, dan mem-parsing string teks tersebut menjadi objek JavaScript.
 
-2. **Aturan Konsumsi Aliran Sekali Pakai (*Disturbed Stream Rule*)**:
-   Aliran data tubuh respons hanya dapat dikonsumsi **tepat satu kali**. Jika kita memanggil `await response.json()` lalu mencoba memanggil `await response.text()`, engine akan melempar error fatal: `TypeError: Failed to execute 'text' on 'Response': body stream already read` (stream berstatus *disturbed*). Jika perlu membaca ganda, stream harus diduplikasi di awal menggunakan `response.clone()`.
+2. **Aturan Konsumsi Aliran Sekali Pakai (_Disturbed Stream Rule_)**:
+   Aliran data tubuh respons hanya dapat dikonsumsi **tepat satu kali**. Jika kita memanggil `await response.json()` lalu mencoba memanggil `await response.text()`, engine akan melempar error fatal: `TypeError: Failed to execute 'text' on 'Response': body stream already read` (stream berstatus _disturbed_). Jika perlu membaca ganda, stream harus diduplikasi di awal menggunakan `response.clone()`.
 
 3. **Mekanisme Serialisasi dan Deserialisasi JSON**:
-   - `JSON.stringify(obj)`: Mengubah grafik memori menjadi string teks ASCII. Spesifikasi mengabaikan nilai `undefined`, `Function`, dan `Symbol`, serta melempar `TypeError` jika mendeteksi referensi melingkar (*circular reference*).
-   - `JSON.parse(str)`: Membaca teks dan merekonstruksi objek di heap memory; melempar `SyntaxError` jika ada koma gantung (*trailing comma*) atau kunci tanpa tanda kutip ganda.
+   - `JSON.stringify(obj)`: Mengubah grafik memori menjadi string teks ASCII. Spesifikasi mengabaikan nilai `undefined`, `Function`, dan `Symbol`, serta melempar `TypeError` jika mendeteksi referensi melingkar (_circular reference_).
+   - `JSON.parse(str)`: Membaca teks dan merekonstruksi objek di heap memory; melempar `SyntaxError` jika ada koma gantung (_trailing comma_) atau kunci tanpa tanda kutip ganda.
 
 ---
 
@@ -55,18 +55,21 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 
   ```javascript
   // Skenario: Klien HTTP Universal berbasis First Principles
-  async function apiRequest(endpoint, { method = 'GET', data = null, headers = {} } = {}) {
+  async function apiRequest(
+    endpoint,
+    { method = "GET", data = null, headers = {} } = {},
+  ) {
     const config = {
       method,
       headers: {
-        'Accept': 'application/json',
-        ...headers
-      }
+        Accept: "application/json",
+        ...headers,
+      },
     };
 
     // Serialisasi otomatis jika ada data payload
-    if (data !== null && method !== 'GET') {
-      config.headers['Content-Type'] = 'application/json';
+    if (data !== null && method !== "GET") {
+      config.headers["Content-Type"] = "application/json";
       config.body = JSON.stringify(data);
     }
 
@@ -74,17 +77,18 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
     const response = await fetch(endpoint, config);
 
     // Periksa apakah server benar-benar mengembalikan format JSON sebelum parsing
-    const contentType = response.headers.get('content-type');
-    const isJson = contentType && contentType.includes('application/json');
+    const contentType = response.headers.get("content-type");
+    const isJson = contentType && contentType.includes("application/json");
 
     // Fase 2: Konsumsi stream tubuh respons
     const responseData = isJson ? await response.json() : await response.text();
 
     if (!response.ok) {
       // Buat pesan error informatif dari payload error backend jika ada
-      const errorMessage = typeof responseData === 'object' && responseData.message 
-        ? responseData.message 
-        : `HTTP Error ${response.status}: ${response.statusText}`;
+      const errorMessage =
+        typeof responseData === "object" && responseData.message
+          ? responseData.message
+          : `HTTP Error ${response.status}: ${response.statusText}`;
       throw new Error(errorMessage);
     }
 
@@ -94,13 +98,13 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   // Pengujian Klien:
   async function submitForm() {
     try {
-      const result = await apiRequest('/api/settings', {
-        method: 'POST',
-        data: { theme: 'dark', notify: true }
+      const result = await apiRequest("/api/settings", {
+        method: "POST",
+        data: { theme: "dark", notify: true },
       });
-      console.log('Pengaturan berhasil disimpan:', result);
+      console.log("Pengaturan berhasil disimpan:", result);
     } catch (err) {
-      console.error('[Gagal API]:', err.message);
+      console.error("[Gagal API]:", err.message);
     }
   }
   ```

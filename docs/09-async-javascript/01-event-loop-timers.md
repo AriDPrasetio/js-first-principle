@@ -14,7 +14,7 @@ official_docs_url:
 # First Principles Deep Dive: Event Loop dan Web Timers (Macrotasks vs Microtasks)
 
 > [!ABSTRACT] The Ground Truth
-> JavaScript adalah mesin *single-threaded* yang tidak pernah menunggu; ia mendelegasikan operasi lambat ke benang kerja browser (*Web APIs*) dan mengoordinasikan eksekusi callback kembali ke Call Stack melalui dua antrean prioritas mutlak: *Microtask Queue* (prioritas utama tanpa kompromi) dan *Macrotask Queue* (antrean giliran reguler).
+> JavaScript adalah mesin _single-threaded_ yang tidak pernah menunggu; ia mendelegasikan operasi lambat ke benang kerja browser (_Web APIs_) dan mengoordinasikan eksekusi callback kembali ke Call Stack melalui dua antrean prioritas mutlak: _Microtask Queue_ (prioritas utama tanpa kompromi) dan _Macrotask Queue_ (antrean giliran reguler).
 
 ---
 
@@ -23,7 +23,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "`setTimeout(fn, 1000)` menjamin fungsi akan berjalan persis 1.000 milidetik kemudian, dan `setTimeout(fn, 0)` akan mengeksekusi fungsi secara instan tanpa jeda."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Parameter waktu di `setTimeout` hanyalah **batas ambang minimal penjadwalan (*minimum delay threshold*)**, bukan garansi waktu eksekusi. Browser hanya memindahkan callback ke antrean *Macrotask* setelah waktu habis; jika Call Stack sedang sibuk memproses komputasi berat, callback akan tertahan dan terlambat dieksekusi.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Parameter waktu di `setTimeout` hanyalah **batas ambang minimal penjadwalan (_minimum delay threshold_)**, bukan garansi waktu eksekusi. Browser hanya memindahkan callback ke antrean _Macrotask_ setelah waktu habis; jika Call Stack sedang sibuk memproses komputasi berat, callback akan tertahan dan terlambat dieksekusi.
 
 ---
 
@@ -33,18 +33,18 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 
 1. **Siklus Putaran Event Loop (WHATWG HTML §8.1.6)**:
    Alur kerja loop peristiwa browser berjalan dalam siklus berulang yang ketat:
-   - Jalankan satu tugas sinkron hingga *Call Stack* kosong.
-   - **Kuras Habis Antrean Microtask (*Drain Microtask Queue*)**: Jalankan semua microtask (Promise, `queueMicrotask`) hingga antrean benar-benar kosong. Jika microtask menambahkan microtask baru, ia akan langsung dijalankan di siklus yang sama.
-   - **Fase Render Layar (*Update the Rendering*)**: Browser menghitung ulang Style, Layout, dan mengecat piksel ke layar (*Paint/Composite*).
-   - Ambil **SATU** tugas dari antrean *Macrotask Queue* (`setTimeout`, `setInterval`, I/O), dorong ke Call Stack, lalu ulangi siklus dari awal.
+   - Jalankan satu tugas sinkron hingga _Call Stack_ kosong.
+   - **Kuras Habis Antrean Microtask (_Drain Microtask Queue_)**: Jalankan semua microtask (Promise, `queueMicrotask`) hingga antrean benar-benar kosong. Jika microtask menambahkan microtask baru, ia akan langsung dijalankan di siklus yang sama.
+   - **Fase Render Layar (_Update the Rendering_)**: Browser menghitung ulang Style, Layout, dan mengecat piksel ke layar (_Paint/Composite_).
+   - Ambil **SATU** tugas dari antrean _Macrotask Queue_ (`setTimeout`, `setInterval`, I/O), dorong ke Call Stack, lalu ulangi siklus dari awal.
 
 2. **Perbedaan Mutlak: Macrotask vs Microtask**:
    - **Microtasks**: Callback dari `Promise.then/catch/finally`, `queueMicrotask()`, dan `MutationObserver`.
    - **Macrotasks (Tasks)**: Callback dari `setTimeout`, `setInterval`, event klik DOM, dan respons jaringan.
-   *Microtask selalu mendahului Macrotask* dalam urutan eksekusi setelah tumpukan sinkron tuntas.
+     _Microtask selalu mendahului Macrotask_ dalam urutan eksekusi setelah tumpukan sinkron tuntas.
 
-3. **Ancaman Pembekuan UI (*UI Starvation*) oleh Microtask Rekursif**:
-   Karena peramban wajib menguras antrean microtask sebelum masuk ke fase render layar, perulangan rekursif microtask yang tidak terkontrol (`Promise.resolve().then(loop)`) akan membekukan antarmuka pengguna secara permanen (*infinite loop*) dan mencegah layar memperbarui frame tampilan.
+3. **Ancaman Pembekuan UI (_UI Starvation_) oleh Microtask Rekursif**:
+   Karena peramban wajib menguras antrean microtask sebelum masuk ke fase render layar, perulangan rekursif microtask yang tidak terkontrol (`Promise.resolve().then(loop)`) akan membekukan antarmuka pengguna secara permanen (_infinite loop_) dan mencegah layar memperbarui frame tampilan.
 
 ---
 
@@ -55,25 +55,25 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 - **Pendekatan Optimal**:
   Pahami urutan prioritas eksekusi untuk menjadwalkan komputasi antarmuka:
   - Gunakan **`Promise` / `queueMicrotask`** jika Anda butuh memperbarui state data segera setelah logika saat ini tuntas, namun sebelum browser merender perubahan tersebut ke layar.
-  - Gunakan **`setTimeout(fn, 0)`** jika Anda memiliki tugas kalkulasi yang cukup berat dan ingin secara sukarela memberikan giliran kepada browser untuk merender layar (*yield to main thread*) terlebih dahulu agar animasi tidak patah.
+  - Gunakan **`setTimeout(fn, 0)`** jika Anda memiliki tugas kalkulasi yang cukup berat dan ingin secara sukarela memberikan giliran kepada browser untuk merender layar (_yield to main thread_) terlebih dahulu agar animasi tidak patah.
 
 - **Contoh Konkret**:
 
   ```javascript
   // Demonstrasi Urutan First Principles:
-  console.log('1. [Sinkron] Mulai');
+  console.log("1. [Sinkron] Mulai");
 
   // Macrotask (dijadwalkan di Web APIs Timer):
   setTimeout(() => {
-    console.log('4. [Macrotask] Callback setTimeout selesai');
+    console.log("4. [Macrotask] Callback setTimeout selesai");
   }, 0);
 
   // Microtask (antrean prioritas utama):
   Promise.resolve().then(() => {
-    console.log('3. [Microtask] Callback Promise selesai');
+    console.log("3. [Microtask] Callback Promise selesai");
   });
 
-  console.log('2. [Sinkron] Selesai');
+  console.log("2. [Sinkron] Selesai");
 
   // Urutan Output di Konsol:
   // 1. [Sinkron] Mulai
@@ -97,7 +97,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
         // Serahkan giliran ke browser untuk merender layar, lanjutkan chunk berikutnya di macrotask:
         setTimeout(step, 0);
       } else {
-        console.log('Seluruh pemrosesan tuntas tanpa membuat UI membeku!');
+        console.log("Seluruh pemrosesan tuntas tanpa membuat UI membeku!");
       }
     }
 
@@ -106,7 +106,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   ```
 
 - **Mengapa ini lebih baik**:
-  Memahami pemisahan Macrotask dan Render Phase memungkinkan developer memproses ribuan data tanpa memerlukan *Web Worker* rumit untuk skenario ringan, serta mencegah aplikasi mengalami freeze antarmuka.
+  Memahami pemisahan Macrotask dan Render Phase memungkinkan developer memproses ribuan data tanpa memerlukan _Web Worker_ rumit untuk skenario ringan, serta mencegah aplikasi mengalami freeze antarmuka.
 
 ---
 
@@ -122,4 +122,4 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 > Topik ini selesai dieksekusi dengan benar jika: **Mampu memprediksi 100% urutan log output dari kode yang mencampurkan komputasi sinkron, Promise, dan setTimeout tanpa menebak-nebak**.
 
 > [!WARNING] Batas Kepastian
-> Ambang batas `setTimeout(fn, 0)` di browser sebenarnya memiliki batas klem minimum (*minimum clamp timeout*) sebesar **4 milidetik** setelah terjadi sarang pemanggilan timer bertingkat sebanyak 5 tingkat berturut-turut, sesuai pasal 8.5.2 spesifikasi WHATWG HTML.
+> Ambang batas `setTimeout(fn, 0)` di browser sebenarnya memiliki batas klem minimum (_minimum clamp timeout_) sebesar **4 milidetik** setelah terjadi sarang pemanggilan timer bertingkat sebanyak 5 tingkat berturut-turut, sesuai pasal 8.5.2 spesifikasi WHATWG HTML.

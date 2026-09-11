@@ -14,7 +14,7 @@ official_docs_url:
 # First Principles Deep Dive: Exception Handling (try, catch, finally, Error Objects)
 
 > [!ABSTRACT] The Ground Truth
-> Penanganan eksepsi adalah mekanisme interupsi darurat di mana engine membongkar tumpukan pemanggilan (*Call Stack Unwinding*) secara instan hingga menemukan penampung `try/catch`, dan selalu mengeksekusi blok `finally` untuk menjamin pembersihan sumber daya.
+> Penanganan eksepsi adalah mekanisme interupsi darurat di mana engine membongkar tumpukan pemanggilan (_Call Stack Unwinding_) secara instan hingga menemukan penampung `try/catch`, dan selalu mengeksekusi blok `finally` untuk menjamin pembersihan sumber daya.
 
 ---
 
@@ -23,7 +23,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "Bungkus saja seluruh blok kode besar dengan `try/catch` agar aplikasi tidak pernah crash di browser."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Menelan error tanpa analisis (*silent error eating*) hanya menyamarkan kerusakan state internal. Ketika error ditelan, aplikasi tampak berjalan namun berada dalam status memori yang korup. Engine menyediakan `throw` dan `Error` object agar kegagalan dapat dilaporkan secara presisi bersama titik koordinat file dan baris penyebabnya (*Stack Trace*).
+- ✅ **Masalah Sebenarnya (Core Problem)**: Menelan error tanpa analisis (_silent error eating_) hanya menyamarkan kerusakan state internal. Ketika error ditelan, aplikasi tampak berjalan namun berada dalam status memori yang korup. Engine menyediakan `throw` dan `Error` object agar kegagalan dapat dilaporkan secara presisi bersama titik koordinat file dan baris penyebabnya (_Stack Trace_).
 
 ---
 
@@ -31,11 +31,11 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
-1. **Mekanisme Pembongkaran Tumpukan (*Call Stack Unwinding*)**:
-   Ketika pernyataan `throw` dieksekusi, alur program normal dihentikan seketika. Engine memeriksa konteks saat ini; jika tidak ada blok `try`, frame fungsi saat ini di-pop (dibuang) dari *Call Stack*, lalu memeriksa fungsi pemanggil sebelumnya. Proses ini berulang naik ke atas tumpukan hingga blok `catch` ditemukan. Jika mencapai dasar tumpukan tanpa ada penangkap, browser mencatat *Uncaught Error* dan memicu event global `window.onerror`.
+1. **Mekanisme Pembongkaran Tumpukan (_Call Stack Unwinding_)**:
+   Ketika pernyataan `throw` dieksekusi, alur program normal dihentikan seketika. Engine memeriksa konteks saat ini; jika tidak ada blok `try`, frame fungsi saat ini di-pop (dibuang) dari _Call Stack_, lalu memeriksa fungsi pemanggil sebelumnya. Proses ini berulang naik ke atas tumpukan hingga blok `catch` ditemukan. Jika mencapai dasar tumpukan tanpa ada penangkap, browser mencatat _Uncaught Error_ dan memicu event global `window.onerror`.
 
 2. **Pentingnya Instansiasi Objek `Error` Resmi**:
-   Secara sintaks, JavaScript memperbolehkan melempar apa saja (`throw "Gagal!"` atau `throw 404`). Namun, HANYA objek bawaan `new Error("pesan")` (atau turunannya seperti `TypeError`, `RangeError`) yang menangkap snapshot tumpukan memori (*Stack Trace*) saat objek diciptakan melalui properti `.stack`. Melempar string primitif menghilangkan informasi lokasi berkas dan nomor baris sumber masalah.
+   Secara sintaks, JavaScript memperbolehkan melempar apa saja (`throw "Gagal!"` atau `throw 404`). Namun, HANYA objek bawaan `new Error("pesan")` (atau turunannya seperti `TypeError`, `RangeError`) yang menangkap snapshot tumpukan memori (_Stack Trace_) saat objek diciptakan melalui properti `.stack`. Melempar string primitif menghilangkan informasi lokasi berkas dan nomor baris sumber masalah.
 
 3. **Garansi Eksekusi Blok `finally` (ECMA-262 §14.15)**:
    Blok `finally` dijamin dieksekusi dalam segala kondisi: baik saat blok `try` sukses, saat blok `catch` menangani error, bahkan saat di dalam blok `try` terdapat pernyataan `return` eksplisit. Blok ini adalah satu-satunya lokasi yang aman untuk pelepasan sumber daya (menutup modal, menonaktifkan spinner status loading).
@@ -47,7 +47,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan dari dogma "best practice"._
 
 - **Pendekatan Optimal**:
-  Gunakan penanganan eksepsi hanya untuk kondisi anomali yang benar-benar tidak terduga (*exceptional cases* seperti kegagalan I/O, parsing JSON rusak), bukan sebagai pengganti validasi logika biasa. Selalu lempar instans objek `Error` semantik, dan manfaatkan blok `finally` untuk mereset status antarmuka pengguna (UI state).
+  Gunakan penanganan eksepsi hanya untuk kondisi anomali yang benar-benar tidak terduga (_exceptional cases_ seperti kegagalan I/O, parsing JSON rusak), bukan sebagai pengganti validasi logika biasa. Selalu lempar instans objek `Error` semantik, dan manfaatkan blok `finally` untuk mereset status antarmuka pengguna (UI state).
 
 - **Contoh Konkret**:
 
@@ -56,7 +56,7 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   class ConfigurationError extends Error {
     constructor(message) {
       super(message);
-      this.name = 'ConfigurationError';
+      this.name = "ConfigurationError";
     }
   }
 
@@ -65,26 +65,26 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
     console.log(`Status UI: Loading = ${isLoading}`);
 
     try {
-      if (!rawJsonString || typeof rawJsonString !== 'string') {
-        throw new ConfigurationError('Payload preferensi harus berupa teks JSON.');
+      if (!rawJsonString || typeof rawJsonString !== "string") {
+        throw new ConfigurationError(
+          "Payload preferensi harus berupa teks JSON.",
+        );
       }
 
       // JSON.parse melempar SyntaxError jika teks tidak valid
       const parsedData = JSON.parse(rawJsonString);
       return parsedData;
-
     } catch (error) {
       // Periksa jenis error secara kausal
       if (error instanceof SyntaxError) {
-        console.error('Format JSON korup:', error.message);
+        console.error("Format JSON korup:", error.message);
       } else if (error instanceof ConfigurationError) {
-        console.error('Konfigurasi tidak valid:', error.message);
+        console.error("Konfigurasi tidak valid:", error.message);
       } else {
         // Jangan telan error yang tidak kita ketahui; teruskan ke atas!
         throw error;
       }
       return null; // Nilai cadangan aman
-
     } finally {
       // DIJAMIN BERJALAN bahkan jika terjadi return atau throw di atas:
       isLoading = false;

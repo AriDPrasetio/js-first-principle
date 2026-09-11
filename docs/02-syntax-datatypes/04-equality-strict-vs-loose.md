@@ -22,7 +22,7 @@ official_docs_url:
 _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 - ❌ **Asumsi/Konvensi Industri**: "`===` hanya sekadar mengecek tipe data, sedangkan `==` mengecek nilainya."
-- ✅ **Masalah Sebenarnya (Core Problem)**: Keduanya sama-sama mengecek tipe dan nilai. Perbedaannya: jika tipenya berlainan, `===` langsung berhenti dan mengembalikan `false`, sedangkan `==` menjalankan algoritma koersi berantai (*Abstract Equality Comparison*) untuk memaksakan salah satu atau kedua operan berubah tipe sampai ketemu kecocokan semu.
+- ✅ **Masalah Sebenarnya (Core Problem)**: Keduanya sama-sama mengecek tipe dan nilai. Perbedaannya: jika tipenya berlainan, `===` langsung berhenti dan mengembalikan `false`, sedangkan `==` menjalankan algoritma koersi berantai (_Abstract Equality Comparison_) untuk memaksakan salah satu atau kedua operan berubah tipe sampai ketemu kecocokan semu.
 
 ---
 
@@ -38,7 +38,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
    - Untuk tipe Objek: bernilai `true` HANYA jika kedua operan merujuk ke alamat memori yang sama.
 
 2. **Algoritma `IsLooselyEqual` dan Runtuhnya Sifat Transitif**:
-   Pada logika formal, jika $A = B$ dan $B = C$, maka $A = C$ (*sifat transitif*). Namun pada `==` ([ECMA-262 §7.2.13](https://tc39.es/ecma262/#sec-islooselyequal)), sifat ini runtuh:
+   Pada logika formal, jika $A = B$ dan $B = C$, maka $A = C$ (_sifat transitif_). Namun pada `==` ([ECMA-262 §7.2.13](https://tc39.es/ecma262/#sec-islooselyequal)), sifat ini runtuh:
    - `0 == ""` bernilai `true` (karena `""` dipaksa jadi angka 0).
    - `0 == "0"` bernilai `true` (karena `"0"` dipaksa jadi angka 0).
    - Namun `"" == "0"` bernilai `false` (karena kedua tipe sama-sama string, engine membandingkan isinya, dan string kosong tidak sama dengan karakter `"0"`).
@@ -53,7 +53,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan dari dogma "best practice"._
 
 - **Pendekatan Optimal**:
-  Gunakan operator strict equality `===` (dan `!==`) sebagai standar mutlak di seluruh basis kode. Satu-satunya skenario di mana `==` dapat ditoleransi secara kausal adalah pengecekan *nullish* sekaligus (`value == null`), karena aturan nomor 3 spesifikasi menjamin baris ini mengecek apakah nilai bernilai `null` ATAU `undefined` hanya dalam 1 operasi ringkas.
+  Gunakan operator strict equality `===` (dan `!==`) sebagai standar mutlak di seluruh basis kode. Satu-satunya skenario di mana `==` dapat ditoleransi secara kausal adalah pengecekan _nullish_ sekaligus (`value == null`), karena aturan nomor 3 spesifikasi menjamin baris ini mengecek apakah nilai bernilai `null` ATAU `undefined` hanya dalam 1 operasi ringkas.
 
 - **Contoh Konkret**:
 
@@ -75,17 +75,17 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
   // Penggunaan rasional satu-satunya untuk loose equality:
   function isNullOrUndefined(value) {
     // Sesuai ECMA-262 §7.2.13: null == undefined adalah true
-    return value == null; 
+    return value == null;
   }
 
-  console.log(isNullOrUndefined(null));      // true
+  console.log(isNullOrUndefined(null)); // true
   console.log(isNullOrUndefined(undefined)); // true
-  console.log(isNullOrUndefined(0));         // false (Aman dari bug falsy!)
-  console.log(isNullOrUndefined(""));        // false (Aman dari bug string kosong!)
+  console.log(isNullOrUndefined(0)); // false (Aman dari bug falsy!)
+  console.log(isNullOrUndefined("")); // false (Aman dari bug string kosong!)
   ```
 
 - **Mengapa ini lebih baik**:
-  Menghilangkan kebingungan kognitif dan perilaku tak-transitif. Mesin JavaScript juga dapat mengoptimasi komparasi `===` melalui *inline caching* JIT compiler lebih cepat karena tidak perlu memeriksa pohon konversi tipe kompleks.
+  Menghilangkan kebingungan kognitif dan perilaku tak-transitif. Mesin JavaScript juga dapat mengoptimasi komparasi `===` melalui _inline caching_ JIT compiler lebih cepat karena tidak perlu memeriksa pohon konversi tipe kompleks.
 
 ---
 
