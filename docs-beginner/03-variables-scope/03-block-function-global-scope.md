@@ -1,12 +1,8 @@
 ---
 title: "Panduan Pemula: Block, Function, dan Global Scope di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/03-variables-scope
+tags: "javascript, first-principles, roadmap-js/03-variables-scope"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Glossary/Scope
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Scope"
 ---
 
 # Panduan Pemula: Block, Function, dan Global Scope di JavaScript

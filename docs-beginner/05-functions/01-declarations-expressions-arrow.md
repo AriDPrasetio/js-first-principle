@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Function Declaration, Expression, dan Arrow Function di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/05-functions
+tags: "javascript, first-principles, roadmap-js/05-functions"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions"
 ---
 
 # Panduan Pemula: Function Declaration, Expression, dan Arrow Function di JavaScript

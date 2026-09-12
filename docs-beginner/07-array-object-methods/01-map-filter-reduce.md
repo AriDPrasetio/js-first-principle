@@ -1,14 +1,8 @@
 ---
 title: "Panduan Pemula: Mengolah Array dengan map, filter, dan reduce di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/07-array-object-methods
+tags: "javascript, first-principles, roadmap-js/07-array-object-methods"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map"
 ---
 
 # Panduan Pemula: Mengolah Array dengan map, filter, dan reduce di JavaScript

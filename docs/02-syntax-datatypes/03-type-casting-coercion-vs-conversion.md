@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Type Casting (Coercion vs Conversion)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/02-syntax-datatypes
+tags: "javascript, first-principles, roadmap-js/02-syntax-datatypes"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion
-  - https://developer.mozilla.org/en-US/docs/Glossary/Type_conversion
-  - https://tc39.es/ecma262/#sec-type-conversion
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion"
 ---
 
 # First Principles Deep Dive: Type Casting (Coercion vs Conversion)

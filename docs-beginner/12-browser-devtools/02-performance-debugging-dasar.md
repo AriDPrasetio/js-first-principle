@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Menjaga Kinerja Web agar Tidak Lambat (Performance Debugging)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/12-browser-devtools
+tags: "javascript, first-principles, roadmap-js/12-browser-devtools"
 level: beginner
-official_docs_url:
-  - https://developer.chrome.com/docs/devtools/performance/
-  - https://web.dev/articles/rendering-performance
+official_docs_url: "https://developer.chrome.com/docs/devtools/performance/"
 ---
 
 # Panduan Pemula: Menjaga Kinerja Web agar Tidak Lambat (Performance Debugging)

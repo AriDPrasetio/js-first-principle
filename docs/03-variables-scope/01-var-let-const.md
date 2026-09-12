@@ -1,15 +1,8 @@
 ---
 title: "First Principles Deep Dive: var, let, dan const"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/03-variables-scope
+tags: "javascript, first-principles, roadmap-js/03-variables-scope"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var
-  - https://tc39.es/ecma262/#sec-declarations-and-the-variable-statement
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let"
 ---
 
 # First Principles Deep Dive: var, let, dan const

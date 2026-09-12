@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Higher-Order Functions (HOF)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/05-functions
+tags: "javascript, first-principles, roadmap-js/05-functions"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions#higher-order_functions
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function"
 ---
 
 # First Principles Deep Dive: Higher-Order Functions (HOF)

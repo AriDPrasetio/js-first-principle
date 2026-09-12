@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Cara Kerja Event Loop dan Timer (setTimeout) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/09-async-javascript
+tags: "javascript, first-principles, roadmap-js/09-async-javascript"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop
-  - https://developer.mozilla.org/en-US/docs/Web/API/setTimeout
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop"
 ---
 
 # Panduan Pemula: Cara Kerja Event Loop dan Timer (setTimeout) di JavaScript

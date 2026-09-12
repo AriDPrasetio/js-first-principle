@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Menangani Error Fetch dan Membatalkan Request (AbortController)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/10-fetch-error-handling
+tags: "javascript, first-principles, roadmap-js/10-fetch-error-handling"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/API/Response/ok
-  - https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/API/Response/ok"
 ---
 
 # Panduan Pemula: Menangani Error Fetch dan Membatalkan Request (AbortController)

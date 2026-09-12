@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Closures dan Lexical Scoping"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/03-variables-scope
+tags: "javascript, first-principles, roadmap-js/03-variables-scope"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
-  - https://tc39.es/ecma262/#sec-runtime-semantics-instantiateordinaryfunctionexpression
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures"
 ---
 
 # First Principles Deep Dive: Closures dan Lexical Scoping

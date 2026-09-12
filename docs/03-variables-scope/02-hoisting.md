@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Hoisting dan Temporal Dead Zone (TDZ)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/03-variables-scope
+tags: "javascript, first-principles, roadmap-js/03-variables-scope"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Glossary/Hoisting
-  - https://tc39.es/ecma262/#sec-execution-contexts
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting"
 ---
 
 # First Principles Deep Dive: Hoisting dan Temporal Dead Zone (TDZ)

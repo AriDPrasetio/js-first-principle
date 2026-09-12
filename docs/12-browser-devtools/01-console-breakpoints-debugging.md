@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Debugging Tingkat Lanjut (Breakpoints vs Console)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/12-browser-devtools
+tags: "javascript, first-principles, roadmap-js/12-browser-devtools"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Debugging_JavaScript
-  - https://developer.chrome.com/docs/devtools/javascript/
-  - https://chromedevtools.github.io/devtools-protocol/
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Debugging_JavaScript"
 ---
 
 # First Principles Deep Dive: Debugging Tingkat Lanjut (Breakpoints vs Console)

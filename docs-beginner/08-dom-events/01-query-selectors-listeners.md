@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Memilih Elemen dan Menangani Klik (querySelector & addEventListener) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/08-dom-events
+tags: "javascript, first-principles, roadmap-js/08-dom-events"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
-  - https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector"
 ---
 
 # Panduan Pemula: Memilih Elemen dan Menangani Klik (querySelector & addEventListener) di JavaScript

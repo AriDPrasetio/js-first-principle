@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Exception Handling (try, catch, finally, Error Objects)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/04-control-flow
+tags: "javascript, first-principles, roadmap-js/04-control-flow"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
-  - https://tc39.es/ecma262/#sec-try-statement
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch"
 ---
 
 # First Principles Deep Dive: Exception Handling (try, catch, finally, Error Objects)

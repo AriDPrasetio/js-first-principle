@@ -1,12 +1,8 @@
 ---
 title: "Panduan Pemula: Perulangan (Loops) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/04-control-flow
+tags: "javascript, first-principles, roadmap-js/04-control-flow"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration"
 ---
 
 # Panduan Pemula: Perulangan (Loops) di JavaScript

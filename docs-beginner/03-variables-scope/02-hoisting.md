@@ -1,12 +1,8 @@
 ---
 title: "Panduan Pemula: Hoisting dan Temporal Dead Zone (TDZ) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/03-variables-scope
+tags: "javascript, first-principles, roadmap-js/03-variables-scope"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Glossary/Hoisting
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting"
 ---
 
 # Panduan Pemula: Hoisting dan Temporal Dead Zone (TDZ) di JavaScript

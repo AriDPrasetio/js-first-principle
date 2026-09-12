@@ -1,12 +1,8 @@
 ---
 title: "Panduan Pemula: Membongkar Data (Destructuring) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/07-array-object-methods
+tags: "javascript, first-principles, roadmap-js/07-array-object-methods"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment"
 ---
 
 # Panduan Pemula: Membongkar Data (Destructuring) di JavaScript

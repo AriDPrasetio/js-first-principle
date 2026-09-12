@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: var, let, dan const di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/03-variables-scope
+tags: "javascript, first-principles, roadmap-js/03-variables-scope"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let"
 ---
 
 # Panduan Pemula: var, let, dan const di JavaScript

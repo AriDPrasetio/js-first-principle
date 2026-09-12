@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: ES Modules (import dan export)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/11-es-modules
+tags: "javascript, first-principles, roadmap-js/11-es-modules"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
-  - https://tc39.es/ecma262/#sec-modules
-  - https://html.spec.whatwg.org/multipage/scripting.html#attr-script-type
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules"
 ---
 
 # First Principles Deep Dive: ES Modules (import dan export)

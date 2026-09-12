@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Operator Tiga Titik (Spread dan Rest) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/07-array-object-methods
+tags: "javascript, first-principles, roadmap-js/07-array-object-methods"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax"
 ---
 
 # Panduan Pemula: Operator Tiga Titik (Spread dan Rest) di JavaScript

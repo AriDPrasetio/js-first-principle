@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Event Delegation dan Event Bubbling"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/08-dom-events
+tags: "javascript, first-principles, roadmap-js/08-dom-events"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Event_bubbling
-  - https://dom.spec.whatwg.org/#dispatching-events
-  - https://developer.mozilla.org/en-US/docs/Web/API/Element/closest
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Event_bubbling"
 ---
 
 # First Principles Deep Dive: Event Delegation dan Event Bubbling

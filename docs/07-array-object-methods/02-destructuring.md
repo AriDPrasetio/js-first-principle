@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Destructuring Assignment (Array & Object)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/07-array-object-methods
+tags: "javascript, first-principles, roadmap-js/07-array-object-methods"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
-  - https://tc39.es/ecma262/#sec-destructuring-assignment
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment"
 ---
 
 # First Principles Deep Dive: Destructuring Assignment (Array & Object)
@@ -40,7 +35,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
    Persis seperti parameter fungsi, nilai default destructuring (`const { theme = 'light' } = config`) **HANYA dievaluasi jika nilai properti yang dibaca bernilai strictly `=== undefined`**. Jika nilainya adalah `null`, `false`, atau `0`, nilai asli tersebut akan dipertahankan dan nilai default diabaikan.
 
 3. **Batas Keamanan: Titik Kegagalan Fatal `ToObject(value)`**:
-   Spesifikasi [ECMA-262 §14.3.3](https://tc39.es/ecma262/#sec-destructuring-assignment) mewajibkan operan di sisi kanan diubah menjadi objek via `ToObject()`. Karena `ToObject(null)` dan `ToObject(undefined)` melempar `TypeError`, mencoba melakukan destructuring pada `null` atau `undefined` (`const { x } = null`) akan memicu crash fatal: `TypeError: Cannot destructure property 'x' of 'null' as it is null`.
+   Spesifikasi [ECMA-262 §14.3.3](https://tc39.es/ecma262/#sec-destructuring-binding-patterns) mewajibkan operan di sisi kanan diubah menjadi objek via `ToObject()`. Karena `ToObject(null)` dan `ToObject(undefined)` melempar `TypeError`, mencoba melakukan destructuring pada `null` atau `undefined` (`const { x } = null`) akan memicu crash fatal: `TypeError: Cannot destructure property 'x' of 'null' as it is null`.
 
 ---
 

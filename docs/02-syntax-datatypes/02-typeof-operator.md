@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Operator typeof"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/02-syntax-datatypes
+tags: "javascript, first-principles, roadmap-js/02-syntax-datatypes"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
-  - https://tc39.es/ecma262/#sec-typeof-operator
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof"
 ---
 
 # First Principles Deep Dive: Operator typeof

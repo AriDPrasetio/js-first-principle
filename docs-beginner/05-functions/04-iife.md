@@ -1,12 +1,8 @@
 ---
 title: "Panduan Pemula: IIFE (Fungsi Langsung Jalan Seketika) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/05-functions
+tags: "javascript, first-principles, roadmap-js/05-functions"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Glossary/IIFE
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/IIFE"
 ---
 
 # Panduan Pemula: IIFE (Fungsi Langsung Jalan Seketika) di JavaScript

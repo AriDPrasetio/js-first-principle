@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Mengambil Data dari Internet (fetch dan JSON) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/10-fetch-error-handling
+tags: "javascript, first-principles, roadmap-js/10-fetch-error-handling"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
 ---
 
 # Panduan Pemula: Mengambil Data dari Internet (fetch dan JSON) di JavaScript

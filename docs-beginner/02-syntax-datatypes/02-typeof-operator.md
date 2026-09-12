@@ -1,12 +1,8 @@
 ---
 title: "Panduan Pemula: Operator typeof di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/02-syntax-datatypes
+tags: "javascript, first-principles, roadmap-js/02-syntax-datatypes"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof"
 ---
 
 # Panduan Pemula: Operator typeof di JavaScript

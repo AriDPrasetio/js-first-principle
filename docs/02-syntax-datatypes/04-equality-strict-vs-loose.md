@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Kesetaraan Strict (===) vs Loose (==)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/02-syntax-datatypes
+tags: "javascript, first-principles, roadmap-js/02-syntax-datatypes"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness
-  - https://tc39.es/ecma262/#sec-equality-operators
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness"
 ---
 
 # First Principles Deep Dive: Kesetaraan Strict (===) vs Loose (==)

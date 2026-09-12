@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Kesetaraan Strict (===) vs Loose (==) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/02-syntax-datatypes
+tags: "javascript, first-principles, roadmap-js/02-syntax-datatypes"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Equality
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality"
 ---
 
 # Panduan Pemula: Kesetaraan Strict (===) vs Loose (==) di JavaScript

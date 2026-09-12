@@ -1,14 +1,8 @@
 ---
 title: "Panduan Pemula: Membagi Berkas Kode dengan ES Modules (import dan export)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/11-es-modules
+tags: "javascript, first-principles, roadmap-js/11-es-modules"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules"
 ---
 
 # Panduan Pemula: Membagi Berkas Kode dengan ES Modules (import dan export)

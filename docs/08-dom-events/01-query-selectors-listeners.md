@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: DOM Query Selectors dan Event Listeners"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/08-dom-events
+tags: "javascript, first-principles, roadmap-js/08-dom-events"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
-  - https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
-  - https://dom.spec.whatwg.org/#interface-eventtarget
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector"
 ---
 
 # First Principles Deep Dive: DOM Query Selectors dan Event Listeners

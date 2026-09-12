@@ -1,14 +1,8 @@
 ---
 title: "Panduan Pemula: Explicit Binding (call, apply, dan bind) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/06-this-context
+tags: "javascript, first-principles, roadmap-js/06-this-context"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call"
 ---
 
 # Panduan Pemula: Explicit Binding (call, apply, dan bind) di JavaScript

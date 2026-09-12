@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Primitive Types dan Object"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/02-syntax-datatypes
+tags: "javascript, first-principles, roadmap-js/02-syntax-datatypes"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures
-  - https://tc39.es/ecma262/#sec-ecmascript-data-types-and-values
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures"
 ---
 
 # First Principles Deep Dive: Primitive Types dan Object

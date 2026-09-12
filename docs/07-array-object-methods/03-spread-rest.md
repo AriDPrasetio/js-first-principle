@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Operator Spread dan Rest (...)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/07-array-object-methods
+tags: "javascript, first-principles, roadmap-js/07-array-object-methods"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters
-  - https://tc39.es/ecma262/#sec-object-initializer
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax"
 ---
 
 # First Principles Deep Dive: Operator Spread dan Rest (...)

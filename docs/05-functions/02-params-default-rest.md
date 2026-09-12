@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Default Parameters dan Rest Parameters"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/05-functions
+tags: "javascript, first-principles, roadmap-js/05-functions"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters
-  - https://tc39.es/ecma262/#sec-function-definitions
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters"
 ---
 
 # First Principles Deep Dive: Default Parameters dan Rest Parameters

@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Immediately Invoked Function Expression (IIFE)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/05-functions
+tags: "javascript, first-principles, roadmap-js/05-functions"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Glossary/IIFE
-  - https://tc39.es/ecma262/#sec-grouping-operator
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/IIFE"
 ---
 
 # First Principles Deep Dive: Immediately Invoked Function Expression (IIFE)

@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Event Loop dan Web Timers (Macrotasks vs Microtasks)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/09-async-javascript
+tags: "javascript, first-principles, roadmap-js/09-async-javascript"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop
-  - https://html.spec.whatwg.org/multipage/webappapis.html#event-loops
-  - https://developer.mozilla.org/en-US/docs/Web/API/setTimeout
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop"
 ---
 
 # First Principles Deep Dive: Event Loop dan Web Timers (Macrotasks vs Microtasks)
@@ -33,7 +27,7 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
-1. **Siklus Putaran Event Loop (WHATWG HTML §8.1.6)**:
+1. **Siklus Putaran Event Loop (WHATWG HTML §8.1.7)**:
    Alur kerja loop peristiwa browser berjalan dalam siklus berulang yang ketat:
    - Jalankan satu tugas sinkron hingga _Call Stack_ kosong.
    - **Kuras Habis Antrean Microtask (_Drain Microtask Queue_)**: Jalankan semua microtask (Promise, `queueMicrotask`) hingga antrean benar-benar kosong. Jika microtask menambahkan microtask baru, ia akan langsung dijalankan di siklus yang sama.

@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Dari Callback ke Promise dan async/await"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/09-async-javascript
+tags: "javascript, first-principles, roadmap-js/09-async-javascript"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-  - https://tc39.es/ecma262/#sec-promise-objects
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises"
 ---
 
 # First Principles Deep Dive: Dari Callback ke Promise dan async/await
@@ -33,7 +27,7 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
-1. **Mesin Status Terhingga `Promise` (ECMA-262 §27.2)**:
+1. **Mesin Status Terhingga `Promise` (ECMA-262 §27.5)**:
    Sebuah instans Promise hanya dapat berada di salah satu dari **tiga status mutually exclusive**:
    - `pending`: Operasi masih berlangsung di latar belakang.
    - `fulfilled`: Operasi sukses menghasilkan nilai (_value_).

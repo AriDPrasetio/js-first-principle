@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Event Bubbling dan Event Delegation di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/08-dom-events
+tags: "javascript, first-principles, roadmap-js/08-dom-events"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Event_bubbling
-  - https://developer.mozilla.org/en-US/docs/Web/API/Element/closest
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Event_bubbling"
 ---
 
 # Panduan Pemula: Event Bubbling dan Event Delegation di JavaScript

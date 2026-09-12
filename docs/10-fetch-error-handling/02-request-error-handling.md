@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Penanganan Error pada Request HTTP (Fetch & AbortController)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/10-fetch-error-handling
+tags: "javascript, first-principles, roadmap-js/10-fetch-error-handling"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/API/Response/ok
-  - https://developer.mozilla.org/en-US/docs/Web/API/AbortController
-  - https://fetch.spec.whatwg.org/#dom-response-ok
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/API/Response/ok"
 ---
 
 # First Principles Deep Dive: Penanganan Error pada Request HTTP (Fetch & AbortController)

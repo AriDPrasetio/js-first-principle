@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Function Declaration, Expression, dan Arrow Function"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/05-functions
+tags: "javascript, first-principles, roadmap-js/05-functions"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
-  - https://tc39.es/ecma262/#sec-function-definitions
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions"
 ---
 
 # First Principles Deep Dive: Function Declaration, Expression, dan Arrow Function

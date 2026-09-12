@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Percabangan Kondisional (if/else, switch, ??) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/04-control-flow
+tags: "javascript, first-principles, roadmap-js/04-control-flow"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else"
 ---
 
 # Panduan Pemula: Percabangan Kondisional (if/else, switch, ??) di JavaScript

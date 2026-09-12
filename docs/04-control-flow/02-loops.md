@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Perulangan (Loops & Iteration Protocols)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/04-control-flow
+tags: "javascript, first-principles, roadmap-js/04-control-flow"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
-  - https://tc39.es/ecma262/#sec-iteration-statements
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration"
 ---
 
 # First Principles Deep Dive: Perulangan (Loops & Iteration Protocols)

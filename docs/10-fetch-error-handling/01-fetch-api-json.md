@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Fetch API dan Penanganan Data JSON"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/10-fetch-error-handling
+tags: "javascript, first-principles, roadmap-js/10-fetch-error-handling"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-  - https://fetch.spec.whatwg.org/
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
 ---
 
 # First Principles Deep Dive: Fetch API dan Penanganan Data JSON

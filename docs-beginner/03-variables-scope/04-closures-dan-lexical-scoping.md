@@ -1,12 +1,8 @@
 ---
 title: "Panduan Pemula: Closures dan Lexical Scoping di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/03-variables-scope
+tags: "javascript, first-principles, roadmap-js/03-variables-scope"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures"
 ---
 
 # Panduan Pemula: Closures dan Lexical Scoping di JavaScript

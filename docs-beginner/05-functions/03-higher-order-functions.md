@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Higher-Order Functions (HOF) di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/05-functions
+tags: "javascript, first-principles, roadmap-js/05-functions"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions#higher-order_functions
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function"
 ---
 
 # Panduan Pemula: Higher-Order Functions (HOF) di JavaScript

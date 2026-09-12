@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Debugging Performa Dasar (Rendering Pipeline & Layout Thrashing)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/12-browser-devtools
+tags: "javascript, first-principles, roadmap-js/12-browser-devtools"
 level: intermediate
-official_docs_url:
-  - https://developer.chrome.com/docs/devtools/performance/
-  - https://web.dev/articles/rendering-performance
-  - https://web.dev/articles/avoid-large-complex-layouts-and-layout-thrashing
+official_docs_url: "https://developer.chrome.com/docs/devtools/performance/"
 ---
 
 # First Principles Deep Dive: Debugging Performa Dasar (Rendering Pipeline & Layout Thrashing)

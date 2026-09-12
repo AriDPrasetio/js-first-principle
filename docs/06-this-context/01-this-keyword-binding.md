@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Kata Kunci this dan Aturan Binding"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/06-this-context
+tags: "javascript, first-principles, roadmap-js/06-this-context"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this
-  - https://tc39.es/ecma262/#sec-resolvethisbinding
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this"
 ---
 
 # First Principles Deep Dive: Kata Kunci this dan Aturan Binding

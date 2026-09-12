@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Melacak Bug dengan Console dan Breakpoint di Browser"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/12-browser-devtools
+tags: "javascript, first-principles, roadmap-js/12-browser-devtools"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Debugging_JavaScript
-  - https://developer.chrome.com/docs/devtools/javascript/
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Debugging_JavaScript"
 ---
 
 # Panduan Pemula: Melacak Bug dengan Console dan Breakpoint di Browser

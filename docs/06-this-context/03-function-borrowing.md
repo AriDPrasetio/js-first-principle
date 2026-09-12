@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Function Borrowing dan Generic Methods"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/06-this-context
+tags: "javascript, first-principles, roadmap-js/06-this-context"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call#using_call_to_chain_constructors_for_an_object
-  - https://tc39.es/ecma262/#sec-array.prototype.slice
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call#using_call_to_chain_constructors_for_an_object"
 ---
 
 # First Principles Deep Dive: Function Borrowing dan Generic Methods

@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Conditional Statements (if/else, switch, short-circuit)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/04-control-flow
+tags: "javascript, first-principles, roadmap-js/04-control-flow"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing
-  - https://tc39.es/ecma262/#sec-if-statement
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else"
 ---
 
 # First Principles Deep Dive: Conditional Statements (if/else, switch, short-circuit)
@@ -39,7 +33,7 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
 2. **Mekanisme Evaluasi Sirkuit Pendek (_Short-Circuit Evaluation_)**:
    - Operator `&&` (`a && b`): Jika `ToBoolean(a)` adalah `false`, engine langsung mengembalikan nilai asli `a` tanpa mengevaluasi `b`.
    - Operator `||` (`a || b`): Jika `ToBoolean(a)` adalah `true`, engine langsung mengembalikan nilai asli `a` tanpa mengevaluasi `b`.
-   - Operator `??` (`a ?? b`): Spesifikasi [ECMA-262 §13.13](https://tc39.es/ecma262/#sec-conditional-operator) menegaskan: hanya jika `a` bernilai `null` atau `undefined`, barulah ekspresi `b` dievaluasi.
+   - Operator `??` (`a ?? b`): Spesifikasi [ECMA-262 §13.13](https://tc39.es/ecma262/#sec-binary-logical-operators) menegaskan: hanya jika `a` bernilai `null` atau `undefined`, barulah ekspresi `b` dievaluasi.
 
 3. **Mekanisme Kesetaraan Ketat pada `switch`**:
    Pernyataan `switch (expression)` membandingkan ekspresi kasus (`case value:`) menggunakan algoritma kesetaraan ketat `===` (_Strict Equality_). Tanpa pernyataan `break`, engine akan terus mengeksekusi kasus berikutnya tanpa melakukan komparasi (_fall-through_).

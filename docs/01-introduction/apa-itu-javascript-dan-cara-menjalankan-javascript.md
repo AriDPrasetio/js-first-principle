@@ -1,14 +1,8 @@
 ---
 title: "First Principles Deep Dive: Apa itu JavaScript dan Cara Menjalankannya"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/01-introduction
+tags: "javascript, first-principles, roadmap-js/01-introduction"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript
-  - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script
-  - https://tc39.es/ecma262/
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript"
 ---
 
 # First Principles Deep Dive: Apa itu JavaScript dan Cara Menjalankannya

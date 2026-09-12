@@ -1,13 +1,8 @@
 ---
 title: "First Principles Deep Dive: Block, Function, dan Global Scope"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/03-variables-scope
+tags: "javascript, first-principles, roadmap-js/03-variables-scope"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Glossary/Scope
-  - https://tc39.es/ecma262/#sec-lexical-environments
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Scope"
 ---
 
 # First Principles Deep Dive: Block, Function, dan Global Scope

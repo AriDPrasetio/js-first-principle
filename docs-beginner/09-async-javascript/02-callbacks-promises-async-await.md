@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Memahami Promise dan async/await di JavaScript"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/09-async-javascript
+tags: "javascript, first-principles, roadmap-js/09-async-javascript"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises"
 ---
 
 # Panduan Pemula: Memahami Promise dan async/await di JavaScript

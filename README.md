@@ -13,7 +13,7 @@ Tersedia **dua jalur dokumentasi** yang saling melengkapi:
 
 ### 1. Jalur Pemula (`docs-beginner/`)
 
-- **Inti Konsep (`[!ABSTRACT]`)**: Esensi 1–2 kalimat tanpa istilah membingungkan.
+- **Inti Konsep (`[!NOTE]`)**: Esensi 1–2 kalimat tanpa istilah membingungkan.
 - **Analogi Logis**: Perumpamaan nyata (misal: fotokopi vs alamat rumah, gelembung kolam renang, kasir kafe).
 - **First Principles Ringan**: Menjawab _"Mengapa JavaScript didesain seperti ini?"_.
 - **Praktik Interaktif (HTML + JS)**: Kode mini yang langsung bisa dijalankan di browser dengan komentar fungsional manusiawi di setiap baris kodenya.
@@ -21,7 +21,7 @@ Tersedia **dua jalur dokumentasi** yang saling melengkapi:
 
 ### 2. Jalur Deep Dive (`docs/`)
 
-- **The Ground Truth (`[!ABSTRACT]`)**: Esensi mutlak konsep pada level mesin/memori terendah.
+- **The Ground Truth (`[!NOTE]`)**: Esensi mutlak konsep pada level mesin/memori terendah.
 - **Dekonstruksi Masalah**: Membedakan mitos industri vs masalah fundamental yang sebenarnya diselesaikan browser.
 - **Kebenaran Fundamental**: 2–3 prinsip baku berakar pada spesifikasi ECMA-262/WHATWG.
 - **Rekonstruksi Logis**: Membangun arsitektur solusi optimal dari nol.

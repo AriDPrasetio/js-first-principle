@@ -1,13 +1,8 @@
 ---
 title: "Panduan Pemula: Apa itu JavaScript dan Cara Menjalankannya"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/01-introduction
+tags: "javascript, first-principles, roadmap-js/01-introduction"
 level: beginner
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript
-  - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/What_is_JavaScript"
 ---
 
 # Panduan Pemula: Apa itu JavaScript dan Cara Menjalankannya

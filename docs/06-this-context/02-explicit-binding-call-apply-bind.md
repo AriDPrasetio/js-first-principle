@@ -1,15 +1,8 @@
 ---
 title: "First Principles Deep Dive: Explicit Binding (call, apply, bind)"
-tags:
-  - javascript
-  - first-principles
-  - roadmap-js/06-this-context
+tags: "javascript, first-principles, roadmap-js/06-this-context"
 level: intermediate
-official_docs_url:
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply
-  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-  - https://tc39.es/ecma262/#sec-function.prototype.bind
+official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call"
 ---
 
 # First Principles Deep Dive: Explicit Binding (call, apply, bind)
