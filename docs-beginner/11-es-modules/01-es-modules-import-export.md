@@ -13,7 +13,9 @@ official_docs_url:
 
 # Panduan Pemula: Membagi Berkas Kode dengan ES Modules (import dan export)
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > ES Modules adalah cara resmi JavaScript memecah program besar menjadi berkas-berkas kecil yang rapi dan terisolasi: Anda mengeluarkan alat dengan **`export`**, dan meminjamnya di berkas lain dengan **`import`**.
 
 ---
@@ -183,7 +185,9 @@ tombolHitung.addEventListener("click", () => {
 - [ ] Perhatikan bahwa pajak Rp 11.000 dan total Rp 111.000 berhasil dihitung menggunakan fungsi yang diimpor dari file `kalkulator.js`.
 - [ ] Buka Console browser (F12), ketik `hitungPPN` lalu tekan Enter $\to$ perhatikan hasilnya `ReferenceError` yang membuktikan bahwa fungsi di dalam modul tidak mencemari ruang global `window`.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu fungsi `export` untuk membagikan alat keluar berkas, dan `import { ... }` untuk meminjamnya di berkas lain dengan bantuan tag `<script type="module">`**.
 
 ---

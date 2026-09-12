@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Hoisting dan Temporal Dead Zone (TDZ)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Hoisting bukanlah kode yang bergerak atau diangkat secara fisik ke atas berkas; hoisting adalah hasil wajar dari dua fase eksekusi engine (Fase Kompilasi/Alokasi Memori vs Fase Eksekusi Nilai) di mana identifier didaftarkan ke memori sebelum baris kode pertama dieksekusi.
 
 ---
@@ -94,8 +96,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Hindari mendeklarasikan variabel dengan nama yang sama di scope luar dan scope dalam jika variabel dalam berada di TDZ (mencegah fenomena _variable shadowing trap_).
 - [ ] **Langkah 3**: Verifikasi pemahaman di debugger DevTools: pasang breakpoint pada baris pertama sebuah fungsi dan perhatikan panel _Scope_ untuk melihat identifier mana yang sudah dialokasikan sebelum baris tersebut berjalan.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi kejutan `undefined` akibat variabel `var` atau error `ReferenceError: Cannot access before initialization` pada variabel `let`/`const`**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Memosisikan pemanggilan fungsi di atas deklarasinya adalah **pilihan gaya arsitektur (readability pattern)**. Sebagian tim lebih memilih aturan konvensi ketat "deklarasikan semua sebelum dipanggil", yang sama-sama valid secara fungsional.

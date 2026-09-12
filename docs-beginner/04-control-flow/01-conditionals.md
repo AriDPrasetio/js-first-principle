@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Percabangan Kondisional (if/else, switch, ??) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Percabangan adalah "rambu persimpangan jalan" di program Anda: komputer mengecek kondisi benar (_true_) atau salah (_false_), lalu memutuskan jalur kode mana yang harus dilewati selanjutnya.
 
 ---
@@ -166,7 +168,9 @@ prosesBtn.addEventListener("click", () => {
 - [ ] Kosongkan kotak kupon dan klik tombol lagi, perhatikan harga kembali Rp100.000.
 - [ ] Ketik kata sembarang (misal: `DISKON100`) dan lihat peringatan warna merah bahwa kupon tidak valid.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mampu membuat percabangan `if`, `else if`, dan `else` untuk mengatur alur logika berbeda di aplikasi Anda**.
 
 ---

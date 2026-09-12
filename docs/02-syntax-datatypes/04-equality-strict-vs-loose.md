@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Kesetaraan Strict (===) vs Loose (==)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Operator `===` membandingkan identitas tipe dan nilai tanpa kompromi; sedangkan operator `==` menjalankan rantai konversi tipe rekursif sebelum membandingkan, melanggar prinsip transitivitas matematika dan membuka celah bug perbandingan nilai.
 
 ---
@@ -97,8 +99,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Saat membandingkan objek, sadari bahwa `{ id: 1 } === { id: 1 }` adalah `false`. Bandingkan nilai properti primitif uniknya (`a.id === b.id`), bukan objek fisiknya.
 - [ ] **Langkah 3**: Untuk kasus perbandingan nilai khusus seperti membedakan `-0` dengan `+0` atau membandingkan `NaN` dengan `NaN`, gunakan metode modern `Object.is(valA, valB)`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi bug percabangan `if` yang salah membedakan antara angka `0`, boolean `false`, string kosong `""`, dan `null`**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Memakai idiom `value == null` untuk memeriksa `null` dan `undefined` sekaligus adalah **kesepakatan gaya pemrograman (idiomatic convention)**. Banyak tim arsitektur modern memilih menuliskan `value === null || value === undefined` secara eksplisit untuk menegakkan kepatuhan 100% pada aturan kesetaraan ketat.

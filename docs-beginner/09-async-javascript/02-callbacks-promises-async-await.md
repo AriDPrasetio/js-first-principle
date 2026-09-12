@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Memahami Promise dan async/await di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Mengambil data lewat internet membutuhkan waktu. **`Promise`** adalah sebuah "surat janji" bahwa data akan datang (sukses atau gagal), sedangkan **`async/await`** adalah cara modern paling nyaman untuk membaca surat janji tersebut seolah-olah seperti kode biasa dari atas ke bawah.
 
 ---
@@ -190,7 +192,9 @@ tombolMuat.addEventListener("click", () => {
 - [ ] Amati pesan berubah menjadi teks kuning: `"⏳ Sedang menghubungi server..."` dan tombol terkunci (_disabled_).
 - [ ] Setelah 2 detik berlalu, amati teks profil Dewi Lestari muncul di layar dan tombol kembali aktif.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti bahwa `async/await` memudahkan kita menunggu data asinkron dari Promise menggunakan urutan baris kode biasa yang rapi**.
 
 ---

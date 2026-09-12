@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Menjaga Kinerja Web agar Tidak Lambat (Performance Debugging)
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Agar halaman web Anda terasa mulus seperti video tanpa patah-patah (_lag_), browser harus menggambar layar dalam waktu kurang dari **16 milidetik**. Anda bisa mengukur kecepatan kode Anda menggunakan **`console.time`** dan menghindari perintah yang membebani tata letak browser.
 
 ---
@@ -179,7 +181,9 @@ tombolGeser.addEventListener("click", () => {
 - [ ] Amati tulisan di layar: proses 100.000 angka ternyata hanya membutuhkan waktu kurang dari 5 milidetik!
 - [ ] Klik tombol **"2. Geser Kotak"** berulang-ulang $\to$ perhatikan pergerakan kotak biru sangat mulus tanpa jeda kaku.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti bahwa animasi yang mulus butuh waktu di bawah 16 milidetik, tahu cara mengukur waktu dengan `console.time`, dan menggunakan `transform` untuk pergerakan visual**.
 
 ---

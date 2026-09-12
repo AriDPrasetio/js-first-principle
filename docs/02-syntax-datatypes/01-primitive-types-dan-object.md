@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Primitive Types dan Object
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Di JavaScript, nilai terbagi menjadi dua kategori fundamental memori: _Primitive_ (nilai atomik yang kekal/immutable dan disalin nilainya secara langsung) serta _Object_ (koleksi pasangan key-value di heap memory yang dimanipulasi melalui alamat referensi/pointer).
 
 ---
@@ -87,8 +89,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Deklarasikan objek sederhana, lalu buat salinan dengan operator assignment (`const b = a`) dan buktikan perubahan properti pada `b` merusak nilai pada `a`.
 - [ ] **Langkah 3**: Buat salinan aman tanpa mutasi menggunakan spread syntax `{ ...a }` atau `structuredClone(a)` untuk struktur bersarang, lalu verifikasi bahwa `a !== b`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Dapat menjelaskan secara presisi tanpa ragu mengapa memutasi objek referensi menyebabkan efek samping di tempat lain, dan mampu mengimplementasikan kloning objek secara immutable**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Gagasan bahwa variabel primitif selalu disimpan di _Call Stack_ sedangkan Objek selalu di _Heap_ adalah **detail implementasi internal V8/SpiderMonkey**, bukan aturan formal spesifikasi ECMA-262. Yang diwajibkan oleh spesifikasi adalah perilakunya (_behavior_), bukan letak arsitektur register fisik CPU.

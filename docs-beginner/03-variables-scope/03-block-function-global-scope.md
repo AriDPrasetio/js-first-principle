@@ -11,7 +11,9 @@ official_docs_url:
 
 # Panduan Pemula: Block, Function, dan Global Scope di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Scope adalah aturan "wilayah kekuasaan" variabel: kode yang berada di dalam ruangan privat bisa melihat data di luar, tetapi kode di luar sama sekali tidak bisa mengintip data rahasia di dalam ruangan tertutup.
 
 ---
@@ -141,7 +143,9 @@ bacaBtn.addEventListener("click", () => {
 - [ ] Perhatikan teks gabungan dari variabel global dan variabel privat berhasil dirender.
 - [ ] Buka Console browser (`F12`), ketik `console.log(namaAplikasi)` (hasil: muncul namanya). Lalu ketik `console.log(kodeRahasia)` (hasil: `ReferenceError`).
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti mengapa fungsi bisa membaca variabel luar, tetapi kode di luar tidak bisa menyentuh variabel yang dibuat di dalam fungsi**.
 
 ---

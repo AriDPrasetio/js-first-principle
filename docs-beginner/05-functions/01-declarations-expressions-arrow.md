@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Function Declaration, Expression, dan Arrow Function di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Fungsi (_Function_) adalah mesin pengolah resep: Anda memasukkan bahan (_parameter_), mesin mengolahnya, lalu mengembalikan hasil jadi (_return_). Di JavaScript ada 3 cara utama menulis fungsi yang disesuaikan dengan kebutuhan dan kerapian kode Anda.
 
 ---
@@ -201,7 +203,9 @@ tombolArrow.addEventListener("click", () => {
 - [ ] Amati bahwa ketiganya sama-sama berhasil menghitung hasil diskon dengan benar.
 - [ ] Coba pindahkan baris `function hitungDiskonSepuluhPersen` ke bagian paling bawah file `app.js` $\to$ amati bahwa kodenya tetap bekerja tanpa error (berkat _hoisting_).
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu kapan sebaiknya menulis fungsi biasa yang lengkap vs kapan menggunakan tanda panah `=>` untuk fungsi pendek**.
 
 ---

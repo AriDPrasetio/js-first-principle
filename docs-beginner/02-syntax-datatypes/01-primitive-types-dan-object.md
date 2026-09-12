@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Primitive Types vs Object di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Di JavaScript, data terbagi menjadi dua cara kerja di memori komputer:
 >
 > 1. **Primitive**: Nilai mandiri yang selalu disalin terpisah (seperti memfotokopi dokumen).
@@ -180,7 +182,9 @@ console.log(userMandiri.role); // "Product Manager"
 - [ ] Klik tombol **"Ubah Peran via Salinan Objek"** dan perhatikan teks peran berubah di layar.
 - [ ] Buka DevTools (`F12`) $\to$ tab **Console**, ketik `userProfile` dan lihat bahwa properti `role` pada objek asli ikut berubah menjadi `"Tech Lead"`.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham materi ini jika: **Bisa menjelaskan ke rekan Anda mengapa mengubah `profileAlias.role` bisa membuat data pada `userProfile` aslinya ikut terubah**.
 
 ---

@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Block, Function, dan Global Scope
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Scope adalah struktur data pohon di memori (_Scope Chain_) di mana setiap blok kode memiliki catatan lingkungannya sendiri (_Environment Record_) beserta tautan penunjuk (_outer reference_) ke lingkungan pembungkusnya, menentukan batas aksesibilitas dan masa hidup variabel.
 
 ---
@@ -101,8 +103,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Bungkus seluruh script aplikasi dalam tag `<script type="module">` sehingga variabel tingkat teratas tidak menempel pada objek global `window`.
 - [ ] **Langkah 3**: Hindari penggunaan nama variabel yang sama di scope lokal dengan scope luar (_variable shadowing_) agar alur pembacaan data tetap jelas dan tidak membingungkan anggota tim.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Objek `window` di browser bersih dari variabel kustom aplikasi, dan tidak ada variabel sementara loop yang bocor keluar blok**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Penggunaan kurung kurawal mandiri `{ ... }` untuk membuat block scope tanpa keyword `if` atau `for` adalah **fitur sintaks resmi JavaScript yang valid**, namun jarang digunakan di industri karena konvensi tim biasanya lebih menyukai pemisahan logika melalui fungsi terdedikasi.

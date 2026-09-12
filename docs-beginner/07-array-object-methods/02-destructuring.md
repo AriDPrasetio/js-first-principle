@@ -11,7 +11,9 @@ official_docs_url:
 
 # Panduan Pemula: Membongkar Data (Destructuring) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Destructuring (_Membongkar Paket_) adalah cara cepat dan elegan untuk mengeluarkan isi properti Objek atau elemen Array ke dalam variabel masing-masing hanya dalam satu baris kode.
 
 ---
@@ -175,7 +177,9 @@ tombolBongkar.addEventListener("click", () => {
 - [ ] Perhatikan bahwa data nama panggilan berhasil diganti dari `nama_lengkap`, dan hobi otomatis terisi `"Membaca Buku"` meskipun di objek aslinya tidak ada.
 - [ ] Perhatikan bagaimana `juaraSatu` dan `juaraDua` berhasil mengambil posisi 1 dan 2 dari array lomba.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu bahwa `{ a, b }` membongkar objek berdasarkan nama kunci, sedangkan `[ x, y ]` membongkar array berdasarkan nomor urut**.
 
 ---

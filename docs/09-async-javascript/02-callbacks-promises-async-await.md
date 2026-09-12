@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Dari Callback ke Promise dan async/await
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > `Promise` adalah mesin status terhingga (_Finite State Machine_) berstatus kekal yang merebut kembali kontrol eksekusi dari callback pihak ketiga; sedangkan `async/await` adalah gula sintaksis berbasis generator yang menunda eksekusi fungsi lokal tanpa memblokir benang utama peramban.
 
 ---
@@ -116,8 +118,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Manfaatkan `Promise.allSettled()` jika Anda ingin memuat beberapa widget dasbor di mana kegagalan satu widget tidak boleh membatalkan widget lainnya (_fail-tolerant dashboard_).
 - [ ] **Langkah 3**: Selalu bungkus pemanggilan `await` di dalam blok `try/catch` untuk mencegah error yang tidak tertangani (_Unhandled Promise Rejection_).
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Operasi jaringan independen berjalan secara paralel dan tidak ada unhandled promise rejection yang bocor ke console**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Memakai `await` di dalam loop `array.forEach()` adalah **kesalahan umum di industri**: `.forEach` tidak menunggu eksekusi Promise di dalamnya selesai. Untuk menjalankan iterasi asinkron berurutan, gunakan loop bahasa native `for...of`, atau gunakan `Promise.all(array.map(...))` untuk eksekusi paralel.

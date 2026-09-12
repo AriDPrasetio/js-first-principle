@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Cara Kerja Event Loop dan Timer (setTimeout) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > JavaScript hanya punya satu tangan untuk bekerja (_Single-Threaded_). Agar halaman web tidak membeku saat menunggu proses yang lama, JavaScript menitipkan proses tunggu tersebut ke browser di latar belakang (_Asynchronous_), lalu mengambil hasilnya kembali saat tugas utamanya sudah selesai (_Event Loop_).
 
 ---
@@ -169,7 +171,9 @@ tombolBatal.addEventListener("click", () => {
 - [ ] Klik **"Panggang Roti (3 Detik)"** $\to$ amati teks berubah menjadi "⏳ Sedang memanggang..." dan setelah 3 detik teks otomatis berubah menjadi "🍞 Ting! Roti bakar matang...".
 - [ ] Klik **"Panggang Roti"** lagi, lalu sebelum 3 detik habis segera klik **"Batal Panggang"** $\to$ amati bahwa timer berhasil digagalkan tepat waktu berkat `clearTimeout`.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu bahwa JavaScript mengeksekusi kode biasa terlebih dahulu, sementara `setTimeout` dititipkan ke browser untuk dijalankan belakangan**.
 
 ---

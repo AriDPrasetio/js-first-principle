@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Menangani Error Fetch dan Membatalkan Request (AbortController)
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Server yang membalas pesan "Error 404 Not Found" **tidak otomatis dianggap error** oleh `fetch()` karena koneksi jaringannya tetap berhasil tersambung. Anda wajib memeriksa `response.ok`, dan Anda bisa memakai **`AbortController`** untuk membatalkan permintaan jika menunggu terlalu lama.
 
 ---
@@ -221,7 +223,9 @@ tombolBatal.addEventListener("click", () => {
 - [ ] Klik **"2. Request URL Palsu (Error 404)"** $\to$ amati bagaimana teks pesan menangkap `Gagal memuat! Status server: 404` dengan rapi tanpa merusak aplikasi.
 - [ ] Klik tombol 1 atau 2 lalu segera klik **"3. Batalkan Request"** $\to$ amati bahwa permintaan berhasil digagalkan dengan peringatan `🛑 Permintaan berhasil dibatalkan`.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti bahwa `fetch()` tetap menganggap 404 sukses secara jaringan sehingga wajib dicek dengan `if (!response.ok)`, dan tahu cara membatalkan request dengan `AbortController`**.
 
 ---

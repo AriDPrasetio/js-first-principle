@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Apa itu JavaScript dan Cara Menjalankannya
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > JavaScript adalah mesin komputasi berbasis teks yang tidak dapat berjalan di ruang hampa; ia membutuhkan _host environment_ yang menyediakan model memori, pembaca instruksi (_engine_), dan antarmuka interaksi dunia luar (_host APIs_ seperti DOM atau File System).
 
 ---
@@ -107,8 +109,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Tempatkan tag `<script defer src="...">` pada `<head>` HTML semantik dan pastikan script dapat membaca elemen DOM tanpa membungkusnya dalam handler `DOMContentLoaded`.
 - [ ] **Langkah 3**: Buka Chrome DevTools -> tab **Performance** -> rekam proses pemuatan halaman untuk memverifikasi bahwa proses _Parse HTML_ tidak terinterupsi lama oleh unduhan script.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Script berhasil membaca elemen DOM tanpa error `Cannot read properties of null`, dan profil Performance DevTools membuktikan HTML parsing tidak terblokir oleh pemuatan script**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Rekomendasi penempatan `<script defer>` di `<head>` vs meletakkan script reguler di bagian akhir sebelum penutup `</body>` adalah **pilihan konvensi arsitektur**, bukan hukum sintaks mutlak. Keduanya menghasilkan ketersediaan elemen DOM yang valid, namun `defer` di `<head>` memulai proses pengunduhan berkas jaringan jauh lebih dini.

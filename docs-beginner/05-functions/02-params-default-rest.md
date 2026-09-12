@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Parameter Default dan Rest Parameter di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Parameter fungsi ibarat lubang corong masukan pada mesin. **Default Parameter** menyediakan bahan cadangan otomatis jika pengguna lupa memasukkan bahan, sedangkan **Rest Parameter (`...`)** adalah kantong ajaib yang bisa menampung berapapun banyaknya bahan tambahan ke dalam satu daftar (_array_).
 
 ---
@@ -197,7 +199,9 @@ tombolBuat.addEventListener("click", () => {
 - [ ] Klik tombol **"Cetak Kartu Undangan"**. Perhatikan bahwa judul otomatis terisi `"Acara: Rapat Tim"` (karena Default Parameter aktif).
 - [ ] Sekarang ketik judul `"Ulang Tahun"` dan klik tombol lagi. Perhatikan bagaimana nilai cadangan digantikan oleh judul ketikan Anda.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti bahwa `nama = "Default"` hanya bekerja saat parameter kosong/undefined, dan tanda `...` di parameter fungsi berguna menampung sisa argumen menjadi satu Array**.
 
 ---

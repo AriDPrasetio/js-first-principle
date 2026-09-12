@@ -14,7 +14,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Explicit Binding (call, apply, bind)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Explicit Binding adalah kemampuan instruksi tingkat bahasa untuk secara paksa menyuntikkan objek tertentu ke dalam slot _ThisBinding_ fungsi, baik untuk eksekusi langsung (`call`/`apply`) atau membungkusnya menjadi objek fungsi terikat permanen (`bind`).
 
 ---
@@ -95,8 +97,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Modernisasi sintaks: gantikan pola pemanggilan lama seperti `Math.max.apply(null, arrayAngka)` dengan sintaks spread modern `Math.max(...arrayAngka)`.
 - [ ] **Langkah 3**: Manfaatkan `.bind(null, arg1)` untuk teknik _currying_ fungsional sederhana ketika merancang pipeline pemrosesan data UI.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Mampu mengunci konteks `this` dan parameter fungsi menggunakan `.bind()` untuk menciptakan fungsi terspesialisasi tanpa memicu eksekusi dini**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Penggunaan `.bind()` menghasilkan overhead pembuatan objek fungsi baru di memori. Jika dilakukan di dalam render loop atau listener yang sangat sering terpanggil, membungkusnya dengan _Arrow Function_ anonim atau mengekstrak binding ke inisialisasi awal adalah praktik yang lebih disarankan.

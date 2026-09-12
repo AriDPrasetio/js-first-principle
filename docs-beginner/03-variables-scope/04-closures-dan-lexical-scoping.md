@@ -11,7 +11,9 @@ official_docs_url:
 
 # Panduan Pemula: Closures dan Lexical Scoping di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Closure adalah "ransel ingatan" bawaan fungsi: ketika sebuah fungsi anak dibuat di dalam fungsi induk, ia akan selalu mengingat dan membawa variabel milik induknya ke mana pun ia pergi, meskipun fungsi induknya sudah selesai dieksekusi.
 
 ---
@@ -156,7 +158,9 @@ document.querySelector("#btn-reset").addEventListener("click", () => {
 - [ ] Klik tombol **"Reset"** dan perhatikan angka kembali ke 0.
 - [ ] Buka Console browser (`F12`), coba ketik `score = 1000`. Perhatikan bahwa tampilan angka di kartu game Anda tidak terpengaruh sama sekali karena nilai skor aslinya tersembunyi di dalam closure!
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Menyadari bahwa fungsi anak tetap bisa mengingat dan mengubah variabel milik fungsi induknya, meskipun fungsi induk tersebut sudah selesai dijalankan**.
 
 ---

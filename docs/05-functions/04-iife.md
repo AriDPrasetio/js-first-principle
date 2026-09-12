@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Immediately Invoked Function Expression (IIFE)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > IIFE adalah teknik manipulasi sintaksis parser di mana operator pengelompokan `()` memaksa deklarasi fungsi dievaluasi sebagai ekspresi nilai sehingga dapat langsung dieksekusi detik itu juga untuk menciptakan batas lingkup memori instan.
 
 ---
@@ -97,8 +99,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Gunakan sintaks arrow function ringkas `(() => { ... })()` jika ingin membuat IIFE modern.
 - [ ] **Langkah 3**: Manfaatkan IIFE async `(async () => { ... })()` jika perlu menjalankan operasi `await` di lingkungan runtime legacy atau script mandiri.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi file baru yang dibungkus IIFE manual tanpa tujuan spesifik, dan variabel sementara inisialisasi terisolasi sempurna**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Variasi sintaks penulisan IIFE seperti `(function(){ ... }())` (gaya Douglas Crockford) vs `(function(){ ... })()` adalah **perdebatan konvensi estetika sintaksis**. Keduanya menghasilkan pohon sintaks (_AST_) dan eksekusi memori yang identik di semua engine browser.

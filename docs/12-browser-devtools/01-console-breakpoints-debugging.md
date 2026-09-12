@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Debugging Tingkat Lanjut (Breakpoints vs Console)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Debugging sejati bukanlah menyebarkan jejak teks `console.log` di kode; debugging adalah instruksi suspensi thread di mana Chrome DevTools Protocol menahan alur kerja Virtual Machine untuk membekukan waktu dan memeriksa seluruh tumpukan memori serta cakupan leksikal aktif.
 
 ---
@@ -110,8 +112,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Klik kanan pada nomor baris -> pilih **Add conditional breakpoint...** -> masukkan ekspresi pengecekan error untuk menangkap iterasi yang bermasalah saja.
 - [ ] **Langkah 3**: Saat program terjeda (_paused_), periksa panel kanan **Call Stack**: klik frame fungsi sebelumnya untuk melihat nilai variabel di fungsi yang memanggil fungsi saat ini.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Mampu melacak akar penyebab bug logika kompleks menggunakan breakpoints dan Call Stack inspector tanpa menuliskan satupun `console.log` tambahan di kode sumber**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Pernyataan `debugger;` **wajib dibersihkan sebelum kode dideploy ke lingkungan produksi**. Sebagian besar bundler modern (seperti Terser/esbuild) memiliki konfigurasi otomatis `drop_debugger: true` untuk menghapus instruksi ini secara otomatis saat proses build rilis.

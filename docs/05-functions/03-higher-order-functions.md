@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Higher-Order Functions (HOF)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Higher-Order Function adalah turunan langsung dari status fungsi sebagai nilai kelas utama (_First-Class Citizen_): fungsi yang mampu menerima fungsi lain sebagai parameter input, mengembalikan fungsi baru sebagai output, atau keduanya untuk mengabstraksi mekanisme kontrol alur.
 
 ---
@@ -102,8 +104,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Terapkan HOF untuk pembungkus keamanan antarmuka: buat `withAuthentication(actionFn)` yang memeriksa status login sebelum mengeksekusi aksi klik tombol pengguna.
 - [ ] **Langkah 3**: Verifikasi pemahaman di DevTools: gunakan HOF `measurePerformance(fn)` yang membungkus eksekusi fungsi di antara `console.time()` dan `console.timeEnd()`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Logika kontrol alur yang berulang (seperti debounce input atau pelindung hak akses) berhasil diekstraksi ke dalam fungsi HOF mandiri yang reusable**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Memaksakan gaya pemrograman murni fungsional secara ekstrem (seperti rangkaian `pipe` atau `compose` 10 fungsi unary) adalah **aliran paradigma arsitektur**, bukan keharusan platform. Selalu prioritaskan keterbacaan kode bagi tim di atas keanggunan teori fungsional murni.

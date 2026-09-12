@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Perulangan (Loops & Iteration Protocols)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Perulangan adalah instruksi lompat siklis (_cyclic jump_) terarah yang digerakkan oleh indeks numerik, kondisi batas boolean, atau penelusuran kontrak antarmuka _Iterable Protocol_ (`[Symbol.iterator]`).
 
 ---
@@ -96,8 +98,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Jika terpaksa menggunakan `for...in` pada objek dinamis, selalu lindungi pembacaan dengan `Object.hasOwn(obj, key)` untuk memastikan kunci tersebut bukan warisan prototipe.
 - [ ] **Langkah 3**: Manfaatkan `for...of` untuk menelusuri hasil selektor DOM `document.querySelectorAll()` tanpa perlu mengonversinya terlebih dahulu dengan `Array.from()`, karena `NodeList` modern sudah mengimplementasikan `[Symbol.iterator]`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada perulangan array yang menggunakan `for...in`, dan loop dapat diinterupsi tepat waktu menggunakan `break` saat target pencarian ditemukan**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Metode array fungsional seperti `.forEach()` atau `.map()` sering kali dianggap lebih "modern" di industri, namun secara First Principles, **`for...of` adalah konstruksi bahasa yang lebih mendasar**, mendukung alur asinkron (`await` di dalam loop), dan lebih hemat alokasi fungsi closure.

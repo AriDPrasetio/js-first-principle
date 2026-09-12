@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Type Casting (Coercion vs Conversion)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Komputasi hanya dapat terjadi di antara nilai-nilai dengan tipe data yang kompatibel; jika tipenya berlainan, engine JavaScript akan mengonversinya secara otomatis (_Implicit Coercion_) berdasarkan algoritma abstrak spesifikasi, atau developer melakukannya secara sengaja (_Explicit Conversion_).
 
 ---
@@ -89,8 +91,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Baca nilai dari formulir DOM menggunakan `const num = Number(input.value)` alih-alih memanfaatkan konversi implisit trik plus unary (`+input.value`).
 - [ ] **Langkah 3**: Gunakan `Number.isNaN(val)` alih-alih fungsi global lama `isNaN(val)`, karena fungsi global `isNaN('hello')` melakukan koersi implisit yang menghasilkan `true`, sedangkan `Number.isNaN('hello')` secara presisi mengembalikan `false` (karena ia bukan tipe NaN sejati).
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi bug penjumlahan string (`'10' + 5 = '105'`) saat mengambil nilai dari input form antarmuka web**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Penggunaan unary plus (`+val`) atau double-not (`!!val`) adalah **idiom sintaks ringkas yang populer di industri**, bukan keharusan bahasa. Secara first principles, pemanggilan fungsi eksplisit `Number(val)` dan `Boolean(val)` lebih minim ambiguitas semantik bagi keterbacaan tim.

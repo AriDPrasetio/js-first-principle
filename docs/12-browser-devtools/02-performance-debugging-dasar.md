@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Debugging Performa Dasar (Rendering Pipeline & Layout Thrashing)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Performa rendering browser diikat oleh hukum batas waktu frame (_16.6ms frame budget_); kelambatan antarmuka (_jank_) terjadi ketika eksekusi JavaScript memicu pembacaan geometri yang memaksa peramban menghitung ulang tata letak secara sinkron berulang-ulang (_Layout Thrashing_).
 
 ---
@@ -101,8 +103,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Periksa tab konsol DevTools: cari peringatan teks berwarna ungu bertuliskan _"Forced reflow is a likely performance bottleneck"_, klik tautan baris kode untuk menemukan lokasi layout thrashing.
 - [ ] **Langkah 3**: Gantikan seluruh animasi perubahan posisi berbasis `top`/`left` atau `margin` dengan animasi akselerasi hardware berbasis CSS `transform: translate3d(...)`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada peringatan "Forced reflow" di DevTools Console saat interaksi berjalan, dan frame rate antarmuka stabil di 60 FPS**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Pustaka optimasi batching seperti _FastDOM_ pernah populer di industri, namun pada standar web modern, **disiplin arsitektur (memisahkan baca dan tulis secara sadar)** atau penggunaan CSS Modern (`transform`, `contain: layout`) sudah lebih dari cukup tanpa perlu menambah dependensi eksternal.

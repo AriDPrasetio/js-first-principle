@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Kesetaraan Strict (===) vs Loose (==) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Operator `===` (Strict) membandingkan tipe data DAN nilainya secara jujur tanpa kompromi. Operator `==` (Loose) mencoba mengubah-ubah tipe data di belakang layar sebelum membandingkan, sering kali menghasilkan kesimpulan salah yang membahayakan logika aplikasi.
 
 ---
@@ -155,7 +157,9 @@ bandingBtn.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Golden Rule
 
-> [!TIP] Aturan Emas JavaScript Modern
+> [!TIP]
+> **Aturan Emas JavaScript Modern**
+>
 > **Gunakan selalu `===` (dan `!==`) di seluruh kode Anda tanpa kecuali.**
 > Lupakan keberadaan `==`. Dengan membiasakan diri menggunakan tiga sama dengan (`===`), Anda otomatis melenyapkan 99% potensi bug salah perbandingan tipe data di aplikasi Anda.
 

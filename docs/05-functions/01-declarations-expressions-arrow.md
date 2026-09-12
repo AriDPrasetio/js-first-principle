@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Function Declaration, Expression, dan Arrow Function
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Fungsi di JavaScript adalah objek tingkat pertama (_first-class object_) yang dilengkapi slot eksekusi internal `[[Call]]`; perbedaannya terletak pada waktu inisialisasi di memori (_Declaration_ vs _Expression_) serta kehadiran konteks leksikal `this` dan kemampuan konstruktor (_Arrow Function_).
 
 ---
@@ -95,8 +97,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Gunakan arrow function pada seluruh fungsi transformasi array (`arr.map(x => x * 2)`) untuk sintaks ringkas dan pencegahan kebocoran konteks.
 - [ ] **Langkah 3**: Uji di console: panggil `new (() => {})()` dan amati pesan error eksplisit `TypeError: (...) is not a constructor` untuk memverifikasi ketiadaan slot `[[Construct]]`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi penggunaan trik kuno `.bind(this)` atau `var self = this`, dan semua metode objek merujuk ke konteks objeknya secara tepat**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Preferensi menulis seluruh fungsi menggunakan sintaks ekspresi panah (`const myFunc = () => {}`) adalah **tren gaya penulisan populer di ekosistem React modern**, namun bukan aturan First Principles web platform. Mengetahui perbedaan mekanismenya jauh lebih penting daripada memaksakan satu gaya secara kaku.

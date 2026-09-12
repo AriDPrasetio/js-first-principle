@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Operator Spread dan Rest (...)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Tiga titik `...` adalah operator konteks ganda di mana perannya ditentukan oleh lokasi: di sisi ekspresi ia membongkar (_Spread_) elemen keluar dari wadahnya, sedangkan di sisi deklarasi pola ia mengumpulkan (_Rest_) sisa elemen masuk ke dalam satu wadah baru.
 
 ---
@@ -105,8 +107,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Manfaatkan rest parameter di destructuring untuk mengekstrak properti yang tidak diinginkan: `const { password, ...safeUser } = userProfile;`.
 - [ ] **Langkah 3**: Gunakan `structuredClone()` untuk seluruh operasi duplikasi _state tree_ bersarang di aplikasi frontend.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Mampu membedakan dengan tepat kapan cukup menggunakan spread shallow copy dan kapan wajib menggunakan `structuredClone()` untuk mencegah mutasi state bersarang**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Meskipun `structuredClone()` didukung di semua browser modern dan Node.js 17+, ia **tidak dapat mengkloning fungsi atau elemen DOM Node** (akan melempar `DOMException: DataCloneError`). Untuk objek yang mengandung fungsi, gunakan pola modular murni tanpa state bersama.

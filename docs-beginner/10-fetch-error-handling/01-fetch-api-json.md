@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Mengambil Data dari Internet (fetch dan JSON) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Perintah **`fetch()`** adalah kurir internet browser Anda: ia pergi ke alamat URL server, mengambil amplop respons, lalu membongkar isi teks format **JSON** di dalamnya menjadi objek JavaScript yang siap ditampilkan ke halaman web.
 
 ---
@@ -173,7 +175,9 @@ tombolAmbil.addEventListener("click", ambilDataUser);
 - [ ] Amati pesan teks sejenak berubah menjadi `"⏳ Kurir sedang mengambil data..."`.
 - [ ] Amati data asli Leanne Graham dari server internet muncul lengkap dengan email dan kota asalnya.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu bahwa `fetch()` digunakan untuk mengambil data dari internet dan butuh dua langkah: `await fetch()` untuk sambungan, lalu `await response.json()` untuk membuka isi teksnya**.
 
 ---

@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Event Loop dan Web Timers (Macrotasks vs Microtasks)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > JavaScript adalah mesin _single-threaded_ yang tidak pernah menunggu; ia mendelegasikan operasi lambat ke benang kerja browser (_Web APIs_) dan mengoordinasikan eksekusi callback kembali ke Call Stack melalui dua antrean prioritas mutlak: _Microtask Queue_ (prioritas utama tanpa kompromi) dan _Macrotask Queue_ (antrean giliran reguler).
 
 ---
@@ -118,8 +120,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Jangan pernah mengandalkan interval presisi pada `setInterval` untuk animasi visual; selalu gunakan `requestAnimationFrame(callback)` yang tersinkronisasi langsung dengan refresh rate monitor layar browser (60Hz / 120Hz).
 - [ ] **Langkah 3**: Simpan ID timer (`const timerId = setTimeout(...)`) dan selalu sediakan `clearTimeout(timerId)` jika komponen antarmuka ditutup sebelum timer sempat dieksekusi.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Mampu memprediksi 100% urutan log output dari kode yang mencampurkan komputasi sinkron, Promise, dan setTimeout tanpa menebak-nebak**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Ambang batas `setTimeout(fn, 0)` di browser sebenarnya memiliki batas klem minimum (_minimum clamp timeout_) sebesar **4 milidetik** setelah terjadi sarang pemanggilan timer bertingkat sebanyak 5 tingkat berturut-turut, sesuai pasal 8.5.2 spesifikasi WHATWG HTML.

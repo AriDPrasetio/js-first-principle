@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Type Casting (Coercion vs Conversion) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Type Casting adalah proses mengubah jenis data dari satu tipe ke tipe lain. Jika Anda melakukannya secara sadar, itu disebut **Type Conversion** (Aman). Jika komputer yang menebak dan mengubahnya secara otomatis di belakang layar, itu disebut **Type Coercion** (Sering memicu bug).
 
 ---
@@ -179,7 +181,9 @@ calcBtn.addEventListener("click", () => {
 - [ ] Amati bagaimana hasil Coercion menghasilkan `32 item`, sedangkan Conversion menghasilkan `5 item`.
 - [ ] Ubah angka di kotak input menjadi `10`, lalu klik hitung lagi (lihat perbandingan `102` vs `12`).
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tidak pernah lagi menjumlahkan nilai dari input formulir tanpa membungkusnya dengan fungsi `Number()` terlebih dahulu**.
 
 ---

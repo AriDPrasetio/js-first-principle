@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Menangani Error (try, catch, finally, Error) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Error handling adalah jaring pengaman kode Anda: saat ada kesalahan mendadak, program Anda tidak akan mati total (_crash_), melainkan segera menangkap masalahnya dan tetap menampilkan pesan yang sopan kepada pengguna.
 
 ---
@@ -202,7 +204,9 @@ tombolHitung.addEventListener("click", () => {
 - [ ] Kosongkan kolom jumlah orang atau isi dengan angka `0`, lalu klik tombol. Perhatikan bagaimana kotak berubah menjadi merah dengan pesan yang jelas tanpa membuat browser macet.
 - [ ] Perhatikan teks status waktu di bagian paling bawah: teks tersebut selalu diperbarui berkat blok `finally`.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu kapan harus membungkus kode dengan `try...catch` dan paham bahwa blok `finally` pasti dieksekusi apapun yang terjadi di `try` atau `catch`**.
 
 ---

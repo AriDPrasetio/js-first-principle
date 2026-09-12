@@ -14,7 +14,9 @@ official_docs_url:
 
 # First Principles Deep Dive: var, let, dan const
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Deklarasi variabel adalah mekanisme pendaftaran nama identifier ke dalam _Environment Record_ memori; kata kunci yang dipilih menentukan apakah pengikatan (_binding_) bersifat dapat diubah (_mutable_), terikat pada cakupan blok atau fungsi, serta apakah ia mencemari objek global.
 
 ---
@@ -92,8 +94,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Aktifkan aturan linter `no-var: "error"` dan `prefer-const: "error"` di proyek untuk menegakkan penggunaan `const` dan `let` secara otomatis.
 - [ ] **Langkah 3**: Jika memiliki konfigurasi global atau kamus token desain yang tidak boleh berubah, selalu bungkus dengan `Object.freeze()` untuk melengkapi proteksi `const`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada satu pun kata kunci `var` di dalam basis kode, dan seluruh variabel yang tidak di-reassign terproteksi menggunakan `const`**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Memakai `const` secara default adalah **konvensi arsitektur industri untuk keamanan alur data**, bukan keharusan performa engine. Secara runtime di V8 modern, perbedaan performa antara `const` dan `let` yang tidak di-reassign hampir tidak ada.

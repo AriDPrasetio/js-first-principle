@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: ES Modules (import dan export)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > ES Modules adalah sistem graf ketergantungan statis resmi web (_Static Dependency Graph_): modul diuraikan sebelum dieksekusi, diinstansiasi sebagai pengikatan memori hidup (_Live Read-Only Bindings_), dan dievaluasi tepat satu kali sebagai objek tunggal (_Singleton_).
 
 ---
@@ -106,8 +108,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Selalu sertakan ekstensi berkas lengkap `.js` pada path impor lokal di peramban (misal `import { x } from './utils.js'`, bukan `./utils`), karena browser murni tidak melakukan penebakan ekstensi berkas secara otomatis.
 - [ ] **Langkah 3**: Terapkan _code-splitting_ menggunakan `import()` dinamis pada fitur-fitur yang jarang dibuka pengguna (seperti dialog ekspor PDF atau modul kalkulasi grafik).
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Aplikasi berjalan dengan arsitektur modul mandiri tanpa memaparkan variabel ke `window`, dan modul berat berhasil dimuat secara dinamis hanya saat dibutuhkan**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Kemampuan menulis impor tanpa ekstensi berkas (`from './utils'`) atau impor dari nama paket (`from 'lodash'`) adalah **perilaku bundler eksternal (seperti Vite, Webpack) atau Import Maps**, bukan kemampuan bawaan default URL resolver browser murni tanpa konfigurasi.

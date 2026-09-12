@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Memilih Elemen dan Menangani Klik (querySelector & addEventListener) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > JavaScript membuat halaman web hidup melalui dua langkah mendasar: **menemukan elemen di layar** (`querySelector`) dan **memasang sensor pendengar interaksi** (`addEventListener`) seperti klik tombol atau ketikan keyboard.
 
 ---
@@ -167,7 +169,9 @@ tombolReset.addEventListener("click", () => {
 - [ ] Klik tombol **"Reset (0)"** $\to$ pastikan angka kembali ke 0 seketika.
 - [ ] Buka Developer Tools (F12) di tab Console, ketik `tombolTambah` lalu Enter $\to$ amati bahwa variabel menyimpan referensi elemen tombol HTML asli.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu bagaimana alur menyambungkan elemen HTML ke file JavaScript: cari dengan `document.querySelector`, lalu pasang pendengar aksi dengan `.addEventListener("click", ...)`**.
 
 ---

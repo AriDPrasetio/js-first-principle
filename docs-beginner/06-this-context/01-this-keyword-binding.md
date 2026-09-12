@@ -11,7 +11,9 @@ official_docs_url:
 
 # Panduan Pemula: Kata Kunci 'this' dan Aturan Pengikatannya di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Kata kunci `this` di JavaScript bekerja persis seperti kata ganti orang **"Saya"** dalam percakapan: siapa yang menjadi "Saya" tergantung pada siapa yang sedang berbicara (siapa yang memanggil fungsinya saat itu).
 
 ---
@@ -168,7 +170,9 @@ tombolBudi.addEventListener("click", () => {
 - [ ] Klik **"Panggil dari Andi"** $\to$ perhatikan sapaan menyebut nama Andi.
 - [ ] Klik **"Panggil dari Budi"** $\to$ perhatikan sapaan menyebut nama Budi, meskipun kedua objek memakai fungsi `perkenalkanDiri` yang sama persis.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu bahwa `this` ditentukan oleh objek yang memanggilnya di sebelah kiri titik (`objek.fungsi()`)**.
 
 ---

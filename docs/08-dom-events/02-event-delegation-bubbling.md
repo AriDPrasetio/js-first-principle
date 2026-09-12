@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Event Delegation dan Event Bubbling
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Event di DOM merambat melalui pohon dokumen dalam tiga fase fisik (Capturing $\to$ Target $\to$ Bubbling); _Event Delegation_ adalah pola arsitektur yang memanfaatkan fase bubbling untuk menangani interaksi ratusan elemen anak hanya melalui satu listener tunggal pada elemen induk (_$O(1)$ memory allocation_).
 
 ---
@@ -107,8 +109,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Selalu gunakan `event.target.closest('selector')` di baris pertama delegasi untuk mengatasi klik pada elemen bersarang (ikon SVG atau tag format teks di dalam tombol).
 - [ ] **Langkah 3**: Gunakan `event.stopPropagation()` hanya jika benar-benar ada alasan arsitektur spesifik (misal menghentikan klik pada modal pop-up agar tidak memicu penutup latar belakang), jangan gunakan secara sembarangan karena akan mematikan sistem analitik atau delegasi di tingkat atas.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Elemen baru yang ditambahkan ke DOM secara dinamis dapat langsung merespons aksi klik tanpa perlu mendaftarkan listener baru secara manual**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Memasang delegasi di tingkat paling atas (`document.body`) secara berlebihan untuk semua komponen aplikasi dapat menyebabkan overhead pemeriksaan selektor CSS di setiap klik. **Praktik terbaik First Principles adalah memasang delegasi pada kontainer komponen terdekat**, bukan langsung pada objek `document`.

@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Higher-Order Functions (HOF) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Higher-Order Function (HOF) adalah fungsi super: ia bisa menerima fungsi lain sebagai bahan masukan (_parameter/callback_), atau menghasilkan fungsi baru sebagai keluarannya.
 
 ---
@@ -193,7 +195,9 @@ tombolHalo.addEventListener("click", () => {
 - [ ] Klik ketiga tombol secara bergantian. Perhatikan bagaimana daftar nama berubah format seketika sesuai spesialisnya masing-masing.
 - [ ] Amati di file `app.js` bahwa fungsi `olahDanTampilkan` hanya dibuat satu kali, tetapi perilakunya bisa sangat fleksibel berkat parameter fungsi yang diterimanya.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti bahwa fungsi di JavaScript bisa dikirimkan ke dalam fungsi lain layaknya Anda mengirim variabel angka atau string biasa**.
 
 ---

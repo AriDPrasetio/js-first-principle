@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Operator Tiga Titik (Spread dan Rest) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Tanda tiga titik (`...`) adalah operator bunglon di JavaScript: jika ditaruh di tempat membuat data baru, ia bertindak sebagai **Spread (menaburkan/membuka isi)**; jika ditaruh di tempat menerima variabel, ia bertindak sebagai **Rest (mengemas sisa-sisanya ke dalam wadah)**.
 
 ---
@@ -165,7 +167,9 @@ tombolRest.addEventListener("click", () => {
 - [ ] Klik tombol **"1. Tabur Gabung Array (Spread)"** $\to$ amati bagaimana dua array berbeda dan satu item tambahan melebur menjadi satu urutan menu utuh.
 - [ ] Klik tombol **"2. Kemas Sisa Tim (Rest)"** $\to$ perhatikan nama pemenang pertama terpisah secara bersih dan 4 sisa nama lainnya otomatis terkumpul ke dalam array kru cadangan.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu bahwa `...` saat membongkar array/objek disebut Spread, dan saat mengumpulkan sisa elemen disebut Rest**.
 
 ---

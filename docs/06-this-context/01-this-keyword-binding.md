@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Kata Kunci this dan Aturan Binding
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Kata kunci `this` bukanlah pengikatan statis yang terikat pada tubuh fungsi; `this` adalah konteks dinamis yang ditentukan oleh cara fungsi tersebut dipanggil pada titik pemanggilannya (_Call-Site_), kecuali pada Arrow Function yang mewarisinya secara leksikal.
 
 ---
@@ -102,8 +104,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Aktifkan `'use strict';` di setiap file (atau gunakan ES Modules yang otomatis berstatus strict mode) agar pemanggilan fungsi default mengembalikan `undefined` ketimbang mencemari `window`.
 - [ ] **Langkah 3**: Saat membutuhkan delegasi event DOM, gunakan parameter eksplisit `event.target` (elemen yang diklik) dan `event.currentTarget` (elemen pemilik listener) alih-alih mengandalkan `this`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi error `TypeError: Cannot read properties of undefined (reading '...')` saat sebuah metode objek dioper sebagai callback**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Kebiasaan mengikat konteks di konstruktor class (`this.fn = this.fn.bind(this)`) adalah **pola warisan dari era React Class Component awal**. Di JavaScript modern, penggunaan _arrow method_ di body class (`fn = () => {}`) atau inline arrow wrapper adalah pendekatan yang jauh lebih dominan dan ringkas.

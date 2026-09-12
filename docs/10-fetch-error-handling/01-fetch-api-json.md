@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Fetch API dan Penanganan Data JSON
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > `fetch()` adalah antarmuka aliran jaringan bertahap (_Stream-based I/O_): tahap pertama menyelesaikan penerimaan header HTTP, sedangkan tahap kedua mengonsumsi aliran data biner tubuh respons (_ReadableStream_) hanya satu kali untuk diubah menjadi struktur memori via `JSON.parse`.
 
 ---
@@ -122,8 +124,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Buka tab **Network** di Chrome DevTools -> klik request API -> amati tab **Headers** (Fase 1) dan tab **Response** (Fase 2 stream) untuk memvisualisasikan dua tahap pemuatan fetch.
 - [ ] **Langkah 3**: Jangan pernah memanggil `.json()` dua kali pada objek response yang sama; jika butuh mencatat payload mentah untuk logging, gunakan `const clone = response.clone()`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Aplikasi tidak pernah mengalami crash `SyntaxError: Unexpected token '<'` saat backend secara tidak sengaja mengembalikan halaman web HTML 404/500**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Pemakaian pustaka pihak ketiga seperti Axios untuk request data adalah **pilihan utilitas kenyamanan di industri**, bukan kebutuhan mutlak. Fetch API native browser modern sudah mendukung seluruh fitur standar (termasuk interceptor via wrapper fungsi dan pembatalan via AbortController).

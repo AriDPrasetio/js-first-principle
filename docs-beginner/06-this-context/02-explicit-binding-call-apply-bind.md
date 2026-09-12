@@ -13,7 +13,9 @@ official_docs_url:
 
 # Panduan Pemula: Explicit Binding (call, apply, dan bind) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Jika sebelumnya `this` ditentukan otomatis oleh siapa yang memanggilnya, dengan `call`, `apply`, dan `bind` Anda bisa **memaksa** fungsi untuk menganggap objek tertentu sebagai pemilik `this`-nya secara sengaja.
 
 ---
@@ -206,7 +208,9 @@ tombolBind.addEventListener("click", cetakTiketPanitiaTerkunci);
 - [ ] Klik tombol ke-2 (Festival) $\to$ perhatikan nama berganti menjadi Joko Anwar.
 - [ ] Klik tombol ke-3 (Panitia) $\to$ perhatikan tiket berganti menjadi staf panitia Rian secara instan melalui fungsi yang sudah diikat permanen dengan `.bind()`.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Bisa membedakan kapan menggunakan `.call()`/`.apply()` (eksekusi langsung detik itu juga) vs `.bind()` (menciptakan fungsi terikat untuk dijalankan nanti)**.
 
 ---

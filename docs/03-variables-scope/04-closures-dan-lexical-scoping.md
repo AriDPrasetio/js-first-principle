@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Closures dan Lexical Scoping
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Closure adalah konsekuensi mekanis dari _Lexical Scoping_: ketika sebuah fungsi lahir, ia menyimpan pointer internal permanen (`[[Environment]]`) ke lingkungan memori tempat ia didefinisikan, sehingga ia dapat terus mengakses variabel induknya meskipun konteks eksekusi induk telah selesai berjalan dan keluar dari Call Stack.
 
 ---
@@ -95,8 +97,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Hindari mempertahankan closure yang memegang referensi ke objek DOM besar yang sudah dihapus dari layar (pastikan melepaskan event listener jika elemen DOM di-unmount agar Garbage Collector dapat membersihkan memori).
 - [ ] **Langkah 3**: Terapkan closure untuk fungsi utilitas praktis seperti `debounce()` atau `throttle()` saat menangani input teks pencarian antarmuka.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Mampu membuat modul state privat di mana data hanya dapat dimodifikasi lewat fungsi antarmuka yang ditentukan, tanpa celah pembajakan variabel dari luar**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Gagasan bahwa "closure boros memori" adalah **mitos yang berlebihan**. Engine V8 modern sangat cerdas melakukan optimasi: variabel di lingkungan luar yang tidak pernah dirujuk oleh fungsi anak akan secara otomatis dipangkas (_pruned_) dan tidak disimpan di dalam closure.

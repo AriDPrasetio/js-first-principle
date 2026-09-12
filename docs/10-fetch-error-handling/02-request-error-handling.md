@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Penanganan Error pada Request HTTP (Fetch & AbortController)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > `fetch()` tidak menganggap status HTTP 404 atau 500 sebagai error penolakan Promise; ia hanya me-reject pada kegagalan fisik jaringan (_Network Failure_), mewajibkan evaluasi manual properti `response.ok` dan pembatalan request usang via `AbortController`.
 
 ---
@@ -121,8 +123,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Pada fitur input autocomplete atau pencarian langsung, batalkan request lama menggunakan `controller.abort()` setiap kali pengguna mengetikkan karakter baru.
 - [ ] **Langkah 3**: Di blok `catch`, selalu lakukan pengecekan `if (error.name === 'AbortError') return;` agar pembatalan request yang disengaja tidak memunculkan dialog peringatan error merah di layar pengguna.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Endpoint yang mengembalikan status HTTP 4xx/5xx berhasil ditangkap di blok catch atau penanganan error UI, dan request yang menggantung dibatalkan otomatis oleh timeout signal**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Fitur `AbortSignal.timeout()` tersedia secara native di semua peramban modern (Chrome 103+, Safari 16+, Firefox 100+). Jika harus mendukung lingkungan browser purba, pembuatan `AbortController` manual dikombinasikan dengan `setTimeout` dan event listener pembatalan adalah implementasi padanannya.

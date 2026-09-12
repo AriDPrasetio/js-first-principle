@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Meminjam Fungsi (Function Borrowing) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Function Borrowing adalah teknik cerdas di mana suatu objek atau kumpulan data meminjam fungsi sakti milik objek lain lewat `.call()` atau `.apply()`, tanpa Anda harus menulis ulang fungsi tersebut dari nol.
 
 ---
@@ -161,7 +163,9 @@ tombolPinjam.addEventListener("click", () => {
 - [ ] Perhatikan teks langsung berubah menjadi: `Paket Hemat: Nasi Goreng + Mie Ayam + Sate Ayam + Es Teh Manis`.
 - [ ] Buka konsol browser, ketik `document.querySelectorAll(".item-menu").map` dan amati hasilnya adalah `undefined` (membuktikan bahwa NodeList memang aslinya tidak punya fungsi `.map`).
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti konsep bahwa sebuah objek atau NodeList bisa meminjam fungsi milik objek/Array lain dengan bantuan `.call()`**.
 
 ---

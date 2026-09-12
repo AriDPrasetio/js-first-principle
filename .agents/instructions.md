@@ -29,7 +29,9 @@ Lakukan analisis First Principles pada topik yang diberikan dengan alur berikut:
 
 ## First Principles Deep Dive: [Nama Topik/Inisiatif]
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > [1-2 kalimat esensi mutlak topik ini pada level paling dasar, tanpa jargon-buzzword.]
 
 ---
@@ -76,9 +78,14 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: [Aksi teknis lanjutan]
 - [ ] **Langkah 3**: [Aksi validasi/pengujian — sertakan cara verifikasi manual di DevTools jika relevan]
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **[1 metrik spesifik yang membuktikan Masalah Sebenarnya di Bagian 1 sudah terpecahkan]**.
-> [!WARNING] Batas Kepastian
+
+> [!WARNING]
+> **Batas Kepastian**
+>
 > [Sebutkan jika ada bagian dari analisis ini yang masih berupa konvensi/opini industri ketimbang fakta spesifikasi — supaya tidak keliru dianggap hukum mutlak.]
 
 </output_format>

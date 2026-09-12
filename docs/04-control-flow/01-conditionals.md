@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Conditional Statements (if/else, switch, short-circuit)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Pernyataan kondisional adalah instruksi percabangan tingkat mesin (_branching jump_) yang mengevaluasi kebenaran leksikal (`ToBoolean`) atau kecocokan kesetaraan ketat untuk menentukan blok instruksi mana yang akan dieksekusi oleh CPU selanjutnya.
 
 ---
@@ -93,8 +95,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Refaktorisasi fungsi dengan sarang `if-else` lebih dari 2 tingkat menggunakan teknik _Early Return_ (cek kondisi kegagalan di baris awal, lalu return seketika).
 - [ ] **Langkah 3**: Pada percabangan dengan banyak nilai diskrit (seperti penanganan kode status HTTP atau tipe action tombol), pertimbangkan kamus objek pemetaan (_object lookup_) sebagai pengganti `switch` yang rentan bug _fall-through_.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada fungsi dengan kedalaman indentasi `if` lebih dari 2 tingkat, dan penetapan nilai default tidak merusak angka `0` atau boolean `false`**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Memilih antara `if/else`, `switch`, atau _object lookup map_ adalah **preferensi gaya arsitektur dan keterbacaan**. Secara performa pada aplikasi frontend umum, perbedaan kecepatan eksekusi ketiganya di browser modern tidak signifikan.

@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: var, let, dan const di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Variabel adalah kotak berlabel untuk menyimpan data di memori komputer:
 >
 > - **`const`**: Kotak terkunci permanen yang isinya tidak boleh diganti (_Default_ pilihan utama).
@@ -151,7 +153,9 @@ tambahBtn.addEventListener("click", () => {
 - [ ] Perhatikan angka di layar bertambah dengan mulus.
 - [ ] Buka `app.js`, coba ubah `let nilaiSkor = 0` menjadi `const nilaiSkor = 0`. Simpan dan klik tombolnya di browser. Buka Console (`F12`) dan amati pesan error alarm `TypeError: Assignment to constant variable`. Kembalikan lagi ke `let`.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu persis kapan harus menggunakan `const` (nilai tetap/elemen DOM) dan kapan menggunakan `let` (nilai dinamis yang bertambah)**.
 
 ---

@@ -11,7 +11,9 @@ official_docs_url:
 
 # Panduan Pemula: Perulangan (Loops) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Perulangan (_Loop_) adalah cara Anda menyuruh komputer melakukan hal yang sama berkali-kali secara otomatis: membaca daftar barang satu per satu sampai barang terakhir, tanpa Anda harus mengetik perintahnya berulang-ulang.
 
 ---
@@ -141,7 +143,9 @@ tombolTampilkan.addEventListener("click", () => {
 - [ ] Perhatikan bagaimana 4 baris item muncul secara otomatis dalam hitungan milidetik.
 - [ ] Buka `app.js`, tambahkan barang baru ke dalam array `daftarBelanja` (misal `"Mentega"`), simpan, dan klik tombol lagi di browser.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Bisa menggunakan `for (const item of array)` untuk membaca dan menampilkan seluruh isi deret data ke layar**.
 
 ---

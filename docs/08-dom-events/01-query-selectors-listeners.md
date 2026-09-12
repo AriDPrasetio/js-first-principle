@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: DOM Query Selectors dan Event Listeners
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > DOM bukan bagian dari bahasa JavaScript, melainkan struktur pohon representasi dokumen di memori C++ peramban; manipulasi elemen dan penempelan event listener adalah komunikasi lintas batas (_cross-boundary bridge_) antara runtime script dan mesin render browser.
 
 ---
@@ -118,8 +120,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Berhenti mencari elemen dengan `document.querySelector` di dalam loop atau di dalam tubuh handler klik; cari elemen di level modul luar dan gunakan variabel referensi cache.
 - [ ] **Langkah 3**: Buka DevTools -> tab **Memory** -> ambil _Heap Snapshot_ -> cari kata kunci "Detached" untuk memverifikasi tidak ada node DOM mengambang yang tertahan oleh closure listener yang lupa dilepas.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada pemanggilan `querySelector` berulang pada setiap aksi klik, dan seluruh listener dapat dicopot bersih menggunakan `AbortController`**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Memilih antara `querySelector` (menggunakan parser CSS) vs metode lama `getElementById` (pencarian langsung via hash table internal ID): `getElementById` secara mikrodetik sedikit lebih cepat, namun `querySelector` jauh lebih fleksibel dan standar di industri modern. Perbedaan performanya tidak signifikan untuk 99% aplikasi web.

@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Operator typeof
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Operator `typeof` adalah operasi evaluasi tingkat rendah di engine JavaScript yang membaca penanda tipe biner (_type tag_) dari sebuah slot memori dan mengembalikan nama kategorinya dalam bentuk string primitif.
 
 ---
@@ -90,8 +92,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Tulis pemeriksaan keberadaan variabel yang aman: gunakan `typeof undeclaredVar === 'undefined'` karena `typeof` adalah satu-satunya operator yang tidak melempar `ReferenceError` pada variabel yang belum dideklarasikan.
 - [ ] **Langkah 3**: Gantikan seluruh pemeriksaan array lama (`typeof arr === 'object'`) di codebase dengan metode standar resmi `Array.isArray(arr)`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi error runtime `TypeError: Cannot read properties of null` di logika validasi data aplikasi**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Perilaku `typeof null === 'object'` secara resmi tercantum dalam spesifikasi standar ECMA-262 sebagai komitmen keabadian web (_web compatibility_), sehingga perilaku ini **bukan lagi sekadar bug tak disengaja, melainkan hukum spesifikasi resmi** yang wajib dipertahankan browser selamanya.

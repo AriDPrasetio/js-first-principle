@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Function Borrowing dan Generic Methods
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Function Borrowing adalah pemanfaatan metode generik prototipe di mana sebuah objek meminjam fungsi milik objek lain melalui `.call()` atau `.apply()` tanpa harus mewarisi rantai prototipe objek tersebut (_Duck Typing_).
 
 ---
@@ -98,8 +100,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Ketika berurusan dengan koleksi DOM lama seperti `HTMLCollection` atau `NodeList`, konversi ke array sejati memakai `Array.from(koleksiDOM)` atau operator spread `[...koleksiDOM]` sebelum memanggil filter atau map.
 - [ ] **Langkah 3**: Eksperimen di DevTools: buat objek buatan sendiri `{ 0: 'a', 1: 'b', length: 2 }`, lalu coba panggil `Array.prototype.map.call(obj, x => x.toUpperCase())` untuk melihat bagaimana generic method merespons duck-typing.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Tidak ada lagi kemungkinan error `TypeError: obj.hasOwnProperty is not a function` pada pemrosesan objek dinamis, dan struktur array-like dapat diproses dengan aman**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Meskipun metode seperti `Array.prototype.slice.call()` masih didukung penuh di semua browser untuk alasan kompatibilitas web, **pola ini dianggap sebagai idiom usang (deprecated pattern by convention)** sejak dirilisnya `Array.from()` di ECMAScript 2015.

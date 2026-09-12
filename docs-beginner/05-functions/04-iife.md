@@ -11,7 +11,9 @@ official_docs_url:
 
 # Panduan Pemula: IIFE (Fungsi Langsung Jalan Seketika) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > IIFE (_Immediately Invoked Function Expression_, dibaca "I-fi") adalah fungsi yang dibuat dan langsung dijalankan detik itu juga begitu browser membacanya. Fungsi ini berguna membuat gelembung privat agar variabel sementara di dalamnya tidak mengotori atau bertabrakan dengan kode lain.
 
 ---
@@ -145,7 +147,9 @@ wadahHasil.textContent = `${infoPerangkat.kategori} (${infoPerangkat.resolusi})`
 - [ ] Perhatikan bahwa teks status langsung berubah menjadi kategori perangkat Anda (misal `Komputer Desktop / Laptop (1920 x 1080 piksel)`) tanpa Anda harus mengklik tombol apa pun.
 - [ ] Buka Console browser (tekan F12), ketik `lebarLayar` lalu tekan Enter. Anda akan melihat error `ReferenceError: lebarLayar is not defined` yang membuktikan bahwa variabel sementara tersebut aman terlindungi di dalam kapsul IIFE.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu tujuan utama tanda kurung `(...)()` adalah mengeksekusi fungsi seketika agar variabel di dalamnya tidak mencemari memori luar**.
 
 ---

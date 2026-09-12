@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Apa itu JavaScript dan Cara Menjalankannya
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > HTML adalah kerangka bangunan, CSS adalah cat dan dekorasinya, sedangkan JavaScript adalah aliran listrik dan saklar yang membuat pintu bisa terbuka otomatis saat tombol ditekan. JavaScript adalah bahasa yang memberi "nyawa" interaktivitas pada halaman web.
 
 ---
@@ -169,7 +171,9 @@ saklarBtn.addEventListener("click", () => {
 - [ ] Klik tombol saklar dan amati lampu berubah warna serta teks berganti secara interaktif.
 - [ ] Buka Console browser (`F12`), ketik `console.log("Halo dari konsol!")` dan tekan Enter.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah menguasai materi ini jika: **Memahami mengapa atribut `defer` penting agar JavaScript tidak error mencari elemen HTML yang belum selesai dibaca browser**.
 
 ---

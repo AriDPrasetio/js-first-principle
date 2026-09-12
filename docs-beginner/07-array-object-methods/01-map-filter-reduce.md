@@ -13,7 +13,9 @@ official_docs_url:
 
 # Panduan Pemula: Mengolah Array dengan map, filter, dan reduce di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Tiga sekawan pemroses data ini memudahkan Anda mengolah daftar: **`map`** mengubah bentuk setiap barang satu per satu, **`filter`** membuang barang yang tidak lolos syarat, dan **`reduce`** menggabungkan seluruh barang menjadi satu nilai akhir.
 
 ---
@@ -211,7 +213,9 @@ tombolReduce.addEventListener("click", () => {
 - [ ] Klik tombol **Hanya Buah di Bawah 25 Ribu (.filter)** $\to$ amati hanya Apel dan Jeruk yang lolos, Mangga tersaring keluar.
 - [ ] Klik tombol **Hitung Total (.reduce)** $\to$ amati ketiga harga disatukan menjadi Rp 65.000.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti kapan harus memakai `map` (mengubah bentuk), `filter` (menyaring), dan `reduce` (menyatukan menjadi satu nilai)**.
 
 ---

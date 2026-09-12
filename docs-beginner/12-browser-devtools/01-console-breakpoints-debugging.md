@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Melacak Bug dengan Console dan Breakpoint di Browser
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Menemukan kesalahan kode (_Debugging_) tidak harus menebak-nebak: Anda bisa menggunakan **`console.table`** untuk melihat data dalam bentuk tabel rapi, atau menggunakan kata kunci **`debugger;`** untuk membekukan waktu di browser dan memeriksa isi variabel secara langsung!
 
 ---
@@ -190,7 +192,9 @@ tombolDebug.addEventListener("click", () => {
 - [ ] Beralih ke tab **Sources**, lalu klik tombol **"2. Bekukan Waktu (debugger;)"** $\to$ amati layar browser Anda meredup dan eksekusi berhenti tepat di baris `debugger;`.
 - [ ] Arahkan kursor mouse ke variabel `subtotal` untuk melihat nilainya secara langsung!
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Tahu cara membuka DevTools (F12) untuk melihat `console.table()` dan bisa menggunakan `debugger;` untuk mengintip variabel saat browser membeku**.
 
 ---

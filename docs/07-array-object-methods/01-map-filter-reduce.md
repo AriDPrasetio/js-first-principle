@@ -14,7 +14,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Array Transformation (map, filter, reduce)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > `map`, `filter`, dan `reduce` adalah operator aljabar transformasi data murni yang memproses larik (_array_) tanpa memutasi array aslinya: `map` memetakan dimensi 1-ke-1, `filter` menyaring subset data berbasis predikat kebenaran, dan `reduce` melipat (_fold_) deret data menjadi satu entitas nilai akumulasi.
 
 ---
@@ -110,8 +112,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Hindari memicu efek samping (_side effects_) di dalam `.map()`; jika tujuan kita hanya mengeksekusi operasi (misal menempelkan event listener atau `console.log`), gunakan `.forEach()` atau `for...of`, bukan `.map()`.
 - [ ] **Langkah 3**: Uji ketahanan array kosong: jalankan `[].reduce((a, b) => a + b, 0)` (sukses menghasilkan 0) vs `[].reduce((a, b) => a + b)` (crash TypeError) untuk membuktikan kebenaran fundamental nilai awal.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Pipeline transformasi data array tidak menghasilkan efek samping mutasi pada data asli dan kebal dari crash runtime saat menerima array kosong**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Rantai panjang seperti `.filter().map().filter().map()` adalah **gaya deklaratif yang elegan secara visual**, namun memiliki penalti alokasi memori berlebih untuk dataset dengan puluhan ribu item. Untuk performa ekstrem, satu loop imperatif atau satu lintasan `reduce` tetap menjadi pilihan arsitektur yang lebih optimal.

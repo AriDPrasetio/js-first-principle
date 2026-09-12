@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Exception Handling (try, catch, finally, Error Objects)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Penanganan eksepsi adalah mekanisme interupsi darurat di mana engine membongkar tumpukan pemanggilan (_Call Stack Unwinding_) secara instan hingga menemukan penampung `try/catch`, dan selalu mengeksekusi blok `finally` untuk menjamin pembersihan sumber daya.
 
 ---
@@ -109,8 +111,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Tempatkan manipulasi status UI kritis (seperti `button.disabled = false`) di dalam blok `finally` agar tombol tidak terkunci permanen saat API gagal.
 - [ ] **Langkah 3**: Pasang penangkap error global pada level aplikasi (`window.addEventListener('error', handler)` dan `window.addEventListener('unhandledrejection', handler)`) untuk memantau error yang lolos dari blok lokal.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Komponen UI tidak pernah mengalami status 'loading membeku' saat error terjadi, dan setiap error yang tercatat memiliki Stack Trace lengkap**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Pembuatan kelas error kustom (`class CustomError extends Error`) adalah **konvensi pengorganisasian kode OOP**. Pada arsitektur fungsional modern, banyak developer cukup menggunakan objek `Error` standar dengan menempelkan properti `.code` tambahan.

@@ -11,7 +11,9 @@ official_docs_url:
 
 # Panduan Pemula: Hoisting dan Temporal Dead Zone (TDZ) di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Komputer membaca kode Anda dalam dua putaran: putaran pertama mencatat semua nama variabel dan fungsi di memori (_Fase Persiapan_), dan putaran kedua baru menjalankan instruksi baris demi baris (_Fase Eksekusi_). Itulah sebabnya beberapa hal sudah "dikenal" komputer sebelum barisnya dibaca.
 
 ---
@@ -143,7 +145,9 @@ function buatSalam(namaPengguna) {
   ```
   Lihat pesan errornya: `ReferenceError: Cannot access 'namaSaya' before initialization`.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti mengapa fungsi formal aman dipanggil sebelum posisinya di berkas, sedangkan variabel `let`/`const` wajib dideklarasikan terlebih dahulu**.
 
 ---

@@ -13,7 +13,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Default Parameters dan Rest Parameters
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Parameter fungsi adalah deklarasi slot memori lokal yang diisi saat pemanggilan; _Default Parameters_ mengevaluasi nilai cadangan HANYA jika argumen bernilai `undefined`, sedangkan _Rest Parameters_ mengumpulkan sisa argumen tak terbatas ke dalam instans objek Array sejati.
 
 ---
@@ -95,8 +97,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Selalu tempatkan parameter dengan nilai default di urutan paling kanan dari daftar parameter fungsi agar pemanggil tidak perlu sengaja mengirim `undefined` untuk melewatinya.
 - [ ] **Langkah 3**: Ingat aturan posisi rest parameter: `...rest` WAJIB berada di posisi parameter paling terakhir; menaruh parameter lain setelah rest akan memicu `SyntaxError: Rest parameter must be last formal parameter`.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Fungsi dapat menerima argumen variabel tanpa objek `arguments`, dan default parameter tidak pernah gagal akibat salah mengantisipasi nilai `null`**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Parameter default yang bergantung pada fungsi eksternal (misal: `function log(time = Date.now())`) dievaluasi ulang di setiap pemanggilan; ini **perilaku standar spesifikasi JavaScript**, berbeda dengan bahasa seperti Python di mana argumen default dievaluasi sekali saja saat kompilasi file.

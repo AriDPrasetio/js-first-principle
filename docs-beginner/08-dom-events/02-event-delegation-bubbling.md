@@ -12,7 +12,9 @@ official_docs_url:
 
 # Panduan Pemula: Event Bubbling dan Event Delegation di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Klik pada elemen anak akan otomatis melayang naik ke elemen induknya seperti gelembung udara (_Event Bubbling_). Dengan teknik **Event Delegation**, Anda cukup memasang **satu pendengar klik di wadah induk** untuk mengatur ratusan elemen anak di dalamnya.
 
 ---
@@ -200,7 +202,9 @@ tombolTambah.addEventListener("click", () => {
 - [ ] Ketik tugas baru di kotak input (misal: `"Beli Buku"`), lalu klik **"Tambah"**.
 - [ ] Sekarang klik tombol **"Hapus"** pada item baru yang baru saja Anda buat. Perhatikan bahwa tombol hapus tersebut langsung aktif bekerja tanpa Anda harus menulis kode listener baru!
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Mengerti bahwa klik pada elemen anak akan melayang naik (_bubbling_), sehingga kita cukup memasang 1 listener di elemen induk (_event delegation_)**.
 
 ---

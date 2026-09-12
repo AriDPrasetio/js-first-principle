@@ -12,7 +12,9 @@ official_docs_url:
 
 # First Principles Deep Dive: Destructuring Assignment (Array & Object)
 
-> [!ABSTRACT] The Ground Truth
+> [!NOTE]
+> **The Ground Truth**
+>
 > Destructuring adalah sintaks pencocokan pola (_pattern matching_) deklaratif di mana engine memetakan properti objek melalui operasi leksikal `[[Get]]` atau memeras elemen larik melalui kontrak antarmuka _Iterator Protocol_ langsung ke slot variabel lokal.
 
 ---
@@ -103,8 +105,12 @@ _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level s
 - [ ] **Langkah 2**: Manfaatkan array destructuring untuk mengonsumsi entri `Object.entries(obj)`: `for (const [key, value] of Object.entries(obj))`.
 - [ ] **Langkah 3**: Hindari destructuring bersarang terlalu dalam (lebih dari 2 tingkat) karena merusak keterbacaan kode; pecah menjadi beberapa baris terpisah jika skema data terlalu kompleks.
 
-> [!TIP] Parameter Kesuksesan (Success Metric)
+> [!TIP]
+> **Parameter Kesuksesan (Success Metric)**
+>
 > Topik ini selesai dieksekusi dengan benar jika: **Fungsi yang menerima parameter destructuring tidak crash saat dipanggil tanpa argumen (`fn()`), dan penamaan variabel lokal konsisten**.
 
-> [!WARNING] Batas Kepastian
+> [!WARNING]
+> **Batas Kepastian**
+>
 > Sintaks penamaan ulang `{ prop: newName }` sering kali membingungkan pemula karena mirip dengan sintaks penetapan pasangan key-value pada objek biasa; **ini adalah aturan tata bahasa formal spesifikasi ECMAScript**, di mana sisi kanan titik dua pada pola destructuring adalah _nama variabel baru_, bukan nilainya.

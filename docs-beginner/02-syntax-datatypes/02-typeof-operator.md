@@ -11,7 +11,9 @@ official_docs_url:
 
 # Panduan Pemula: Operator typeof di JavaScript
 
-> [!ABSTRACT] Inti Konsep (The Ground Truth)
+> [!NOTE]
+> **Inti Konsep (The Ground Truth)**
+>
 > Operator `typeof` adalah alat pemindai cepat (_scanner_) bawaan JavaScript yang membaca sebuah nilai dan memberi tahu Anda kategori tipe datanya dalam bentuk teks (seperti `"string"`, `"number"`, atau `"object"`).
 
 ---
@@ -148,7 +150,9 @@ cekBtn.addEventListener("click", () => {
 - [ ] Buka Console browser (`F12`), ketik `typeof null` dan lihat hasilnya `"object"`.
 - [ ] Ketik `Array.isArray([1, 2, 3])` di Console dan lihat hasilnya `true`.
 
-> [!TIP] Parameter Pemahaman Anda
+> [!TIP]
+> **Parameter Pemahaman Anda**
+>
 > Anda sudah paham jika: **Menyadari bahwa seluruh nilai dari input HTML form selalu dibaca sebagai teks (`string`), dan tahu cara mengeceknya memakai `typeof`**.
 
 ---
