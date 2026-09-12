@@ -10,38 +10,67 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Tiga sekawan pemroses data ini memudahkan Anda mengolah daftar: **`map`** mengubah bentuk setiap barang satu per satu, **`filter`** membuang barang yang tidak lolos syarat, dan **`reduce`** menggabungkan seluruh barang menjadi satu nilai akhir.
+> Tiga sekawan pemroses data ini memudahkan Anda mengolah daftar:
+>
+> - **`map`**: Mengubah bentuk setiap item satu per satu (panjang hasil selalu sama dengan panjang asal).
+> - **`filter`**: Menyaring item berdasarkan syarat kebenaran boolean (panjang hasil bisa berkurang).
+> - **`reduce`**: Menyusutkan seluruh deret item menjadi **satu nilai akhir** (angka, teks, atau objek baru).
 
 ---
 
 ## 1. Analogi Logis: Dapur Restoran Burger
 
-Bayangkan Anda bekerja di dapur restoran cepat saji dengan sekeranjang bahan:
+Bayangkan Anda bekerja di dapur restoran cepat saji:
 
 - **`map` (Mengubah Bentuk 1-ke-1)**:
-  Anda punya 3 potong daging sapi mentah. Anda memanggang ketiganya. Hasilnya adalah 3 potong daging sapi matang.
-  _(3 bahan masuk $\to$ 3 bahan keluar. Jumlahnya selalu sama, tapi penampilannya berubah)._
-- **`filter` (Menyaring dengan Saringan Halus)**:
-  Dari sekeranjang kentang, Anda hanya memilih kentang yang ukurannya besar dan membuang kentang busuk.
-  _(Hanya yang memenuhi syarat boleh lewat. Jumlah hasil bisa berkurang)._
-- **`reduce` (Menyusutkan Banyak Benda Jadi Satu)**:
-  Kasir mengumpulkan semua struk belanja dari pagi sampai malam, lalu menjumlahkan semua uangnya menjadi **SATU** angka total pendapatan hari ini.
-  _(Banyak barang masuk $\to$ 1 hasil akhir)._
+  Anda punya 3 potong daging mentah. Anda memanggang ketiganya. Hasilnya adalah 3 potong daging matang.
+  *(3 bahan masuk $\to$ 3 hasil matang keluar).*
+- **`filter` (Saringan Bahan Baku)**:
+  Dari sekeranjang kentang, Anda hanya meloloskan kentang yang berukuran besar dan membuang kentang busuk.
+  *(Hanya yang memenuhi kriteria boolean `true` yang lolos).*
+- **`reduce` (Menghitung Total Kasir)**:
+  Kasir mengumpulkan seluruh struk belanja dari pagi sampai malam, lalu mengakumulasikan seluruh uangnya ke dalam laci menjadi **SATU** angka total omset harian.
+  *(Banyak data $\to$ 1 nilai akhir).*
 
 ---
 
-## 2. Mengapa JavaScript Menyediakan Ketiganya? (First Principles)
+## 2. Anatomi Pemanggilan Callback (First Principles)
 
-1. **Array Asli Tidak Pernah Dirusak (Immutability)**:
-   Saat Anda memakai `.map()` atau `.filter()`, JavaScript membuat lembaran array baru di memori. Data asli Anda tetap aman dan tidak berubah secara tidak sengaja.
-2. **Menghapus Kerumitan Loop Manual**:
-   Daripada menulis variabel penampung kosong `let hasil = []` lalu membuat loop `for (let i = 0; ...)` yang panjang, Anda cukup menyebutkan niat Anda dengan satu kata kerja yang jelas: _"Tolong petakan (map) daftar harga ini ke format rupiah!"_.
+Ketiga metode ini adalah *Higher-Order Functions* yang menerima fungsi callback. Pahami kontrak nilai balikan (*return value*) masing-masing:
+
+### A. Kontrak `.map(callback)`
+Fungsi callback menerima `(item, index)`. **Nilai apa pun yang Anda `return` akan menjadi elemen baru di array hasil**:
+```javascript
+const angka = [1, 2, 3];
+const kaliDua = angka.map((item) => item * 2); // [2, 4, 6]
+```
+
+### B. Kontrak `.filter(callback)`
+Fungsi callback menerima `(item, index)`. **Wajib mengembalikan nilai boolean (`true`/`false`)**:
+- Kembalikan `true` jika ingin mempertahankan item.
+- Kembalikan `false` jika ingin membuangnya.
+```javascript
+const angka = [10, 25, 5];
+const lolos = angka.filter((item) => item >= 10); // [10, 25]
+```
+
+### C. Kontrak `.reduce(callback, initialValue)`
+Fungsi callback menerima `(akumulator, item)`. **Nilai `return` pada putaran saat ini akan menjadi nilai `akumulator` untuk putaran berikutnya**:
+```javascript
+const harga = [10, 20, 30];
+const total = harga.reduce((celengan, item) => celengan + item, 0); // 60
+```
+
+> [!WARNING]
+> **Kausalitas Fatal: Mengapa Wajib Memberi Nilai Awal `initialValue`?**
+> Jika Anda tidak memberi nilai awal (misal angka `0`), JavaScript secara otomatis mengambil elemen indeks `0` sebagai modal awal dan memulai loop dari indeks `1`.
+> **Bahayanya**: Jika array ternyata kosong `[]`, tidak ada elemen indeks 0 di memori, sehingga JavaScript langsung crash melempar `TypeError: Reduce of empty array with no initial value`!
 
 ---
 
 ## 3. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat kasir mini toko buah yang mempraktekkan `map`, `filter`, dan `reduce`:
+Mari kita buat kasir mini toko buah yang mempraktikkan `map`, `filter`, dan `reduce`:
 
 ### Berkas 1: `index.html`
 
@@ -121,7 +150,6 @@ Mari kita buat kasir mini toko buah yang mempraktekkan `map`, `filter`, dan `red
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Data daftar buah dalam bentuk Array of Objects
 const keranjangBuah = [
   { nama: "Apel", harga: 15000 },
   { nama: "Jeruk", harga: 20000 },
@@ -129,59 +157,39 @@ const keranjangBuah = [
 ];
 
 const tombolMap = document.querySelector("#btn-map");
-// ambil tombol untuk operasi map.
-
 const tombolFilter = document.querySelector("#btn-filter");
-// ambil tombol untuk operasi filter.
-
 const tombolReduce = document.querySelector("#btn-reduce");
-// ambil tombol untuk operasi reduce.
-
 const outputLayar = document.querySelector("#output-layar");
-// ambil wadah teks hasil pengolahan.
 
-// ================================================================
-// 1. CONTOH .map() -> Mengubah harga setiap buah dengan diskon 10%
-// ================================================================
+// Catatan utilitas:
+// .toLocaleString("id-ID") memformat angka menjadi format rupiah (misal 15000 -> 15.000)
+// .join("<br>") merangkai deret array teks menjadi satu string dipisah baris baru HTML
+
+// 1. .map() -> Mengubah harga setiap buah
 tombolMap.addEventListener("click", () => {
   const buahDiskon = keranjangBuah.map((item) => {
-    // kembalikan teks nama buah beserta harga barunya yang sudah dipotong:
     const hargaHemat = item.harga * 0.9;
     return `${item.nama}: Rp ${hargaHemat.toLocaleString("id-ID")}`;
   });
 
-  // tampilkan array hasil pemetaan ke layar:
-  outputLayar.innerHTML =
-    "Harga Setelah Diskon 10%:<br>" + buahDiskon.join("<br>");
+  outputLayar.innerHTML = "Harga Diskon 10%:<br>" + buahDiskon.join("<br>");
 });
 
-// ================================================================
-// 2. CONTOH .filter() -> Hanya menyaring buah yang harganya < 25.000
-// ================================================================
+// 2. .filter() -> Menyaring buah harga < 25.000
 tombolFilter.addEventListener("click", () => {
   const buahMurah = keranjangBuah.filter((item) => {
-    // kembalikan nilai true jika harga di bawah 25000:
-    return item.harga < 25000;
+    return item.harga < 25000; // predikat boolean
   });
 
-  // rangkai nama-nama buah yang lolos saringan:
-  const teksHasil = buahMurah
-    .map((b) => `${b.nama} (Rp ${b.harga.toLocaleString("id-ID")})`)
-    .join(", ");
-  outputLayar.innerHTML = `Buah di bawah Rp 25.000:<br>${teksHasil}`;
+  const barisTeks = buahMurah.map((b) => `${b.nama} (Rp ${b.harga.toLocaleString("id-ID")})`);
+  outputLayar.innerHTML = `Buah di bawah Rp 25.000:<br>` + barisTeks.join("<br>");
 });
 
-// ================================================================
-// 3. CONTOH .reduce() -> Menjumlahkan total harga menjadi SATU angka
-// ================================================================
+// 3. .reduce() -> Menjumlahkan total harga
 tombolReduce.addEventListener("click", () => {
-  // parameter 1: akumulator (kantong celengan penampung jumlah)
-  // parameter 2: item buah yang sedang dibaca
-  // angka 0 di ujung belakang: nilai modal awal celengan
-  const totalBiaya = keranjangBuah.reduce((totalCelengan, item) => {
-    return totalCelengan + item.harga;
-    // tambahkan harga buah ke dalam celengan.
-  }, 0);
+  const totalBiaya = keranjangBuah.reduce((celengan, item) => {
+    return celengan + item.harga;
+  }, 0); // Modal awal celengan 0
 
   outputLayar.innerHTML = `Total Semua Belanjaan: Rp ${totalBiaya.toLocaleString("id-ID")}`;
 });
@@ -191,30 +199,30 @@ tombolReduce.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Selalu isi nilai awal pada `.reduce()`**:
-   Selalu berikan nilai awal (seperti angka `0` untuk penjumlahan atau `[]` untuk array baru) di bagian akhir parameter `.reduce(fn, 0)`. Jika Anda lupa memberi nilai awal dan array dalam keadaan kosong, aplikasi Anda akan mengalami crash fatal!
-2. **Jangan gunakan `.map()` jika tidak membutuhkan hasil kembaliannya**:
-   Jika Anda hanya ingin menampilkan data tanpa mengubahnya menjadi array baru, gunakan `.forEach()` biasa, bukan `.map()`.
-3. **Bisa digabungkan beruntun (_Chaining_)**:
-   Anda bisa menggabungkan ketiganya: `keranjang.filter(...).map(...)`.
+1. **Selalu Berikan Nilai Awal pada `.reduce()`**: Selalu tuliskan `0`, `""`, atau `[]` di parameter kedua untuk mencegah error crash pada array kosong.
+2. **Jangan Gunakan `.map()` Jika Tidak Membutuhkan Hasilnya**: Jika Anda hanya ingin mencetak log tanpa memproduksi array baru, gunakan `for...of` atau `.forEach()`.
+3. **Array Asli Tidak Berubah (*Immutable*)**: `.map()` dan `.filter()` menghasilkan array baru yang terpisah, menjaga integritas data asli Anda.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser.
-- [ ] Klik tombol **Diskon 10% (.map)** $\to$ amati 3 buah tetap tampil namun harganya berkurang 10%.
-- [ ] Klik tombol **Hanya Buah di Bawah 25 Ribu (.filter)** $\to$ amati hanya Apel dan Jeruk yang lolos, Mangga tersaring keluar.
-- [ ] Klik tombol **Hitung Total (.reduce)** $\to$ amati ketiga harga disatukan menjadi Rp 65.000.
+- [ ] Buka `index.html` di browser dan uji ketiga tombolnya.
+- [ ] Perhatikan bahwa data asli `keranjangBuah` tetap utuh saat Anda menekan tombol berkali-kali.
+- [ ] Buka Console (`F12`), coba jalankan `.reduce()` tanpa modal awal pada array kosong:
+  ```javascript
+  [].reduce((acc, curr) => acc + curr); // Amati error TypeError yang muncul!
+  ```
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Mengerti kapan harus memakai `map` (mengubah bentuk), `filter` (menyaring), dan `reduce` (menyatukan menjadi satu nilai)**.
+> Anda sudah paham jika: **Tahu kontrak return callback pada `map` (nilai baru), `filter` (boolean), dan `reduce` (akumulator berikutnya), serta mengerti mengapa `reduce` mewajibkan modal awal**.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
-1. Jika Anda memasukkan array berisi 5 data ke dalam fungsi `.map()`, berapakah jumlah elemen yang ada di dalam array hasil akhirnya? Apakah bisa berkurang menjadi 3?
-2. Mengapa kita wajib menyertakan nilai awal (misalnya angka `0`) saat menggunakan fungsi `.reduce()`?
+1. Jika Anda memasukkan array berisi 4 data ke dalam fungsi `.map()`, berapakah jumlah elemen array hasil kembaliannya? Bisakah berkurang menjadi 2?
+2. Mengapa pemanggilan `[].reduce((acc, x) => acc + x)` menghasilkan crash error fatal di JavaScript?
+```

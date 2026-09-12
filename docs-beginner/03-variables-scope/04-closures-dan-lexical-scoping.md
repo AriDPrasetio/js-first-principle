@@ -10,35 +10,55 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Clos
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Closure adalah "ransel ingatan" bawaan fungsi: ketika sebuah fungsi anak dibuat di dalam fungsi induk, ia akan selalu mengingat dan membawa variabel milik induknya ke mana pun ia pergi, meskipun fungsi induknya sudah selesai dieksekusi.
+> **Lexical Scope** berarti letak fisik di mana Anda menulis fungsi menentukan variabel apa saja yang bisa diaksesnya.
+> **Closure** adalah "ransel ingatan" bawaan fungsi: ketika fungsi anak dilahirkan di dalam fungsi induk, ia akan selalu mengingat dan membawa variabel milik induknya ke mana pun ia pergi, meskipun fungsi induknya sudah selesai dieksekusi.
 
 ---
 
 ## 1. Analogi Logis: Ransel Bekal Saat Keluar Rumah
 
-Bayangkan Anda tinggal bersama orang tua Anda di rumah (Fungsi Induk):
+Bayangkan Anda tinggal bersama orang tua Anda di rumah (*Fungsi Induk*):
 
-- Sebelum Anda berangkat merantau ke luar kota (Fungsi Anak), orang tua Anda membekali Anda sebuah **ransel berisi resep masakan keluarga** (Variabel Privat).
-- Meskipun Anda sudah berada jauh dari rumah bertahun-tahun kemudian, **Anda tetap bisa membuka ransel itu kapan saja untuk membaca resep masakan tersebut.**
+1. **Lexical Scoping (Tempat Lahir yang Nyata)**:
+   Karena kamar Anda berada di dalam rumah orang tua Anda, Anda secara sah berhak menggunakan fasilitas di rumah tersebut. Hak akses ini ditentukan oleh **di mana letak rumah tempat Anda lahir**, bukan di mana Anda sedang nongkrong hari ini.
+2. **Closure (Ransel Bekal Warisan)**:
+   Sebelum Anda berangkat merantau (*Fungsi Anak dikembalikan keluar*), orang tua Anda membekali sebuah **ransel berisi resep keluarga** (*Variabel Privat*).
+   Meskipun Anda sudah tinggal di kota lain bertahun-tahun kemudian, **Anda tetap bisa membuka ransel itu kapan saja untuk membaca dan memperbarui resep tersebut.**
 
-Inilah **Closure**:
-Fungsi anak menyimpan kenangan (_referensi memori_) terhadap variabel induk tempat ia dilahirkan.
+Inilah **Closure**: Fungsi anak menyimpan referensi hidup (*live reference*) terhadap variabel induk tempat ia diciptakan.
 
 ---
 
 ## 2. Mengapa Pemula Membutuhkan Closure? (First Principles)
 
-Di aplikasi nyata, ada data yang **tidak boleh diubah sembarangan oleh pihak luar**:
+Di aplikasi web, ada data sensitif yang **tidak boleh diubah sembarangan oleh pihak luar**:
 
-- Misalnya: data skor game, saldo rekening dompet digital, atau token keamanan.
-- Jika Anda menyimpannya di variabel global biasa, siapa pun (atau script iklan lain) bisa mengetik `skor = 999999` di konsol browser untuk berbuat curang.
-- Dengan **Closure**, kita bisa menyembunyikan variabel di dalam ruangan tertutup, dan hanya menyediakan tombol resmi (_fungsi antarmuka_) untuk menambah atau mengurangi nilainya.
+- Contoh: data skor game, saldo dompet digital, atau status otentikasi.
+- Jika Anda menyimpannya di variabel global biasa, siapa pun bisa mengetik `skor = 999999` di DevTools Console untuk berbuat curang.
+- Dengan **Closure**, kita bisa menyembunyikan variabel di dalam ruangan tertutup (enkapsulasi), dan hanya menyediakan fungsi resmi untuk membaca atau mengubah nilainya secara terkontrol.
+
+```javascript
+// CONTOH DASAR FIRST PRINCIPLES:
+function buatPenghitung() {
+  let hitungan = 0; // variabel privat terkunci
+
+  return function() {
+    hitungan = hitungan + 1; // mengingat dan menambah variabel induk
+    return hitungan;
+  };
+}
+
+const klikCounter = buatPenghitung();
+console.log(klikCounter()); // 1
+console.log(klikCounter()); // 2
+// Variabel 'hitungan' tidak bisa dibajak dari luar!
+```
 
 ---
 
 ## 3. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat pencatat skor game yang aman dari kecurangan luar:
+Mari kita buat pencatat skor game privat yang tahan dari intervensi luar:
 
 ### Berkas 1: `index.html`
 
@@ -89,62 +109,53 @@ Mari kita buat pencatat skor game yang aman dari kecurangan luar:
 
 ```javascript
 // 1. PABRIK SKOR (FUNGSI INDUK PENGHASIL CLOSURE)
-function createScoreManager(displayElement, initialScore = 0) {
-  // fungsi induk ini membungkus variabel 'score' agar terlindungi rapat:
+function buatPengelolaSkor(tampilanElemen) {
+  // Variabel privat: terkunci aman di dalam closure
+  let nilaiSkor = 0;
 
-  let score = initialScore;
-  // variabel privat: TIDAK BISA disentuh atau diubah langsung dari luar!
-
-  function updateDOM() {
-    // fungsi pembantu untuk memperbarui teks di layar HTML:
-    displayElement.textContent = score;
+  function segarkanLayar() {
+    tampilanElemen.textContent = nilaiSkor;
   }
 
-  // Mengembalikan objek berisi tombol-tombol kendali resmi:
+  // Mengembalikan kumpulan fungsi kendali resmi:
   return {
-    addPoint(points = 1) {
-      // fungsi anak ini mengingat variabel 'score' lewat Closure:
-      score = score + points;
-      updateDOM();
+    tambahPoin: function (tambahan) {
+      nilaiSkor = nilaiSkor + tambahan;
+      segarkanLayar();
     },
-    resetScore() {
-      // fungsi anak ini juga mengingat variabel 'score':
-      score = initialScore;
-      updateDOM();
+    resetSkor: function () {
+      nilaiSkor = 0;
+      segarkanLayar();
     },
   };
 }
 
-// 2. MENGHUBUNGKAN KE TAMPILAN HTML
+// 2. MENGHUBUNGKAN KE ELEMEN HTML
 const scoreDisplay = document.querySelector("#score-display");
-// ambil elemen penampil angka skor di layar.
+const scoreTracker = buatPengelolaSkor(scoreDisplay);
 
-const scoreTracker = createScoreManager(scoreDisplay, 0);
-// buat pencatat skor baru dengan modal awal 0 poin.
-
-// 3. PASANG EVENT LISTENER KE TOMBOL
+// 3. PASANG AKSI TOMBOL
 document.querySelector("#btn-add").addEventListener("click", () => {
-  // saat tombol '+5 Poin' diklik, panggil fungsi resmi penambah poin:
-  scoreTracker.addPoint(5);
+  scoreTracker.tambahPoin(5);
 });
 
 document.querySelector("#btn-reset").addEventListener("click", () => {
-  // saat tombol 'Reset' diklik, panggil fungsi resmi reset poin:
-  scoreTracker.resetScore();
+  scoreTracker.resetSkor();
 });
 
-// BUKTI ENKAPSULASI PRIVAT CLOSURE:
-// Coba ketik di Console: console.log(score);
-// Hasilnya: ReferenceError: score is not defined!
-// Variabel score aman terkunci di dalam closure dan tidak bisa dibajak dari luar.
+// BUKTI KEAMANAN CLOSURE:
+// Coba ketik di Console browser: console.log(nilaiSkor);
+// Hasilnya: ReferenceError: nilaiSkor is not defined!
+// Nilai skor terenkapsulasi murni di dalam closure.
 ```
 
 ---
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Gunakan Factory Function berbasis Closure**: Ini adalah cara paling elegan di JavaScript untuk membuat modul yang memiliki data privat tanpa memerlukan class OOP yang rumit.
-2. **Jangan khawatir berlebihan soal memori**: Engine peramban modern sangat pintar membersihkan variabel di dalam closure yang sudah tidak lagi dipakai.
+1. **Gunakan Factory Function berbasis Closure**: Pola ini adalah cara paling bersih di JavaScript untuk membuat modul privat tanpa memerlukan arsitektur class yang berbelit-belit.
+2. **Ketahui Kapan Closure Tercipta**: Setiap kali sebuah fungsi didefinisikan di dalam fungsi lain, fungsi dalam tersebut otomatis membentuk closure atas variabel-variabel di sekitarnya.
+3. **Pahami Live Binding**: Closure tidak sekadar memfotokopi data sekali saat dibuat; ia memegang referensi hidup ke variabel tersebut sehingga perubahan nilai di masa mendatang akan selalu tercermin.
 
 ---
 
@@ -152,18 +163,26 @@ document.querySelector("#btn-reset").addEventListener("click", () => {
 
 - [ ] Buka `index.html` di browser dan klik tombol **"+5 Poin"** beberapa kali.
 - [ ] Klik tombol **"Reset"** dan perhatikan angka kembali ke 0.
-- [ ] Buka Console browser (`F12`), coba ketik `score = 1000`. Perhatikan bahwa tampilan angka di kartu game Anda tidak terpengaruh sama sekali karena nilai skor aslinya tersembunyi di dalam closure!
+- [ ] Buka Console browser (`F12`), coba ketik `nilaiSkor = 1000`. Perhatikan bahwa angka skor di layar tidak terpengaruh karena variabel aslinya terlindung di dalam closure.
+- [ ] Ketik kode dasar di Console:
+  ```javascript
+  function pembuatSalam(kota) {
+    return function(nama) { return `Halo ${nama} dari ${kota}`; };
+  }
+  const salamBali = pembuatSalam("Bali");
+  console.log(salamBali("Kyo")); // Amati bagaimana "Bali" tetap diingat!
+  ```
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Menyadari bahwa fungsi anak tetap bisa mengingat dan mengubah variabel milik fungsi induknya, meskipun fungsi induk tersebut sudah selesai dijalankan**.
+> Anda sudah paham jika: **Mengerti bahwa Lexical Scope menentukan wilayah berdasarkan letak penulisan kode, dan Closure memungkinkan fungsi anak mengingat variabel induknya di mana pun fungsi anak itu dipanggil**.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
-Perhatikan kode pencipta salam ini:
+Perhatikan kode pencipta salam berikut:
 
 ```javascript
 function buatPenyapa(namaKota) {
@@ -176,7 +195,6 @@ const sapaBandung = buatPenyapa("Bandung");
 sapaBandung("Kyo");
 ```
 
-Apakah fungsi `sapaBandung("Kyo")` akan:
-
-- **A. Berhasil mencetak "Halo Kyo, selamat datang di Bandung!"**
-- **B. Gagal karena namaKota sudah hilang dari memori?**
+1. Apakah fungsi `sapaBandung("Kyo")` akan berhasil mencetak salam atau melempar error?
+2. Mengapa variabel `namaKota` masih bisa diakses padahal fungsi `buatPenyapa` sudah selesai dieksekusi di baris sebelumnya?
+```

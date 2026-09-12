@@ -12,56 +12,61 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 >
 > Variabel adalah kotak berlabel untuk menyimpan data di memori komputer:
 >
-> - **`const`**: Kotak terkunci permanen yang isinya tidak boleh diganti (_Default_ pilihan utama).
-> - **`let`**: Kotak fleksibel yang isinya boleh diganti jika nilainya memang perlu berubah.
-> - **`var`**: Ember bocor warisan masa lalu yang rawan menimbulkan bug dan sebaiknya ditinggalkan.
+> - **`const`**: Kotak terkunci permanen yang isinya tidak boleh diganti nilainya (*Default* pilihan utama).
+> - **`let`**: Kotak fleksibel yang isinya boleh diganti jika nilainya memang perlu berubah (*Re-assignable*).
+> - **`var`**: Ember bocor warisan masa lalu yang mengabaikan kurung kurawal `{}` (*Block Scope*) dan rawan menimbulkan bug.
 
 ---
 
 ## 1. Analogi Logis: Tiga Jenis Kotak Penyimpanan
 
 ### A. `const` (Kotak Bergembok Permanen)
-
 Bayangkan Anda memasukkan tanggal lahir Anda ke dalam kotak kaca yang digembok.
-
 - Tanggal lahir Anda tidak akan pernah berganti seumur hidup.
-- Jika seseorang mencoba membuka kotak dan mengganti isinya dengan tanggal lain, sistem akan membunyikan alarm (_Error: Assignment to constant variable_).
-
-Gunakan `const` untuk 90% variabel di aplikasi Anda: nama elemen HTML, rumus matematika, atau URL API.
+- Jika seseorang mencoba membuka kotak dan mengganti isinya dengan tanggal lain, sistem akan membunyikan alarm (*Error: Assignment to constant variable*).
+- Gunakan `const` untuk 90% variabel di aplikasi Anda: elemen HTML, konfigurasi API, atau data rumus.
 
 ---
 
 ### B. `let` (Kotak dengan Tutup Terbuka)
-
-Bayangkan wadah skor di papan permainan basket.
-
+Bayangkan wadah skor di papan permainan basket:
 - Mula-mula skornya `0`.
 - Saat pemain mencetak angka, angka di wadah diubah menjadi `2`, lalu `5`, lalu `10`.
-- Mengganti isi kotak ini adalah hal yang wajar dan diizinkan.
-
-Gunakan `let` hanya ketika nilai variabel tersebut memang **pasti akan berubah** (misal: penghitung putaran loop, skor game, status tombol).
+- Mengganti isi kotak (*re-assignment*) adalah hal yang sah dan diizinkan.
+- Gunakan `let` hanya ketika nilai variabel tersebut memang **pasti akan berubah** (misal: penambah skor, counter loop, status saklar).
 
 ---
 
 ### C. `var` (Ember yang Bocor Keluar Kamar)
-
-Sebelum tahun 2015, JavaScript hanya punya `var`.
-
-- Masalah besarnya: `var` tidak mengenal dinding kamar (tanda kurung kurawal `{ }`).
-- Jika Anda membuat `var` di dalam kamar kecil (seperti di dalam blok `if`), variabel tersebut akan "bocor" keluar ke ruang tamu dan berisiko menimpa variabel lain tanpa sengaja.
+Sebelum tahun 2015 (ES6), JavaScript hanya memiliki `var`:
+- Masalah besarnya: `var` **tidak mengenal dinding kamar kurung kurawal `{ }`** (*Block Scope*).
+- Jika Anda membuat `var` di dalam sebuah blok `if`, variabel tersebut akan "bocor" keluar ke seluruh fungsi atau ruang global, berisiko menimpa variabel lain secara tidak sengaja.
 
 ---
 
-## 2. Mengapa Pemula Harus Memilih `const` Terlebih Dahulu? (First Principles)
+## 2. Tabel Perbandingan Karakteristik (First Principles)
 
-1. **Mencegah Bug Tak Sengaja**: Jika Anda membuat variabel `const totalBiaya = 100000`, Anda punya jaminan mutlak bahwa tidak ada baris kode lain di bawah yang bisa secara tidak sengaja menimpa nilainya.
-2. **Catatan Penting untuk Objek**: Kata kunci `const` mengunci **wadahnya**, bukan isi perabot di dalamnya. Jika Anda membuat objek `const mobil = { warna: 'merah' }`, Anda tidak bisa mengganti `mobil = {}`, tetapi Anda tetap bisa mengubah `mobil.warna = 'biru'`.
+| Pembeda | `const` | `let` | `var` (Legacy) |
+| :--- | :---: | :---: | :---: |
+| **Cakupan Lingkup (*Scope*)** | Blok `{ }` tertutup | Blok `{ }` tertutup | Fungsi / Global (Bocor dari `{}`) |
+| **Boleh Diisi Ulang (*Re-assignment*)?** | ❌ Dilarang keras | ✅ Diizinkan | ✅ Diizinkan |
+| **Boleh Dideklarasikan Ulang (*Re-declaration*)?** | ❌ Error | ❌ Error | ✅ Diizinkan (Bahaya!) |
+| **Akses Sebelum Deklarasi** | ❌ Error (*TDZ*) | ❌ Error (*TDZ*) | ⚠️ Bernilai `undefined` (Bisa lolos) |
+
+### Mengapa Pemula Harus Memilih `const` Terlebih Dahulu?
+1. **Mencegah Penimpaan Tak Sengaja**: Menjaga data tidak berubah secara acak di tengah ratusan baris kode.
+2. **Catatan Penting untuk Objek & Array**: Kata kunci `const` mengunci **wadahnya**, bukan isi perabot di dalamnya:
+   ```javascript
+   const profil = { nama: "Ari" };
+   profil.nama = "Budi"; // ✅ Boleh! Isi properti di dalam objek boleh diubah.
+   // profil = { nama: "Joko" }; // ❌ Error! Wadah profil tidak boleh diganti objek baru.
+   ```
 
 ---
 
 ## 3. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat papan skor sederhana yang memadukan `const` dan `let`:
+Mari kita buat demonstrasi papan skor dan perbandingan kebocoran variabel `var` vs `let`:
 
 ### Berkas 1: `index.html`
 
@@ -75,7 +80,7 @@ Mari kita buat papan skor sederhana yang memadukan `const` dan `let`:
     <style>
       .papan-skor {
         font-family: sans-serif;
-        max-width: 280px;
+        max-width: 300px;
         padding: 16px;
         border: 2px solid #333;
         border-radius: 8px;
@@ -90,6 +95,16 @@ Mari kita buat papan skor sederhana yang memadukan `const` dan `let`:
       button {
         padding: 8px 16px;
         cursor: pointer;
+        width: 100%;
+        margin-top: 6px;
+      }
+      .info-box {
+        margin-top: 12px;
+        padding: 8px;
+        font-size: 0.85rem;
+        background: #f4f4f4;
+        border-radius: 4px;
+        text-align: left;
       }
     </style>
     <script src="app.js" defer></script>
@@ -98,7 +113,9 @@ Mari kita buat papan skor sederhana yang memadukan `const` dan `let`:
     <div class="papan-skor">
       <h3>Papan Skor Game</h3>
       <div id="skor-display" class="angka-skor">0</div>
-      <button type="button" id="btn-tambah">+1 Poin</button>
+      <button type="button" id="btn-tambah">+1 Poin (Uji let & const)</button>
+      <button type="button" id="btn-uji-bocor">Uji Kebocoran var vs let</button>
+      <div id="info-hasil" class="info-box">Tekan tombol uji untuk melihat di console.</div>
     </div>
   </body>
 </html>
@@ -111,24 +128,37 @@ Mari kita buat papan skor sederhana yang memadukan `const` dan `let`:
 ```javascript
 // 1. Deklarasi dengan const (karena elemen HTML tidak pernah diganti wadahnya)
 const skorDisplay = document.querySelector("#skor-display");
-// ambil elemen penampil skor HTML, kunci referensinya secara permanen dengan const.
-
 const tambahBtn = document.querySelector("#btn-tambah");
-// ambil tombol penambah skor HTML, kunci referensinya dengan const.
+const ujiBocorBtn = document.querySelector("#btn-uji-bocor");
+const infoHasilEl = document.querySelector("#info-hasil");
 
 // 2. Deklarasi dengan let (karena nilai angka skor akan terus bertambah)
 let nilaiSkor = 0;
-// buat variabel nilaiSkor dengan let agar angkanya bisa kita perbarui nanti.
 
 // 3. Pasang aksi penambahan poin
 tambahBtn.addEventListener("click", () => {
-  // saat tombol diklik oleh pengguna, jalankan perintah berikut:
-
-  nilaiSkor = nilaiSkor + 1;
-  // perbarui isi variabel nilaiSkor dengan menambahkan angka 1 (ini sah karena memakai let).
-
+  nilaiSkor = nilaiSkor + 1; // sah karena let mengizinkan re-assignment
   skorDisplay.textContent = nilaiSkor;
-  // tampilkan angka skor terbaru ke layar HTML.
+});
+
+// 4. Demonstrasi Nyata: Kebocoran var vs Isolasi let
+ujiBocorBtn.addEventListener("click", () => {
+  if (true) {
+    var pesanBocor = "Saya dibuat di dalam if dengan var!";
+    let pesanAman = "Saya dibuat di dalam if dengan let!";
+  }
+
+  // DI LUAR BLOK IF:
+  console.log("Di luar if:", pesanBocor); // "Saya dibuat di dalam if dengan var!" (BOCOR!)
+
+  try {
+    console.log("Di luar if:", pesanAman);
+  } catch (error) {
+    console.log("let berhasil mengisolasi variabel:", error.message);
+    // ReferenceError: pesanAman is not defined (Aman terlindungi di dalam blok!)
+  }
+
+  infoHasilEl.textContent = `var bocor keluar blok: "${pesanBocor}". Buka Console (F12) untuk melihat bukti isolasi let.`;
 });
 ```
 
@@ -136,22 +166,29 @@ tambahBtn.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Jadikan `const` sebagai pilihan bawaan (_Default_)**: Setiap kali membuat variabel baru, selalu ketik `const` terlebih dahulu.
+1. **Jadikan `const` sebagai pilihan bawaan (*Default*)**: Setiap kali membuat variabel baru, selalu ketik `const` terlebih dahulu.
 2. **Ganti ke `let` hanya jika nilainya perlu diubah**: Jika nanti variabel tersebut memang perlu diisi ulang nilainya (seperti counter di atas), barulah ganti menjadi `let`.
-3. **Tinggalkan `var` sepenuhnya**: Jangan gunakan `var` lagi di proyek modern mana pun.
+3. **Tinggalkan `var` sepenuhnya**: Jangan gunakan `var` lagi di proyek modern mana pun karena tidak memiliki *Block Scope* dan mengizinkan deklarasi ganda yang merusak data.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
 - [ ] Buka `index.html` di browser dan klik tombol **"+1 Poin"** beberapa kali.
-- [ ] Perhatikan angka di layar bertambah dengan mulus.
-- [ ] Buka `app.js`, coba ubah `let nilaiSkor = 0` menjadi `const nilaiSkor = 0`. Simpan dan klik tombolnya di browser. Buka Console (`F12`) dan amati pesan error alarm `TypeError: Assignment to constant variable`. Kembalikan lagi ke `let`.
+- [ ] Klik tombol **"Uji Kebocoran var vs let"** dan buka Console DevTools (`F12`).
+- [ ] Perhatikan bagaimana `pesanBocor` bisa terbaca di luar kurung kurawal `if`, sedangkan `pesanAman` melempar `ReferenceError`.
+- [ ] Coba ketik di Console:
+  ```javascript
+  var angka = 10;
+  var angka = 20; // Boleh tanpa error (rawan tertimpa!)
+  let skor = 10;
+  let skor = 20;  // SyntaxError: Identifier 'skor' has already been declared
+  ```
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Tahu persis kapan harus menggunakan `const` (nilai tetap/elemen DOM) dan kapan menggunakan `let` (nilai dinamis yang bertambah)**.
+> Anda sudah paham jika: **Mengerti mengapa `const` adalah pilihan utama, tahu kapan memakai `let`, dan memahami bahaya variabel `var` yang mengabaikan kurung kurawal blok `{}`**.
 
 ---
 
@@ -160,12 +197,17 @@ tambahBtn.addEventListener("click", () => {
 Pilihlah kata kunci yang tepat (`const` atau `let`) untuk situasi berikut:
 
 ```javascript
-// Situasi 1: Menyimpan tanggal lahir pengguna
+// Situasi 1: Menyimpan tanggal lahir pengguna yang bersifat permanen
 ___ tanggalLahir = "1998-05-12";
 
-// Situasi 2: Menyimpan jumlah detik countdown yang terus berkurang
+// Situasi 2: Menyimpan jumlah detik countdown yang terus berkurang setiap detik
 ___ sisaDetik = 60;
 
 // Situasi 3: Menyimpan tombol submit di halaman web
 ___ submitBtn = document.querySelector("#btn-submit");
+
+// Situasi 4: Apa yang terjadi jika baris ini dijalankan:
+// const nama = "Ari";
+// nama = "Budi";
+// Apakah berhasil atau menghasilkan error? Error jenis apa?
 ```

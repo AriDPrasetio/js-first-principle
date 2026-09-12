@@ -12,8 +12,8 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data
 >
 > Di JavaScript, data terbagi menjadi dua cara kerja di memori komputer:
 >
-> 1. **Primitive**: Nilai mandiri yang selalu disalin terpisah (seperti memfotokopi dokumen).
-> 2. **Object**: Data bersama yang disimpan di satu tempat, di mana variabel hanya memegang "kartu alamat" ke data tersebut (seperti dua orang yang memegang alamat gedung yang sama).
+> 1. **Primitive**: Nilai mandiri yang bersifat kekal (*immutable*) dan selalu disalin terpisah nilainya (*copy-by-value*).
+> 2. **Object**: Data bersama yang disimpan di memori heap (*mutable*), di mana variabel hanya memegang "kartu alamat" ke data tersebut (*copy-by-reference*).
 
 ---
 
@@ -27,21 +27,41 @@ Bayangkan Anda memegang selembar formulir pendaftaran (Variabel A). Rekan Anda m
 - **Apakah formulir asli milik Anda (Variabel A) ikut tercoret?**
 - **Tentu tidak.** Keduanya adalah lembaran kertas fisik yang terpisah.
 
-Data seperti teks (`string`), angka (`number`), dan nilai benar/salah (`boolean`) bekerja persis seperti ini. Data jenis ini disebut **Primitive**.
+Di JavaScript modern, terdapat **7 Tipe Data Primitive Resmi**:
+
+| Tipe Primitive | Contoh Nilai | Deskripsi Singkat |
+| :--- | :--- | :--- |
+| `string` | `"Halo"`, `'Kyo'` | Teks karakter |
+| `number` | `42`, `3.14` | Angka bulat maupun desimal |
+| `boolean` | `true`, `false` | Nilai logika kebenaran |
+| `undefined` | `undefined` | Variabel dibuat tapi belum diberi nilai |
+| `null` | `null` | Representasi sengaja kosong / tidak ada objek |
+| `bigint` | `9007199254740991n` | Angka raksasa melampaui batas aman `number` |
+| `symbol` | `Symbol("id")` | Pengenal unik yang tidak pernah bertabrakan |
+
+> [!IMPORTANT]
+> **Sifat Mutlak Primitif: Kekal (*Immutable*)**
+>
+> Nilai primitif tidak pernah bisa diubah fisiknya di memori. Jika Anda memiliki `let kata = "kopi"`, lalu mencoba mengubah huruf pertamanya:
+> ```javascript
+> kata[0] = "t";
+> console.log(kata); // Tetap "kopi"! Tidak berubah menjadi "topi".
+> ```
+> Mengganti nilai variabel (`kata = "topi"`) bukanlah memutasi teks lama, melainkan membuang nilai lama dan menunjuk ke data baru yang segar di memori.
 
 ---
 
 ### B. Tipe Object (Sistem Alamat Rumah)
 
-Sekarang bayangkan ada sebuah rumah fisik.
+Sekarang bayangkan ada sebuah rumah fisik di dunia nyata.
 
 - Anda menyimpan alamat rumah tersebut di catatan ponsel Anda (Variabel A).
 - Rekan Anda juga menyimpan alamat yang sama persis di ponselnya (Variabel B).
 - Suatu sore, rekan Anda datang ke rumah tersebut dan mengecat pintunya menjadi warna biru.
 - **Saat Anda datang ke rumah itu lewat alamat di ponsel Anda, warna apa pintunya?**
-- **Pintunya sudah berwarna biru.** Mengapa? Karena rumah fisiknya hanya ada satu. Ponsel Anda dan rekan Anda tidak menyimpan "rumah", melainkan hanya menyimpan **petunjuk alamat ke rumah yang sama**.
+- **Pintunya sudah berwarna biru.** Mengapa? Karena rumah fisiknya hanya ada satu. Ponsel Anda dan rekan Anda tidak menyimpan "rumah", melainkan hanya menyimpan **petunjuk alamat referensi ke rumah yang sama**.
 
-Data berbentuk objek (`{ }`) dan array (`[ ]`) bekerja seperti ini. Data jenis ini disebut **Object (Reference Type)**.
+Data berbentuk objek (`{ }`), array (`[ ]`), maupun fungsi (`function`) bekerja seperti ini. Data jenis ini disebut **Object (Reference Type)** dan bersifat **dapat dimutasi (*mutable*)**.
 
 ---
 
@@ -49,9 +69,9 @@ Data berbentuk objek (`{ }`) dan array (`[ ]`) bekerja seperti ini. Data jenis i
 
 Alasan utamanya adalah **efisiensi memori komputer**:
 
-1. **Data Primitive itu kecil**: Menyimpan angka `50` atau kata `'Budi'` hanya butuh sedikit sekali ruang di memori. Komputer tidak keberatan membuat salinan baru berkali-kali karena sangat cepat dan ringan.
-2. **Data Object itu besar dan dinamis**: Sebuah profil akun pengguna bisa berisi nama, alamat, foto, riwayat transaksi, dan puluhan data lain. Jika setiap kali data itu dipinjamkan komputer harus menyalin ulang seluruh isinya dari nol, memori komputer akan cepat penuh dan aplikasi menjadi lambat.
-   Oleh karena itu, komputer memilih jalan cerdas: **datanya ditaruh di satu tempat saja di memori, lalu yang dibagikan cukup alamatnya saja.**
+1. **Data Primitive itu kecil dan tetap**: Menyimpan angka `50` atau boolean `true` hanya butuh sedikit sekali byte di memori. Komputer tidak keberatan membuat salinan fisik baru berkali-kali karena sangat cepat dan ringan.
+2. **Data Object itu besar dan dinamis**: Sebuah profil akun pengguna bisa berisi nama, foto, daftar teman, riwayat belanja, dan puluhan data lain. Jika setiap kali data itu dipinjamkan komputer harus menyalin ulang seluruh isinya dari nol, memori komputer akan cepat penuh dan aplikasi menjadi lambat.
+   Oleh karena itu, komputer memilih jalan cerdas: **datanya ditaruh di satu tempat saja di memori (Heap), lalu yang dibagikan cukup alamat penunjuknya (*pointer*) saja.**
 
 ---
 
@@ -108,7 +128,7 @@ let roleB = roleA;
 // salin isi roleA ke dalam variabel roleB.
 
 roleB = "Tech Lead";
-// ubah isi roleB menjadi "Tech Lead". Variabel roleA tetap "Frontend Dev" karena tipe primitive tidak saling terhubung.
+// ubah isi roleB menjadi "Tech Lead". Variabel roleA tetap "Frontend Dev" karena tipe primitive mandiri.
 
 // 2. Object: pass-by-reference (berbagi alamat memori yang sama)
 const userProfile = {
@@ -157,6 +177,9 @@ updateBtn.addEventListener("click", () => {
 
 Jika Anda ingin membuat salinan objek yang benar-benar mandiri (agar perubahan di salinan tidak merusak data aslinya), gunakan **Spread Operator (`...`)**:
 
+> [!NOTE]
+> Tanda titik tiga (`...`) bertindak membongkar dan menyalin properti objek satu per satu ke dalam wadah objek baru `{}` di memori. Sintaks praktis ini akan kita bedah lebih dalam di **Bab 07 (Array & Object Methods)**.
+
 ```javascript
 const userProfile = { name: "Ari", role: "Frontend Dev" };
 
@@ -176,11 +199,12 @@ console.log(userMandiri.role); // "Product Manager"
 - [ ] Buat berkas `index.html` dan `app.js` di komputer Anda, lalu buka `index.html` di browser.
 - [ ] Klik tombol **"Ubah Peran via Salinan Objek"** dan perhatikan teks peran berubah di layar.
 - [ ] Buka DevTools (`F12`) $\to$ tab **Console**, ketik `userProfile` dan lihat bahwa properti `role` pada objek asli ikut berubah menjadi `"Tech Lead"`.
+- [ ] Coba ketik di Console: `let kata = "kucing"; kata[0] = "b"; console.log(kata);` untuk membuktikan sendiri sifat *immutable* tipe string.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham materi ini jika: **Bisa menjelaskan ke rekan Anda mengapa mengubah `profileAlias.role` bisa membuat data pada `userProfile` aslinya ikut terubah**.
+> Anda sudah paham materi ini jika: **Bisa menjelaskan ke rekan Anda mengapa mengubah `profileAlias.role` bisa membuat data pada `userProfile` aslinya ikut berubah, dan tahu bahwa tipe primitif tidak bisa dimutasi secara langsung di memori**.
 
 ---
 

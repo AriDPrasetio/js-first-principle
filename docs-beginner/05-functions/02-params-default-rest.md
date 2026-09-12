@@ -10,34 +10,62 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Parameter fungsi ibarat lubang corong masukan pada mesin. **Default Parameter** menyediakan bahan cadangan otomatis jika pengguna lupa memasukkan bahan, sedangkan **Rest Parameter (`...`)** adalah kantong ajaib yang bisa menampung berapapun banyaknya bahan tambahan ke dalam satu daftar (_array_).
+> - **Default Parameter (`param = nilai`)**: Memberikan nilai cadangan otomatis jika pemanggil fungsi tidak menyuplai argumen atau bernilai `undefined`.
+> - **Rest Parameter (`...sisa`)**: Mengumpulkan sejumlah argumen tersisa yang tidak terbatas ke dalam **satu wadah Array**.
 
 ---
 
 ## 1. Analogi Logis: Pesan Makanan Cepat Saji
 
-Bayangkan Anda memesan paket makanan di restoran cepat saji:
+### A. Default Parameter (Paket Standar)
+Bayangkan Anda memesan paket nasi burger di kasir cepat saji:
+- Pelayan bertanya: *"Mau minum apa?"*.
+- Jika Anda tidak menyebut minuman apa pun (*tidak mengirim parameter*), sistem restoran otomatis menyajikan **Teh Manis Dingin** (*Default*).
+- Namun jika Anda menyebut: *"Es Jeruk"*, maka Es Jeruk yang disajikan menggantikan teh standar.
 
-- **Parameter Biasa**: Kasir menanyakan menu utama Anda (misalnya `"Burger Ayam"`).
-- **Default Parameter (Nilai Cadangan Otomatis)**: Kasir bertanya: _"Mau minum apa?"_. Jika Anda diam saja atau tidak memilih apa-apa, kasir otomatis memberikan `"Air Mineral"` sebagai minuman bawaan standar. Tapi jika Anda minta `"Es Teh"`, kasir akan memberikan pesanan Anda.
-- **Rest Parameter (`...tambahanToping`)**: Kasir bertanya: _"Ada tambahan camilan lain?"_. Anda bisa menyebut 1, 3, atau 10 jenis camilan sekaligus (`"Kentang"`, `"Nugget"`, `"Es Krim"`). Semua pesanan tambahan ini akan dimasukkan ke dalam satu kantong kresek besar yang sama (_Array_).
+```javascript
+function pesanMenu(makanan, minuman = "Teh Manis") {
+  return `${makanan} ditemani ${minuman}`;
+}
+pesanMenu("Burger"); // "Burger ditemani Teh Manis"
+```
+
+---
+
+### B. Rest Parameter vs Spread Operator (Membedakan Dua Titik Tiga)
+
+> [!IMPORTANT]
+> **Perbedaan Mutlak Tanda Titik Tiga (`...`)**:
+> - **Rest Parameter** (Di Dalam Kurung Definisi Fungsi): Mengumpulkan banyak bahan terpisah menjadi **1 bungkus Array**.
+> - **Spread Operator** (Di Titik Pemanggilan Fungsi): Membuka 1 bungkus Array menjadi **argumen-argumen terpisah**.
+
+```javascript
+// REST PARAMETER (Membungkus):
+function buatPaket(namaPaket, ...daftarBarang) {
+  // daftarBarang sekarang adalah Array: ["Buku", "Pulpen", "Penggaris"]
+  console.log(daftarBarang.length);
+}
+
+// SPREAD OPERATOR (Membuka):
+const belanjaan = ["Buku", "Pulpen", "Penggaris"];
+buatPaket("Alat Tulis", ...belanjaan); // Membuka isi array menjadi argumen
+```
 
 ---
 
 ## 2. Mengapa JavaScript Didesain Seperti Ini? (First Principles)
 
-1. **Menghindari Bug `undefined`**:
-   Jika Anda membuat fungsi penerima nama `sapaUser(nama)` dan pengguna memanggilnya tanpa parameter `sapaUser()`, di masa lalu nama akan tercetak sebagai `"Halo undefined"`. Dengan Default Parameter `function sapaUser(nama = "Tamu")`, tampilan aplikasi Anda tetap rapi.
-2. **Kapan Default Parameter Aktif?**:
-   Default parameter HANYA bekerja jika nilainya kosong atau diisi `undefined`. Jika Anda sengaja mengirimkan `null`, JavaScript menganggap itu adalah pilihan sadar Anda, sehingga nilai default TIDAK akan dipakai.
-3. **Rest Parameter Adalah Array Asli**:
-   Tanda tiga titik (`...namaVariabel`) di parameter terakhir akan otomatis mengumpulkan semua argumen sisa menjadi satu Array murni yang siap diolah dengan `.join()`, `.forEach()`, atau `.length`.
+1. **Menghapus Pengecekan Manual**:
+   Dulu kita harus menulis `minuman = minuman || "Teh Manis"`, yang rentan rusak jika parameter bernilai `0` atau `false`. Default parameter modern hanya aktif jika nilainya strictly `undefined`.
+2. **Menghapus Objek Kuno `arguments`**:
+   Sebelum ES6, menangani jumlah parameter dinamis mengandalkan objek pseudo-array `arguments` yang tidak memiliki metode array modern. Dengan `...rest`, variabel yang dihasilkan adalah **Array sejati** yang siap diolah dengan loop `for...of`.
+3. **Aturan Posisi Rest**: Rest parameter **wajib diletakkan di posisi paling terakhir**. Tidak boleh ada parameter lain setelah tanda `...rest`.
 
 ---
 
 ## 3. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat pembuat kartu undangan acara yang bisa menyapa tuan rumah dengan pesan default dan menampung daftar nama tamu sebanyak apa pun:
+Mari kita buat pencetak kartu undangan yang menerima judul acara dan daftar tamu tak terbatas:
 
 ### Berkas 1: `index.html`
 
@@ -47,7 +75,7 @@ Mari kita buat pembuat kartu undangan acara yang bisa menyapa tuan rumah dengan 
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Latihan | Default & Rest Parameters</title>
+    <title>Latihan | Default & Rest Parameter</title>
     <style>
       .card {
         font-family: sans-serif;
@@ -56,50 +84,39 @@ Mari kita buat pembuat kartu undangan acara yang bisa menyapa tuan rumah dengan 
         border: 1px solid #ddd;
         border-radius: 8px;
       }
-      input {
-        width: 100%;
+      input, button {
         padding: 8px;
-        box-sizing: border-box;
-        margin-bottom: 8px;
-      }
-      button {
-        padding: 8px 12px;
-        cursor: pointer;
+        margin-top: 6px;
         width: 100%;
-        margin-bottom: 8px;
+        box-sizing: border-box;
       }
-      .undangan {
-        background: #fdf6e2;
-        border: 1px dashed #d6a843;
-        padding: 12px;
+      .hasil-box {
+        margin-top: 12px;
+        padding: 10px;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
         border-radius: 6px;
       }
-      .undangan h4 {
-        margin-top: 0;
-        color: #845a08;
-      }
       ul {
+        margin: 6px 0 0 0;
         padding-left: 20px;
-        margin: 4px 0 0 0;
       }
     </style>
     <script src="app.js" defer></script>
   </head>
   <body>
     <div class="card">
-      <h3>Pembuat Undangan Rapat</h3>
-      <input
-        type="text"
-        id="input-judul"
-        placeholder="Judul Acara (Boleh kosong = 'Rapat Tim')"
-      />
-      <input
-        type="text"
-        id="input-tamu"
-        placeholder="Nama Tamu (pisahkan dengan koma: Budi, Siti, Joko)"
-      />
-      <button type="button" id="btn-buat">Cetak Kartu Undangan</button>
-      <div id="wadah-undangan" class="undangan">Undangan belum dibuat.</div>
+      <h3>Pembuat Undangan Acara</h3>
+      
+      <label for="input-acara">Nama Acara (Boleh Kosong):</label>
+      <input type="text" id="input-acara" placeholder="Default: Acara Syukuran" />
+
+      <label for="input-tamu" style="margin-top: 8px; display: block;">Nama Tamu (Pisahkan koma):</label>
+      <input type="text" id="input-tamu" value="Ari, Kyo, Budi" />
+
+      <button type="button" id="btn-cetak">Cetak Undangan</button>
+
+      <div class="hasil-box" id="wadah-hasil">Hasil undangan akan muncul di sini.</div>
     </div>
   </body>
 </html>
@@ -110,69 +127,41 @@ Mari kita buat pembuat kartu undangan acara yang bisa menyapa tuan rumah dengan 
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen dari HTML
-const inputJudul = document.querySelector("#input-judul");
-// ambil kolom teks nama acara.
+// 1. FUNGSI DENGAN DEFAULT & REST PARAMETER:
+// namaAcara memiliki nilai default 'Acara Syukuran'
+// ...daftarTamu mengumpulkan seluruh nama tamu ke dalam satu Array
+function buatUndangan(namaAcara = "Acara Syukuran", ...daftarTamu) {
+  let daftarHtml = "<ul>";
 
-const inputTamu = document.querySelector("#input-tamu");
-// ambil kolom teks daftar nama tamu.
-
-const tombolBuat = document.querySelector("#btn-buat");
-// ambil tombol untuk memproses pembuatan undangan.
-
-const wadahUndangan = document.querySelector("#wadah-undangan");
-// ambil wadah kotak tampilan kartu undangan.
-
-// ================================================================
-// FUNGSI DENGAN DEFAULT PARAMETER DAN REST PARAMETERS
-// ================================================================
-// judulAcara = "Rapat Tim"  --> DEFAULT PARAMETER (nilai cadangan jika judul kosong)
-// ...daftarTamu             --> REST PARAMETER (menampung semua nama tamu ke dalam Array)
-function buatUndangan(judulAcara = "Rapat Tim", ...daftarTamu) {
-  // bersihkan tampilan lama:
-  wadahUndangan.innerHTML = "";
-
-  // buat judul acara:
-  const elemenJudul = document.createElement("h4");
-  elemenJudul.textContent = `Acara: ${judulAcara}`;
-  wadahUndangan.appendChild(elemenJudul);
-
-  // buat teks info jumlah tamu:
-  const infoTamu = document.createElement("p");
-  infoTamu.textContent = `Total Hadir: ${daftarTamu.length} Orang`;
-  // gunakan .length dari Array rest parameter.
-  wadahUndangan.appendChild(infoTamu);
-
-  // buat daftar nama menggunakan elemen <ul> dan <li>:
-  const listTamu = document.createElement("ul");
   for (const nama of daftarTamu) {
-    // perulangan membaca setiap item di dalam array daftarTamu:
-    const item = document.createElement("li");
-    item.textContent = nama;
-    listTamu.appendChild(item);
+    daftarHtml += `<li>Tamu Terhormat: ${nama}</li>`;
   }
-  wadahUndangan.appendChild(listTamu);
+  daftarHtml += "</ul>";
+
+  return `
+    <strong>Undangan Resmi: ${namaAcara}</strong>
+    <p>Total Tamu Terdaftar: ${daftarTamu.length} orang</p>
+    ${daftarHtml}
+  `;
 }
 
-// 2. Hubungkan tombol dengan pemanggilan fungsi
-tombolBuat.addEventListener("click", () => {
-  const teksJudul = inputJudul.value.trim();
-  // ambil teks judul yang sudah dibersihkan dari spasi liar.
+// 2. Hubungkan ke Tombol HTML:
+const acaraInput = document.querySelector("#input-acara");
+const tamuInput = document.querySelector("#input-tamu");
+const cetakBtn = document.querySelector("#btn-cetak");
+const hasilWadah = document.querySelector("#wadah-hasil");
 
-  const teksTamu = inputTamu.value.trim();
-  // ambil teks daftar tamu.
+cetakBtn.addEventListener("click", () => {
+  const teksAcara = acaraInput.value.trim();
+  // Jika input kosong, kita kirim undefined agar Default Parameter aktif!
+  const judulTerkirim = teksAcara === "" ? undefined : teksAcara;
 
-  // Pecah teks tamu berdasarkan koma menjadi potongan kata:
-  const susunanTamu = teksTamu
-    ? teksTamu.split(",").map((t) => t.trim())
-    : ["Tamu Anonim"];
-  // ubah "Budi, Siti" menjadi array ["Budi", "Siti"].
+  // Baca daftar tamu dari teks dipisah koma:
+  const teksTamu = tamuInput.value;
+  const listTamu = teksTamu ? teksTamu.split(",").map((t) => t.trim()) : [];
 
-  // Jika input judul dikosongkan pengguna, kirim undefined agar nilai default aktif:
-  const judulYangDikirim = teksJudul !== "" ? teksJudul : undefined;
-
-  // Panggil fungsi dengan menyebarkan tamu menggunakan operator rest:
-  buatUndangan(judulYangDikirim, ...susunanTamu);
+  // Panggil fungsi menggunakan SPREAD OPERATOR (...) untuk membuka array listTamu:
+  hasilWadah.innerHTML = buatUndangan(judulTerkirim, ...listTamu);
 });
 ```
 
@@ -180,28 +169,39 @@ tombolBuat.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Rest Parameter harus selalu berada di posisi paling akhir**:
-   Penulisan `function demo(...sisa, nama)` adalah salah dan dilarang di JavaScript. Posisi yang benar adalah `function demo(nama, ...sisa)`.
-2. **Hanya satu Rest Parameter per fungsi**: Anda tidak bisa membuat `function test(...a, ...b)`.
-3. **Gunakan Default Parameter dibanding `||`**:
-   Hindari cara lama seperti `nama = nama || "Anonim"` karena cara lama itu akan menimpa angka `0` atau string kosong `""` yang sebenarnya sah.
+1. **Selalu Letakkan Rest Parameter di Akhir**: `function hitung(kali, ...angka)` sah, tetapi `function hitung(...angka, kali)` akan menghasilkan error fatal `SyntaxError: Rest parameter must be last`.
+2. **Kirim `undefined` untuk Mengaktifkan Default Parameter**: Jika Anda secara eksplisit mengirim `null`, nilai default **tidak akan aktif** karena `null` dianggap nilai sah.
+3. **Bedakan Istilah**: Selalu ingat bahwa `...` saat mendefinisikan fungsi adalah **Rest** (mengumpulkan), sedangkan `...` saat memanggil fungsi atau membuat array adalah **Spread** (menyebarkan).
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser, biarkan kolom Judul Acara **kosong**, lalu isi kolom nama tamu dengan `Ani, Budi, Charles`.
-- [ ] Klik tombol **"Cetak Kartu Undangan"**. Perhatikan bahwa judul otomatis terisi `"Acara: Rapat Tim"` (karena Default Parameter aktif).
-- [ ] Sekarang ketik judul `"Ulang Tahun"` dan klik tombol lagi. Perhatikan bagaimana nilai cadangan digantikan oleh judul ketikan Anda.
+- [ ] Buka `index.html` di browser dan klik **"Cetak Undangan"**.
+- [ ] Kosongkan kolom nama acara, lalu klik cetak lagi. Amati bagaimana nama acara otomatis berubah menjadi `"Acara Syukuran"` berkat default parameter.
+- [ ] Tambahkan beberapa nama tamu baru di kolom teks dipisah koma, perhatikan jumlah total tamu bertambah secara otomatis berkat rest parameter.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Mengerti bahwa `nama = "Default"` hanya bekerja saat parameter kosong/undefined, dan tanda `...` di parameter fungsi berguna menampung sisa argumen menjadi satu Array**.
+> Anda sudah paham jika: **Tahu cara menentukan nilai default pada parameter fungsi, dan bisa membedakan peran Rest Parameter (mengumpulkan) vs Spread Operator (menyebarkan)**.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
-1. Jika Anda memanggil `sapaUser(null)` pada fungsi `function sapaUser(nama = "Kawan") { return nama; }`, apakah fungsi akan mengembalikan `"Kawan"` ataukah `null`?
-2. Apa tipe data dari wadah `angka` pada fungsi `function total(...angka) {}` ketika dipanggil? Apakah sebuah Object biasa ataukah sebuah Array?
+Perhatikan kode berikut:
+
+```javascript
+function cetakTim(kapten = "Anonim", ...anggota) {
+  console.log("Kapten:", kapten);
+  console.log("Anggota:", anggota);
+}
+
+cetakTim(undefined, "Budi", "Siti", "Joko");
+```
+
+1. Apakah nilai dari parameter `kapten` yang tercetak di konsol?
+2. Berapakah panjang array (`.length`) dari parameter `anggota`?
+3. Mengapa penulisan `function cetakTim(...anggota, kapten)` dilarang di JavaScript?
+```

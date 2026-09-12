@@ -10,34 +10,57 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/First-clas
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Higher-Order Function (HOF) adalah fungsi super: ia bisa menerima fungsi lain sebagai bahan masukan (_parameter/callback_), atau menghasilkan fungsi baru sebagai keluarannya.
+> Higher-Order Function (HOF) adalah fungsi super:
+>
+> 1. **Menerima fungsi lain sebagai bahan masukan** (*Callback Function*).
+> 2. **Menghasilkan fungsi baru sebagai keluarannya** (*Function Factory*).
 
 ---
 
-## 1. Analogi Logis: Manajer Pabrik dan Pekerja Spesialis
+## 1. Analogi Logis: Manajer Pabrik & Mesin Pencetak Stempel
 
-Bayangkan sebuah pabrik perakitan:
+### A. Tipe 1: HOF yang Menerima Callback (Manajer Pabrik)
+Bayangkan seorang manajer di pabrik:
+- **Manajer (HOF)**: Dia bertugas menjalankan ban berjalan, mengambil setiap barang satu per satu, lalu memanggil pekerja spesialis.
+- **Pekerja Spesialis (Callback)**:
+  - Pekerja A bertugas mewarnai barang jadi **Merah**.
+  - Pekerja B bertugas menempelkan **Stiker Bintang**.
+- Sang Manajer tidak perlu tahu cara mencampur cat. Manajer cukup menyediakan alurnya, lalu berkata: *"Pekerja, olah barang ini!"*.
 
-- **Manajer Pabrik (Higher-Order Function)**: Dia bertugas menjalankan ban berjalan, mengambil setiap barang satu per satu dari rak, lalu memanggil pekerja spesialis untuk mengerjakan barang itu.
-- **Pekerja Spesialis (Callback Function)**:
-  - Pekerja A tugasnya: mewarnai barang jadi **Merah**.
-  - Pekerja B tugasnya: menempelkan **Stiker Bintang**.
-- Sang Manajer tidak perlu tahu cara mencampur cat merah atau cara memotong stiker. Manajer cukup menyediakan alur jalannya, lalu menyuruh: _"Hei Pekerja A, kerjakan barang ini!"_.
+---
+
+### B. Tipe 2: HOF yang Menghasilkan Fungsi Baru (Pabrik Cetakan Stempel)
+Bayangkan sebuah pabrik pembuat stempel:
+- Anda memesan: *"Tolong buatkan saya stempel bertuliskan DISKON 20%"*.
+- Pabrik membuat dan menyerahkan **alat stempel baru** ke tangan Anda.
+- Mulai hari itu, Anda memegang fungsi stempel tersebut dan bisa mencapkannya ke ribuan lembar dokumen kapan saja.
+
+```javascript
+// HOF PENCETAK FUNGSI (FUNCTION FACTORY):
+function buatPengali(faktor) {
+  return function (angka) {
+    return angka * faktor;
+  };
+}
+
+const kaliDua = buatPengali(2); // Menghasilkan fungsi baru
+console.log(kaliDua(10)); // 20
+```
 
 ---
 
 ## 2. Mengapa JavaScript Didesain Seperti Ini? (First Principles)
 
-1. **Fungsi Diperlakukan Seperti Benda Nyata (_First-Class Citizen_)**:
-   Di JavaScript, fungsi tidak berbeda dengan angka atau teks string. Fungsi bisa disimpan ke variabel, dimasukkan ke dalam kotak, dikirim sebagai argumen ke fungsi lain, atau dikembalikan sebagai hadiah.
-2. **Jangan Mengulang Logika Perulangan (Don't Repeat Yourself)**:
-   Daripada Anda menulis loop `for` berkali-kali hanya untuk mengubah huruf besar, lalu menulis loop `for` lagi untuk memberi stiker, Anda cukup membuat 1 fungsi pengolah (HOF), dan memberikan perintah perubahannya dari luar sesuai selera.
+1. **Fungsi Adalah Warga Kelas Satu (*First-Class Citizen*)**:
+   Di JavaScript, fungsi tidak ada bedanya dengan angka atau string. Fungsi bisa disimpan ke variabel, dimasukkan ke array, dikirim sebagai argumen ke fungsi lain, atau dikembalikan dari sebuah fungsi.
+2. **Kaidah *Don't Repeat Yourself* (DRY)**:
+   Daripada Anda menulis perulangan `for` berkali-kali untuk mengubah huruf besar, lalu menulis perulangan `for` lagi untuk memotong angka, Anda cukup membuat 1 fungsi pengolah umum (HOF), dan menyuntikkan instruksi spesifiknya dari luar.
 
 ---
 
 ## 3. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat pengubah daftar nama dengan mesin utama (HOF) yang bisa menerima fungsi pengubah huruf besar, huruf kecil, atau penambah emotikon:
+Mari kita buat pengolah daftar teks yang mendemonstrasikan kedua peran HOF: menerima callback dan mencetak fungsi baru:
 
 ### Berkas 1: `index.html`
 
@@ -51,43 +74,43 @@ Mari kita buat pengubah daftar nama dengan mesin utama (HOF) yang bisa menerima 
     <style>
       .card {
         font-family: sans-serif;
-        max-width: 350px;
+        max-width: 360px;
         padding: 16px;
         border: 1px solid #ddd;
         border-radius: 8px;
       }
       .btn-group {
         display: flex;
-        gap: 4px;
-        margin-bottom: 12px;
+        gap: 6px;
+        margin-top: 8px;
       }
       button {
         flex: 1;
         padding: 8px 4px;
-        font-size: 0.75rem;
         cursor: pointer;
+        font-size: 0.8rem;
       }
       ul {
+        margin: 12px 0 0 0;
         padding-left: 20px;
-      }
-      li {
-        margin-bottom: 4px;
       }
     </style>
     <script src="app.js" defer></script>
   </head>
   <body>
     <div class="card">
-      <h3>Pabrik Pengolah Nama Tamu</h3>
-      <p>Daftar asli: <em>andi, budi, cici</em></p>
+      <h3>Pengolah Data (HOF)</h3>
+      <p>Daftar Nama: <strong>andi, kyo, budi</strong></p>
 
       <div class="btn-group">
-        <button type="button" id="btn-kapital">Huruf Besar</button>
-        <button type="button" id="btn-bintang">Beri Bintang ⭐</button>
-        <button type="button" id="btn-halo">Sapa "Halo"</button>
+        <button type="button" id="btn-kapital">Ubah Kapital (Callback)</button>
+        <button type="button" id="btn-bintang">Beri Bintang (Callback)</button>
       </div>
 
-      <h4>Hasil Olahan:</h4>
+      <button type="button" id="btn-diskon" style="width: 100%; margin-top: 8px; padding: 8px;">
+        Hitung Diskon Toko (Function Factory)
+      </button>
+
       <ul id="daftar-hasil"></ul>
     </div>
   </body>
@@ -99,75 +122,64 @@ Mari kita buat pengubah daftar nama dengan mesin utama (HOF) yang bisa menerima 
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Data daftar nama mentah
-const daftarNama = ["andi", "budi", "cici"];
-// daftar nama dalam huruf kecil biasa.
-
-const tombolKapital = document.querySelector("#btn-kapital");
-// ambil tombol pengubah huruf besar.
-
-const tombolBintang = document.querySelector("#btn-bintang");
-// ambil tombol penambah bintang.
-
-const tombolHalo = document.querySelector("#btn-halo");
-// ambil tombol sapa halo.
-
+const namaPeserta = ["andi", "kyo", "budi"];
 const listHasil = document.querySelector("#daftar-hasil");
-// ambil wadah daftar <ul> di HTML.
 
-// ================================================================
-// INILAH HIGHER-ORDER FUNCTION (Fungsi Tingkat Tinggi)
-// Ia menerima bahan data (daftarArray) dan fungsi pekerja (fungsiPengubah)
-// ================================================================
-function olahDanTampilkan(daftarArray, fungsiPengubah) {
-  // bersihkan tampilan lama:
+// ========================================================
+// 1. HOF TIPE 1: MENERIMA FUNGSI CALLBACK SEBAGAI BAHAN
+// ========================================================
+function prosesDaftar(deretData, fungsiPengubah) {
+  const hasilBaru = [];
+  for (const item of deretData) {
+    // Jalankan fungsi callback yang disuntikkan dari luar:
+    hasilBaru.push(fungsiPengubah(item));
+  }
+  return hasilBaru;
+}
+
+// Dua fungsi pekerja spesialis (Callback):
+const jadikanKapital = (teks) => teks.toUpperCase();
+const beriBintang = (teks) => `⭐ ${teks} ⭐`;
+
+function tampilkanKeLayar(arrayData) {
   listHasil.innerHTML = "";
-
-  for (const item of daftarArray) {
-    // Manajer menjalankan perintah fungsi pekerja pada setiap item:
-    const hasilUbah = fungsiPengubah(item);
-    // panggil fungsi pekerja yang dikirimkan lewat parameter.
-
-    // Tempelkan hasil olahan ke layar:
-    const barisBaru = document.createElement("li");
-    barisBaru.textContent = hasilUbah;
-    listHasil.appendChild(barisBaru);
+  for (const baris of arrayData) {
+    const li = document.createElement("li");
+    li.textContent = baris;
+    listHasil.appendChild(li);
   }
 }
 
-// ================================================================
-// TIGA FUNGSI PEKERJA SPESIALIS (Fungsi Callback)
-// Masing-masing fungsi hanya fokus mengubah satu kata saja
-// ================================================================
-function jadiKapital(teks) {
-  return teks.toUpperCase();
-  // ubah teks menjadi HURUF BESAR SEMUA.
-}
-
-function beriBintang(teks) {
-  return `⭐ ${teks} ⭐`;
-  // bungkus teks dengan emoji bintang.
-}
-
-function beriSalam(teks) {
-  return `Halo, Selamat Datang ${teks}!`;
-  // rangkai teks menjadi kalimat sapaan ramah.
-}
-
-// 2. Hubungkan tombol dengan memanggil HOF dan memberikan fungsinya
-tombolKapital.addEventListener("click", () => {
-  // Kirim fungsi jadiKapital ke dalam olahDanTampilkan:
-  olahDanTampilkan(daftarNama, jadiKapital);
+document.querySelector("#btn-kapital").addEventListener("click", () => {
+  const hasil = prosesDaftar(namaPeserta, jadikanKapital);
+  tampilkanKeLayar(hasil);
 });
 
-tombolBintang.addEventListener("click", () => {
-  // Kirim fungsi beriBintang ke dalam olahDanTampilkan:
-  olahDanTampilkan(daftarNama, beriBintang);
+document.querySelector("#btn-bintang").addEventListener("click", () => {
+  const hasil = prosesDaftar(namaPeserta, beriBintang);
+  tampilkanKeLayar(hasil);
 });
 
-tombolHalo.addEventListener("click", () => {
-  // Kirim fungsi beriSalam ke dalam olahDanTampilkan:
-  olahDanTampilkan(daftarNama, beriSalam);
+// ========================================================
+// 2. HOF TIPE 2: MENGHASILKAN FUNGSI BARU (FACTORY)
+// ========================================================
+function buatHitungDiskon(persenDiskon) {
+  // Mengembalikan fungsi baru yang mengingat persenDiskon lewat closure:
+  return function (hargaAsli) {
+    return hargaAsli - (hargaAsli * persenDiskon);
+  };
+}
+
+// Cetak fungsi spesialis diskon 25%:
+const diskonMemberVip = buatHitungDiskon(0.25);
+
+document.querySelector("#btn-diskon").addEventListener("click", () => {
+  const harga100k = diskonMemberVip(100000);
+  const harga200k = diskonMemberVip(200000);
+  tampilkanKeLayar([
+    `Harga Rp100.000 (Diskon 25%) -> Rp${harga100k.toLocaleString("id-ID")}`,
+    `Harga Rp200.000 (Diskon 25%) -> Rp${harga200k.toLocaleString("id-ID")}`,
+  ]);
 });
 ```
 
@@ -175,29 +187,44 @@ tombolHalo.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Jangan letakkan tanda kurung `()` saat mengirim fungsi sebagai argumen**:
-   Tuliskan namanya saja: `olahDanTampilkan(daftarNama, jadiKapital)`. Jika Anda menulis `jadiKapital()`, fungsinya akan langsung dijalankan di detik itu juga sebelum sempat diserahkan ke manajer!
-2. **Kapan menggunakan HOF bawaan JavaScript**:
-   Metode array populer seperti `.map()`, `.filter()`, dan `.forEach()` semuanya adalah Higher-Order Function bawaan browser yang sangat berguna dan wajib dikuasai pemula.
-3. **Fungsi Callback Tanpa Nama (_Anonymous Function_)**:
-   Anda juga bisa langsung memasukkan arrow function ringkas tanpa membuat fungsi terpisah: `olahDanTampilkan(daftarNama, (t) => `ID: ${t}`)`.
+1. **Kenali Pola HOF Bawaan JavaScript**: Metode array populer seperti `.map()`, `.filter()`, dan `.forEach()` yang akan kita pelajari di Bab 07 adalah contoh nyata dari Higher-Order Functions.
+2. **Gunakan Function Factory untuk Konfigurasi Berulang**: Jika Anda memiliki rumus atau pengubah teks dengan aturan yang sama berkali-kali, cetak fungsinya menggunakan HOF factory daripada mengulang-ulang parameter konfigurasinya.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser.
-- [ ] Klik ketiga tombol secara bergantian. Perhatikan bagaimana daftar nama berubah format seketika sesuai spesialisnya masing-masing.
-- [ ] Amati di file `app.js` bahwa fungsi `olahDanTampilkan` hanya dibuat satu kali, tetapi perilakunya bisa sangat fleksibel berkat parameter fungsi yang diterimanya.
+- [ ] Buka `index.html` di browser dan klik tombol **"Ubah Kapital"** dan **"Beri Bintang"**. Amati bagaimana fungsi `prosesDaftar` bisa menghasilkan output berbeda hanya dengan mengganti fungsi callback.
+- [ ] Klik tombol **"Hitung Diskon Toko"** dan perhatikan bagaimana fungsi hasil cetakan `buatHitungDiskon` bekerja mandiri.
+- [ ] Buka Console (`F12`), coba buat pengali sederhana:
+  ```javascript
+  const cetakPengali = (n) => (x) => x * n;
+  const kaliLima = cetakPengali(5);
+  console.log(kaliLima(4)); // 20
+  ```
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Mengerti bahwa fungsi di JavaScript bisa dikirimkan ke dalam fungsi lain layaknya Anda mengirim variabel angka atau string biasa**.
+> Anda sudah paham jika: **Mengerti bahwa fungsi di JavaScript bisa dikirim sebagai parameter ke fungsi lain, atau dikembalikan sebagai hasil akhir dari sebuah fungsi**.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
-1. Apa perbedaan antara menulis `tombol.addEventListener("click", jalankanAksi)` dengan menulis `tombol.addEventListener("click", jalankanAksi())`? Kenapa tanda kurung membuat perbedaannya sangat besar?
-2. Mengapa metode bawaan array seperti `.filter()` disebut sebagai Higher-Order Function?
+Perhatikan kode berikut:
+
+```javascript
+function buatSapaan(kataAwal) {
+  return function (namaTujuan) {
+    return `${kataAwal}, ${namaTujuan}!`;
+  };
+}
+
+const sapaPagi = buatSapaan("Selamat Pagi");
+console.log(sapaPagi("Ari"));
+```
+
+1. Mengapa fungsi `buatSapaan` disebut sebagai *Higher-Order Function*?
+2. Berapakah fungsi yang tercipta di dalam memori pada kode di atas?
+```
