@@ -18,3 +18,7 @@ yarn-error.log*
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 .obsidian/cache/
+
+# Backups & Legacy Agent Workflows
+*.bak
+.agents/workflows/
