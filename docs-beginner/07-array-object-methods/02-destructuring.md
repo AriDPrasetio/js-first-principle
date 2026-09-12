@@ -10,36 +10,59 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Destructuring (_Membongkar Paket_) adalah cara cepat dan elegan untuk mengeluarkan isi properti Objek atau elemen Array ke dalam variabel masing-masing hanya dalam satu baris kode.
+> Destructuring (*Membongkar Paket*) adalah cara cepat untuk mengekstrak properti Objek atau elemen Array langsung ke dalam variabel masing-masing hanya dalam satu baris deklarasi.
 
 ---
 
 ## 1. Analogi Logis: Membongkar Kardus Belanjaan
 
-Bayangkan Anda menerima paket kardus belanjaan dari kurir:
+Bayangkan Anda menerima paket kardus belanjaan:
 
 - **Cara Tradisional (Repot & Bertele-tele)**:
-  Anda membuka kardus, lalu menulis satu per satu di kertas:
   `const sabun = paket.sabun;`
   `const sampo = paket.sampo;`
-  `const handuk = paket.handuk;`
 - **Cara Destructuring (Cepat & Sekaligus)**:
-  Anda langsung mengambil barang yang Anda inginkan dari kardus dalam sekali gerak:
-  `const { sabun, sampo, handuk } = paket;`
+  `const { sabun, sampo } = paket;`
 
 Perbedaan Objek vs Array:
-
-- **Pada Objek `{}`**: Pengambilan barang berdasarkan **NAMA PROPERTI** (urutan tidak penting).
-- **Pada Array `[]`**: Pengambilan barang berdasarkan **URUTAN POSISI** (elemen ke-1, ke-2, ke-3).
+- **Pada Objek `{}`**: Pengambilan barang berdasarkan **NAMA KUNCI PROPERTI** (urutan tidak penting).
+- **Pada Array `[]`**: Pengambilan barang berdasarkan **NOMOR URUT POSISI** (elemen ke-0, ke-1, ke-2).
 
 ---
 
 ## 2. Mengapa JavaScript Menyediakan Sintaks Ini? (First Principles)
 
-1. **Mengurangi Kesalahan Ketik pada Data Server**:
-   Saat mengambil data pengguna dari internet, data biasanya berbentuk objek besar bertingkat. Mengetik `user.alamat.kota`, `user.alamat.kodePos` berulang kali sangat melelahkan dan mudah salah ketik.
-2. **Memberi Nama Baru (Alias) & Nilai Cadangan**:
-   Jika server mengirim nama kunci yang jelek seperti `usr_nm`, Anda bisa langsung menggantinya: `{ usr_nm: namaUser }`. Dan jika server tidak mengirimkan data foto, Anda bisa langsung memberi cadangan: `{ foto = "default.png" }`.
+### A. Aturan Ketat Nilai Cadangan (*Default Values*)
+
+> [!IMPORTANT]
+> **Spesifikasi ECMA-262**:
+> Nilai cadangan (*default value*) pada destructuring **HANYA aktif jika datanya bernilai strictly `=== undefined`**.
+> Jika server mengirimkan `{ hobi: null }` atau `{ hobi: "" }`, nilai cadangan **TIDAK AKAN AKTIF**, dan variabel akan tetap menampung `null` atau `""`!
+
+```javascript
+const userA = { hobi: undefined };
+const { hobi = "Membaca" } = userA;
+console.log(hobi); // "Membaca" (Default aktif karena undefined!)
+
+const userB = { hobi: null };
+const { hobi: hobiB = "Membaca" } = userB;
+console.log(hobiB); // null (Default TIDAK aktif karena null dianggap nilai sah!)
+```
+
+### B. Mengganti Nama Variabel (*Aliasing*)
+Di dalam objek biasa, tanda titik dua `{ key: value }` berarti menetapkan nilai. Namun di dalam destructuring, tanda titik dua bermakna **mengganti nama variabel**:
+```javascript
+const { nama_lengkap: namaPanggilan } = data;
+// Baca properti 'nama_lengkap', simpan ke variabel baru bernama 'namaPanggilan'
+```
+
+### C. Trik Menukar Nilai Tanpa Variabel Sementara
+Dengan Array Destructuring, Anda bisa menukar isi dua variabel dengan sangat elegan:
+```javascript
+let a = 1;
+let b = 2;
+[a, b] = [b, a]; // Nilai a jadi 2, nilai b jadi 1!
+```
 
 ---
 
@@ -101,47 +124,36 @@ Mari kita buat pembaca data akun pengguna yang mendemonstrasikan Destructuring O
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Contoh data paket dari server (Objek dan Array)
 const dataPengguna = {
   id: 101,
   nama_lengkap: "Siti Rahayu",
   kotaAsal: "Surabaya",
-  // properti hobi sengaja tidak ada untuk menguji nilai cadangan (default)
+  // properti hobi tidak didefinisikan (undefined) untuk menguji default value
 };
 
 const daftarPemenangLomba = ["Emas: Budi", "Perak: Siti", "Perunggu: Doni"];
 
 const tombolBongkar = document.querySelector("#btn-bongkar");
-// ambil tombol dari HTML.
-
 const kotakProfil = document.querySelector("#kotak-profil");
-// ambil wadah tampilan profil.
 
-// 2. Pasang aksi pembongkaran saat tombol diklik
 tombolBongkar.addEventListener("click", () => {
-  // ================================================================
-  // 1. OBJECT DESTRUCTURING (Bongkar Objek Berdasarkan Nama Properti)
-  // - nama_lengkap: namaPanggilan -> mengganti nama kunci jadi lebih ramah
-  // - hobi = "Membaca Buku"       -> nilai cadangan jika data dari server kosong
-  // ================================================================
+  // 1. OBJECT DESTRUCTURING:
+  // - nama_lengkap: namaPanggilan -> alias nama variabel baru
+  // - hobi = "Membaca Buku"       -> nilai cadangan hanya jika undefined
   const {
     nama_lengkap: namaPanggilan,
     kotaAsal,
     hobi = "Membaca Buku",
   } = dataPengguna;
 
-  // ================================================================
-  // 2. ARRAY DESTRUCTURING (Bongkar Array Berdasarkan Urutan Posisi)
-  // - juaraSatu mengambil elemen indeks ke-0
-  // - juaraDua mengambil elemen indeks ke-1
-  // ================================================================
+  // 2. ARRAY DESTRUCTURING:
+  // mengambil posisi indeks ke-0 dan indeks ke-1
   const [juaraSatu, juaraDua] = daftarPemenangLomba;
 
-  // Tampilkan hasil pembongkaran ke halaman HTML:
   kotakProfil.innerHTML = `
     <p><strong>Nama:</strong> ${namaPanggilan}</p>
     <p><strong>Kota:</strong> ${kotaAsal}</p>
-    <p><strong>Hobi:</strong> ${hobi} <em>(Nilai Cadangan)</em></p>
+    <p><strong>Hobi:</strong> ${hobi} <em>(Aktif karena hobi === undefined)</em></p>
     <hr>
     <p><strong>Juara 1:</strong> ${juaraSatu}</p>
     <p><strong>Juara 2:</strong> ${juaraDua}</p>
@@ -153,34 +165,46 @@ tombolBongkar.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Waspada Pembongkaran Data Kosong (`null`/`undefined`)**:
-   Jika Anda melakukan `const { nama } = data` tetapi variabel `data` bernilai `null` atau `undefined`, browser akan melempar error merah fatal (_TypeError_). Solusinya, selalu pasang benteng pertahanan `= {}`:
+1. **Destructuring Parameter Fungsi**:
+   Di ekosistem modern (seperti komponen React), Anda bisa langsung membongkar objek parameter di dalam tanda kurung fungsi:
    ```javascript
-   function tampilkanUser({ nama, umur } = {}) {
-     // aman dijalankan meskipun fungsi dipanggil tanpa parameter sama sekali!
+   function sapaPengguna({ nama, role = "User" } = {}) {
+     console.log(`Halo ${nama}, peran: ${role}`);
    }
+   sapaPengguna({ nama: "Ari" }); // "Halo Ari, peran: User"
    ```
-2. **Melewatkan Elemen Array**:
-   Jika hanya butuh elemen ke-1 dan ke-3 pada array, cukup gunakan tanda koma kosong:
-   `const [pertama, , ketiga] = array;`
+2. **Benteng Pertahanan `= {}`**:
+   Jika fungsi menerima objek opsional, selalu beri nilai default `= {}` di akhir tanda kurung agar tidak melempar `TypeError: Cannot destructure property of undefined` saat dipanggil tanpa argumen.
+3. **Melewatkan Elemen Array**: Gunakan koma kosong untuk melompati indeks: `const [pertama, , ketiga] = array;`.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser.
-- [ ] Klik tombol **"Bongkar Data Paket"**.
-- [ ] Perhatikan bahwa data nama panggilan berhasil diganti dari `nama_lengkap`, dan hobi otomatis terisi `"Membaca Buku"` meskipun di objek aslinya tidak ada.
-- [ ] Perhatikan bagaimana `juaraSatu` dan `juaraDua` berhasil mengambil posisi 1 dan 2 dari array lomba.
+- [ ] Buka `index.html` di browser dan klik tombol **"Bongkar Data Paket"**.
+- [ ] Perhatikan bahwa `namaPanggilan` berhasil menampung `nama_lengkap`, dan hobi otomatis terisi `"Membaca Buku"`.
+- [ ] Buka Console (`F12`), coba uji coba bukti `undefined` vs `null`:
+  ```javascript
+  const { x = "Cadangan" } = { x: undefined };
+  console.log(x); // "Cadangan"
+  const { y = "Cadangan" } = { y: null };
+  console.log(y); // null! (tidak diganti cadangan)
+  ```
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Tahu bahwa `{ a, b }` membongkar objek berdasarkan nama kunci, sedangkan `[ x, y ]` membongkar array berdasarkan nomor urut**.
+> Anda sudah paham jika: **Tahu bahwa `{}` membongkar berdasarkan nama properti dan `[]` berdasarkan urutan posisi, serta mengerti bahwa default value hanya aktif saat data bernilai `undefined`**.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
-1. Apakah urutan penulisan nama variabel berpengaruh saat Anda melakukan _Object Destructuring_ `{ kota, nama } = data`? Bagaimana dengan _Array Destructuring_?
-2. Apa yang akan terjadi jika Anda mencoba membongkar properti dari variabel yang bernilai `null` (`const { email } = null;`)?
+1. Apakah urutan penulisan nama variabel berpengaruh pada Object Destructuring `{ kota, nama } = profil`? Bagaimana dengan Array Destructuring `[ kota, nama ] = list`?
+2. Perhatikan kode berikut:
+   ```javascript
+   const data = { usia: null };
+   const { usia = 20 } = data;
+   ```
+   Berapakah nilai variabel `usia` setelah baris di atas dijalankan? Mengapa bukan `20`?
+```

@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Scope"
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Scope adalah aturan "wilayah kekuasaan" variabel: kode yang berada di dalam ruangan privat bisa melihat data di luar, tetapi kode di luar sama sekali tidak bisa mengintip data rahasia di dalam ruangan tertutup.
+> Scope adalah aturan "wilayah kekuasaan" variabel: kode yang berada di dalam ruangan privat bisa melihat data di luar (*Scope Chain*), tetapi kode di luar sama sekali tidak bisa mengintip data rahasia di dalam ruangan tertutup.
 
 ---
 
@@ -21,23 +21,51 @@ Bayangkan Anda sedang duduk di dalam mobil dengan kaca film gelap satu arah:
 - **Dari dalam mobil**: Anda bisa melihat pemandangan jalan raya, lampu lalu lintas, dan gedung di luar dengan sangat jelas.
 - **Dari luar mobil**: Orang yang lewat di trotoar sama sekali tidak bisa melihat apa yang ada di dalam mobil Anda.
 
-Aturan wilayah (_Scope_) di JavaScript bekerja persis seperti kaca satu arah ini:
+Aturan wilayah (*Scope*) di JavaScript bekerja persis seperti kaca satu arah ini:
 
-- **Melihat ke luar? BISA.** Fungsi di dalam selalu bisa membaca variabel di luarnya.
-- **Melihat ke dalam? TIDAK BISA.** Kode di luar dilarang menyentuh variabel yang dibuat di dalam kurung kurawal `{ }`.
+- **Melihat ke luar? BISA.** Kode di dalam selalu bisa membaca variabel di luarnya.
+- **Melihat ke dalam? TIDAK BISA.** Kode di luar dilarang menyentuh variabel yang dibuat di dalam kurung kurawal `{ }` atau di dalam fungsi.
 
 ---
 
-## 2. Tiga Tingkat Wilayah (First Principles)
+## 2. Tiga Tingkat Wilayah & Mekanisme Scope Chain (First Principles)
 
 Di JavaScript ada 3 tingkat wilayah:
 
 1. **Global Scope (Lapangan Terbuka)**:
-   Variabel yang dibuat di luar fungsi atau blok apa pun. Semua kode di seluruh berkas bisa mengaksesnya. Jangan menaruh terlalu banyak variabel di sini agar tidak saling bertabrakan.
+   Variabel yang dibuat di luar fungsi atau blok apa pun. Semua kode di seluruh berkas bisa mengaksesnya.
 2. **Function Scope (Ruang Kantor Privat)**:
-   Variabel yang dibuat di dalam sebuah fungsi (`function`). Variabel ini hanya hidup selama fungsi tersebut berjalan, lalu hilang saat fungsi selesai.
+   Variabel yang dibuat di dalam sebuah fungsi (`function`). Variabel ini hanya hidup selama fungsi tersebut berjalan, lalu dibersihkan dari memori saat fungsi selesai.
 3. **Block Scope (Kamar Pribadi Berkurung `{ }`)**:
-   Variabel `let` dan `const` yang dibuat di antara tanda kurung kurawal `{ }` (misal di dalam percabangan `if` atau perulangan `for`). Variabel ini terkunci rapat di dalam blok tersebut.
+   Variabel `let` dan `const` yang dibuat di antara tanda kurung kurawal `{ }` (misal di dalam percabangan `if` atau perulangan `for`).
+
+### A. Rantai Pencarian Variabel (*Scope Chain*)
+
+Ketika Anda memanggil sebuah nama variabel, engine JavaScript mencarinya secara bertingkat dari dalam ke luar:
+
+```
+[ Blok Terdalam ] ──(tidak ada?)──> [ Fungsi Pembungkus ] ──(tidak ada?)──> [ Global Scope ] ──(tidak ada?)──> [ ReferenceError! ]
+```
+
+Engine mencari dari kamar saat ini. Jika tidak ditemukan, ia naik satu tingkat ke ruangan pembungkus, dan terus naik hingga ke tingkat Global. Jika di tingkat Global tetap tidak ada, barulah muncul pesan `ReferenceError: ... is not defined`.
+
+### B. Bahaya Menimpa Nama: *Variable Shadowing*
+
+Jika Anda membuat variabel di dalam kamar privat dengan **nama yang sama persis** dengan variabel di luar, variabel dalam akan "membayangi" (*shadowing*) variabel luar:
+
+```javascript
+const pengguna = "Budi (Global)";
+
+function sapa() {
+  const pengguna = "Andi (Lokal)"; // Shadowing! Menutupi variabel pengguna luar
+  console.log(pengguna); // Mencetak: "Andi (Lokal)"
+}
+
+sapa();
+console.log(pengguna); // Mencetak: "Budi (Global)"
+```
+
+Meskipun sah secara sintaks, *shadowing* sering membingungkan pembaca kode karena sulit membedakan variabel mana yang sedang aktif.
 
 ---
 
@@ -65,6 +93,7 @@ Mari kita buktikan isolasi wilayah ini di browser:
       button {
         padding: 8px 12px;
         cursor: pointer;
+        width: 100%;
         margin-top: 8px;
       }
     </style>
@@ -104,12 +133,11 @@ bacaBtn.addEventListener("click", () => {
 
   // Variabel lokal privat di dalam fungsi:
   const kodeRahasia = "XYZ-999";
-  // kodeRahasia hanya ada di dalam ruangan ini.
 
   if (true) {
     // ini adalah kamar block scope lebih dalam lagi:
     const pesanKamar = `Akses diberikan ke ${namaAplikasi}`;
-    // kamar ini BISA membaca namaAplikasi dari luar (prinsip kaca satu arah!).
+    // kamar ini BISA membaca namaAplikasi dari luar (prinsip kaca satu arah / scope chain!).
 
     pesanPrivatEl.textContent = `${pesanKamar} | Kode: ${kodeRahasia}`;
     // kamar ini juga bisa membaca kodeRahasia dari ruangan pembungkusnya.
@@ -128,8 +156,9 @@ bacaBtn.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Prinsip Hak Akses Terkecil (_Least Privilege_)**: Selalu buat variabel di wilayah paling sempit yang membutuhkan. Jika variabel hanya dipakai di dalam satu tombol klik, jangan taruh di global!
-2. **Hindari Polusi Global**: Variabel global mudah tertimpa tanpa sengaja dan memakan memori terus-menerus.
+1. **Prinsip Hak Akses Terkecil (*Least Privilege*)**: Selalu buat variabel di wilayah paling sempit yang membutuhkan. Jika variabel hanya dipakai di dalam satu blok tombol, jangan taruh di lingkup global!
+2. **Hindari Polusi Global**: Variabel global mudah tertimpa tanpa sengaja dan memakan memori terus-menerus selama halaman aktif.
+3. **Hindari *Variable Shadowing***: Gunakan nama variabel yang jelas dan unik agar Anda tidak menutupi variabel luar secara tidak sengaja.
 
 ---
 
@@ -142,7 +171,7 @@ bacaBtn.addEventListener("click", () => {
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Mengerti mengapa fungsi bisa membaca variabel luar, tetapi kode di luar tidak bisa menyentuh variabel yang dibuat di dalam fungsi**.
+> Anda sudah paham jika: **Mengerti bagaimana alur pencarian Scope Chain dari dalam ke luar, serta memahami bahwa blok kurung kurawal `{}` mengunci variabel `let`/`const` dari pandangan luar**.
 
 ---
 
@@ -155,13 +184,13 @@ let namaLuar = "Aria";
 
 function tesScope() {
   let namaDalam = "Budi";
+  console.log(namaLuar); // Baris 1
 }
 
 tesScope();
-console.log(namaDalam);
+console.log(namaDalam); // Baris 2
 ```
 
-Apakah baris terakhir akan:
-
-- **A. Mencetak teks "Budi"**
-- **B. Melempar error `ReferenceError: namaDalam is not defined`?**
+1. Apakah yang dicetak oleh **Baris 1**?
+2. Apakah yang terjadi pada **Baris 2**? Mengapa?
+```

@@ -1,47 +1,78 @@
 ---
-title: "Panduan Pemula: Menangani Error Fetch dan Membatalkan Request (AbortController)"
+title: "Panduan Pemula: Menangani Tiga Jenis Error Fetch dan Membatalkan Request (AbortController)"
 tags: "javascript, first-principles, roadmap-js/10-fetch-error-handling"
 level: beginner
 official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/API/Response/ok"
 ---
 
-# Panduan Pemula: Menangani Error Fetch dan Membatalkan Request (AbortController)
+# Panduan Pemula: Menangani Tiga Jenis Error Fetch dan Membatalkan Request (AbortController)
 
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Server yang membalas pesan "Error 404 Not Found" **tidak otomatis dianggap error** oleh `fetch()` karena koneksi jaringannya tetap berhasil tersambung. Anda wajib memeriksa `response.ok`, dan Anda bisa memakai **`AbortController`** untuk membatalkan permintaan jika menunggu terlalu lama.
+> Server yang membalas status "404 Not Found" atau "500 Server Error" **tidak dianggap error** oleh `fetch()` karena kabel jaringan tetap berhasil tersambung. Anda harus membedakan dengan tegas antara **Network Error**, **HTTP Status Error**, dan **Pembatalan Manual** menggunakan **`AbortController`**.
 
 ---
 
-## 1. Analogi Logis: Dua Macam Masalah Saat Menelepon Toko
+## 1. Analogi Logis: Tiga Masalah Saat Menelepon Toko Buku
 
-Bayangkan Anda menelepon sebuah toko buku:
+Bayangkan Anda menelepon sebuah toko buku untuk menanyakan stok:
 
-- **Kasus 1: Kabel Telepon Putus (Network Error)**:
-  Telepon sama sekali tidak berdering, sinyal mati total. Di JavaScript, ini adalah kegagalan fisik jaringan yang langsung membuat `fetch()` meloncat ke blok **`catch`**.
-- **Kasus 2: Telepon Diangkat, tapi Buku Habis (Error 404 / 500)**:
-  Telepon tersambung dengan sukses, penjaga toko mengangkat telepon dan berkata: _"Maaf, buku itu tidak ada di toko kami!"_.
-  Dari sudut pandang perusahaan telepon, panggilan Anda berhasil! Karena itulah JavaScript **tidak memasukkan 404 ke blok `catch`**. Anda harus memeriksa stempel `response.ok` sendiri!
-- **Kasus 3: Menutup Telepon karena Terlalu Lama (`AbortController`)**:
-  Telepon terus berdering tanpa ada yang mengangkat selama 10 detik. Anda memutuskan menekan tombol merah tutup telepon (_Tutup Telepon!_). Di kode, tombol merah ini bernama `AbortController`.
+```
+                  ┌─ 1. Jaringan Mati / Kabel Putus (Network Error / CORS)
+                  │    └─► Telepon mati total, suara nada 'tut-tut-tut'. (Catch)
+                  │
+[ Anda Menelepon ]┼─ 2. Penjaga Menjawab "Buku Habis!" (HTTP 404 / 500)
+                  │    └─► Telepon tersambung! Bukan masalah jaringan! (!response.ok)
+                  │
+                  └─ 3. Nada Sambung Terlalu Lama 10 Detik (AbortController)
+                       └─► Anda menekan tombol merah tutup telepon! (AbortError)
+```
+
+1. **Kasus 1: Kabel Telepon Putus (Network Error & Blokir CORS)**:
+   Telepon sama sekali tidak berdering, sinyal mati total. Di JavaScript, ini adalah kegagalan fisik jaringan yang langsung membuat Promise `fetch()` berubah menjadi **rejected** dan seketika melompat ke blok **`catch`**.
+2. **Kasus 2: Telepon Diangkat, tapi Buku Tidak Ada (HTTP Error 404 / 500)**:
+   Telepon tersambung lancar, kasir toko mengangkat telepon dan berkata ramah: _"Maaf, buku tersebut tidak ada di toko kami!"_.
+   Dari sudut pandang perusahaan telepon, panggilan Anda 100% berhasil! Karena itulah `fetch()` **tidak menganggap 404 sebagai error**. Anda harus memeriksa stempel `response.ok` sendiri!
+3. **Kasus 3: Membatalkan Panggilan (`AbortController` & `signal`)**:
+   - `AbortController` adalah **remote kontrol tombol merah** yang Anda pegang.
+   - `signal` adalah **kabel antena** yang ditancapkan ke kurir `fetch`.
+   - Saat Anda menekan tombol `controller.abort()`, sinyal merah dikirim lewat kabel antena, dan kurir `fetch` seketika menghentikan pengunduhan paket di tengah jalan.
 
 ---
 
-## 2. Mengapa JavaScript Bekerja Seperti Ini? (First Principles)
+## 2. Mengapa JavaScript Didesain Seperti Ini? (First Principles)
 
-1. **Membedakan Sukses Sambungan vs Sukses Konten**:
-   Tugas utama fungsi `fetch()` adalah menjamin pesan sampai ke server dan mendapat balasan. Jawaban 404 atau 500 adalah jawaban sah dari server, sehingga JavaScript menganggapnya selesai terkirim.
-2. **Kunci Pemeriksaan: `if (!response.ok)`**:
-   Properti `response.ok` bernilai `true` **hanya jika kode statusnya 200 sampai 299**. Jika angkanya 404 atau 500, `response.ok` bernilai `false`, dan kita harus melempar `throw new Error()` sendiri.
-3. **Mencegah Tabrakan Data Usang (_Race Condition_)**:
-   Saat pengguna mengetik di kolom pencarian huruf demi huruf, request pencarian lama yang lambat bisa membatalkan diri menggunakan `AbortController` agar tidak menimpa hasil pencarian yang baru.
+### A. Tiga Kategori Error yang Wajib Anda Bedakan
+
+| Kategori Masalah | Contoh Penyebab | Apa yang Dialami `fetch()`? | Di Mana Ditangani? |
+| :--- | :--- | :--- | :--- |
+| **1. Network Error** | Laptop offline, Wi-Fi putus, salah ketik domain, atau **Blokir CORS**. | Promise **Rejected** seketika. | Blok **`catch (error)`** |
+| **2. HTTP Status Error** | Status 404 (Halaman Tidak Ada), 500 (Server Down), 401 (Tidak Punya Akses). | Promise tetap **Fulfilled** (koneksi sukses)! | Blok manual: **`if (!response.ok)`** |
+| **3. Abort Error** | Pengguna menekan tombol "Batal", atau batas waktu request habis (*timeout*). | Melempar error dengan nama khusus `"AbortError"`. | Blok **`catch`** dicek via `error.name === "AbortError"` |
+
+### B. Mengapa CORS Menyebabkan Network Error?
+Pernahkah Anda mencoba memanggil API lalu muncul error warna merah: *Cross-Origin Request Blocked*?
+- **CORS (Cross-Origin Resource Sharing)** adalah satpam keamanan browser.
+- Browser melarang website di domain `websiteku.com` diam-diam membaca data dari server `bank.com`, kecuali server `bank.com` secara sukarela menyertakan izin resmi melalui header `Access-Control-Allow-Origin: *`.
+- Jika satpam CORS memblokir request, browser menganggap koneksi tidak sah dan melemparnya langsung ke blok `catch` sebagai Network Error biasa demi keamanan.
+
+### C. Anatomi `AbortController` dan Batas Waktu Modern
+```javascript
+// 1. Cara Manual (Menggunakan Controller):
+const controller = new AbortController();
+fetch(url, { signal: controller.signal }); // Hubungkan antena
+controller.abort(); // Tekan tombol merah untuk membatalkan kapan saja!
+
+// 2. Cara Modern (Otomatis Batal Jika Lebih dari 5 Detik):
+fetch(url, { signal: AbortSignal.timeout(5000) });
+```
 
 ---
 
 ## 3. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat penguji jaringan yang bisa mendeteksi URL sukses, URL gagal (404), dan tombol pembatalan seketika:
+Mari kita buat alat penguji jaringan interaktif yang mensimulasikan ketiga skenario di atas secara nyata:
 
 ### Berkas 1: `index.html`
 
@@ -55,10 +86,11 @@ Mari kita buat penguji jaringan yang bisa mendeteksi URL sukses, URL gagal (404)
     <style>
       .card {
         font-family: sans-serif;
-        max-width: 360px;
+        max-width: 380px;
         padding: 16px;
         border: 1px solid #ddd;
         border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
       }
       .btn-group {
         display: flex;
@@ -67,46 +99,50 @@ Mari kita buat penguji jaringan yang bisa mendeteksi URL sukses, URL gagal (404)
         margin-bottom: 12px;
       }
       button {
-        padding: 8px;
+        padding: 9px;
         cursor: pointer;
         border-radius: 4px;
         border: 1px solid #aaa;
+        font-weight: 500;
+        text-align: left;
       }
-      #btn-sukses {
-        background: #dcfce7;
-      }
-      #btn-rusak {
-        background: #fee2e2;
-      }
-      #btn-batal {
-        background: #fef08a;
-      }
+      #btn-sukses { background: #dcfce7; }
+      #btn-http-error { background: #fee2e2; }
+      #btn-network-error { background: #ffedd5; }
+      #btn-batal { background: #fef08a; font-weight: bold; }
       .status-kotak {
-        padding: 10px;
+        padding: 12px;
         border-radius: 6px;
-        font-weight: bold;
         background: #f8fafc;
         border: 1px solid #e2e8f0;
+        min-height: 50px;
+        font-size: 0.9rem;
       }
+      .sukses { color: #166534; font-weight: bold; }
+      .error { color: #991b1b; }
+      .batal { color: #854d0e; font-weight: bold; }
     </style>
     <script src="app.js" defer></script>
   </head>
   <body>
     <div class="card">
-      <h3>Uji Penanganan Error Jaringan</h3>
+      <h3>Uji Coba Penanganan Error Fetch</h3>
       <div class="btn-group">
         <button type="button" id="btn-sukses">
-          1. Request URL Normal (200 OK)
+          1. URL Normal (200 OK)
         </button>
-        <button type="button" id="btn-rusak">
-          2. Request URL Palsu (Error 404)
+        <button type="button" id="btn-http-error">
+          2. URL Palsu (HTTP 404 Error)
+        </button>
+        <button type="button" id="btn-network-error">
+          3. Domain Salah / Rusak (Network Error)
         </button>
         <button type="button" id="btn-batal">
-          3. Batalkan Request (AbortController)
+          🛑 Batalkan Permintaan (Abort)
         </button>
       </div>
       <div id="kotak-status" class="status-kotak">
-        Pilih tombol uji coba di atas...
+        Silakan pilih tombol skenario di atas...
       </div>
     </div>
   </body>
@@ -118,79 +154,85 @@ Mari kita buat penguji jaringan yang bisa mendeteksi URL sukses, URL gagal (404)
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil tombol dan wadah dari HTML
+// 1. Ambil elemen HTML
 const tombolSukses = document.querySelector("#btn-sukses");
-const tombolRusak = document.querySelector("#btn-rusak");
+const tombolHttpError = document.querySelector("#btn-http-error");
+const tombolNetworkError = document.querySelector("#btn-network-error");
 const tombolBatal = document.querySelector("#btn-batal");
 const kotakStatus = document.querySelector("#kotak-status");
 
-// Variabel untuk menyimpan remote pembatalan:
+// Variabel untuk memegang remote pengendali pembatalan
 let pengendaliBatal = null;
 
 // ================================================================
-// FUNGSI UMUM DENGAN VALIDASI response.ok DAN DUKUNGAN PEMBATALAN
+// FUNGSI UMUM DENGAN PENANGANAN 3 KATEGORI ERROR
 // ================================================================
-async function mintaDataKeUrl(urlTarget) {
-  // Buat alat pembatal baru setiap kali request dimulai:
+async function mintaData(urlTarget) {
+  // Buat remote pembatal baru untuk request ini
   pengendaliBatal = new AbortController();
-  // buat instans baru remote pembatalan.
 
-  kotakStatus.textContent = "⏳ Menghubungi server...";
+  kotakStatus.className = "status-kotak";
+  kotakStatus.textContent = "⏳ Sedang menghubungi server...";
 
   try {
-    // Pasang sinyal pembatal ke dalam opsi fetch:
+    // Sambungkan antena sinyal ke konfigurasi fetch:
     const respon = await fetch(urlTarget, {
       signal: pengendaliBatal.signal,
-      // hubungkan kabel sinyal pembatal ke fetch.
     });
 
     // ============================================================
-    // PEMERIKSAAN KRUSIAL FIRST PRINCIPLES:
-    // Fetch TIDAK otomatis melempar error untuk status 404 / 500!
+    // KATEGORI 2: HTTP Status Error (404, 500, dll)
+    // Server berhasil dihubungi secara fisik jaringan, tetapi
+    // server memberi balasan status gagal!
     // ============================================================
     if (!respon.ok) {
-      // Jika statusnya bukan 200-299, lempar error buatan sendiri:
-      throw new Error(
-        `Gagal memuat! Status server: ${respon.status} (${respon.statusText})`,
-      );
+      throw new Error(`HTTP Error! Status: ${respon.status} (${respon.statusText})`);
     }
 
     const data = await respon.json();
-    kotakStatus.textContent = `✅ Sukses! Nama Data: ${data.title || data.name}`;
+    kotakStatus.className = "status-kotak sukses";
+    kotakStatus.textContent = `✅ Sukses! Data: "${data.title || data.name}"`;
   } catch (error) {
-    // Bedakan antara pembatalan yang disengaja vs error sungguhan:
+    // ============================================================
+    // KATEGORI 3: Pembatalan Disengaja oleh Pengguna (AbortError)
+    // ============================================================
     if (error.name === "AbortError") {
-      kotakStatus.textContent =
-        "🛑 Permintaan berhasil dibatalkan oleh pengguna!";
-    } else {
-      kotakStatus.textContent = `❌ Terjadi Masalah: ${error.message}`;
+      kotakStatus.className = "status-kotak batal";
+      kotakStatus.textContent = "🛑 Request dibatalkan oleh pengguna via AbortController!";
+    } 
+    // ============================================================
+    // KATEGORI 1: Kegagalan Jaringan Murni (Network Error / CORS)
+    // ============================================================
+    else {
+      kotakStatus.className = "status-kotak error";
+      kotakStatus.innerHTML = `❌ <strong>Terjadi Kesalahan:</strong><br>${error.message}`;
     }
   } finally {
     pengendaliBatal = null;
   }
 }
 
-// 2. Pasang aksi ke masing-masing tombol
+// 2. Hubungkan ke tombol-tombol pengujian
 tombolSukses.addEventListener("click", () => {
-  // Panggil URL asli yang valid:
-  mintaDataKeUrl("https://jsonplaceholder.typicode.com/todos/1");
+  mintaData("https://jsonplaceholder.typicode.com/todos/1");
 });
 
-tombolRusak.addEventListener("click", () => {
-  // Panggil URL sengaja salah yang akan menghasilkan error 404:
-  mintaDataKeUrl(
-    "https://jsonplaceholder.typicode.com/halaman-ini-tidak-ada-404",
-  );
+tombolHttpError.addEventListener("click", () => {
+  // Memanggil endpoint palsu yang akan memicu balasan HTTP 404 dari server
+  mintaData("https://jsonplaceholder.typicode.com/halaman-ini-pasti-404");
+});
+
+tombolNetworkError.addEventListener("click", () => {
+  // Domain asal-asalan yang tidak ada di DNS dunia -> memicu Network Error
+  mintaData("https://domain-palsu-yang-sama-sekali-tidak-ada-12345.com/data");
 });
 
 tombolBatal.addEventListener("click", () => {
-  // Pemicu tombol merah pembatalan:
   if (pengendaliBatal) {
+    // Tekan tombol merah remote!
     pengendaliBatal.abort();
-    // batalkan paket jaringan seketika.
   } else {
-    kotakStatus.textContent =
-      "Tidak ada proses request yang sedang berjalan untuk dibatalkan.";
+    kotakStatus.textContent = "Tidak ada request aktif yang sedang berjalan.";
   }
 });
 ```
@@ -199,33 +241,43 @@ tombolBatal.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Selalu Tuliskan Rumus Ini Setiap Pakai `fetch`**:
+1. **Struktur Penanganan Wajib untuk Semua Kode `fetch`**:
    ```javascript
-   const res = await fetch(url);
-   if (!res.ok) throw new Error(`HTTP Error! Status: ${res.status}`);
-   const data = await res.json();
+   try {
+     const res = await fetch(url, { signal });
+     if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+     const data = await res.json();
+     return data;
+   } catch (err) {
+     if (err.name === "AbortError") {
+       console.log("Dibatalkan sengaja.");
+     } else {
+       console.error("Gagal koneksi:", err.message);
+     }
+   }
    ```
-2. **Gunakan Batas Waktu Otomatis (_Timeout_)**:
-   Di browser modern, Anda bisa membatalkan request secara otomatis jika dalam 5 detik server belum merespons:
-   `fetch(url, { signal: AbortSignal.timeout(5000) })`.
+2. **Pola Kolom Pencarian Cepat (*Search Autocomplete*)**:
+   Saat pengguna mengetik di kolom pencarian huruf demi huruf ("j", "ja", "jav", "java"), selalu panggil `controller.abort()` untuk membatalkan pencarian huruf sebelumnya agar hasil request lama yang lambat tidak menimpa hasil ketikan terbaru (*race condition*).
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
 - [ ] Buka `index.html` di browser.
-- [ ] Klik **"1. Request URL Normal"** $\to$ amati status berubah menjadi sukses dengan ikon hijau.
-- [ ] Klik **"2. Request URL Palsu (Error 404)"** $\to$ amati bagaimana teks pesan menangkap `Gagal memuat! Status server: 404` dengan rapi tanpa merusak aplikasi.
-- [ ] Klik tombol 1 atau 2 lalu segera klik **"3. Batalkan Request"** $\to$ amati bahwa permintaan berhasil digagalkan dengan peringatan `🛑 Permintaan berhasil dibatalkan`.
+- [ ] Klik **"1. URL Normal (200 OK)"** $\to$ pastikan status sukses hijau muncul.
+- [ ] Klik **"2. URL Palsu (HTTP 404 Error)"** $\to$ amati pesan `HTTP Error! Status: 404` tertangkap rapi melalui pengecekan `!respon.ok`.
+- [ ] Klik **"3. Domain Salah / Rusak (Network Error)"** $\to$ amati browser langsung melempar error koneksi ke blok `catch`.
+- [ ] Klik tombol nomor 1 atau 3, lalu segera klik **"🛑 Batalkan Permintaan"** $\to$ perhatikan bagaimana `error.name === "AbortError"` menangkap sinyal pembatalan dengan teks kuning ramah.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Mengerti bahwa `fetch()` tetap menganggap 404 sukses secara jaringan sehingga wajib dicek dengan `if (!response.ok)`, dan tahu cara membatalkan request dengan `AbortController`**.
+> Anda sudah paham jika: **Mampu menjelaskan perbedaan antara Network Error (di `catch`), HTTP Error (di `!response.ok`), dan AbortError (pembatalan manual via `AbortController`)**.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
-1. Mengapa baris `await fetch("https://alamat-salah.com/404")` tidak langsung otomatis melompat ke blok `catch`?
-2. Bagaimana cara membedakan di dalam blok `catch (error)` apakah error tersebut terjadi karena pengguna sengaja membatalkan request dengan `AbortController` atau karena koneksi internet memang terputus?
+1. Mengapa respons kode status `500 Internal Server Error` dari server tetap dianggap fulfilled oleh `fetch()` dan tidak otomatis melompat ke blok `catch`?
+2. Bagaimana cara membedakan di dalam blok `catch (error)` apakah sebuah request gagal karena kabel internet terputus ataukah karena pengguna memencet tombol batal?
+3. Mengapa aturan CORS (Cross-Origin Resource Sharing) dapat menyebabkan perintah `fetch` menghasilkan Network Error di browser?

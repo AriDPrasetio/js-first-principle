@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/IIFE"
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> IIFE (_Immediately Invoked Function Expression_, dibaca "I-fi") adalah fungsi yang dibuat dan langsung dijalankan detik itu juga begitu browser membacanya. Fungsi ini berguna membuat gelembung privat agar variabel sementara di dalamnya tidak mengotori atau bertabrakan dengan kode lain.
+> IIFE (*Immediately Invoked Function Expression*, dibaca "I-fi") adalah fungsi yang didefinisikan dan langsung dieksekusi detik itu juga begitu peramban membacanya. Fungsi ini berguna membuat kapsul lingkup privat agar variabel sementara di dalamnya tidak mengotori atau bertabrakan dengan kode lain di ruang global.
 
 ---
 
@@ -18,28 +18,43 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/IIFE"
 
 Bayangkan Anda sedang mencampur bahan kimia pembersih yang baunya menyengat:
 
-- Jika Anda mencampurnya di ruang tamu secara terbuka, baunya akan menyebar ke seluruh rumah (_mencemari variabel global window_).
+- Jika Anda mencampurnya di ruang tamu secara terbuka, baunya akan menyebar ke seluruh rumah (*mencemari variabel global window*).
 - Maka Anda masuk ke dalam tenda darurat kedap udara (**tanda kurung pelindung `(...)`**).
-- Di dalam tenda, Anda melakukan pencampuran obat, mendapatkan hasil larutannya, lalu keluar.
-- Tenda darurat langsung dilipat dan dibuang (**tanda kurung pemicu eksekusi `()`**).
+- Di dalam tenda, Anda melakukan pencampuran bahan kimia, mendapatkan cairan jadinya, lalu keluar.
+- Tenda darurat langsung dibuang dan dilipat (**tanda kurung pemicu eksekusi `()`**).
 - Ruang tamu Anda tetap bersih wangi, tidak ada bau obat yang tertinggal sama sekali!
 
 ---
 
 ## 2. Mengapa JavaScript Butuh Sintaks IIFE? (First Principles)
 
-1. **Mencegah Tabrakan Nama Variabel Global**:
-   Di era awal web, ketika halaman web menyertakan banyak file `.js` dari berbagai pembuat, semua variabel yang ditulis di luar fungsi akan berkumpul di satu tempat yang sama (`window`). Jika file A membuat `var skor = 10` dan file B juga membuat `var skor = 100`, aplikasi akan rusak bertabrakan. IIFE membungkus kode agar aman di dunianya sendiri.
-2. **Trik Tanda Kurung Ganda `( ... )()`**:
-   - Jika Anda langsung mengetik `function() {}()`, browser akan protes error karena mengira Anda lupa memberi nama fungsi.
-   - Dengan membungkusnya di dalam kurung `( function() { ... } )`, browser tahu: _"Oh, ini satu paket ekspresi fungsi!"_.
-   - Lalu tanda kurung di ujung belakang `()` bertindak sebagai tombol yang langsung menekan dan mengeksekusinya seketika.
+### A. Trik Dua Tanda Kurung `( ... )()`
+
+Jika Anda langsung mengetik `function() {}()`, browser akan melempar `SyntaxError` karena mengira Anda sedang membuat deklarasi fungsi formal tanpa nama.
+
+Dengan membungkus fungsi di dalam tanda kurung:
+1. **Kurung Pembungkus `( ... )`**: Memaksa parser JavaScript memperlakukan fungsi sebagai ekspresi (*Expression*), bukan pernyataan formal (*Declaration*).
+2. **Kurung Pemanggil `()` di Ujung**: Bertindak sebagai tombol pemanggil instan untuk langsung mengeksekusi ekspresi fungsi tersebut seketika.
+
+### B. Dua Variasi Sintaks IIFE Modern
+
+```javascript
+// 1. Variasi Fungsi Reguler Klasik (Mendukung pengiriman parameter):
+(function (nama) {
+  console.log(`Halo dari IIFE Klasik, ${nama}!`);
+})("Kyo");
+
+// 2. Variasi Arrow Function Modern:
+((nama) => {
+  console.log(`Halo dari IIFE Arrow, ${nama}!`);
+})("Ari");
+```
 
 ---
 
 ## 3. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat widget status server yang menghitung konfigurasi perangkat pengguna secara otomatis menggunakan IIFE tanpa meninggalkan variabel sampah:
+Mari kita buat widget pendeteksi spesifikasi layar perangkat yang berjalan otomatis menggunakan IIFE tanpa meninggalkan variabel sementara:
 
 ### Berkas 1: `index.html`
 
@@ -53,14 +68,14 @@ Mari kita buat widget status server yang menghitung konfigurasi perangkat penggu
     <style>
       .card {
         font-family: sans-serif;
-        max-width: 350px;
+        max-width: 360px;
         padding: 16px;
         border: 1px solid #ddd;
         border-radius: 8px;
       }
       .badge {
         display: inline-block;
-        padding: 4px 8px;
+        padding: 6px 12px;
         background: #e1f5fe;
         color: #0277bd;
         border-radius: 4px;
@@ -77,10 +92,7 @@ Mari kita buat widget status server yang menghitung konfigurasi perangkat penggu
   <body>
     <div class="card">
       <h3>Pemeriksaan Perangkat Otomatis</h3>
-      <p>
-        Widget ini membaca spesifikasi layar begitu halaman dibuka menggunakan
-        IIFE.
-      </p>
+      <p>Widget ini mengukur resolusi dan tipe layar seketika saat halaman dibuka menggunakan IIFE.</p>
       <div id="hasil-deteksi" class="badge">Mendeteksi...</div>
     </div>
   </body>
@@ -92,65 +104,65 @@ Mari kita buat widget status server yang menghitung konfigurasi perangkat penggu
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil wadah teks status dari HTML
 const wadahHasil = document.querySelector("#hasil-deteksi");
-// ambil elemen tempat menaruh hasil deteksi perangkat.
 
 // ================================================================
-// IIFE DENGAN ARROW FUNCTION: (() => { ... })()
-// Kode di bawah ini langsung dieksekusi otomatis detik itu juga!
+// IIFE DENGAN ARROW FUNCTION & PENGIRIMAN ARGUMEN
+// Mengirim window ke dalam parameter 'w' untuk efisiensi
 // ================================================================
-const infoPerangkat = (() => {
+const infoPerangkat = ((w) => {
   // Variabel-variabel di bawah ini bersifat privat dan aman di dalam kapsul:
-  const lebarLayar = window.innerWidth;
-  // ukur lebar jendela browser saat ini.
-
-  const tinggiLayar = window.innerHeight;
-  // ukur tinggi jendela browser saat ini.
+  const lebarLayar = w.innerWidth;
+  const tinggiLayar = w.innerHeight;
 
   const tipePerangkat =
     lebarLayar < 768 ? "HP / Ponsel Pintar" : "Komputer Desktop / Laptop";
-  // tentukan kategori perangkat berdasarkan lebar layarnya.
 
-  // Kembalikan satu objek rapi ke variabel infoPerangkat:
+  // Kembalikan satu objek hasil akhir ke variabel infoPerangkat:
   return {
     kategori: tipePerangkat,
     resolusi: `${lebarLayar} x ${tinggiLayar} piksel`,
   };
-})();
-// tanda kurung () di atas langsung memicu eksekusi fungsi tanpa perlu dipanggil terpisah!
+})(window); // <-- Argumen 'window' disuapkan ke parameter 'w'
 
-// 2. Tampilkan hasil perhitungan IIFE ke halaman HTML
+// Tampilkan hasil perhitungan IIFE ke halaman HTML:
 wadahHasil.textContent = `${infoPerangkat.kategori} (${infoPerangkat.resolusi})`;
-// variabel sementara seperti lebarLayar dan tinggiLayar di dalam IIFE
-// sudah otomatis dibersihkan dari memori dan tidak bisa diakses dari luar!
+
+// BUKTI ENKAPSULASI:
+// Variabel lebarLayar dan tinggiLayar tidak bisa diakses dari luar:
+// console.log(lebarLayar); // ReferenceError: lebarLayar is not defined
 ```
 
 ---
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Di Era Modern, Gunakan ES Modules**:
-   Pada JavaScript modern, jika Anda menggunakan berkas `<script type="module" src="app.js">`, setiap berkas sudah otomatis terisolasi rapi tanpa perlu dibungkus IIFE.
-2. **Gunakan IIFE untuk perhitungan instan yang butuh beberapa variabel sementara**:
-   Jika Anda ingin menghitung suatu nilai variabel rumit yang membutuhkan kalkulasi 5 baris, bungkus perhitungan tersebut dalam IIFE agar variabel sementaranya tidak berceceran di luar.
+1. **Di Era Modern, Gunakan ES Modules**: Pada aplikasi web modern yang menggunakan `<script type="module">`, setiap file `.js` sudah otomatis memiliki *Module Scope* sendiri, sehingga Anda jarang perlu membungkus seluruh isi file dengan IIFE.
+2. **Gunakan IIFE untuk Menghitung Nilai Rumit yang Perlu Variabel Sementara**: Jika Anda perlu menginisialisasi satu objek kompleks yang membutuhkan beberapa variabel bantu, gunakan IIFE agar variabel bantu tersebut langsung dibersihkan dari memori.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
 - [ ] Buka `index.html` di browser.
-- [ ] Perhatikan bahwa teks status langsung berubah menjadi kategori perangkat Anda (misal `Komputer Desktop / Laptop (1920 x 1080 piksel)`) tanpa Anda harus mengklik tombol apa pun.
-- [ ] Buka Console browser (tekan F12), ketik `lebarLayar` lalu tekan Enter. Anda akan melihat error `ReferenceError: lebarLayar is not defined` yang membuktikan bahwa variabel sementara tersebut aman terlindungi di dalam kapsul IIFE.
+- [ ] Perhatikan bahwa teks status langsung berubah menjadi kategori perangkat Anda secara otomatis saat pertama kali dibuka.
+- [ ] Buka Console browser (`F12`), ketik `lebarLayar` lalu tekan Enter. Anda akan melihat error `ReferenceError: lebarLayar is not defined` yang membuktikan bahwa variabel sementara aman di dalam kapsul IIFE.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Tahu tujuan utama tanda kurung `(...)()` adalah mengeksekusi fungsi seketika agar variabel di dalamnya tidak mencemari memori luar**.
+> Anda sudah paham jika: **Tahu bahwa IIFE adalah cara menjalankan fungsi detik itu juga, mengerti peran kurung `(...)()`, dan tahu cara mengoper argumen ke dalam IIFE**.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
 1. Apa fungsi dari tanda kurung pembungkus terluar `( function() {} )` pada sebuah IIFE? Apa yang terjadi jika tanda kurung tersebut dihilangkan?
-2. Mengapa di proyek web modern yang menggunakan `<script type="module">`, kita sudah sangat jarang perlu membungkus seluruh file dengan IIFE?
+2. Perhatikan kode berikut:
+   ```javascript
+   const hasil = ((a, b) => {
+     return a * b;
+   })(4, 5);
+   ```
+   Berapakah nilai dari variabel `hasil`?
+```

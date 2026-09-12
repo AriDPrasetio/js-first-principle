@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Learn_web_developme
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> HTML adalah kerangka bangunan, CSS adalah cat dan dekorasinya, sedangkan JavaScript adalah aliran listrik dan saklar yang membuat pintu bisa terbuka otomatis saat tombol ditekan. JavaScript adalah bahasa yang memberi "nyawa" interaktivitas pada halaman web.
+> HTML adalah kerangka bangunan, CSS adalah dekorasinya, dan JavaScript adalah aliran listrik serta saklarnya. Namun ingat: JavaScript tidak bisa hidup sendirian di ruang hampa—ia selalu membutuhkan "wadah lingkungan" (_runtime_) untuk berjalan, baik itu di dalam **Browser** (Client-side) maupun di dalam **Komputer/Server** (Server-side).
 
 ---
 
@@ -22,38 +22,65 @@ Bayangkan Anda merakit sebuah robot mainan dari plastik (HTML) lalu mewarnainya 
 
 - Robotnya berdiri gagah di atas meja.
 - Tetapi saat Anda menekan tombol di dadanya, **robot itu diam saja**.
-- Mengapa? Karena tidak ada mesin logika atau baterai yang menghubungkan tombol tersebut ke motor penggerak.
+- Mengapa? Karena tidak ada mesin logika atau sirkuit listrik yang menghubungkan tombol tersebut ke motor penggerak.
 
-Halaman web tanpa JavaScript persis seperti robot mainan ini: teks dan gambarnya indah, tetapi tombolnya tidak bisa melakukan aksi apa pun.
+Halaman web tanpa JavaScript persis seperti robot mainan ini: teks dan tampilannya rapi, tetapi tombolnya tidak bisa memproses aksi interaktif apa pun.
 
 ---
 
 ### B. Dengan JavaScript (Menghidupkan Robot)
 
-JavaScript adalah kabel, baterai, dan chip komputer di dalam robot:
+JavaScript adalah kabel, baterai, dan chip logika komputer di dalam robot:
 
 - Ia mendengarkan kapan tombol ditekan oleh pengguna (_Event_).
-- Ia menghitung angka di dalam kepalanya (_Logika/Komputasi_).
-- Ia menggerakkan tangan robot atau menyalakan lampu matanya (_Manipulasi Tampilan HTML_).
+- Ia menghitung angka di dalam memori (_Logika/Komputasi_).
+- Ia menggerakkan tangan robot atau menyalakan lampu matanya (_Manipulasi Tampilan_).
 
 ---
 
-## 2. Mengapa Browser Membutuhkan Cara Pemuatan Script? (First Principles)
+## 2. Di Mana JavaScript Berjalan? (Dua Dunia Runtime)
 
-Browser membaca dokumen HTML **dari atas ke bawah, baris demi baris**:
+Sebelum mempelajari cara menulis kodenya, Anda harus tahu **di mana** kode JavaScript Anda sebenarnya dieksekusi. Tempat JavaScript dijalankan disebut **Host Environment (Runtime)**.
+
+Secara umum, ada dua tempat utama di mana JavaScript hidup:
+
+| Pembeda              | 🌐 Client-Side (Browser)                                                                              | 🖥️ Server-Side (Node.js / Bun)                                                    |
+| :------------------- | :---------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
+| **Tempat Berjalan**  | Di browser laptop/HP pengunjung (Chrome, Firefox, Safari).                                            | Di terminal komputer developer atau komputer server cloud.                        |
+| **Tugas Utama**      | Menangani interaksi pengguna, animasi, klik tombol, dan visual halaman.                               | Membaca file di harddisk, mengelola database, dan membuat API server.             |
+| **Fitur Khusus**     | Punya akses ke halaman web: `document` (DOM) dan `window`.                                            | Punya akses ke sistem operasi: membaca file (`fs`) dan proses server (`process`). |
+| **Batasan Keamanan** | _Di-sandbox_: JavaScript browser dilarang membaca harddisk pengunjung secara diam-diam demi keamanan. | _Bebas_: Memiliki akses penuh ke sistem operasi komputer tempat ia dijalankan.    |
+
+### Tiga Cara Menjalankan Kode JavaScript:
+
+1. **Langsung di Browser (Console DevTools)**:
+   Buka browser apa saja -> Tekan tombol keyboard `F12` (atau klik kanan -> _Inspect_) -> Pilih tab **Console** -> Ketik `console.log("Halo Dunia!")` lalu tekan `Enter`. Kode langsung dieksekusi seketika!
+2. **Melalui Berkas HTML (Menggunakan tag `<script>`)**:
+   Cara standar untuk membuat website interaktif. File HTML memanggil file JavaScript agar berjalan otomatis saat halaman dibuka.
+3. **Melalui Terminal Komputer (Menggunakan Node.js)**:
+   Buka terminal/command prompt -> Ketik `node nama-file.js` lalu tekan `Enter`. Kode dijalankan langsung oleh sistem operasi tanpa perlu membuka browser sama sekali.
+
+> [!TIP]
+> **Fokus Jalur Kita**: Karena kurikulum repositori ini berfokus pada **Frontend Web Developer**, pembahasan kita selanjutnya akan berpusat pada **Client-Side (Browser)**.
+
+---
+
+## 3. Mengapa Browser Membutuhkan Cara Pemuatan Script? (First Principles)
+
+Saat browser membuka halaman website, ia membaca dokumen HTML **dari atas ke bawah, baris demi baris**:
 
 1. **Masalah Pemuatan Biasa (`<script src="...">`)**:
    Jika Anda menaruh script di bagian atas (`<head>`) tanpa atribut tambahan, browser akan **berhenti membaca HTML seketika** (_parser-blocking_) untuk mengunduh dan menjalankan script tersebut. Akibatnya, jika script mencoba mencari elemen tombol di HTML yang posisinya ada di bawah, script akan gagal dan menghasilkan error: `Cannot read properties of null` (karena tombolnya belum sempat dibaca oleh browser!).
 
 2. **Solusi Elegan: Atribut `defer`**:
-   Dengan menambahkan kata `defer` (`<script src="app.js" defer></script>`), Anda memberi tahu browser:
-   _"Browser, tolong unduh file JavaScript ini di latar belakang tanpa menghentikan pembacaan HTML. Tunggu sampai seluruh struktur HTML selesai dibaca, barulah jalankan JavaScript-nya."_
+   Dengan menambahkan atribut `defer` (`<script src="app.js" defer></script>`), Anda memberi instruksi tegas:
+   _"Browser, tolong unduh file JavaScript ini di latar belakang tanpa menghentikan pembacaan HTML. Tunggu sampai seluruh struktur HTML selesai dibaca, barulah jalankan kodenya."_
 
 ---
 
-## 3. Contoh Praktik Interaktif (HTML + JavaScript)
+## 4. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat halaman interaktif pertama Anda. Buat dua berkas dalam satu folder:
+Mari kita buat halaman interaktif pertama Anda di browser. Buat dua berkas dalam satu folder yang sama:
 
 ### Berkas 1: `index.html`
 
@@ -152,41 +179,44 @@ saklarBtn.addEventListener("click", () => {
 
 ---
 
-## 4. Solusi Praktis / Best Practice
+## 5. Solusi Praktis / Best Practice
 
 1. **Selalu gunakan `<script src="app.js" defer>` di dalam tag `<head>`**: Ini memastikan browser tidak terblokir saat membaca dokumen dan kode JavaScript Anda dijamin bisa menemukan seluruh elemen HTML.
 2. **Hindari menulis JavaScript langsung di dalam atribut HTML (seperti `onclick="..."`)**: Pisahkan struktur (HTML) dan logika program (JS) di berkas terpisah agar rapi dan mudah dirawat.
+3. **Ketahui batasan runtime Anda**: Jangan gunakan perintah browser seperti `document` atau `window` jika Anda sedang mengeksekusi script di lingkungan Node.js/terminal.
 
 ---
 
-## 5. Checklist Praktik Mandiri
+## 6. Checklist Praktik Mandiri
 
-- [ ] Buat file `index.html` dan `app.js` di satu folder.
+- [ ] Buka browser Anda, tekan `F12`, buka tab **Console**, dan jalankan `console.log("Halo dari Console!")`.
+- [ ] Buat file `index.html` dan `app.js` di satu folder lokal di komputer Anda.
 - [ ] Buka `index.html` di browser dengan klik dua kali.
 - [ ] Klik tombol saklar dan amati lampu berubah warna serta teks berganti secara interaktif.
-- [ ] Buka Console browser (`F12`), ketik `console.log("Halo dari konsol!")` dan tekan Enter.
+- [ ] _(Opsional bagi yang punya Node.js)_: Buka terminal, buat file `test.js` berisi `console.log(typeof window);`, jalankan dengan perintah `node test.js`, dan amati hasilnya (`undefined` karena tidak ada browser di terminal!).
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah menguasai materi ini jika: **Memahami mengapa atribut `defer` penting agar JavaScript tidak error mencari elemen HTML yang belum selesai dibaca browser**.
+> Anda sudah menguasai materi ini jika:
+>
+> 1. Memahami perbedaan mendasar di mana kode JS berjalan (Browser vs Server).
+> 2. Memahami mengapa atribut `defer` penting agar JavaScript di browser tidak error mencari elemen HTML yang belum selesai dibaca.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
-Perhatikan kode pemanggilan script berikut:
-
-```html
-<head>
-  <script src="app.js"></script>
-</head>
-<body>
-  <button id="tombol">Klik Saya</button>
-</body>
-```
-
-Jika di dalam `app.js` ada baris `document.querySelector('#tombol')`:
-
-- **Apakah script tersebut akan berhasil menemukan tombol, atau justru menghasilkan error?**
-- **Atribut apa yang harus ditambahkan pada tag `<script>` agar tidak error?**
+1. **Mengenai Runtime**: Jika Anda menulis kode `document.querySelector('#tombol')` di dalam sebuah file JavaScript lalu menjalankannya langsung di terminal komputer menggunakan perintah `node app.js`, apakah perintah tersebut akan berjalan sukses atau justru menghasilkan error? Mengapa?
+2. **Mengenai Cara Pemuatan di Browser**: Perhatikan kode pemanggilan script berikut:
+   ```html
+   <head>
+     <script src="app.js"></script>
+   </head>
+   <body>
+     <button id="tombol">Klik Saya</button>
+   </body>
+   ```
+   Jika di dalam `app.js` ada baris `document.querySelector('#tombol')`:
+   - Mengapa pemanggilan di atas berisiko gagal menemukan tombol?
+   - Atribut apa yang harus ditambahkan pada tag `<script>` agar browser menyelesaikan pembacaan HTML terlebih dahulu?

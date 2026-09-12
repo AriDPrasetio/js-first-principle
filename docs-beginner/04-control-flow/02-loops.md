@@ -10,7 +10,11 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guid
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Perulangan (_Loop_) adalah cara Anda menyuruh komputer melakukan hal yang sama berkali-kali secara otomatis: membaca daftar barang satu per satu sampai barang terakhir, tanpa Anda harus mengetik perintahnya berulang-ulang.
+> Perulangan (*Loop*) adalah cara Anda menyuruh komputer melakukan hal yang sama berkali-kali secara otomatis tanpa menulis perintah berulang-ulang:
+>
+> - **Loop Klasik `for (let i = 0; ...)`**: Kendali presisi berbasis angka indeks.
+> - **Loop Modern `for...of`**: Cara paling bersih dan manusiawi untuk membaca setiap isi elemen Array.
+> - **`break` & `continue`**: Rem darurat untuk berhenti total (`break`) atau tombol lewati langkah (`continue`).
 
 ---
 
@@ -18,32 +22,58 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guid
 
 Bayangkan Anda bekerja di pabrik perakitan barang:
 
-- Di depan Anda ada ban berjalan (_conveyor belt_) yang membawa 5 buah kardus mainan.
+- Di depan Anda ada ban berjalan (*conveyor belt*) yang membawa deretan kardus barang belanjaan.
 - Anda mengambil kardus ke-1 $\to$ menempelkan stiker $\to$ selesai.
 - Anda mengambil kardus ke-2 $\to$ menempelkan stiker $\to$ selesai.
-- Proses ini terus berulang otomatis sampai kardus ke-5 selesai dan ban berhenti.
+- Proses ini terus berulang otomatis sampai barang terakhir selesai dan ban berhenti.
 
 Di JavaScript:
 
-- **`for...of`**: Seperti mengambil **isi** setiap kardus satu per satu (pilihan utama untuk Array!).
-- **`break`**: Seperti menekan tombol rem darurat di pabrik untuk menghentikan ban seketika.
-- **`continue`**: Seperti melewatkan satu kardus yang penyok tanpa ditempeli stiker, lalu langsung mengambil kardus berikutnya.
+- **Loop Klasik `for`**: Anda memegang stopwatch penghitung nomor kardus (`kardus ke-0, kardus ke-1, kardus ke-2...`).
+- **Loop Modern `for...of`**: Anda langsung mengambil **isi barang** di dalam tiap kardus tanpa pusing memikirkan nomornya.
+- **`break`**: Menekan tombol rem darurat pabrik untuk **menghentikan ban seketika**.
+- **`continue`**: Melewatkan satu kardus yang penyok/kosong tanpa ditempeli stiker, lalu **langsung meloncat ke kardus berikutnya**.
 
 ---
 
-## 2. Mengapa Pemula Harus Memilih `for...of`? (First Principles)
+## 2. Membedah Dua Jenis Perulangan Utama (First Principles)
 
-Di JavaScript ada banyak jenis perulangan:
+### A. Anatomi Loop Klasik `for` (3 Bagian Mesin)
 
-1. Loop klasik `for (let i = 0; i < 5; i++)` $\to$ bagus tapi panjang dan rawan salah ketik tanda titik koma.
-2. Loop objek `for...in` $\to$ digunakan untuk membaca nama kunci properti objek, bukan untuk array.
-3. **Loop modern `for...of` $\to$ Paling bersih, paling manusiawi, dan paling minim resiko bug.** Anda cukup bilang: _"Untuk setiap buah di dalam keranjangBuah, lakukan perintah ini."_
+```javascript
+for (let i = 0; i < 5; i++) {
+  console.log("Putaran ke:", i);
+}
+```
+
+Tanda kurung loop `for` memiliki 3 stasiun yang dipisahkan titik koma (`;`):
+1. **Inisialisasi (`let i = 0`)**: Membuat variabel penghitung (*counter*), dijalankan **hanya satu kali** di awal.
+2. **Kondisi Uji (`i < 5`)**: Diperiksa sebelum setiap putaran. Jika bernilai `true`, kode di dalam kurung kurawal dijalankan. Jika `false`, loop berhenti.
+3. **Penaikan Langkah (`i++`)**: Dijalankan di akhir setiap putaran untuk menambah nilai counter sebesar 1 (`i = i + 1`).
+
+**Kapan Memakai Loop Klasik?**
+Saat Anda membutuhkan indeks angka secara presisi, ingin melompat per 2 langkah (`i += 2`), atau memutar mundur dari belakang (`let i = daftar.length - 1; i >= 0; i--`).
+
+---
+
+### B. Loop Modern `for...of` (Pilihan Utama untuk Array)
+
+```javascript
+const daftarBuah = ["Apel", "Jeruk", "Mangga"];
+
+for (const buah of daftarBuah) {
+  console.log("Nama buah:", buah);
+}
+```
+
+**Mengapa `for...of` Lebih Baik untuk Pemula?**
+Anda tidak perlu repot membuat variabel `i`, tidak perlu menghitung `.length`, dan tidak ada risiko salah ketik tanda titik koma. Sintaksnya berbunyi alami seperti bahasa manusia: *"Untuk setiap buah di dalam daftarBuah, lakukan perintah ini"*.
 
 ---
 
 ## 3. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat pembuat daftar belanja otomatis menggunakan perulangan:
+Mari kita buat penyaring daftar barang yang mempraktikkan `for...of`, `continue`, dan `break`:
 
 ### Berkas 1: `index.html`
 
@@ -57,7 +87,7 @@ Mari kita buat pembuat daftar belanja otomatis menggunakan perulangan:
     <style>
       .card {
         font-family: sans-serif;
-        max-width: 320px;
+        max-width: 360px;
         padding: 16px;
         border: 1px solid #ddd;
         border-radius: 8px;
@@ -72,14 +102,18 @@ Mari kita buat pembuat daftar belanja otomatis menggunakan perulangan:
         padding: 8px 12px;
         cursor: pointer;
         width: 100%;
+        margin-top: 6px;
       }
     </style>
     <script src="app.js" defer></script>
   </head>
   <body>
     <div class="card">
-      <h3>Daftar Barang Belanja</h3>
-      <button type="button" id="btn-tampilkan">Tampilkan Semua Barang</button>
+      <h3>Daftar Barang Gudang</h3>
+      <button type="button" id="btn-tampilkan-semua">Tampilkan Semua (for...of)</button>
+      <button type="button" id="btn-filter-stok">Lewatkan Stok Habis (continue)</button>
+      <button type="button" id="btn-cari-satu">Cari & Hentikan Pertama (break)</button>
+      
       <ul id="daftar-barang"></ul>
     </div>
   </body>
@@ -91,35 +125,65 @@ Mari kita buat pembuat daftar belanja otomatis menggunakan perulangan:
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Data daftar belanjaan berupa Array
-const daftarBelanja = ["Kopi", "Gula Pasir", "Roti Tawar", "Susu UHT"];
-// buat kumpulan data teks belanjaan.
+// Data daftar inventaris gudang
+const inventaris = [
+  { nama: "Kopi Hitam", stok: 15 },
+  { nama: "Gula Pasir", stok: 0 },  // stok kosong!
+  { nama: "Roti Tawar", stok: 8 },
+  { nama: "Susu Kotak", stok: 0 },  // stok kosong!
+  { nama: "Keju Cheddar", stok: 5 },
+];
 
-const tombolTampilkan = document.querySelector("#btn-tampilkan");
-// ambil tombol tampilkan dari HTML.
+const listEl = document.querySelector("#daftar-barang");
+const btnSemua = document.querySelector("#btn-tampilkan-semua");
+const btnFilter = document.querySelector("#btn-filter-stok");
+const btnCari = document.querySelector("#btn-cari-satu");
 
-const listContainer = document.querySelector("#daftar-barang");
-// ambil elemen wadah daftar <ul> dari HTML.
+function bersihkanLayar() {
+  listEl.innerHTML = "";
+}
 
-// 2. Pasang aksi saat tombol diklik
-tombolTampilkan.addEventListener("click", () => {
-  // bersihkan isi daftar lama agar tidak menumpuk dobel saat tombol diklik lagi:
-  listContainer.innerHTML = "";
+// 1. Tampilkan Semua Barang dengan for...of
+btnSemua.addEventListener("click", () => {
+  bersihkanLayar();
 
-  // ==========================================
-  // PERULANGAN DENGAN FOR...OF (SANGAT MUDAH DIBACA)
-  // ==========================================
-  for (const namaBarang of daftarBelanja) {
-    // untuk setiap item di dalam daftarBelanja, lakukan:
+  for (const item of inventaris) {
+    const li = document.createElement("li");
+    li.textContent = `${item.nama} (Stok: ${item.stok})`;
+    listEl.appendChild(li);
+  }
+});
 
-    const itemBaru = document.createElement("li");
-    // buat elemen tag <li> baru di memori browser.
+// 2. Lewatkan Barang Stok 0 Menggunakan 'continue'
+btnFilter.addEventListener("click", () => {
+  bersihkanLayar();
 
-    itemBaru.textContent = `Beli: ${namaBarang}`;
-    // isi teks di dalam tag <li> dengan nama barang yang sedang diulang.
+  for (const item of inventaris) {
+    if (item.stok === 0) {
+      continue; // Lewatkan barang ini! Langsung lompat ke putaran barang berikutnya
+    }
 
-    listContainer.appendChild(itemBaru);
-    // tempelkan tag <li> tersebut ke dalam wadah <ul> di layar.
+    const li = document.createElement("li");
+    li.textContent = `✅ ${item.nama} (Tersedia: ${item.stok})`;
+    listEl.appendChild(li);
+  }
+});
+
+// 3. Hentikan Loop Seketika Begitu Ditemukan Menggunakan 'break'
+btnCari.addEventListener("click", () => {
+  bersihkanLayar();
+
+  for (const item of inventaris) {
+    const li = document.createElement("li");
+    li.textContent = `Memeriksa: ${item.nama}`;
+    listEl.appendChild(li);
+
+    if (item.nama === "Roti Tawar") {
+      const liKetemu = document.createElement("li");
+      liKetemu.innerHTML = "<strong>🎯 TARGET DITEMUKAN! Loop dihentikan seketika dengan break.</strong>";
+      listEl.appendChild(liKetemu);
+      break; // Rem darurat: hentikan loop total!
+    }
   }
 });
 ```
@@ -128,21 +192,28 @@ tombolTampilkan.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Gunakan `for...of` untuk data Array**: Sangat mudah dibaca dan mendukung kata kunci `break` jika Anda ingin menghentikan pencarian di tengah jalan.
-2. **Jangan gunakan `for...in` pada Array**: `for...in` menghasilkan urutan indeks berupa teks (`"0"`, `"1"`) dan bisa membaca properti asing dari prototipe. Gunakan `for...in` hanya saat memeriksa properti pada Objek biasa `{}`.
+1. **Gunakan `for...of` sebagai pilihan bawaan untuk Array**: Jauh lebih mudah dibaca dan bebas risiko salah indeks.
+2. **Gunakan `continue` untuk Mengurangi Kurung Kurawal Bersarang**: Alih-alih membungkus kode panjang di dalam `if (stok > 0) { ... }`, gunakan guard: `if (stok === 0) continue;`.
+3. **Gunakan `break` untuk Optimasi Pencarian**: Jangan biarkan loop terus berputar 10.000 kali jika data yang Anda cari sudah berhasil ditemukan pada putaran ke-3.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik tombol **"Tampilkan Semua Barang"**.
-- [ ] Perhatikan bagaimana 4 baris item muncul secara otomatis dalam hitungan milidetik.
-- [ ] Buka `app.js`, tambahkan barang baru ke dalam array `daftarBelanja` (misal `"Mentega"`), simpan, dan klik tombol lagi di browser.
+- [ ] Buka `index.html` di browser, klik tombol **"Tampilkan Semua"** dan amati 5 barang muncul.
+- [ ] Klik tombol **"Lewatkan Stok Habis"** dan amati bagaimana barang dengan stok 0 tidak ditampilkan berkat perintah `continue`.
+- [ ] Klik tombol **"Cari & Hentikan Pertama"** dan perhatikan bagaimana loop berhenti di "Roti Tawar" tanpa memeriksa barang-barang setelahnya berkat perintah `break`.
+- [ ] Buka Console (`F12`), coba ketik loop mundur klasik:
+  ```javascript
+  for (let i = 3; i >= 1; i--) {
+    console.log("Hitung mundur:", i);
+  }
+  ```
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Bisa menggunakan `for (const item of array)` untuk membaca dan menampilkan seluruh isi deret data ke layar**.
+> Anda sudah paham jika: **Tahu 3 bagian mesin loop `for` klasik, tahu keunggulan `for...of` untuk array, dan bisa memanfaatkan `break` serta `continue` untuk mengendalikan jalannya perulangan**.
 
 ---
 
@@ -154,15 +225,18 @@ Perhatikan kode berikut:
 const angkaList = [1, 2, 3, 4, 5];
 
 for (const angka of angkaList) {
-  if (angka === 3) {
-    break; // Rem darurat!
+  if (angka === 2) {
+    continue;
+  }
+  if (angka === 4) {
+    break;
   }
   console.log(angka);
 }
 ```
 
-Angka berapakah yang akan tercetak di konsol sebelum loop berhenti?
-
-- **A. 1, 2, 3, 4, 5**
-- **B. 1, 2**
-- **C. 3 saja**
+Angka berapakah yang akan tercetak di konsol browser?
+- **A. 1, 3**
+- **B. 1, 2, 3, 4**
+- **C. 1, 3, 4**
+- Jelaskan mengapa angka 2 dan angka 4 tidak tercetak!

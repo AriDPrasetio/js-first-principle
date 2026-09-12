@@ -10,7 +10,10 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Tanda tiga titik (`...`) adalah operator bunglon di JavaScript: jika ditaruh di tempat membuat data baru, ia bertindak sebagai **Spread (menaburkan/membuka isi)**; jika ditaruh di tempat menerima variabel, ia bertindak sebagai **Rest (mengemas sisa-sisanya ke dalam wadah)**.
+> Tanda tiga titik (`...`) adalah operator bunglon di JavaScript:
+>
+> - **Spread (Menabur/Membuka)**: Membongkar isi Array atau Objek ke dalam wadah baru.
+> - **Rest (Mengumpulkan/Mengemas)**: Menyapu seluruh elemen yang tersisa ke dalam satu wadah Array atau Objek.
 
 ---
 
@@ -20,26 +23,30 @@ Bayangkan Anda memiliki setoples permen:
 
 - **SPREAD (Menaburkan Isi Keluar Toples)**:
   Anda membuka toples permen, lalu menuang isinya ke atas meja pesta agar bercampur dengan permen jenis lain.
-  _(Contoh: Menggabungkan dua array `[...buahLokal, ...buahImpor]` atau menyalin objek `{ ...profilLama }`)._
+  *(Contoh: Menggabungkan dua array `[...buahLokal, ...buahImpor]` atau menyalin objek `{ ...profilLama }`).*
 - **REST (Menyapu Sisa ke Dalam Kardus)**:
-  Pesta selesai, ada beberapa permen utama yang diambil tamu, lalu Anda menyapu **seluruh sisa** permen yang tersisa masuk ke dalam satu kardus baru.
-  _(Contoh: `const [juara1, ...pesertaLain] = daftarLari;`)._
+  Pesta selesai, ada permen utama yang diambil tamu, lalu Anda menyapu **seluruh permen yang tersisa** masuk ke dalam satu kardus baru.
+  *(Contoh: `const [juara1, ...pesertaLain] = daftarLari;` atau `const { pass, ...profilAman } = akun;`).*
 
 ---
 
 ## 2. Mengapa Operator Ini Sangat Populer? (First Principles)
 
 1. **Menyalin Objek & Array Tanpa Merusak Data Asli**:
-   Sebelum ada spread, menggabungkan dua array membutuhkan perintah rumit `.concat()`. Dengan spread, Anda cukup menulis `[...arrayA, ...arrayB]`.
+   Dengan spread, Anda tidak lagi memerlukan perintah panjang seperti `.concat()` atau `Object.assign()`. Anda cukup menulis `[...arrayA, ...arrayB]` atau `{ ...objA, ...objB }`.
 2. **Aturan "Siapa di Kanan Menang Menimpa"**:
    Saat menggabungkan objek dengan spread, properti yang ditulis belakangan di sisi kanan akan menimpa nilai yang ada di sisi kiri:
-   `const akun = { ...akunLama, role: "Admin" };` $\to$ Nilai `role` dijamin berubah menjadi `"Admin"`!
+   ```javascript
+   const akunLama = { nama: "Ari", role: "User" };
+   const akunBaru = { ...akunLama, role: "Admin" };
+   console.log(akunBaru.role); // "Admin" (Nilai lama berhasil ditimpa dengan aman!)
+   ```
 
 ---
 
 ## 3. Contoh Praktik Interaktif (HTML + JavaScript)
 
-Mari kita buat penggabung menu makanan dan pembaruan profil status menggunakan operator tiga titik:
+Mari kita buat demonstrasi Array Spread, Array Rest, dan Object Spread/Rest:
 
 ### Berkas 1: `index.html`
 
@@ -60,14 +67,14 @@ Mari kita buat penggabung menu makanan dan pembaruan profil status menggunakan o
       }
       .btn-group {
         display: flex;
-        gap: 8px;
+        flex-direction: column;
+        gap: 6px;
         margin-bottom: 12px;
       }
       button {
-        flex: 1;
         padding: 8px;
         cursor: pointer;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
       }
       .box {
         background: #f8fafc;
@@ -85,10 +92,9 @@ Mari kita buat penggabung menu makanan dan pembaruan profil status menggunakan o
     <div class="card">
       <h3>Uji Coba Operator Tiga Titik (...)</h3>
       <div class="btn-group">
-        <button type="button" id="btn-spread">
-          1. Tabur Gabung Array (Spread)
-        </button>
-        <button type="button" id="btn-rest">2. Kemas Sisa Tim (Rest)</button>
+        <button type="button" id="btn-spread">1. Tabur Gabung Array (Spread)</button>
+        <button type="button" id="btn-rest">2. Kemas Sisa Tim (Array Rest)</button>
+        <button type="button" id="btn-obj">3. Update Objek Aman (Object Spread & Rest)</button>
       </div>
       <div id="kotak-hasil" class="box">Pilih salah satu tombol di atas...</div>
     </div>
@@ -101,46 +107,53 @@ Mari kita buat penggabung menu makanan dan pembaruan profil status menggunakan o
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen HTML
 const tombolSpread = document.querySelector("#btn-spread");
-// ambil tombol penguji spread.
-
 const tombolRest = document.querySelector("#btn-rest");
-// ambil tombol penguji rest.
-
+const tombolObj = document.querySelector("#btn-obj");
 const kotakHasil = document.querySelector("#kotak-hasil");
-// ambil elemen penampil hasil.
 
-// ================================================================
-// CONTOH 1: SPREAD (Menabur & Menggabungkan Array)
-// ================================================================
+// 1. ARRAY SPREAD:
 tombolSpread.addEventListener("click", () => {
   const makananRingan = ["Keripik", "Kacang"];
   const makananBerat = ["Nasi Goreng", "Sate"];
-
-  // Buka toples kedua array dan satukan ke piring baru:
-  const menuLengkap = [...makananRingan, ...makananBerat, "Es Teh Manis"];
-  // sebarkan isi makananRingan, sebarkan makananBerat, dan tambah 1 minuman baru.
+  const menuLengkap = [...makananRingan, ...makananBerat, "Es Teh"];
 
   kotakHasil.innerHTML = `
-    <strong>Hasil Gabungan Menu (Spread):</strong><br>
+    <strong>Hasil Gabungan Menu (Array Spread):</strong><br>
     ${menuLengkap.join(" • ")}
   `;
 });
 
-// ================================================================
-// CONTOH 2: REST (Mengambil Juara 1 & Mengemas Sisanya ke Array Baru)
-// ================================================================
+// 2. ARRAY REST:
 tombolRest.addEventListener("click", () => {
-  const pesertaLomba = ["Andi (Juara 1)", "Budi", "Cici", "Doni", "Eka"];
-
-  // Ambil orang pertama, dan kemas sisa nama ke wadah 'kruCadangan':
+  const pesertaLomba = ["Andi (Juara 1)", "Budi", "Cici", "Doni"];
   const [pemenangUtama, ...kruCadangan] = pesertaLomba;
-  // tanda ... di depan kruCadangan adalah REST (mengumpulkan sisa).
 
   kotakHasil.innerHTML = `
     <p><strong>Pemenang Utama:</strong> ${pemenangUtama}</p>
     <p><strong>Sisa Peserta (${kruCadangan.length} orang):</strong> ${kruCadangan.join(", ")}</p>
+  `;
+});
+
+// 3. OBJECT SPREAD & OBJECT REST:
+tombolObj.addEventListener("click", () => {
+  const akunAsal = {
+    username: "ari_dev",
+    email: "ari@example.com",
+    kataSandi: "rahasia123",
+    role: "User",
+  };
+
+  // Gunakan Object Spread untuk memperbarui role:
+  const akunUpdate = { ...akunAsal, role: "SuperAdmin" };
+
+  // Gunakan Object Rest untuk menyembunyikan kata sandi sebelum ditampilkan:
+  const { kataSandi, ...akunAman } = akunUpdate;
+
+  kotakHasil.innerHTML = `
+    <p><strong>Username:</strong> ${akunAman.username}</p>
+    <p><strong>Role Baru:</strong> ${akunAman.role}</p>
+    <p><em>(Kata sandi berhasil dipisahkan via Object Rest!)</em></p>
   `;
 });
 ```
@@ -149,27 +162,39 @@ tombolRest.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Catatan Penting: Salinan Dangkal (_Shallow Copy_)**:
-   Spread `{ ...dataAsli }` hanya menyalin properti di tingkat terluar. Jika di dalam objek Anda ada objek anak lain `{ data: { skor: 10 } }`, objek anak tersebut masih berbagi alamat memori yang sama.
-2. **Posisi Rest Selalu Paling Ujung**:
-   Operator rest selalu ditempatkan di posisi paling terakhir `const [a, ...sisa] = list;`. Menaruh rest di tengah `[...sisa, z]` adalah tindakan ilegal dan akan memicu error sintaks.
+1. **Waspada Salinan Dangkal (*Shallow Copy*)**:
+   Spread `{ ...dataAsli }` hanya menyalin di tingkat terluar. Jika di dalamnya terdapat objek anak bersarang `{ detail: { skor: 10 } }`, objek anak tersebut masih berbagi alamat memori yang sama.
+2. **Solusi Salinan Dalam (*Deep Copy*) Modern**:
+   Jika Anda membutuhkan salinan murni yang benar-benar mandiri sampai ke tingkat terdalam, gunakan fungsi standar modern web platform:
+   ```javascript
+   const salinanMurni = structuredClone(objekBersarang);
+   ```
+3. **Posisi Rest Selalu Terakhir**: Operator rest wajib berada di urutan penutup: `const [a, ...sisa] = arr;`. Menaruh rest di tengah `[...sisa, z]` adalah kesalahan sintaks.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser.
-- [ ] Klik tombol **"1. Tabur Gabung Array (Spread)"** $\to$ amati bagaimana dua array berbeda dan satu item tambahan melebur menjadi satu urutan menu utuh.
-- [ ] Klik tombol **"2. Kemas Sisa Tim (Rest)"** $\to$ perhatikan nama pemenang pertama terpisah secara bersih dan 4 sisa nama lainnya otomatis terkumpul ke dalam array kru cadangan.
+- [ ] Buka `index.html` di browser dan klik tombol **"1. Tabur Gabung Array"**.
+- [ ] Klik tombol **"2. Kemas Sisa Tim"** dan perhatikan bagaimana pemenang dan sisa tim terpisah rapi.
+- [ ] Klik tombol **"3. Update Objek Aman"** dan amati bagaimana role terupdate serta properti sensitif kata sandi disingkirkan lewat object rest.
+- [ ] Buka Console (`F12`), coba uji fungsi duplikasi murni `structuredClone`:
+  ```javascript
+  const asli = { profil: { nama: "Andi" } };
+  const klon = structuredClone(asli);
+  klon.profil.nama = "Budi";
+  console.log(asli.profil.nama); // Tetap "Andi"! Aman 100% dari mutasi.
+  ```
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Tahu bahwa `...` saat membongkar array/objek disebut Spread, dan saat mengumpulkan sisa elemen disebut Rest**.
+> Anda sudah paham jika: **Tahu membedakan Spread vs Rest baik pada Array maupun Objek, memahami aturan penimpaan properti sisi kanan, dan tahu fungsi `structuredClone()` untuk kloning mendalam**.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
-1. Jika Anda memiliki objek `const tema = { warna: "biru", ukuran: "sedang" }`, lalu membuat `const temaBaru = { ...tema, warna: "merah" }`, apa warna akhir yang ada di dalam `temaBaru`?
-2. Mengapa operator rest `...sisa` dilarang diletakkan di awal atau di tengah-tengah urutan variabel?
+1. Jika Anda memiliki objek `const tema = { warna: "biru", ukuran: "sedang" }`, lalu membuat `const temaBaru = { ...tema, warna: "merah" }`, apakah nilai properti `warna` di dalam `temaBaru`?
+2. Bagaimana cara memisahkan properti rahasia `password` dari objek akun menggunakan *Object Rest* agar sisa propertinya aman dikirim ke layar?
+```

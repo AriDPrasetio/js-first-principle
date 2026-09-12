@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Type_coerc
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Type Casting adalah proses mengubah jenis data dari satu tipe ke tipe lain. Jika Anda melakukannya secara sadar, itu disebut **Type Conversion** (Aman). Jika komputer yang menebak dan mengubahnya secara otomatis di belakang layar, itu disebut **Type Coercion** (Sering memicu bug).
+> Type Casting adalah proses mengubah jenis data dari satu tipe ke tipe lain. Jika Anda melakukannya secara sadar, itu disebut **Type Conversion** (Aman dan terprediksi). Jika komputer yang menebak dan mengubahnya otomatis di belakang layar, itu disebut **Type Coercion** (Sering memicu bug tersembunyi).
 
 ---
 
@@ -18,12 +18,12 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Type_coerc
 
 ### A. Implicit Coercion (Tebakan Otomatis Komputer)
 
-Bayangkan Anda memesan makanan di restoran luar negeri. Anda berbicara setengah bahasa Indonesia dan setengah bahasa Inggris.
+Bayangkan Anda memesan makanan di restoran luar negeri dengan campuran dua bahasa.
 
 - Pelayan restoran **mencoba menebak-nebak sendiri** apa maksud Anda.
 - Terkadang tebakannya benar, tetapi sering kali ia salah paham dan membawakan makanan yang sama sekali tidak Anda inginkan.
 
-Inilah **Type Coercion**: JavaScript mencoba menebak tipe data yang Anda maksud saat Anda mencampurkan teks dan angka.
+Inilah **Type Coercion**: JavaScript berusaha "membantu" dengan mengonversi tipe data secara diam-diam saat Anda mengoperasikan dua tipe data yang berlainan.
 
 ---
 
@@ -31,26 +31,62 @@ Inilah **Type Coercion**: JavaScript mencoba menebak tipe data yang Anda maksud 
 
 Sekarang bayangkan Anda menyewa seorang penerjemah resmi profesional.
 
-- Anda dengan sengaja dan jelas meminta penerjemah: _"Tolong terjemahkan kalimat saya ini ke dalam bahasa Inggris."_
-- Hasilnya terjamin akurat, tidak ada tebak-tebakan, dan pelayan restoran mengerti maksud Anda 100%.
+- Anda dengan sengaja dan tegas memerintahkan penerjemah: *"Tolong ubah teks ini menjadi angka murni."*
+- Hasilnya terjamin akurat, tidak ada tebak-tebakan, dan sistem menerima data sesuai kontrak.
 
-Inilah **Type Conversion**: Anda secara terang-terangan memerintahkan JavaScript: `Number(inputTeks)` untuk mengubah teks menjadi angka murni.
+Inilah **Type Conversion**: Anda secara terang-terangan memanggil fungsi konstruktor standar seperti `Number(input)`, `String(nilai)`, atau `Boolean(kondisi)`.
 
 ---
 
 ## 2. Mengapa Terjadi Bug Penjumlahan Aneh? (First Principles)
 
-Di JavaScript, tanda tambah (`+`) memiliki **dua fungsi berbeda**:
+### A. Perilaku Tanda Tambah (`+`) vs Operator Aritmatika Lain
 
-1. **Penjumlahan Matematika**: `10 + 5` menghasilkan `15`.
-2. **Penyambungan Teks (Concatenation)**: `'Halo ' + 'Budi'` menghasilkan `'Halo Budi'`.
+Di JavaScript, tanda tambah (`+`) memiliki **dua fungsi yang bertabrakan**:
 
-**Perangkap Utama Pemula**:
-Jika tanda `+` bertemu dengan satu saja teks (string), JavaScript akan menebak: _"Oh, ada teks! Pasti developer ingin menyambung teks, bukan menjumlahkan angka."_
-Akibatnya:
+1. **Penjumlahan Matematika**: `10 + 5` $\to$ `15`.
+2. **Penyambungan Teks (Concatenation)**: `'Halo ' + 'Budi'` $\to$ `'Halo Budi'`.
 
+**Hukum Prioritas String**:
+Jika salah satu operan pada tanda `+` adalah string, JavaScript secara otomatis memaksa operan pasangannya menjadi string:
 - `'3' + 2` $\to$ menghasilkan `'32'` (Bukan 5!).
-- Sebaliknya, untuk tanda kurang (`-`), kali (`*`), atau bagi (`/`), JavaScript tahu bahwa teks tidak bisa dikurangi, sehingga ia otomatis mengubah teks menjadi angka: `'5' - 2` $\to$ menghasilkan `3`.
+
+Sebaliknya, operator `-`, `*`, dan `/` **tidak memiliki fungsi teks sama sekali**. Karena itu, JavaScript memaksa string menjadi angka:
+- `'5' - 2` $\to$ menghasilkan `3`.
+- `'10' * '2'` $\to$ menghasilkan `20`.
+
+### B. Bagaimana Jika Konversi Numerik Gagal? (Nilai `NaN`)
+
+Jika Anda memaksa teks non-angka menjadi angka menggunakan `Number()`, JavaScript tidak akan melempar crash error, melainkan mengembalikan nilai khusus **`NaN` (*Not-a-Number*)**:
+
+```javascript
+Number("123"); // 123 (Berhasil)
+Number("kucing"); // NaN (Gagal menjadi angka yang sah!)
+```
+
+Untuk memeriksa apakah suatu perhitungan menghasilkan angka sah atau gagal, gunakan `Number.isNaN()`:
+```javascript
+Number.isNaN(Number("kucing")); // true
+```
+
+### C. 8 Nilai Falsy Resmi di JavaScript
+
+Saat Anda mengonversi nilai apa pun ke tipe logika menggunakan `Boolean(nilai)`, JavaScript memiliki aturan mutlak: **Hanya ada 8 nilai di seluruh JavaScript yang bernilai `false` (*Falsy*)**:
+
+| Nilai Falsy | Tipe Asal | Penjelasan |
+| :--- | :--- | :--- |
+| `false` | `boolean` | Nilai boolean salah itu sendiri |
+| `0` | `number` | Angka nol positif |
+| `-0` | `number` | Angka nol negatif |
+| `0n` | `bigint` | Angka nol pada BigInt |
+| `""` (string kosong) | `string` | Teks tanpa karakter sama sekali |
+| `null` | `null` | Nilai kosong primitif |
+| `undefined` | `undefined` | Belum diinisialisasi |
+| `NaN` | `number` | Hasil kalkulasi angka gagal |
+
+> [!IMPORTANT]
+> **Golden Rule of Truthy**:
+> Selain 8 nilai di atas, **seluruh nilai lain di JavaScript adalah `true` (*Truthy*)**—termasuk string spasi `" "`, array kosong `[]`, dan objek kosong `{}`!
 
 ---
 
@@ -152,9 +188,16 @@ calcBtn.addEventListener("click", () => {
   // tampilkan hasil salah tersebut ke layar.
 
   // SOLUSI EKSPLISIT CONVERSION:
-  const correctResult = Number(inputVal) + bonus;
-  // gunakan fungsi Number() untuk mengubah teks "3" menjadi angka 3 sebelum dijumlahkan. 3 + 2 = 5.
+  const angkaMurni = Number(inputVal);
+  // gunakan fungsi Number() untuk mengubah teks "3" menjadi angka 3 sebelum dijumlahkan.
 
+  if (Number.isNaN(angkaMurni)) {
+    fixedEl.textContent = "Error: Input bukan angka yang valid!";
+    fixedEl.style.color = "red";
+    return;
+  }
+
+  const correctResult = angkaMurni + bonus;
   fixedEl.textContent = `Solusi Conversion (Number("${inputVal}") + ${bonus}) = ${correctResult} item (Benar!)`;
   // tampilkan hasil perhitungan matematika yang benar ke layar.
 });
@@ -164,9 +207,9 @@ calcBtn.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Selalu gunakan `Number()` untuk data formulir**: Sebelum melakukan perhitungan harga atau kuantitas, selalu bungkus nilainya dengan `Number(input.value)`.
-2. **Gunakan `String()` jika ingin mengubah angka jadi teks**: Contoh: `String(100)` menghasilkan `"100"`.
-3. **Gunakan `Boolean()` untuk mengecek kebenaran nilai**: Contoh: `Boolean(0)` menghasilkan `false`, sedangkan `Boolean(1)` menghasilkan `true`.
+1. **Selalu gunakan `Number()` untuk data input formulir**: Sebelum menghitung kuantitas atau nominal uang, pastikan data dibungkus `Number(input.value)`.
+2. **Gunakan `String()` untuk serialisasi**: Contoh: `String(100)` menghasilkan `"100"`.
+3. **Pahami 8 Nilai Falsy untuk Validasi**: Saat Anda menulis `if (namaPengguna)`, ingat bahwa string kosong `""` dianggap bernilai false, sehingga blok `if` tidak akan dijalankan.
 
 ---
 
@@ -174,24 +217,34 @@ calcBtn.addEventListener("click", () => {
 
 - [ ] Buka `index.html` di browser dan klik tombol **"Hitung Total Barang"**.
 - [ ] Amati bagaimana hasil Coercion menghasilkan `32 item`, sedangkan Conversion menghasilkan `5 item`.
-- [ ] Ubah angka di kotak input menjadi `10`, lalu klik hitung lagi (lihat perbandingan `102` vs `12`).
+- [ ] Buka DevTools Console (`F12`), coba uji coba tabel kebenaran ini:
+  ```javascript
+  Boolean(""); // false
+  Boolean(" "); // true (ada spasi!)
+  Boolean([]); // true (array kosong tetap Truthy!)
+  Boolean({}); // true (objek kosong tetap Truthy!)
+  ```
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
 >
-> Anda sudah paham jika: **Tidak pernah lagi menjumlahkan nilai dari input formulir tanpa membungkusnya dengan fungsi `Number()` terlebih dahulu**.
+> Anda sudah paham materi ini jika: **Tidak pernah lagi menjumlahkan nilai dari input formulir tanpa membungkusnya dengan `Number()` terlebih dahulu, dan hafal 8 nilai Falsy di JavaScript**.
 
 ---
 
 ## 🎯 Uji Pemahaman Mandiri
 
-Coba tebak apa hasil keluaran dari dua operasi ini di JavaScript:
+Coba tebak apa hasil keluaran dari operasi-operasi ini sebelum Anda mencobanya di konsol:
 
 ```javascript
-let hasilSatu = "10" - 2;
-let hasilDua = "10" + 2;
+let hasilA = "10" - 2;
+let hasilB = "10" + 2;
+let hasilC = Number("sepuluh");
+let hasilD = Boolean([]);
 
 // Pertanyaan:
-// 1. Berapakah hasilSatu? Apakah 8 atau "102"?
-// 2. Berapakah hasilDua? Apakah 12 atau "102"?
+// 1. Berapakah hasilA?
+// 2. Berapakah hasilB?
+// 3. Apakah nilai dari hasilC?
+// 4. Apakah nilai dari hasilD (true atau false)? Mengapa?
 ```
