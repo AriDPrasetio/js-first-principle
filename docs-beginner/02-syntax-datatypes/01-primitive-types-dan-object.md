@@ -12,8 +12,8 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data
 >
 > Di JavaScript, data terbagi menjadi dua cara kerja di memori komputer:
 >
-> 1. **Primitive**: Nilai mandiri yang bersifat kekal (*immutable*) dan selalu disalin terpisah nilainya (*copy-by-value*).
-> 2. **Object**: Data bersama yang disimpan di memori heap (*mutable*), di mana variabel hanya memegang "kartu alamat" ke data tersebut (*copy-by-reference*).
+> 1. **Primitive**: Nilai mandiri yang bersifat kekal (_immutable_) dan selalu disalin terpisah nilainya (_copy-by-value_).
+> 2. **Object**: Data bersama yang disimpan di memori heap (_mutable_), di mana variabel hanya memegang "kartu alamat" ke data tersebut (_copy-by-reference_).
 
 ---
 
@@ -29,24 +29,26 @@ Bayangkan Anda memegang selembar formulir pendaftaran (Variabel A). Rekan Anda m
 
 Di JavaScript modern, terdapat **7 Tipe Data Primitive Resmi**:
 
-| Tipe Primitive | Contoh Nilai | Deskripsi Singkat |
-| :--- | :--- | :--- |
-| `string` | `"Halo"`, `'Kyo'` | Teks karakter |
-| `number` | `42`, `3.14` | Angka bulat maupun desimal |
-| `boolean` | `true`, `false` | Nilai logika kebenaran |
-| `undefined` | `undefined` | Variabel dibuat tapi belum diberi nilai |
-| `null` | `null` | Representasi sengaja kosong / tidak ada objek |
-| `bigint` | `9007199254740991n` | Angka raksasa melampaui batas aman `number` |
-| `symbol` | `Symbol("id")` | Pengenal unik yang tidak pernah bertabrakan |
+| Tipe Primitive | Contoh Nilai        | Deskripsi Singkat                             |
+| :------------- | :------------------ | :-------------------------------------------- |
+| `string`       | `"Halo"`, `'Kyo'`   | Teks karakter                                 |
+| `number`       | `42`, `3.14`        | Angka bulat maupun desimal                    |
+| `boolean`      | `true`, `false`     | Nilai logika kebenaran                        |
+| `undefined`    | `undefined`         | Variabel dibuat tapi belum diberi nilai       |
+| `null`         | `null`              | Representasi sengaja kosong / tidak ada objek |
+| `bigint`       | `9007199254740991n` | Angka raksasa melampaui batas aman `number`   |
+| `symbol`       | `Symbol("id")`      | Pengenal unik yang tidak pernah bertabrakan   |
 
 > [!IMPORTANT]
-> **Sifat Mutlak Primitif: Kekal (*Immutable*)**
+> **Sifat Mutlak Primitif: Kekal (_Immutable_)**
 >
 > Nilai primitif tidak pernah bisa diubah fisiknya di memori. Jika Anda memiliki `let kata = "kopi"`, lalu mencoba mengubah huruf pertamanya:
+>
 > ```javascript
 > kata[0] = "t";
 > console.log(kata); // Tetap "kopi"! Tidak berubah menjadi "topi".
 > ```
+>
 > Mengganti nilai variabel (`kata = "topi"`) bukanlah memutasi teks lama, melainkan membuang nilai lama dan menunjuk ke data baru yang segar di memori.
 
 ---
@@ -61,7 +63,7 @@ Sekarang bayangkan ada sebuah rumah fisik di dunia nyata.
 - **Saat Anda datang ke rumah itu lewat alamat di ponsel Anda, warna apa pintunya?**
 - **Pintunya sudah berwarna biru.** Mengapa? Karena rumah fisiknya hanya ada satu. Ponsel Anda dan rekan Anda tidak menyimpan "rumah", melainkan hanya menyimpan **petunjuk alamat referensi ke rumah yang sama**.
 
-Data berbentuk objek (`{ }`), array (`[ ]`), maupun fungsi (`function`) bekerja seperti ini. Data jenis ini disebut **Object (Reference Type)** dan bersifat **dapat dimutasi (*mutable*)**.
+Data berbentuk objek (`{ }`), array (`[ ]`), maupun fungsi (`function`) bekerja seperti ini. Data jenis ini disebut **Object (Reference Type)** dan bersifat **dapat dimutasi (_mutable_)**.
 
 ---
 
@@ -71,7 +73,7 @@ Alasan utamanya adalah **efisiensi memori komputer**:
 
 1. **Data Primitive itu kecil dan tetap**: Menyimpan angka `50` atau boolean `true` hanya butuh sedikit sekali byte di memori. Komputer tidak keberatan membuat salinan fisik baru berkali-kali karena sangat cepat dan ringan.
 2. **Data Object itu besar dan dinamis**: Sebuah profil akun pengguna bisa berisi nama, foto, daftar teman, riwayat belanja, dan puluhan data lain. Jika setiap kali data itu dipinjamkan komputer harus menyalin ulang seluruh isinya dari nol, memori komputer akan cepat penuh dan aplikasi menjadi lambat.
-   Oleh karena itu, komputer memilih jalan cerdas: **datanya ditaruh di satu tempat saja di memori (Heap), lalu yang dibagikan cukup alamat penunjuknya (*pointer*) saja.**
+   Oleh karena itu, komputer memilih jalan cerdas: **datanya ditaruh di satu tempat saja di memori (Heap), lalu yang dibagikan cukup alamat penunjuknya (_pointer_) saja.**
 
 ---
 
@@ -199,7 +201,7 @@ console.log(userMandiri.role); // "Product Manager"
 - [ ] Buat berkas `index.html` dan `app.js` di komputer Anda, lalu buka `index.html` di browser.
 - [ ] Klik tombol **"Ubah Peran via Salinan Objek"** dan perhatikan teks peran berubah di layar.
 - [ ] Buka DevTools (`F12`) $\to$ tab **Console**, ketik `userProfile` dan lihat bahwa properti `role` pada objek asli ikut berubah menjadi `"Tech Lead"`.
-- [ ] Coba ketik di Console: `let kata = "kucing"; kata[0] = "b"; console.log(kata);` untuk membuktikan sendiri sifat *immutable* tipe string.
+- [ ] Coba ketik di Console: `let kata = "kucing"; kata[0] = "b"; console.log(kata);` untuk membuktikan sendiri sifat _immutable_ tipe string.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
