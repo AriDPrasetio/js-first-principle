@@ -189,11 +189,11 @@ saklarBtn.addEventListener("click", () => {
 
 ## 6. Checklist Praktik Mandiri
 
-- [ ] Buka browser Anda, tekan `F12`, buka tab **Console**, dan jalankan `console.log("Halo dari Console!")`.
-- [ ] Buat file `index.html` dan `app.js` di satu folder lokal di komputer Anda.
-- [ ] Buka `index.html` di browser dengan klik dua kali.
-- [ ] Klik tombol saklar dan amati lampu berubah warna serta teks berganti secara interaktif.
-- [ ] _(Opsional bagi yang punya Node.js)_: Buka terminal, buat file `test.js` berisi `console.log(typeof window);`, jalankan dengan perintah `node test.js`, dan amati hasilnya (`undefined` karena tidak ada browser di terminal!).
+- [x] Buka browser Anda, tekan `F12`, buka tab **Console**, dan jalankan `console.log("Halo dari Console!")`.
+- [x] Buat file `index.html` dan `app.js` di satu folder lokal di komputer Anda.
+- [x] Buka `index.html` di browser dengan live server atau klik dua kali.
+- [x] Klik tombol saklar dan amati lampu berubah warna serta teks berganti secara interaktif.
+- [x] _(Opsional bagi yang punya Node.js)_: Buka terminal, buat file `test.js` berisi `console.log(typeof window);`, jalankan dengan perintah `node test.js`, dan amati hasilnya (`undefined` karena tidak ada browser di terminal!).
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
