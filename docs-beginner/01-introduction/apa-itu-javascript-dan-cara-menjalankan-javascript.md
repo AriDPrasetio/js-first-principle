@@ -65,7 +65,7 @@ Secara umum, ada dua tempat utama di mana JavaScript hidup:
 
 ---
 
-## 3. Mengapa Browser Membutuhkan Cara Pemuatan Script? (First Principles)
+## 3. Browser Membutuhkan Cara Pemuatan Script. Mengapa? (First Principles)
 
 Saat browser membuka halaman website, ia membaca dokumen HTML **dari atas ke bawah, baris demi baris**:
 
