@@ -198,10 +198,10 @@ console.log(userMandiri.role); // "Product Manager"
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buat berkas `index.html` dan `app.js` di komputer Anda, lalu buka `index.html` di browser.
-- [ ] Klik tombol **"Ubah Peran via Salinan Objek"** dan perhatikan teks peran berubah di layar.
-- [ ] Buka DevTools (`F12`) $\to$ tab **Console**, ketik `userProfile` dan lihat bahwa properti `role` pada objek asli ikut berubah menjadi `"Tech Lead"`.
-- [ ] Coba ketik di Console: `let kata = "kucing"; kata[0] = "b"; console.log(kata);` untuk membuktikan sendiri sifat _immutable_ tipe string.
+- [x] Buat berkas `index.html` dan `app.js` di komputer Anda, lalu buka `index.html` di browser.
+- [x] Klik tombol **"Ubah Peran via Salinan Objek"** dan perhatikan teks peran berubah di layar.
+- [x] Buka DevTools (`F12`) $\to$ tab **Console**, ketik `userProfile` dan lihat bahwa properti `role` pada objek asli ikut berubah menjadi `"Tech Lead"`.
+- [x] Coba ketik di Console: `let kata = "kucing"; kata[0] = "b"; console.log(kata);` untuk membuktikan sendiri sifat _immutable_ tipe string.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
