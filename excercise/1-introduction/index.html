@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan | Menjalanakan JavaScript</title>
+    <style>
+      .card {
+        font-family: sans-serif;
+        max-inline-size: 320px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        text-align: center;
+        margin-inline: auto;
+      }
+      .status-lampu {
+        display: inline-block;
+        inline-size: 24px;
+        block-size: 24px;
+        background-color: #ccc;
+        border-radius: 50%;
+        margin-block-end: 0.5rem;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-weight: bold;
+      }
+    </style>
+    <script src="app.js" defer="defer"></script>
+  </head>
+  <body>
+    <div class="card">
+      <div id="lampu" class="status-lampu"></div>
+      <p id="teks-status">Lampu Sedang Mati</p>
+      <button type="button" id="btn-saklar">Nyalakan Lampu</button>
+    </div>
+  </body>
+</html>
