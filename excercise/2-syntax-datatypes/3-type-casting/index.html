@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan | Type Casting</title>
+    <style>
+      .card {
+        font-family: sans-serif;
+        max-inline-size: 320px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        margin-inline: auto;
+      }
+      input,
+      button {
+        padding: 0.5rem;
+        margin-block-start: 0.5rem;
+        inline-size: 100%;
+        box-sizing: border-box;
+      }
+      .hasil {
+        margin-block-start: 0.75rem;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        background: #f9f9f9;
+      }
+      .error-text {
+        color: #cc0000;
+        font-weight: 600;
+      }
+      .success-text {
+        color: #008800;
+        font-weight: 600;
+      }
+    </style>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="card">
+      <h3>Kalkulator Barang &plus; Bonus</h3>
+      <label for="qty-input"
+        >Jumlah Beli &lpar;Dapat Bonus 2&rpar;&colon;</label
+      >
+      <input type="number" id="qty-input" value="3" />
+      <button type="button" id="btn-calc">Hitung Total Barang</button>
+      <div class="hasil">
+        <p id="coercion-bug" class="error-text">Hasil Coercion&colon; &dash;</p>
+        <p id="conversion-fixed" class="success-text">
+          Hasil Conversion&colon; &dash;
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
