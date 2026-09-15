@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Operator `typeof` adalah alat pemindai cepat (*scanner*) bawaan JavaScript yang membaca sebuah ekspresi dan mengembalikan kategori tipe datanya dalam bentuk **string teks resmi**.
+> Operator `typeof` adalah alat pemindai cepat (_scanner_) bawaan JavaScript yang membaca sebuah ekspresi dan mengembalikan kategori tipe datanya dalam bentuk **string teks resmi**.
 
 ---
 
@@ -18,33 +18,33 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 Bayangkan Anda bekerja sebagai kasir di supermarket:
 
-- Di meja kasir ada alat pemindai (*barcode scanner*).
+- Di meja kasir ada alat pemindai (_barcode scanner_).
 - Saat Anda memindai sebotol susu, layar kasir memunculkan kategori: `"Minuman"`.
 - Saat Anda memindai sebungkus apel, layar kasir memunculkan kategori: `"Buah"`.
 
 Operator `typeof` bekerja persis seperti alat pemindai tersebut: Anda meletakkan nilai apa pun di belakangnya, dan ia akan menjawab dengan salah satu dari **8 label string resmi JavaScript**:
 
-| Input Uji | Hasil `typeof` | Catatan Penting |
-| :--- | :--- | :--- |
-| `"Halo"` | `"string"` | Teks karakter |
-| `42` / `3.14` | `"number"` | Angka bulat / desimal |
-| `NaN` | `"number"` | *Not-a-Number* tetap tergolong angka di spesifikasi IEEE 754! |
-| `true` / `false` | `"boolean"` | Logika benar/salah |
-| `undefined` | `"undefined"` | Belum diinisialisasi nilainya |
-| `Symbol("id")` | `"symbol"` | Identifier unik |
-| `100n` | `"bigint"` | Bilangan bulat raksasa |
-| `function() {}` | `"function"` | Objek fungsi khusus yang bisa dipanggil |
-| `{}` / `[]` | `"object"` | Objek biasa maupun Array |
-| `null` | `"object"` | **Bug historis 1995!** Bukan objek sejati melainkan nilai primitif kosong |
+| Input Uji        | Hasil `typeof` | Catatan Penting                                                           |
+| :--------------- | :------------- | :------------------------------------------------------------------------ |
+| `"Halo"`         | `"string"`     | Teks karakter                                                             |
+| `42` / `3.14`    | `"number"`     | Angka bulat / desimal                                                     |
+| `NaN`            | `"number"`     | _Not-a-Number_ tetap tergolong angka di spesifikasi IEEE 754!             |
+| `true` / `false` | `"boolean"`    | Logika benar/salah                                                        |
+| `undefined`      | `"undefined"`  | Belum diinisialisasi nilainya                                             |
+| `Symbol("id")`   | `"symbol"`     | Identifier unik                                                           |
+| `100n`           | `"bigint"`     | Bilangan bulat raksasa                                                    |
+| `function() {}`  | `"function"`   | Objek fungsi khusus yang bisa dipanggil                                   |
+| `{}` / `[]`      | `"object"`     | Objek biasa maupun Array                                                  |
+| `null`           | `"object"`     | **Bug historis 1995!** Bukan objek sejati melainkan nilai primitif kosong |
 
 ---
 
-## 2. Mengapa Pemula Membutuhkan `typeof`? (First Principles)
+## 2. Mengapa Membutuhkan `typeof`? (First Principles)
 
-Di JavaScript, variabel tidak terikat pada satu tipe data (*dynamically typed*). Dua alasan fundamental mengapa kita membutuhkan `typeof`:
+Di JavaScript, variabel tidak terikat pada satu tipe data (_dynamically typed_). Dua alasan fundamental mengapa `typeof` operator dibutuhkan:
 
-1. **Fakta Kritis Input HTML**: Ketika pengguna mengetik angka di form HTML (meskipun tag HTML bertuliskan `<input type="number">`), browser **SELALU membaca properti `.value` tersebut sebagai teks (`string`)**! Jika tidak dicek dan dikonversi, `10 + 5` akan menjadi `"105"` (penyambungan teks).
-2. **Pemeriksaan Aman Variabel yang Belum Dibuat (*Undeclared Safety Check*)**:
+1. **Fakta Kritis Input HTML**: Ketika pengguna mengetik angka di form HTML (meskipun tag HTML bertuliskan `<input type="number">`), browser **SELALU membaca properti `.value` tersebut sebagai teks (`string`)**! Jika tidak dicek dan dikonversi, `"10" + "5"` akan menjadi `"105"` (penyambungan teks).
+2. **Pemeriksaan Aman Variabel yang Belum Dibuat (_Undeclared Safety Check_)**:
    Jika Anda mencoba membaca variabel yang tidak pernah dideklarasikan, browser akan melempar error fatal:
    ```javascript
    console.log(variabelGaib); // Error: ReferenceError: variabelGaib is not defined
@@ -173,11 +173,11 @@ cekBtn.addEventListener("click", () => {
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik tombol **"Cek Tipe Data"**.
-- [ ] Perhatikan bahwa meskipun inputnya angka `25`, `typeof` tetap menjawab `"string"`.
-- [ ] Buka Console browser (`F12`), ketik `typeof null` dan amati hasilnya `"object"`.
-- [ ] Ketik `typeof NaN` di Console dan amati bahwa hasilnya adalah `"number"`.
-- [ ] Ketik `typeof variabelTakPernahDibuat` dan buktikan tidak terjadi error crash.
+- [x] Buka `index.html` di browser dan klik tombol **"Cek Tipe Data"**.
+- [x] Perhatikan bahwa meskipun inputnya angka `25`, `typeof` tetap menjawab `"string"`.
+- [x] Buka Console browser (`F12`), ketik `typeof null` dan amati hasilnya `"object"`.
+- [x] Ketik `typeof NaN` di Console dan amati bahwa hasilnya adalah `"number"`.
+- [x] Ketik `typeof variabelTakPernahDibuat` dan buktikan tidak terjadi error crash.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
