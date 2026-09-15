@@ -31,7 +31,7 @@ Inilah **Type Coercion**: JavaScript berusaha "membantu" dengan mengonversi tipe
 
 Sekarang bayangkan Anda menyewa seorang penerjemah resmi profesional.
 
-- Anda dengan sengaja dan tegas memerintahkan penerjemah: *"Tolong ubah teks ini menjadi angka murni."*
+- Anda dengan sengaja dan tegas memerintahkan penerjemah: _"Tolong ubah teks ini menjadi angka murni."_
 - Hasilnya terjamin akurat, tidak ada tebak-tebakan, dan sistem menerima data sesuai kontrak.
 
 Inilah **Type Conversion**: Anda secara terang-terangan memanggil fungsi konstruktor standar seperti `Number(input)`, `String(nilai)`, atau `Boolean(kondisi)`.
@@ -49,15 +49,17 @@ Di JavaScript, tanda tambah (`+`) memiliki **dua fungsi yang bertabrakan**:
 
 **Hukum Prioritas String**:
 Jika salah satu operan pada tanda `+` adalah string, JavaScript secara otomatis memaksa operan pasangannya menjadi string:
+
 - `'3' + 2` $\to$ menghasilkan `'32'` (Bukan 5!).
 
 Sebaliknya, operator `-`, `*`, dan `/` **tidak memiliki fungsi teks sama sekali**. Karena itu, JavaScript memaksa string menjadi angka:
+
 - `'5' - 2` $\to$ menghasilkan `3`.
 - `'10' * '2'` $\to$ menghasilkan `20`.
 
 ### B. Bagaimana Jika Konversi Numerik Gagal? (Nilai `NaN`)
 
-Jika Anda memaksa teks non-angka menjadi angka menggunakan `Number()`, JavaScript tidak akan melempar crash error, melainkan mengembalikan nilai khusus **`NaN` (*Not-a-Number*)**:
+Jika Anda memaksa teks non-angka menjadi angka menggunakan `Number()`, JavaScript tidak akan melempar crash error, melainkan mengembalikan nilai khusus **`NaN` (_Not-a-Number_)**:
 
 ```javascript
 Number("123"); // 123 (Berhasil)
@@ -65,28 +67,29 @@ Number("kucing"); // NaN (Gagal menjadi angka yang sah!)
 ```
 
 Untuk memeriksa apakah suatu perhitungan menghasilkan angka sah atau gagal, gunakan `Number.isNaN()`:
+
 ```javascript
 Number.isNaN(Number("kucing")); // true
 ```
 
 ### C. 8 Nilai Falsy Resmi di JavaScript
 
-Saat Anda mengonversi nilai apa pun ke tipe logika menggunakan `Boolean(nilai)`, JavaScript memiliki aturan mutlak: **Hanya ada 8 nilai di seluruh JavaScript yang bernilai `false` (*Falsy*)**:
+Saat Anda mengonversi nilai apa pun ke tipe logika menggunakan `Boolean(nilai)`, JavaScript memiliki aturan mutlak: **Hanya ada 8 nilai di seluruh JavaScript yang bernilai `false` (_Falsy_)**:
 
-| Nilai Falsy | Tipe Asal | Penjelasan |
-| :--- | :--- | :--- |
-| `false` | `boolean` | Nilai boolean salah itu sendiri |
-| `0` | `number` | Angka nol positif |
-| `-0` | `number` | Angka nol negatif |
-| `0n` | `bigint` | Angka nol pada BigInt |
-| `""` (string kosong) | `string` | Teks tanpa karakter sama sekali |
-| `null` | `null` | Nilai kosong primitif |
-| `undefined` | `undefined` | Belum diinisialisasi |
-| `NaN` | `number` | Hasil kalkulasi angka gagal |
+| Nilai Falsy          | Tipe Asal   | Penjelasan                      |
+| :------------------- | :---------- | :------------------------------ |
+| `false`              | `boolean`   | Nilai boolean salah itu sendiri |
+| `0`                  | `number`    | Angka nol positif               |
+| `-0`                 | `number`    | Angka nol negatif               |
+| `0n`                 | `bigint`    | Angka nol pada BigInt           |
+| `""` (string kosong) | `string`    | Teks tanpa karakter sama sekali |
+| `null`               | `null`      | Nilai kosong primitif           |
+| `undefined`          | `undefined` | Belum diinisialisasi            |
+| `NaN`                | `number`    | Hasil kalkulasi angka gagal     |
 
 > [!IMPORTANT]
 > **Golden Rule of Truthy**:
-> Selain 8 nilai di atas, **seluruh nilai lain di JavaScript adalah `true` (*Truthy*)**—termasuk string spasi `" "`, array kosong `[]`, dan objek kosong `{}`!
+> Selain 8 nilai di atas, **seluruh nilai lain di JavaScript adalah `true` (_Truthy_)**—termasuk string spasi `" "`, array kosong `[]`, dan objek kosong `{}`!
 
 ---
 
@@ -215,9 +218,9 @@ calcBtn.addEventListener("click", () => {
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik tombol **"Hitung Total Barang"**.
-- [ ] Amati bagaimana hasil Coercion menghasilkan `32 item`, sedangkan Conversion menghasilkan `5 item`.
-- [ ] Buka DevTools Console (`F12`), coba uji coba tabel kebenaran ini:
+- [x] Buka `index.html` di browser dan klik tombol **"Hitung Total Barang"**.
+- [x] Amati bagaimana hasil Coercion menghasilkan `32 item`, sedangkan Conversion menghasilkan `5 item`.
+- [x] Buka DevTools Console (`F12`), coba uji coba tabel kebenaran ini:
   ```javascript
   Boolean(""); // false
   Boolean(" "); // true (ada spasi!)
