@@ -60,9 +60,10 @@ Perhatikan teka-teki terkenal ini:
 ```javascript
 console.log("A");
 
+// waktu tunggu 0 milidetik (masuk ke Web API lalu Callback Queue):
 setTimeout(() => {
   console.log("B");
-}, 0); // waktu tunggu 0 milidetik!
+}, 0);
 
 console.log("C");
 ```
@@ -80,11 +81,13 @@ Setiap kali Anda membuat timer, JavaScript memberikan sebuah **nomor token ident
 ```javascript
 // 1. Timer Satu Kali (setTimeout):
 const idSatuKali = setTimeout(() => console.log("Selesai"), 3000);
-clearTimeout(idSatuKali); // Batalkan sebelum 3 detik lewat!
+// Batalkan sebelum 3 detik lewat:
+clearTimeout(idSatuKali);
 
 // 2. Timer Berulang Berkala (setInterval):
 const idBerulang = setInterval(() => console.log("Detik bertambah..."), 1000);
-clearInterval(idBerulang); // Hentikan pengulangan berkala!
+// Hentikan pengulangan berkala:
+clearInterval(idBerulang);
 ```
 
 ---

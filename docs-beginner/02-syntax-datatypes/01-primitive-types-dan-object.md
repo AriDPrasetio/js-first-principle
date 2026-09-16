@@ -123,53 +123,52 @@ Anda bisa mencoba langsung di browser dengan membuat dua berkas dalam satu folde
 
 ```javascript
 // 1. Primitive: pass-by-value (tidak mengubah variabel asal)
+// simpan teks "Frontend Dev" ke dalam variabel roleA
 let roleA = "Frontend Dev";
-// simpan teks "Frontend Dev" ke dalam variabel roleA.
 
+// salin isi roleA ke dalam variabel roleB
 let roleB = roleA;
-// salin isi roleA ke dalam variabel roleB.
 
+// ubah isi roleB menjadi "Tech Lead". Variabel roleA tetap "Frontend Dev" karena tipe primitive mandiri
 roleB = "Tech Lead";
-// ubah isi roleB menjadi "Tech Lead". Variabel roleA tetap "Frontend Dev" karena tipe primitive mandiri.
 
 // 2. Object: pass-by-reference (berbagi alamat memori yang sama)
+// buat objek userProfile dengan properti nama "Ari" dan peran dari nilai roleA ("Frontend Dev")
 const userProfile = {
   name: "Ari",
   role: roleA,
 };
-// buat objek userProfile dengan properti nama "Ari" dan peran dari nilai roleA ("Frontend Dev").
 
+// ambil elemen HTML dengan ID "user-name", simpan ke wadah nameEl
 const nameEl = document.querySelector("#user-name");
-// ambil elemen HTML dengan ID "user-name", simpan ke wadah nameEl.
 
+// ambil elemen HTML dengan ID "user-role", simpan ke wadah roleEl
 const roleEl = document.querySelector("#user-role");
-// ambil elemen HTML dengan ID "user-role", simpan ke wadah roleEl.
 
+// ambil elemen tombol HTML dengan ID "btn-update", simpan ke wadah updateBtn
 const updateBtn = document.querySelector("#btn-update");
-// ambil elemen tombol HTML dengan ID "btn-update", simpan ke wadah updateBtn.
 
 // 3. Render awal ke layar
+// tampilkan nama dari objek userProfile ke dalam teks elemen nameEl di layar
 nameEl.textContent = userProfile.name;
-// tampilkan nama dari objek userProfile ke dalam teks elemen nameEl di layar.
 
+// tampilkan peran dari objek userProfile ke dalam teks elemen roleEl di layar
 roleEl.textContent = userProfile.role;
-// tampilkan peran dari objek userProfile ke dalam teks elemen roleEl di layar.
 
 // 4. Interaksi tombol (Membuktikan sifat mutasi objek bersama)
+// saat tombol updateBtn diklik, jalankan perintah di dalam blok ini:
 updateBtn.addEventListener("click", () => {
-  // saat tombol updateBtn diklik, jalankan perintah di dalam blok ini:
-
+  // buat variabel baru yang menunjuk ke alamat objek userProfile yang sama di memori
   const profileAlias = userProfile;
-  // buat variabel baru yang menunjuk ke alamat objek userProfile yang sama di memori.
 
+  // ubah peran pada profileAlias menjadi roleB ("Tech Lead"). Tindakan ini otomatis mengubah userProfile.role aslinya
   profileAlias.role = roleB;
-  // ubah peran pada profileAlias menjadi roleB ("Tech Lead"). Tindakan ini otomatis mengubah userProfile.role aslinya.
 
+  // perbarui teks di layar menggunakan data userProfile asli untuk membuktikan bahwa data aslinya ikut berubah
   roleEl.textContent = `${userProfile.role} (Dimutasi lewat profileAlias!)`;
-  // perbarui teks di layar menggunakan data userProfile asli untuk membuktikan bahwa data aslinya ikut berubah.
 
+  // ubah warna teks menjadi hijau sebagai penanda visual perubahan
   roleEl.style.color = "green";
-  // ubah warna teks menjadi hijau sebagai penanda visual perubahan.
 });
 ```
 

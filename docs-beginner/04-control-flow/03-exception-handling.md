@@ -124,12 +124,18 @@ Mari kita buat kalkulator pembagian tagihan makan bersama yang aman dari pembagi
 ### Berkas 2: `app.js`
 
 ```javascript
+// ambil elemen input total tagihan berdasarkan ID-nya
 const totalInput = document.querySelector("#input-total");
+// ambil elemen input jumlah orang berdasarkan ID-nya
 const orangInput = document.querySelector("#input-orang");
+// ambil tombol hitung berdasarkan ID-nya
 const hitungBtn = document.querySelector("#btn-hitung");
+// ambil elemen kotak pesan hasil berdasarkan ID-nya
 const pesanBox = document.querySelector("#pesan-box");
+// ambil elemen status finally berdasarkan ID-nya
 const finallyStatus = document.querySelector("#status-finally");
 
+// pasang aksi ketika tombol hitung diklik
 hitungBtn.addEventListener("click", () => {
   try {
     // 1. BLOK TRY: Lakukan operasi berisiko

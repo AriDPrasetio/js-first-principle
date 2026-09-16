@@ -57,7 +57,8 @@ Jika Anda membuat variabel di dalam kamar privat dengan **nama yang sama persis*
 const pengguna = "Budi (Global)";
 
 function sapa() {
-  const pengguna = "Andi (Lokal)"; // Shadowing! Menutupi variabel pengguna luar
+  // Shadowing! Menutupi variabel pengguna luar
+  const pengguna = "Andi (Lokal)";
   console.log(pengguna); // Mencetak: "Andi (Lokal)"
 }
 
@@ -136,14 +137,15 @@ bacaBtn.addEventListener("click", () => {
 
   if (true) {
     // ini adalah kamar block scope lebih dalam lagi:
+    // kamar ini BISA membaca namaAplikasi dari luar (prinsip kaca satu arah / scope chain!)
     const pesanKamar = `Akses diberikan ke ${namaAplikasi}`;
-    // kamar ini BISA membaca namaAplikasi dari luar (prinsip kaca satu arah / scope chain!).
 
+    // kamar ini juga bisa membaca kodeRahasia dari ruangan pembungkusnya
     pesanPrivatEl.textContent = `${pesanKamar} | Kode: ${kodeRahasia}`;
-    // kamar ini juga bisa membaca kodeRahasia dari ruangan pembungkusnya.
   }
 
-  // console.log(pesanKamar); // ERROR! Di luar blok if, pesanKamar tidak terlihat.
+  // ERROR! Di luar blok if, pesanKamar tidak terlihat:
+  // console.log(pesanKamar);
 });
 
 // BUKTI KACA SATU ARAH:

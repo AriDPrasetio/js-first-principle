@@ -1,7 +1,11 @@
 // 1. Ambil elemen yang dibutuhkan
+// ambil elemen select status berdasarkan ID-nya
 const selectEl = document.querySelector("#select-status");
+// ambil tombol bandingkan berdasarkan ID-nya
 const bandingBtn = document.querySelector("#btn-banding");
+// ambil elemen output loose equality berdasarkan ID-nya
 const looseOut = document.querySelector("#loose-out");
+// ambil elemen output strict equality berdasarkan ID-nya
 const strictOut = document.querySelector("#strict-out");
 
 // 2. Pasang aksi ketika tombol diklik

@@ -47,7 +47,8 @@ Penyebab nomor satu kebingungan pemula pada Arrow Function adalah penggunaan kur
 1. **Concise Body (*Implicit Return*)**:
    Jika fungsi Anda hanya terdiri dari satu baris ekspresi, **jangan gunakan `{}`**. Nilainya otomatis dikembalikan:
    ```javascript
-   const kaliDua = (x) => x * 2; // Otomatis me-return x * 2!
+   // Otomatis me-return x * 2 (implicit return)
+   const kaliDua = (x) => x * 2;
    ```
 
 2. **Block Body (*Explicit Return*)**:
@@ -55,7 +56,8 @@ Penyebab nomor satu kebingungan pemula pada Arrow Function adalah penggunaan kur
    ```javascript
    const hitungTotal = (harga, pajak) => {
      const subtotal = harga + pajak;
-     return subtotal; // Wajib ada return! Jika lupa, hasilnya undefined!
+     // Wajib ada return! Jika lupa, hasilnya undefined!
+     return subtotal;
    };
    ```
 
@@ -138,18 +140,21 @@ Mari kita buat kalkulator diskon toko yang membandingkan ketiga jenis penulisan 
 // 1. FUNCTION DECLARATION:
 // Di-hoist penuh; aman dipanggil di mana saja di dalam berkas
 function hitungDiskonDeclaration(harga) {
-  return harga * 0.9; // diskon 10%
+  // diskon 10%
+  return harga * 0.9;
 }
 
 // 2. FUNCTION EXPRESSION:
 // Disimpan ke dalam variabel const; tidak boleh dipanggil sebelum baris ini
 const hitungDiskonExpression = function (harga) {
-  return harga * 0.8; // diskon 20%
+  // diskon 20%
+  return harga * 0.8;
 };
 
 // 3. ARROW FUNCTION (CONCISE BODY / IMPLICIT RETURN):
 // Sangat ringkas, tanpa kurung kurawal, mengembalikan nilai secara otomatis
-const hitungDiskonArrow = (harga) => harga * 0.7; // diskon 30%
+// diskon 30%
+const hitungDiskonArrow = (harga) => harga * 0.7;
 
 // Hubungkan ke elemen HTML:
 const hargaInput = document.querySelector("#input-harga");

@@ -58,8 +58,10 @@ Sebelum tahun 2015 (ES6), JavaScript hanya memiliki `var`:
 2. **Catatan Penting untuk Objek & Array**: Kata kunci `const` mengunci **wadahnya**, bukan isi perabot di dalamnya:
    ```javascript
    const profil = { nama: "Ari" };
-   profil.nama = "Budi"; // ✅ Boleh! Isi properti di dalam objek boleh diubah.
-   // profil = { nama: "Joko" }; // ❌ Error! Wadah profil tidak boleh diganti objek baru.
+   // ✅ Boleh! Isi properti di dalam objek boleh diubah
+   profil.nama = "Budi";
+   // ❌ Error! Wadah profil tidak boleh diganti objek baru:
+   // profil = { nama: "Joko" };
    ```
 
 ---
@@ -137,25 +139,29 @@ let nilaiSkor = 0;
 
 // 3. Pasang aksi penambahan poin
 tambahBtn.addEventListener("click", () => {
-  nilaiSkor = nilaiSkor + 1; // sah karena let mengizinkan re-assignment
+  // sah karena let mengizinkan penugasan ulang (re-assignment)
+  nilaiSkor = nilaiSkor + 1;
   skorDisplay.textContent = nilaiSkor;
 });
 
 // 4. Demonstrasi Nyata: Kebocoran var vs Isolasi let
 ujiBocorBtn.addEventListener("click", () => {
   if (true) {
+    // var tidak mengenal block scope
     var pesanBocor = "Saya dibuat di dalam if dengan var!";
+    // let terisolasi ketat di dalam block scope ini
     let pesanAman = "Saya dibuat di dalam if dengan let!";
   }
 
   // DI LUAR BLOK IF:
-  console.log("Di luar if:", pesanBocor); // "Saya dibuat di dalam if dengan var!" (BOCOR!)
+  // var bocor keluar blok: "Saya dibuat di dalam if dengan var!"
+  console.log("Di luar if:", pesanBocor);
 
   try {
     console.log("Di luar if:", pesanAman);
   } catch (error) {
+    // let berhasil mengisolasi variabel (ReferenceError: pesanAman is not defined)
     console.log("let berhasil mengisolasi variabel:", error.message);
-    // ReferenceError: pesanAman is not defined (Aman terlindungi di dalam blok!)
   }
 
   infoHasilEl.textContent = `var bocor keluar blok: "${pesanBocor}". Buka Console (F12) untuk melihat bukti isolasi let.`;
@@ -180,9 +186,10 @@ ujiBocorBtn.addEventListener("click", () => {
 - [ ] Coba ketik di Console:
   ```javascript
   var angka = 10;
-  var angka = 20; // Boleh tanpa error (rawan tertimpa!)
+  // Boleh tanpa error di var (rawan tertimpa!)
+  var angka = 20;
   let skor = 10;
-  let skor = 20;  // SyntaxError: Identifier 'skor' has already been declared
+  let skor = 20; // SyntaxError: Identifier 'skor' has already been declared
   ```
 
 > [!TIP]

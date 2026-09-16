@@ -61,8 +61,10 @@ Pernahkah Anda mencoba memanggil API lalu muncul error warna merah: *Cross-Origi
 ```javascript
 // 1. Cara Manual (Menggunakan Controller):
 const controller = new AbortController();
-fetch(url, { signal: controller.signal }); // Hubungkan antena
-controller.abort(); // Tekan tombol merah untuk membatalkan kapan saja!
+// Hubungkan sinyal antena pembatal:
+fetch(url, { signal: controller.signal });
+// Tekan tombol merah untuk membatalkan request kapan saja:
+controller.abort();
 
 // 2. Cara Modern (Otomatis Batal Jika Lebih dari 5 Detik):
 fetch(url, { signal: AbortSignal.timeout(5000) });

@@ -61,9 +61,11 @@ for (let i = 0; i < elemenList.length; i++) {
 Pisahkan fase baca dan fase tulis:
 ```javascript
 // ✅ BATCHING: Baca semua dulu, baru ubah semua sekaligus
-const daftarLebar = kotakList.map(kotak => kotak.offsetWidth); // Fase Baca
+// Fase 1: Baca semua ukuran terlebih dahulu
+const daftarLebar = kotakList.map(kotak => kotak.offsetWidth);
 kotakList.forEach((kotak, i) => {
-  kotak.style.width = daftarLebar[i] + 10 + "px"; // Fase Tulis
+  // Fase 2: Tulis dan terapkan gaya baru sekaligus
+  kotak.style.width = daftarLebar[i] + 10 + "px";
 });
 ```
 

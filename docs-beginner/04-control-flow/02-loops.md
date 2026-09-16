@@ -160,7 +160,8 @@ btnFilter.addEventListener("click", () => {
 
   for (const item of inventaris) {
     if (item.stok === 0) {
-      continue; // Lewatkan barang ini! Langsung lompat ke putaran barang berikutnya
+      // lewati barang ini dan langsung lompat ke putaran berikutnya
+      continue;
     }
 
     const li = document.createElement("li");
@@ -182,7 +183,8 @@ btnCari.addEventListener("click", () => {
       const liKetemu = document.createElement("li");
       liKetemu.innerHTML = "<strong>🎯 TARGET DITEMUKAN! Loop dihentikan seketika dengan break.</strong>";
       listEl.appendChild(liKetemu);
-      break; // Rem darurat: hentikan loop total!
+      // rem darurat: hentikan loop total
+      break;
     }
   }
 });

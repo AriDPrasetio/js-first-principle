@@ -135,8 +135,8 @@ export function formatRupiah(angka) {
   return `Rp ${angka.toLocaleString("id-ID")}`;
 }
 
-// 2. NAMED EXPORT: Konstanta tarif pajak
-export const TARIF_PPN = 0.11; // 11%
+// 2. NAMED EXPORT: Konstanta tarif pajak (11%)
+export const TARIF_PPN = 0.11;
 
 // 3. DEFAULT EXPORT: Fungsi utama kalkulator harga
 export default function hitungTotalBelanja(hargaBarang) {
