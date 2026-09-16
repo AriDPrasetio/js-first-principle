@@ -145,13 +145,17 @@ prosesBtn.addEventListener("click", () => {
 
   switch (levelMember) {
     case "PLATINUM":
-      persentaseDiskon = 0.3; // 30%
-      break; // Wajib: kunci rem agar tidak melorot ke bawah
+      // diskon 30%
+      persentaseDiskon = 0.3;
+      // Wajib: kunci rem agar tidak melorot ke case berikutnya
+      break;
     case "GOLD":
-      persentaseDiskon = 0.2; // 20%
+      // diskon 20%
+      persentaseDiskon = 0.2;
       break;
     case "SILVER":
-      persentaseDiskon = 0.1; // 10%
+      // diskon 10%
+      persentaseDiskon = 0.1;
       break;
     case "REGULER":
     default:

@@ -118,36 +118,35 @@ Mari kita buat pendeteksi tipe data input formulir:
 
 ```javascript
 // 1. Ambil elemen HTML yang dibutuhkan
+// ambil elemen kotak isian input berdasarkan ID-nya
 const usiaInput = document.querySelector("#input-usia");
-// ambil elemen kotak isian input dengan ID 'input-usia', simpan ke wadah usiaInput.
 
+// ambil elemen tombol berdasarkan ID-nya
 const cekBtn = document.querySelector("#btn-cek");
-// ambil elemen tombol dengan ID 'btn-cek', simpan ke wadah cekBtn.
 
+// ambil elemen penampil nilai berdasarkan ID-nya
 const nilaiOut = document.querySelector("#nilai-output");
-// ambil elemen penampil nilai dengan ID 'nilai-output', simpan ke wadah nilaiOut.
 
+// ambil elemen penampil tipe berdasarkan ID-nya
 const tipeOut = document.querySelector("#tipe-output");
-// ambil elemen penampil tipe dengan ID 'tipe-output', simpan ke wadah tipeOut.
 
 // 2. Pasang aksi ketika tombol diklik
+// saat tombol diklik, jalankan fungsi berikut:
 cekBtn.addEventListener("click", () => {
-  // saat tombol diklik, jalankan fungsi berikut:
-
+  // baca nilai yang sedang tertulis di kotak input (meskipun input bertipe number, hasilnya selalu string!)
   const nilaiMentah = usiaInput.value;
-  // baca nilai yang sedang tertulis di kotak input (meskipun input bertipe number, hasilnya selalu string!).
 
+  // gunakan operator typeof untuk memindai tipe data dari variabel nilaiMentah
   const hasilTipe = typeof nilaiMentah;
-  // gunakan operator typeof untuk memindai tipe data dari variabel nilaiMentah.
 
+  // tampilkan nilai mentah ke layar dengan tanda petik agar terlihat bahwa ini teks
   nilaiOut.textContent = `"${nilaiMentah}"`;
-  // tampilkan nilai mentah ke layar dengan tanda petik agar terlihat bahwa ini teks.
 
+  // tampilkan hasil deteksi typeof ke layar (akan memunculkan kata 'string')
   tipeOut.textContent = hasilTipe;
-  // tampilkan hasil deteksi typeof ke layar (akan memunculkan kata 'string').
 
+  // beri warna merah sebagai bukti visual bahwa input HTML masih berupa string teks
   tipeOut.style.color = "red";
-  // beri warna merah sebagai bukti visual bahwa input HTML masih berupa string teks.
 });
 ```
 

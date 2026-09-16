@@ -43,7 +43,8 @@ function buatPengali(faktor) {
   };
 }
 
-const kaliDua = buatPengali(2); // Menghasilkan fungsi baru
+// Menghasilkan fungsi baru
+const kaliDua = buatPengali(2);
 console.log(kaliDua(10)); // 20
 ```
 

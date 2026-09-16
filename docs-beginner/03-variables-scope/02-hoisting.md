@@ -118,7 +118,8 @@ Mari kita buktikan bahwa fungsi biasa aman dipanggil sebelum posisinya, dan amat
 // padahal deklarasi fungsinya baru kita tulis di bagian BAWAH!
 // =======================================================
 
-jalankanAplikasi(); // Berjalan normal tanpa error!
+// Berjalan normal tanpa error karena deklarasi function di-hoist sepenuhnya
+jalankanAplikasi();
 
 // =======================================================
 // DEKLARASI FUNGSI FORMAL (DIANGKAT LENGKAP OLEH ENGINE)

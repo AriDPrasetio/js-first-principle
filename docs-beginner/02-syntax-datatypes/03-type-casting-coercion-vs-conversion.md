@@ -161,48 +161,50 @@ Mari kita buktikan bahaya Coercion dan solusi Conversion pada keranjang belanja:
 
 ```javascript
 // 1. Ambil elemen yang dibutuhkan
+// ambil elemen input jumlah beli berdasarkan ID-nya
 const qtyInput = document.querySelector("#qty-input");
-// ambil elemen input jumlah beli dengan ID 'qty-input', simpan ke wadah qtyInput.
 
+// ambil tombol hitung berdasarkan ID-nya
 const calcBtn = document.querySelector("#btn-calc");
-// ambil tombol hitung dengan ID 'btn-calc', simpan ke wadah calcBtn.
 
+// ambil elemen penampil bug berdasarkan ID-nya
 const bugEl = document.querySelector("#coercion-bug");
-// ambil elemen penampil bug dengan ID 'coercion-bug', simpan ke wadah bugEl.
 
+// ambil elemen penampil solusi benar berdasarkan ID-nya
 const fixedEl = document.querySelector("#conversion-fixed");
-// ambil elemen penampil solusi benar dengan ID 'conversion-fixed', simpan ke wadah fixedEl.
 
 // 2. Pasang aksi ketika tombol hitung diklik
+// saat tombol diklik, jalankan perintah di dalam blok ini:
 calcBtn.addEventListener("click", () => {
-  // saat tombol diklik, jalankan perintah di dalam blok ini:
-
+  // ambil nilai yang diketik pengguna (ingat: nilainya bertipe string, contohnya teks "3")
   const inputVal = qtyInput.value;
-  // ambil nilai yang diketik pengguna (ingat: nilainya bertipe string, contohnya teks "3").
 
+  // bonus tambahan sebanyak 2 barang (bertipe number)
   const bonus = 2;
-  // bonus tambahan sebanyak 2 barang (bertipe number).
 
   // BAHAYA IMPLICIT COERCION:
+  // karena inputVal bertipe string "3", tanda '+' malah menyambung teks menjadi "3" + 2 = "32"
   const buggyResult = inputVal + bonus;
-  // karena inputVal bertipe string "3", tanda '+' malah menyambung teks menjadi "3" + 2 = "32".
 
+  // tampilkan hasil salah tersebut ke layar
   bugEl.textContent = `Bug Coercion ("${inputVal}" + ${bonus}) = ${buggyResult} item (Salah!)`;
-  // tampilkan hasil salah tersebut ke layar.
 
   // SOLUSI EKSPLISIT CONVERSION:
+  // gunakan fungsi Number() untuk mengubah teks "3" menjadi angka 3 sebelum dijumlahkan
   const angkaMurni = Number(inputVal);
-  // gunakan fungsi Number() untuk mengubah teks "3" menjadi angka 3 sebelum dijumlahkan.
 
+  // jika konversi menghasilkan NaN, tampilkan pesan error
   if (Number.isNaN(angkaMurni)) {
     fixedEl.textContent = "Error: Input bukan angka yang valid!";
     fixedEl.style.color = "red";
     return;
   }
 
+  // hitung total barang menggunakan angka murni
   const correctResult = angkaMurni + bonus;
+
+  // tampilkan hasil perhitungan matematika yang benar ke layar
   fixedEl.textContent = `Solusi Conversion (Number("${inputVal}") + ${bonus}) = ${correctResult} item (Benar!)`;
-  // tampilkan hasil perhitungan matematika yang benar ke layar.
 });
 ```
 

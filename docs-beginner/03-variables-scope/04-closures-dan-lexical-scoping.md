@@ -40,10 +40,12 @@ Di aplikasi web, ada data sensitif yang **tidak boleh diubah sembarangan oleh pi
 ```javascript
 // CONTOH DASAR FIRST PRINCIPLES:
 function buatPenghitung() {
-  let hitungan = 0; // variabel privat terkunci
+  // variabel privat terkunci
+  let hitungan = 0;
 
   return function() {
-    hitungan = hitungan + 1; // mengingat dan menambah variabel induk
+    // mengingat dan menambah variabel induk
+    hitungan = hitungan + 1;
     return hitungan;
   };
 }
@@ -170,7 +172,8 @@ document.querySelector("#btn-reset").addEventListener("click", () => {
     return function(nama) { return `Halo ${nama} dari ${kota}`; };
   }
   const salamBali = pembuatSalam("Bali");
-  console.log(salamBali("Kyo")); // Amati bagaimana "Bali" tetap diingat!
+  // Amati bagaimana "Bali" tetap diingat!
+  console.log(salamBali("Kyo"));
   ```
 
 > [!TIP]

@@ -123,7 +123,8 @@ const infoPerangkat = ((w) => {
     kategori: tipePerangkat,
     resolusi: `${lebarLayar} x ${tinggiLayar} piksel`,
   };
-})(window); // <-- Argumen 'window' disuapkan ke parameter 'w'
+  // Argumen 'window' disuapkan ke parameter 'w':
+})(window);
 
 // Tampilkan hasil perhitungan IIFE ke halaman HTML:
 wadahHasil.textContent = `${infoPerangkat.kategori} (${infoPerangkat.resolusi})`;

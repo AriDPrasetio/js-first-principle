@@ -61,7 +61,8 @@ Dengan Array Destructuring, Anda bisa menukar isi dua variabel dengan sangat ele
 ```javascript
 let a = 1;
 let b = 2;
-[a, b] = [b, a]; // Nilai a jadi 2, nilai b jadi 1!
+// Tukar isi variabel secara instan: nilai a jadi 2, nilai b jadi 1
+[a, b] = [b, a];
 ```
 
 ---

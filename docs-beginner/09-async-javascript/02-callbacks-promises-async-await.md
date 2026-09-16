@@ -44,7 +44,8 @@ Fungsi asinkron lama menerima fungsi lain sebagai argumen penutup:
 ambilDataUser(id, (user) => {
   ambilPostingan(user.id, (postingan) => {
     ambilKomentar(postingan[0].id, (komentar) => {
-      console.log(komentar); // Semakin menjorok ke kanan dan penanganan error sangat sulit!
+      // Semakin menjorok ke kanan dan penanganan error sangat sulit:
+      console.log(komentar);
     });
   });
 });
@@ -58,7 +59,8 @@ ambilDataUser(id)
   .then((user) => ambilPostingan(user.id))
   .then((postingan) => ambilKomentar(postingan[0].id))
   .then((komentar) => console.log(komentar))
-  .catch((error) => console.error("Terjadi error:", error)); // 1 catch untuk semua tahap
+  // 1 catch untuk menangani error dari semua tahap di atas:
+  .catch((error) => console.error("Terjadi error:", error));
 ```
 
 #### 3. Generasi Ketiga: `async` / `await` (ES2017)

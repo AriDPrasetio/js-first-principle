@@ -48,7 +48,8 @@ function buatPaket(namaPaket, ...daftarBarang) {
 
 // SPREAD OPERATOR (Membuka):
 const belanjaan = ["Buku", "Pulpen", "Penggaris"];
-buatPaket("Alat Tulis", ...belanjaan); // Membuka isi array menjadi argumen
+// Membuka isi array menjadi argumen menggunakan spread operator
+buatPaket("Alat Tulis", ...belanjaan);
 ```
 
 ---

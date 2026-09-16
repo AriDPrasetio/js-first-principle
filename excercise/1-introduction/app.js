@@ -1,31 +1,34 @@
 // 1. Ambil elemen HTML yang dibutuhkan
+// ambil elemen lampu berdasarkan ID-nya
 const lampuEl = document.querySelector("#lampu");
+// ambil elemen teks status berdasarkan ID-nya
 const teksStatusEl = document.querySelector("#teks-status");
+// ambil tombol saklar berdasarkan ID-nya
 const saklarBtn = document.querySelector("#btn-saklar");
 
 // 2. Simpan status lampu di memori JavaScript
 let isLampuMenyala = false;
 
 // 3. Pasang aksi ketika tombol saklar diklik
+// saat saklarBtn diklik, jalankan perintah berikut:
 saklarBtn.addEventListener("click", () => {
-  // saklarBtn tambahkan aksi "click" lalu jalankan perintah berikut ini:
+  // balik status logika lampu (toggle true/false)
   isLampuMenyala = !isLampuMenyala;
 
+  // percabangan kondisi: jika lampu dalam status menyala
   if (isLampuMenyala) {
-    // jika lampu menyala:
+    // ubah warna latar lampu menjadi kuning terang
     lampuEl.style.backgroundColor = "#ffcc00";
-    // ubah warna lampu menjadi kuning terang.
+    // ubah teks status menjadi "Lampu Menyala!"
     teksStatusEl.textContent = "Lampu Menyala!";
-    // ubah teks status menjadi "Matikan Lampu";
-    saklarBtn.textContent = "Matikan Lampu";
     // ubah label tombol menjadi "Matikan Lampu"
+    saklarBtn.textContent = "Matikan Lampu";
   } else {
-    // tapi jika lampu mati:
+    // jika lampu dalam status mati, kembalikan warna latar menjadi abu-abu
     lampuEl.style.backgroundColor = "#ccc";
-    // kembalikan warna lampu menjadi abu-abu.
-    teksStatusEl.textContent = "Lampu Sedang Mati";
     // kembalikan teks status menjadi "Lampu Sedang Mati"
-    saklarBtn.textContent = "Nyalakan Lampu";
+    teksStatusEl.textContent = "Lampu Sedang Mati";
     // kembalikan label tombol menjadi "Nyalakan Lampu"
+    saklarBtn.textContent = "Nyalakan Lampu";
   }
 });

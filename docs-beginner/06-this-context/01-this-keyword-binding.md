@@ -157,7 +157,8 @@ tombolBudi.addEventListener("click", () => {
 
 // 3. Default Binding (Lost Context):
 tombolLepas.addEventListener("click", () => {
-  const fungsiSendirian = profilAndi.sapa; // Mencopot fungsi dari objek
+  // Mencopot fungsi dari objek
+  const fungsiSendirian = profilAndi.sapa;
   // Dipanggil sendirian tanpa pemilik di kiri titik:
   outputSapaan.textContent = `Panggilan Terpisah: ${fungsiSendirian()}`;
   outputSapaan.style.color = "#b91c1c";
@@ -173,7 +174,8 @@ tombolLepas.addEventListener("click", () => {
    ```javascript
    const profil = {
      nama: "Andi",
-     sapa: () => `Saya ${this.nama}`, // ERROR: Arrow function meminjam this dari luar objek (window)!
+     // ERROR: Arrow function meminjam this dari luar objek (window)!
+     sapa: () => `Saya ${this.nama}`,
    };
    ```
 3. **Gunakan Arrow Function untuk Callback di dalam metode**:

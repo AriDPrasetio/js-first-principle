@@ -178,7 +178,8 @@ tombolMap.addEventListener("click", () => {
 // 2. .filter() -> Menyaring buah harga < 25.000
 tombolFilter.addEventListener("click", () => {
   const buahMurah = keranjangBuah.filter((item) => {
-    return item.harga < 25000; // predikat boolean
+    // predikat boolean: kembalikan true jika harga < 25000
+    return item.harga < 25000;
   });
 
   const barisTeks = buahMurah.map((b) => `${b.nama} (Rp ${b.harga.toLocaleString("id-ID")})`);
@@ -187,9 +188,10 @@ tombolFilter.addEventListener("click", () => {
 
 // 3. .reduce() -> Menjumlahkan total harga
 tombolReduce.addEventListener("click", () => {
+  // Modal awal celengan diset 0:
   const totalBiaya = keranjangBuah.reduce((celengan, item) => {
     return celengan + item.harga;
-  }, 0); // Modal awal celengan 0
+  }, 0);
 
   outputLayar.innerHTML = `Total Semua Belanjaan: Rp ${totalBiaya.toLocaleString("id-ID")}`;
 });
@@ -211,7 +213,8 @@ tombolReduce.addEventListener("click", () => {
 - [ ] Perhatikan bahwa data asli `keranjangBuah` tetap utuh saat Anda menekan tombol berkali-kali.
 - [ ] Buka Console (`F12`), coba jalankan `.reduce()` tanpa modal awal pada array kosong:
   ```javascript
-  [].reduce((acc, curr) => acc + curr); // Amati error TypeError yang muncul!
+  // Amati error TypeError yang muncul jika tanpa nilai awal:
+  [].reduce((acc, curr) => acc + curr);
   ```
 
 > [!TIP]

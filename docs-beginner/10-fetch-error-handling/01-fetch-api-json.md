@@ -67,9 +67,11 @@ Secara bawaan, `fetch(url)` menjalankan metode **GET** (hanya mengambil data). J
 const respon = await fetch("https://api.contoh.com/pengguna", {
   method: "POST",
   headers: {
-    "Content-Type": "application/json", // Beri tahu server bahwa kita mengirim format JSON
+    // Beri tahu server bahwa kita mengirim format JSON
+    "Content-Type": "application/json",
   },
-  body: JSON.stringify({ nama: "Dewi", kota: "Jakarta" }), // Bungkus objek jadi teks
+  // Bungkus objek jadi teks string JSON
+  body: JSON.stringify({ nama: "Dewi", kota: "Jakarta" }),
 });
 ```
 
@@ -223,9 +225,11 @@ async function kirimDataPengguna() {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Nyatakan tipe payload
+          // Nyatakan tipe payload JSON
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataBaru), // Ubah objek menjadi format string JSON
+        // Ubah objek menjadi format string JSON
+        body: JSON.stringify(dataBaru),
       },
     );
 

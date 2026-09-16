@@ -64,7 +64,8 @@ Operator `===` pada objek **tidak memeriksa isi propertinya**, melainkan memerik
 
 ```javascript
 const userA = { nama: "Ari" };
-const userB = userA; // Menyalin alamat memori yang sama
+// Menyalin alamat memori yang sama
+const userB = userA;
 
 console.log(userA === userB); // TRUE! (Keduanya menunjuk ke alamat fisik yang identik)
 ```
@@ -133,38 +134,37 @@ Mari kita buktikan perbedaan perbandingan ini pada pemilihan status akun:
 
 ```javascript
 // 1. Ambil elemen yang dibutuhkan
+// ambil elemen dropdown pilihan berdasarkan ID-nya
 const selectEl = document.querySelector("#select-status");
-// ambil elemen dropdown pilihan dengan ID 'select-status', simpan ke wadah selectEl.
 
+// ambil tombol bandingkan berdasarkan ID-nya
 const bandingBtn = document.querySelector("#btn-banding");
-// ambil tombol bandingkan dengan ID 'btn-banding', simpan ke wadah bandingBtn.
 
+// ambil elemen penampil hasil loose equality berdasarkan ID-nya
 const looseOut = document.querySelector("#loose-out");
-// ambil elemen penampil hasil loose dengan ID 'loose-out', simpan ke wadah looseOut.
 
+// ambil elemen penampil hasil strict equality berdasarkan ID-nya
 const strictOut = document.querySelector("#strict-out");
-// ambil elemen penampil hasil strict dengan ID 'strict-out', simpan ke wadah strictOut.
 
 // 2. Pasang aksi ketika tombol diklik
+// saat tombol diklik, jalankan fungsi perbandingan berikut:
 bandingBtn.addEventListener("click", () => {
-  // saat tombol diklik, jalankan fungsi perbandingan berikut:
-
+  // ambil nilai opsi yang dipilih (ingat: bernilai string, contohnya teks "0")
   const selectedValue = selectEl.value;
-  // ambil nilai opsi yang dipilih (ingat: bernilai string, contohnya teks "0").
 
+  // angka murni nol (bertipe number) sebagai nilai pembanding
   const targetAngka = 0;
-  // angka murni nol (bertipe number).
 
   // 1. Pengujian dengan Loose Equality (==):
+  // tanda '==' memicu coercion: teks "0" diubah menjadi angka 0 sehingga bernilai true
   const isLooseEqual = selectedValue == targetAngka;
-  // tanda '==' memaksa teks "0" diubah menjadi angka 0, sehingga "0" == 0 dianggap TRUE!
 
   looseOut.textContent = `${isLooseEqual} (Teks dipaksa dianggap sama dengan Angka)`;
   looseOut.style.color = "red";
 
   // 2. Pengujian dengan Strict Equality (===):
+  // tanda '===' membandingkan tipe data: string !== number sehingga bernilai false
   const isStrictEqual = selectedValue === targetAngka;
-  // tanda '===' melihat teks "0" dan angka 0 memiliki tipe berbeda, sehingga menghasilkan FALSE!
 
   strictOut.textContent = `${isStrictEqual} (Tepat! Tipe data berbeda string !== number)`;
   strictOut.style.color = "green";
@@ -191,7 +191,8 @@ bandingBtn.addEventListener("click", () => {
   ```javascript
   const boxA = { warna: "merah" };
   const boxB = { warna: "merah" };
-  console.log(boxA === boxB); // Amati hasilnya false!
+  // Amati hasilnya false!
+  console.log(boxA === boxB);
   ```
 
 > [!TIP]
