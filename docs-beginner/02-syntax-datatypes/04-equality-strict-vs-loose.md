@@ -5,12 +5,12 @@ level: beginner
 official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality"
 ---
 
-# Panduan Pemula: Kesetaraan Strict (===) vs Loose (==) di JavaScript
+# Panduan Pemula: Equality - Strict (===) vs Loose (==) di JavaScript
 
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Operator `===` (*Strict Equality*) membandingkan tipe data DAN nilainya secara jujur tanpa manipulasi. Operator `==` (*Loose Equality*) mencoba mengubah-ubah tipe data di belakang layar (*coercion*) sebelum membandingkan, sering kali menghasilkan kesimpulan keliru yang membahayakan alur program.
+> Operator `===` (_Strict Equality_) membandingkan tipe data DAN nilainya secara jujur tanpa manipulasi. Operator `==` (_Loose Equality_) mencoba mengubah-ubah tipe data di belakang layar (_coercion_) sebelum membandingkan, sering kali menghasilkan kesimpulan keliru yang membahayakan alur program.
 
 ---
 
@@ -21,9 +21,9 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 Bayangkan petugas imigrasi yang sangat disiplin di bandara internasional:
 
 - Anda harus menunjukkan identitas asli: **KTP asli** dan **Paspor asli**.
-- Jika Anda membawa fotokopi atau format dokumen yang tidak sesuai, petugas langsung menolak: *"Maaf, tipenya berbeda, tidak boleh lewat."*
+- Jika Anda membawa fotokopi atau format dokumen yang tidak sesuai, petugas langsung menolak: _"Maaf, tipenya berbeda, tidak boleh lewat."_
 
-Inilah `===` (*Strict Equality*): Jika tipe datanya berbeda (misal teks `"0"` vs angka `0`), ia langsung menjawab **`false`**. Begitu pula kebalikannya, operator **`!==`** (*Strict Inequality*) memastikan kedua nilai tidak identik baik dari segi tipe maupun nilai.
+Inilah `===` (_Strict Equality_): Jika tipe datanya berbeda (misal teks `"0"` vs angka `0`), ia langsung menjawab **`false`**. Begitu pula kebalikannya, operator **`!==`** (_Strict Inequality_) memastikan kedua nilai tidak identik baik dari segi tipe maupun nilai.
 
 ---
 
@@ -31,23 +31,26 @@ Inilah `===` (*Strict Equality*): Jika tipe datanya berbeda (misal teks `"0"` vs
 
 Sekarang bayangkan penjaga yang serba mentolerir:
 
-- Anda tidak membawa paspor, hanya membawa secarik kertas coret-coretan. Penjaga berkata: *"Ah tidak apa-apa, kertas ini saya anggap mirip paspor saja ya."*
+- Anda tidak membawa paspor, hanya membawa secarik kertas coret-coretan. Penjaga berkata: _"Ah tidak apa-apa, kertas ini saya anggap mirip paspor saja ya."_
 - Akibatnya, orang yang tidak berhak bisa lolos masuk.
 
-Inilah `==` (*Loose Equality*): Ia memaksakan konversi tipe data otomatis sampai ketemu kemiripan semu. Misalnya, angka `0` dianggap sama dengan teks kosong `""` atau teks `"0"`.
+Inilah `==` (_Loose Equality_): Ia memaksakan konversi tipe data otomatis sampai ketemu kemiripan semu. Misalnya, angka `0` dianggap sama dengan teks kosong `""` atau teks `"0"`.
 
 ---
 
 ## 2. Mengapa Ini Penting untuk Pemula? (First Principles)
 
 ### A. Jebakan Form Input Web
+
 Di antarmuka web, dropdown pilihan (`<select>`) selalu mengembalikan nilai bertipe string:
+
 - Opsi pertama mengembalikan teks `"0"`.
 - Jika Anda mengecek status akun memakai `== false`:
   JavaScript mengonversi teks `"0"` menjadi `false` (`"0" == false` bernilai `true`!). Akibatnya, pengguna level 0 keliru dianggap nonaktif.
 - Dengan `===`, teks `"0"` dan boolean `false` tidak akan tertukar karena tipe datanya berbeda (`string` vs `boolean`).
 
 ### B. Bagaimana `===` Membandingkan Objek dan Array?
+
 Banyak pemula terkejut saat membandingkan dua objek atau array yang isinya tampak sama persis:
 
 ```javascript
@@ -182,9 +185,9 @@ bandingBtn.addEventListener("click", () => {
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik tombol **"Bandingkan dengan Angka 0"**.
-- [ ] Perhatikan bahwa `==` menghasilkan `true` (karena teks dipaksa jadi angka), sedangkan `===` menghasilkan `false` (karena aman dan jujur).
-- [ ] Buka Console (`F12`), coba uji perbandingan objek:
+- [x] Buka `index.html` di browser dan klik tombol **"Bandingkan dengan Angka 0"**.
+- [x] Perhatikan bahwa `==` menghasilkan `true` (karena teks dikonversi jadi angka), sedangkan `===` menghasilkan `false` (karena tidak dikonversi).
+- [x] Buka Console (`F12`), coba uji perbandingan objek:
   ```javascript
   const boxA = { warna: "merah" };
   const boxB = { warna: "merah" };

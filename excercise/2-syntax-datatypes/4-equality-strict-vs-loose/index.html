@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan | Strict vs Loose Equality</title>
+    <style>
+      .card {
+        font-family: sans-serif;
+        max-inline-size: 320px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        margin-inline: auto;
+      }
+      select,
+      button {
+        padding: 0.5rem;
+        margin-block-start: 0.5rem;
+        inline-size: 100%;
+        box-sizing: border-box;
+      }
+      .box {
+        margin-block-start: 0.75rem;
+        padding: 0.5rem;
+        background: #f4f4f4;
+        border-radius: 0.25rem;
+      }
+    </style>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="card">
+      <h3>Pilih Status Pengguna&colon;</h3>
+      <select id="select-status">
+        <option value="0">Tingkat 0 &lpar;String &ldquo;0&rdquo;&rpar;</option>
+        <option value="1">Tingkat 1 &lpar;String &ldquo;1&rdquo;&rpar;</option>
+      </select>
+      <button type="button" id="btn-banding">Bandingkan dengan Angka 0</button>
+      <div class="box">
+        <p>Hasil Loose (== 0): <strong id="loose-out">&dash;</strong></p>
+        <p>Hasil Strict (=== 0): <strong id="strict-out">&dash;</strong></p>
+      </div>
+    </div>
+  </body>
+</html>
