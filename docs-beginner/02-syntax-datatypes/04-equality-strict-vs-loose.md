@@ -185,9 +185,9 @@ bandingBtn.addEventListener("click", () => {
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik tombol **"Bandingkan dengan Angka 0"**.
-- [ ] Perhatikan bahwa `==` menghasilkan `true` (karena teks dipaksa jadi angka), sedangkan `===` menghasilkan `false` (karena aman dan jujur).
-- [ ] Buka Console (`F12`), coba uji perbandingan objek:
+- [x] Buka `index.html` di browser dan klik tombol **"Bandingkan dengan Angka 0"**.
+- [x] Perhatikan bahwa `==` menghasilkan `true` (karena teks dikonversi jadi angka), sedangkan `===` menghasilkan `false` (karena tidak dikonversi).
+- [x] Buka Console (`F12`), coba uji perbandingan objek:
   ```javascript
   const boxA = { warna: "merah" };
   const boxB = { warna: "merah" };
