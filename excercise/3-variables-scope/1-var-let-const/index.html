@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan | var, let, const</title>
+    <style>
+      .papan-skor {
+        font-family: sans-serif;
+        max-inline-size: 320px;
+        padding: 1rem;
+        border: 2px solid #333;
+        border-radius: 0.5rem;
+        text-align: center;
+        margin-inline: auto;
+      }
+      .angka-skor {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #0055ff;
+        margin: 0.5rem 0;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        inline-size: 100%;
+        margin-block-start: 0.5rem;
+      }
+      .info-box {
+        margin-block-start: 0.75rem;
+        padding: 0.5rem;
+        font-size: 0.85rem;
+        background: #f4f4f4;
+        border-radius: 0.25rem;
+        text-align: left;
+      }
+    </style>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="papan-skor">
+      <h3>Papan Skor Game</h3>
+      <div id="skor-diplay" class="angka-skor">0</div>
+      <button type="button" id="btn-tambah">
+        +1 Poin (Uji let &amp; const)
+      </button>
+      <button type="button" id="btn-uji-bocor">Uji Kebocoran var vs let</button>
+      <div id="info-hasil" class="info-box">
+        Tekan tombol uji untuk melihat di console.
+      </div>
+    </div>
+  </body>
+</html>
