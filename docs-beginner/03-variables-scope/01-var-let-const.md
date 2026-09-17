@@ -12,48 +12,55 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 >
 > Variabel adalah kotak berlabel untuk menyimpan data di memori komputer:
 >
-> - **`const`**: Kotak terkunci permanen yang isinya tidak boleh diganti nilainya (*Default* pilihan utama).
-> - **`let`**: Kotak fleksibel yang isinya boleh diganti jika nilainya memang perlu berubah (*Re-assignable*).
-> - **`var`**: Ember bocor warisan masa lalu yang mengabaikan kurung kurawal `{}` (*Block Scope*) dan rawan menimbulkan bug.
+> - **`const`**: Kotak terkunci permanen yang isinya tidak boleh diganti nilainya (_Default_ pilihan utama).
+> - **`let`**: Kotak fleksibel yang isinya boleh diganti jika nilainya memang perlu berubah (_Re-assignable_).
+> - **`var`**: Ember bocor warisan masa lalu yang mengabaikan kurung kurawal `{}` (_Block Scope_) dan rawan menimbulkan bug.
 
 ---
 
 ## 1. Analogi Logis: Tiga Jenis Kotak Penyimpanan
 
 ### A. `const` (Kotak Bergembok Permanen)
+
 Bayangkan Anda memasukkan tanggal lahir Anda ke dalam kotak kaca yang digembok.
+
 - Tanggal lahir Anda tidak akan pernah berganti seumur hidup.
-- Jika seseorang mencoba membuka kotak dan mengganti isinya dengan tanggal lain, sistem akan membunyikan alarm (*Error: Assignment to constant variable*).
+- Jika seseorang mencoba membuka kotak dan mengganti isinya dengan tanggal lain, sistem akan membunyikan alarm (_Error: Assignment to constant variable_).
 - Gunakan `const` untuk 90% variabel di aplikasi Anda: elemen HTML, konfigurasi API, atau data rumus.
 
 ---
 
 ### B. `let` (Kotak dengan Tutup Terbuka)
+
 Bayangkan wadah skor di papan permainan basket:
+
 - Mula-mula skornya `0`.
 - Saat pemain mencetak angka, angka di wadah diubah menjadi `2`, lalu `5`, lalu `10`.
-- Mengganti isi kotak (*re-assignment*) adalah hal yang sah dan diizinkan.
+- Mengganti isi kotak (_re-assignment_) adalah hal yang sah dan diizinkan.
 - Gunakan `let` hanya ketika nilai variabel tersebut memang **pasti akan berubah** (misal: penambah skor, counter loop, status saklar).
 
 ---
 
 ### C. `var` (Ember yang Bocor Keluar Kamar)
+
 Sebelum tahun 2015 (ES6), JavaScript hanya memiliki `var`:
-- Masalah besarnya: `var` **tidak mengenal dinding kamar kurung kurawal `{ }`** (*Block Scope*).
+
+- Masalah besarnya: `var` **tidak mengenal dinding kamar kurung kurawal `{ }`** (_Block Scope_).
 - Jika Anda membuat `var` di dalam sebuah blok `if`, variabel tersebut akan "bocor" keluar ke seluruh fungsi atau ruang global, berisiko menimpa variabel lain secara tidak sengaja.
 
 ---
 
 ## 2. Tabel Perbandingan Karakteristik (First Principles)
 
-| Pembeda | `const` | `let` | `var` (Legacy) |
-| :--- | :---: | :---: | :---: |
-| **Cakupan Lingkup (*Scope*)** | Blok `{ }` tertutup | Blok `{ }` tertutup | Fungsi / Global (Bocor dari `{}`) |
-| **Boleh Diisi Ulang (*Re-assignment*)?** | ❌ Dilarang keras | ✅ Diizinkan | ✅ Diizinkan |
-| **Boleh Dideklarasikan Ulang (*Re-declaration*)?** | ❌ Error | ❌ Error | ✅ Diizinkan (Bahaya!) |
-| **Akses Sebelum Deklarasi** | ❌ Error (*TDZ*) | ❌ Error (*TDZ*) | ⚠️ Bernilai `undefined` (Bisa lolos) |
+| Pembeda                                            |       `const`       |        `let`        |            `var` (Legacy)            |
+| :------------------------------------------------- | :-----------------: | :-----------------: | :----------------------------------: |
+| **Cakupan Lingkup (_Scope_)**                      | Blok `{ }` tertutup | Blok `{ }` tertutup |  Fungsi / Global (Bocor dari `{}`)   |
+| **Boleh Diisi Ulang (_Re-assignment_)?**           |  ❌ Dilarang keras  |    ✅ Diizinkan     |             ✅ Diizinkan             |
+| **Boleh Dideklarasikan Ulang (_Re-declaration_)?** |      ❌ Error       |      ❌ Error       |        ✅ Diizinkan (Bahaya!)        |
+| **Akses Sebelum Deklarasi**                        |  ❌ Error (_TDZ_)   |  ❌ Error (_TDZ_)   | ⚠️ Bernilai `undefined` (Bisa lolos) |
 
 ### Mengapa Pemula Harus Memilih `const` Terlebih Dahulu?
+
 1. **Mencegah Penimpaan Tak Sengaja**: Menjaga data tidak berubah secara acak di tengah ratusan baris kode.
 2. **Catatan Penting untuk Objek & Array**: Kata kunci `const` mengunci **wadahnya**, bukan isi perabot di dalamnya:
    ```javascript
@@ -117,7 +124,9 @@ Mari kita buat demonstrasi papan skor dan perbandingan kebocoran variabel `var` 
       <div id="skor-display" class="angka-skor">0</div>
       <button type="button" id="btn-tambah">+1 Poin (Uji let & const)</button>
       <button type="button" id="btn-uji-bocor">Uji Kebocoran var vs let</button>
-      <div id="info-hasil" class="info-box">Tekan tombol uji untuk melihat di console.</div>
+      <div id="info-hasil" class="info-box">
+        Tekan tombol uji untuk melihat di console.
+      </div>
     </div>
   </body>
 </html>
@@ -172,18 +181,18 @@ ujiBocorBtn.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Jadikan `const` sebagai pilihan bawaan (*Default*)**: Setiap kali membuat variabel baru, selalu ketik `const` terlebih dahulu.
+1. **Jadikan `const` sebagai pilihan bawaan (_Default_)**: Setiap kali membuat variabel baru, selalu ketik `const` terlebih dahulu.
 2. **Ganti ke `let` hanya jika nilainya perlu diubah**: Jika nanti variabel tersebut memang perlu diisi ulang nilainya (seperti counter di atas), barulah ganti menjadi `let`.
-3. **Tinggalkan `var` sepenuhnya**: Jangan gunakan `var` lagi di proyek modern mana pun karena tidak memiliki *Block Scope* dan mengizinkan deklarasi ganda yang merusak data.
+3. **Tinggalkan `var` sepenuhnya**: Jangan gunakan `var` lagi di proyek modern mana pun karena tidak memiliki _Block Scope_ dan mengizinkan deklarasi ganda yang merusak data.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik tombol **"+1 Poin"** beberapa kali.
-- [ ] Klik tombol **"Uji Kebocoran var vs let"** dan buka Console DevTools (`F12`).
-- [ ] Perhatikan bagaimana `pesanBocor` bisa terbaca di luar kurung kurawal `if`, sedangkan `pesanAman` melempar `ReferenceError`.
-- [ ] Coba ketik di Console:
+- [x] Buka `index.html` di browser dan klik tombol **"+1 Poin"** beberapa kali.
+- [x] Klik tombol **"Uji Kebocoran var vs let"** dan buka Console DevTools (`F12`).
+- [x] Perhatikan bagaimana `pesanBocor` bisa terbaca di luar kurung kurawal `if`, sedangkan `pesanAman` melempar `ReferenceError`.
+- [x] Coba ketik di Console:
   ```javascript
   var angka = 10;
   // Boleh tanpa error di var (rawan tertimpa!)
