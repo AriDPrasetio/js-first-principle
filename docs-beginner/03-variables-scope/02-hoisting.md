@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting"
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Komputer membaca kode Anda dalam dua putaran: putaran pertama mencatat semua nama variabel dan fungsi di memori (*Fase Kompilasi/Persiapan*), dan putaran kedua baru mengeksekusi instruksi baris demi baris (*Fase Eksekusi*). Proses pengangkatan pencatatan nama ini disebut **Hoisting**.
+> Komputer membaca kode Anda dalam dua putaran: putaran pertama mencatat semua nama variabel dan fungsi di memori (_Fase Kompilasi/Persiapan_), dan putaran kedua baru mengeksekusi instruksi baris demi baris (_Fase Eksekusi_). Proses pengangkatan pencatatan nama ini disebut **Hoisting**.
 
 ---
 
@@ -25,20 +25,23 @@ Bayangkan sebuah pementasan drama teater:
 
 Di JavaScript, perilaku aktor saat dipanggil sebelum naskahnya tiba terbagi menjadi 3 jenis:
 
-- **Fungsi Biasa (`function sapa() {}`)**: Seperti aktor utama yang sudah mengenakan kostum lengkap sejak awal. Kapan pun sutradara memanggilnya (bahkan di baris pertama naskah), ia siap tampil lengkap beserta dialognya (*Function Hoisting*).
+- **Fungsi Biasa (`function sapa() {}`)**: Seperti aktor utama yang sudah mengenakan kostum lengkap sejak awal. Kapan pun sutradara memanggilnya (bahkan di baris pertama naskah), ia siap tampil lengkap beserta dialognya (_Function Hoisting_).
 - **Variabel `var` (Warisan Masa Lalu)**: Aktor yang nekat naik ke panggung sebelum gilirannya tiba, tetapi ia belum mengenakan kostum dan lupa dialognya. Sutradara melihatnya, tetapi nilainya kosong melompong (**`undefined`**).
-- **Variabel `let` dan `const`**: Namanya sudah tercatat di daftar hadir, tetapi ia diwajibkan menunggu di ruang tunggu tertutup (**Temporal Dead Zone / TDZ**). Jika Anda memanggilnya sebelum gilirannya tiba, sutradara akan berteriak marah (*Error: Cannot access before initialization!*).
+- **Variabel `let` dan `const`**: Namanya sudah tercatat di daftar hadir, tetapi ia diwajibkan menunggu di ruang tunggu tertutup (**Temporal Dead Zone / TDZ**). Jika Anda memanggilnya sebelum gilirannya tiba, sutradara akan berteriak marah (_Error: Cannot access before initialization!_).
 
 ---
 
 ## 2. Mengapa JavaScript Didesain Seperti Ini? (First Principles)
 
 ### A. Mengapa Fungsi Biasa Di-hoist Penuh?
-Karena fungsi formal diangkat lengkap bersama tubuh logikanya:
-- Anda bisa memanggil fungsi utama di baris paling atas berkas Anda agar orang lain langsung paham alur inti program Anda (*Top-Down Readability*).
-- Anda bisa menaruh fungsi-fungsi pembantu (*helper functions*) yang panjang di bagian paling bawah berkas tanpa khawatir fungsi tersebut gagal dipanggil.
 
-### B. Mengapa Dibuat *Temporal Dead Zone* (TDZ)?
+Karena fungsi formal diangkat lengkap bersama tubuh logikanya:
+
+- Anda bisa memanggil fungsi utama di baris paling atas berkas Anda agar orang lain langsung paham alur inti program Anda (_Top-Down Readability_).
+- Anda bisa menaruh fungsi-fungsi pembantu (_helper functions_) yang panjang di bagian paling bawah berkas tanpa khawatir fungsi tersebut gagal dipanggil.
+
+### B. Mengapa Dibuat _Temporal Dead Zone_ (TDZ)?
+
 Di era lama, ketika `var` diakses sebelum deklarasinya, JavaScript mengembalikan `undefined` tanpa memunculkan pesan error:
 
 ```javascript
@@ -49,15 +52,17 @@ var hargaBarang = 50000;
 Perilaku ini menimbulkan ribuan bug misterius di mana aplikasi berjalan dengan data rusak tanpa diketahui penyebabnya.
 Karena itu, pada tahun 2015, komite ECMAScript (TC39) menerapkan **Prinsip Fail-Fast**:
 Jika Anda mencoba membaca variabel `let` atau `const` sebelum baris deklarasinya, JavaScript sengaja melempar error seketika:
+
 ```javascript
 console.log(hargaBarang); // ReferenceError: Cannot access 'hargaBarang' before initialization
 let hargaBarang = 50000;
 ```
+
 Area sejak awal cakupan lingkup hingga baris deklarasi variabel itulah yang disebut **Temporal Dead Zone (TDZ)**.
 
 > [!WARNING]
 > **Peringatan untuk Arrow Function**:
-> Hanya *Function Declaration* (`function nama() {}`) yang diangkat utuh. Jika Anda membuat fungsi menggunakan arrow function atau expression (`const sapa = () => {}`), fungsi tersebut diperlakukan sebagai variabel `const` biasa dan akan terkena error TDZ jika dipanggil sebelum deklarasinya!
+> Hanya _Function Declaration_ (`function nama() {}`) yang diangkat utuh. Jika Anda membuat fungsi menggunakan arrow function atau expression (`const sapa = () => {}`), fungsi tersebut diperlakukan sebagai variabel `const` biasa dan akan terkena error TDZ jika dipanggil sebelum deklarasinya!
 
 ---
 
@@ -129,10 +134,10 @@ jalankanAplikasi();
 function jalankanAplikasi() {
   // ambil element tombol sapa berdasarkan ID-nya, simpan ke variable sapaBtn
   const sapaBtn = document.querySelector("#btn-sapa");
-  
+
   // ambil element tombol uji TDZ berdasarkan ID-nya, simpan ke variable tdzBtn
   const tdzBtn = document.querySelector("#btn-tdz");
-  
+
   // ambil element penampil pesan berdasarkan ID-nya, simpan ke variable pesanEl
   const pesanEl = document.querySelector("#teks-pesan");
 
@@ -147,7 +152,7 @@ function jalankanAplikasi() {
     // 1. var di-hoist tapi hanya dengan nilai undefined:
     // cetak nilai dari variable namaLama sebelum baris deklarasinya untuk membuktikan var berisi undefined
     console.log("Nilai var sebelum deklarasi:", namaLama);
-    
+
     // buat variable namaLama menggunakan var dan isi dengan string "Budi (var)"
     var namaLama = "Budi (var)";
 
@@ -160,12 +165,13 @@ function jalankanAplikasi() {
       // jika terjadi error TDZ, tampilkan pesan error tersebut ke console
       console.log("Alarm TDZ berbunyi:", err.message);
     }
-    
+
     // buat variable namaBaru menggunakan let dan isi dengan string "Ari (let)"
     let namaBaru = "Ari (let)";
 
     // perbarui teks di dalam element pesanEl untuk mengindikasikan uji coba selesai
-    pesanEl.textContent = "Uji coba selesai! Buka DevTools Console (F12) untuk melihat perbandingannya.";
+    pesanEl.textContent =
+      "Uji coba selesai! Buka DevTools Console (F12) untuk melihat perbandingannya.";
   });
 }
 
@@ -181,17 +187,17 @@ function buatSalam(namaPengguna) {
 ## 4. Solusi Praktis / Aturan Main Pemula
 
 1. **Untuk Fungsi Formal**: Manfaatkan deklarasi `function namaFungsi() {}` agar Anda leluasa meletakkan detail helper di bawah berkas.
-2. **Untuk Variabel (`let` / `const`)**: **Selalu deklarasikan variabel di bagian paling atas blok sebelum variabel tersebut dipakai** agar kode Anda tidak pernah terjebak dalam *Temporal Dead Zone (TDZ)*.
+2. **Untuk Variabel (`let` / `const`)**: **Selalu deklarasikan variabel di bagian paling atas blok sebelum variabel tersebut dipakai** agar kode Anda tidak pernah terjebak dalam _Temporal Dead Zone (TDZ)_.
 3. **Pahami Error TDZ**: Jika Anda melihat error `Cannot access '...' before initialization`, artinya Anda mencoba membaca variabel sebelum baris `let` atau `const` miliknya dieksekusi.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik tombol **"Panggil Fungsi Di-hoist"**.
-- [ ] Amati salam muncul di layar meskipun fungsi `jalankanAplikasi` dan `buatSalam` ditulis di bawah titik pemanggilannya.
-- [ ] Klik tombol **"Uji Coba TDZ vs var"** dan buka Console DevTools (`F12`).
-- [ ] Perhatikan perbedaan output: `var` mencetak `undefined` sedangkan `let` membunyikan alarm `ReferenceError`.
+- [x] Buka `index.html` di browser dan klik tombol **"Panggil Fungsi Di-hoist"**.
+- [x] Amati salam muncul di layar meskipun fungsi `jalankanAplikasi` dan `buatSalam` ditulis di bawah titik pemanggilannya.
+- [x] Klik tombol **"Uji Coba TDZ vs var"** dan buka Console DevTools (`F12`).
+- [x] Perhatikan perbedaan output: `var` mencetak `undefined` sedangkan `let` membunyikan alarm `ReferenceError`.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
