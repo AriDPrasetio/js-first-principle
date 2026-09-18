@@ -107,17 +107,43 @@ Mari kita buat demonstrasi Array Spread, Array Rest, dan Object Spread/Rest:
 ### Berkas 2: `app.js`
 
 ```javascript
+// ambil element button spread berdasarkan ID-nya, simpan ke variable tombolSpread
 const tombolSpread = document.querySelector("#btn-spread");
+// ambil element button rest berdasarkan ID-nya, simpan ke variable tombolRest
 const tombolRest = document.querySelector("#btn-rest");
+// ambil element button object berdasarkan ID-nya, simpan ke variable tombolObj
 const tombolObj = document.querySelector("#btn-obj");
+// ambil element kotak hasil berdasarkan ID-nya, simpan ke variable kotakHasil
 const kotakHasil = document.querySelector("#kotak-hasil");
 
 // 1. ARRAY SPREAD:
+// saat tombolSpread di-click, jalankan function berikut:
 tombolSpread.addEventListener("click", () => {
-  const makananRingan = ["Keripik", "Kacang"];
-  const makananBerat = ["Nasi Goreng", "Sate"];
-  const menuLengkap = [...makananRingan, ...makananBerat, "Es Teh"];
+  // simpan array berisi daftar makanan ringan ke dalam variable makananRingan
+  const makananRingan = [
+    // simpan string "Keripik" ke elemen array
+    "Keripik", 
+    // simpan string "Kacang" ke elemen array
+    "Kacang"
+  ];
+  // simpan array berisi daftar makanan berat ke dalam variable makananBerat
+  const makananBerat = [
+    // simpan string "Nasi Goreng" ke elemen array
+    "Nasi Goreng", 
+    // simpan string "Sate" ke elemen array
+    "Sate"
+  ];
+  // simpan array baru hasil penggabungan makananRingan, makananBerat, dan teks ke dalam variable menuLengkap menggunakan spread
+  const menuLengkap = [
+    // tebar elemen array makananRingan ke sini
+    ...makananRingan, 
+    // tebar elemen array makananBerat ke sini
+    ...makananBerat, 
+    // tambahkan string "Es Teh" ke elemen terakhir
+    "Es Teh"
+  ];
 
+  // ubah properti innerHTML pada element kotakHasil menjadi teks gabungan menuLengkap
   kotakHasil.innerHTML = `
     <strong>Hasil Gabungan Menu (Array Spread):</strong><br>
     ${menuLengkap.join(" • ")}
@@ -125,10 +151,25 @@ tombolSpread.addEventListener("click", () => {
 });
 
 // 2. ARRAY REST:
+// saat tombolRest di-click, jalankan function berikut:
 tombolRest.addEventListener("click", () => {
-  const pesertaLomba = ["Andi (Juara 1)", "Budi", "Cici", "Doni"];
-  const [pemenangUtama, ...kruCadangan] = pesertaLomba;
+  // simpan array berisi daftar peserta ke dalam variable pesertaLomba
+  const pesertaLomba = [
+    // simpan string nama ke elemen array
+    "Andi (Juara 1)", 
+    "Budi", 
+    "Cici", 
+    "Doni"
+  ];
+  // bongkar elemen pertama dan kumpulkan sisa elemen ke dalam array kruCadangan menggunakan rest
+  const [
+    // ekstrak elemen pertama ke variable pemenangUtama
+    pemenangUtama, 
+    // kumpulkan sisa elemen array ke variable kruCadangan
+    ...kruCadangan
+  ] = pesertaLomba;
 
+  // ubah properti innerHTML pada element kotakHasil menjadi teks informasi pemenang dan sisa peserta
   kotakHasil.innerHTML = `
     <p><strong>Pemenang Utama:</strong> ${pemenangUtama}</p>
     <p><strong>Sisa Peserta (${kruCadangan.length} orang):</strong> ${kruCadangan.join(", ")}</p>
@@ -136,20 +177,39 @@ tombolRest.addEventListener("click", () => {
 });
 
 // 3. OBJECT SPREAD & OBJECT REST:
+// saat tombolObj di-click, jalankan function berikut:
 tombolObj.addEventListener("click", () => {
+  // simpan object data akun ke dalam variable akunAsal
   const akunAsal = {
+    // simpan string "ari_dev" ke property username
     username: "ari_dev",
+    // simpan string "ari@example.com" ke property email
     email: "ari@example.com",
+    // simpan string "rahasia123" ke property kataSandi
     kataSandi: "rahasia123",
+    // simpan string "User" ke property role
     role: "User",
   };
 
   // Gunakan Object Spread untuk memperbarui role:
-  const akunUpdate = { ...akunAsal, role: "SuperAdmin" };
+  // simpan object baru hasil salinan akunAsal dan penimpaan role ke dalam variable akunUpdate
+  const akunUpdate = { 
+    // tebar seluruh property dari object akunAsal ke sini
+    ...akunAsal, 
+    // timpa nilai role menjadi "SuperAdmin"
+    role: "SuperAdmin" 
+  };
 
   // Gunakan Object Rest untuk menyembunyikan kata sandi sebelum ditampilkan:
-  const { kataSandi, ...akunAman } = akunUpdate;
+  // bongkar properti kataSandi dan kumpulkan sisa properti ke dalam object akunAman
+  const { 
+    // ekstrak properti kataSandi ke variable kataSandi
+    kataSandi, 
+    // kumpulkan sisa properti lainnya ke object akunAman
+    ...akunAman 
+  } = akunUpdate;
 
+  // ubah properti innerHTML pada element kotakHasil menjadi teks informasi akun yang aman
   kotakHasil.innerHTML = `
     <p><strong>Username:</strong> ${akunAman.username}</p>
     <p><strong>Role Baru:</strong> ${akunAman.role}</p>

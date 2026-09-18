@@ -130,24 +130,32 @@ Mari kita ambil elemen daftar belanja dari halaman HTML, lalu pinjam metode Arra
 ### Berkas 2: `app.js`
 
 ```javascript
+// ambil element button pinjam berdasarkan ID-nya, simpan ke variable tombolPinjam
 const tombolPinjam = document.querySelector("#btn-pinjam");
+// ambil element wadah hasil berdasarkan ID-nya, simpan ke variable wadahHasil
 const wadahHasil = document.querySelector("#wadah-hasil");
 
+// saat tombolPinjam di-click, jalankan arrow function berikut:
 tombolPinjam.addEventListener("click", () => {
   // Ambil semua elemen <li> (bertipe NodeList, bukan Array sejati):
+  // ambil semua element dengan class item-menu dan simpan kumpulan NodeList-nya ke variable kumpulanLi
   const kumpulanLi = document.querySelectorAll(".item-menu");
 
   // ================================================================
   // PINJAM METODE: Array.prototype.map.call(kumpulanLi, callback)
   // Atau versi ringkas: [].map.call(kumpulanLi, callback)
   // ================================================================
+  // pinjam method map dari array kosong [], panggil dengan konteks 'this' diarahkan ke kumpulanLi, dan simpan hasil array barunya ke variable daftarTeksMenu
   const daftarTeksMenu = [].map.call(kumpulanLi, (elemenLi) => {
+    // kembalikan teks di dalam element tersebut
     return elemenLi.textContent;
   });
 
   // Gabungkan array hasil olahan menjadi satu string rapi:
+  // gabungkan semua string di dalam array daftarTeksMenu menjadi satu string menggunakan pembatas " + ", lalu simpan ke variable kalimatMenu
   const kalimatMenu = daftarTeksMenu.join(" + ");
 
+  // perbarui textContent dari element wadahHasil dengan menggabungkan teks "Paket Hemat: " dan string kalimatMenu
   wadahHasil.textContent = `Paket Hemat: ${kalimatMenu}`;
 });
 ```

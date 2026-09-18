@@ -120,47 +120,71 @@ Mari kita buat kartu profil pengguna dan amati bagaimana `this` membaca nama pem
 ### Berkas 2: `app.js`
 
 ```javascript
+// ambil element button andi berdasarkan ID-nya, simpan ke variable tombolAndi
 const tombolAndi = document.querySelector("#btn-andi");
+// ambil element button budi berdasarkan ID-nya, simpan ke variable tombolBudi
 const tombolBudi = document.querySelector("#btn-budi");
+// ambil element button lepas berdasarkan ID-nya, simpan ke variable tombolLepas
 const tombolLepas = document.querySelector("#btn-lepas");
+// ambil element output sapaan berdasarkan ID-nya, simpan ke variable outputSapaan
 const outputSapaan = document.querySelector("#output-sapaan");
 
 // Satu fungsi berbagi logika:
+// deklarasi function perkenalkanDiri
 function perkenalkanDiri() {
+  // kembalikan template literal yang menggunakan property namaLengkap dan pekerjaan dari konteks 'this' saat ini
   return `Halo! Saya ${this.namaLengkap ?? "Tanpa Nama"}, bekerja sebagai ${this.pekerjaan ?? "Tanpa Pekerjaan"}.`;
 }
 
 // Dua objek terpisah:
+// buat object profilAndi yang memiliki property namaLengkap, pekerjaan, dan method sapa
 const profilAndi = {
+  // simpan string "Andi Pratama" ke property namaLengkap
   namaLengkap: "Andi Pratama",
+  // simpan string "Desainer Web" ke property pekerjaan
   pekerjaan: "Desainer Web",
+  // simpan referensi function perkenalkanDiri ke property sapa
   sapa: perkenalkanDiri,
 };
 
+// buat object profilBudi yang memiliki property namaLengkap, pekerjaan, dan method sapa
 const profilBudi = {
+  // simpan string "Budi Santoso" ke property namaLengkap
   namaLengkap: "Budi Santoso",
+  // simpan string "Programmer JS" ke property pekerjaan
   pekerjaan: "Programmer JS",
+  // simpan referensi function perkenalkanDiri ke property sapa
   sapa: perkenalkanDiri,
 };
 
 // 1. Implicit Binding: dipanggil lewat profilAndi
+// saat tombolAndi di-click, jalankan arrow function berikut:
 tombolAndi.addEventListener("click", () => {
+  // perbarui textContent dari outputSapaan dengan hasil pemanggilan method sapa dari object profilAndi
   outputSapaan.textContent = profilAndi.sapa();
+  // perbarui warna teks outputSapaan menjadi biru tua
   outputSapaan.style.color = "#3730a3";
 });
 
 // 2. Implicit Binding: dipanggil lewat profilBudi
+// saat tombolBudi di-click, jalankan arrow function berikut:
 tombolBudi.addEventListener("click", () => {
+  // perbarui textContent dari outputSapaan dengan hasil pemanggilan method sapa dari object profilBudi
   outputSapaan.textContent = profilBudi.sapa();
+  // perbarui warna teks outputSapaan menjadi biru tua
   outputSapaan.style.color = "#3730a3";
 });
 
 // 3. Default Binding (Lost Context):
+// saat tombolLepas di-click, jalankan arrow function berikut:
 tombolLepas.addEventListener("click", () => {
   // Mencopot fungsi dari objek
+  // simpan referensi function profilAndi.sapa ke dalam variable fungsiSendirian
   const fungsiSendirian = profilAndi.sapa;
   // Dipanggil sendirian tanpa pemilik di kiri titik:
+  // perbarui textContent dari outputSapaan dengan hasil pemanggilan function sendirian
   outputSapaan.textContent = `Panggilan Terpisah: ${fungsiSendirian()}`;
+  // perbarui warna teks outputSapaan menjadi merah
   outputSapaan.style.color = "#b91c1c";
 });
 ```

@@ -125,32 +125,51 @@ Mari kita buat pembaca data akun pengguna yang mendemonstrasikan Destructuring O
 ### Berkas 2: `app.js`
 
 ```javascript
+// simpan object berisi data pengguna ke dalam variable dataPengguna
 const dataPengguna = {
+  // simpan number 101 ke property id
   id: 101,
+  // simpan string "Siti Rahayu" ke property nama_lengkap
   nama_lengkap: "Siti Rahayu",
+  // simpan string "Surabaya" ke property kotaAsal
   kotaAsal: "Surabaya",
   // properti hobi tidak didefinisikan (undefined) untuk menguji default value
 };
 
+// simpan array berisi daftar pemenang ke dalam variable daftarPemenangLomba
 const daftarPemenangLomba = ["Emas: Budi", "Perak: Siti", "Perunggu: Doni"];
 
+// ambil element button bongkar berdasarkan ID-nya, simpan ke variable tombolBongkar
 const tombolBongkar = document.querySelector("#btn-bongkar");
+// ambil element kotak profil berdasarkan ID-nya, simpan ke variable kotakProfil
 const kotakProfil = document.querySelector("#kotak-profil");
 
+// saat tombolBongkar di-click, jalankan function berikut:
 tombolBongkar.addEventListener("click", () => {
   // 1. OBJECT DESTRUCTURING:
   // - nama_lengkap: namaPanggilan -> alias nama variabel baru
   // - hobi = "Membaca Buku"       -> nilai cadangan hanya jika undefined
+  // bongkar properti nama_lengkap, kotaAsal, dan hobi dari dataPengguna ke dalam variable baru
   const {
+    // ambil nilai nama_lengkap dari object dan simpan ke variable namaPanggilan
     nama_lengkap: namaPanggilan,
+    // ambil nilai kotaAsal dari object dan simpan ke variable kotaAsal
     kotaAsal,
+    // ambil nilai hobi dari object dan simpan ke variable hobi dengan fallback
     hobi = "Membaca Buku",
   } = dataPengguna;
 
   // 2. ARRAY DESTRUCTURING:
   // mengambil posisi indeks ke-0 dan indeks ke-1
-  const [juaraSatu, juaraDua] = daftarPemenangLomba;
+  // bongkar elemen pertama dan kedua dari daftarPemenangLomba ke dalam variable juaraSatu dan juaraDua
+  const [
+    // ambil elemen ke-0 dari array dan simpan ke variable juaraSatu
+    juaraSatu, 
+    // ambil elemen ke-1 dari array dan simpan ke variable juaraDua
+    juaraDua
+  ] = daftarPemenangLomba;
 
+  // ubah properti innerHTML pada element kotakProfil menjadi string HTML yang berisi data hasil destructuring
   kotakProfil.innerHTML = `
     <p><strong>Nama:</strong> ${namaPanggilan}</p>
     <p><strong>Kota:</strong> ${kotaAsal}</p>

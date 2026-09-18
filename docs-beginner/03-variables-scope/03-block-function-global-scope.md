@@ -117,30 +117,35 @@ Mari kita buktikan isolasi wilayah ini di browser:
 
 ```javascript
 // 1. WILAYAH GLOBAL (Bisa dibaca oleh siapa saja)
+// buat variable namaAplikasi di global scope dan isi dengan string "Portal Belajar Kyo"
 const namaAplikasi = "Portal Belajar Kyo";
-// variabel ini berada di luar, di lapangan terbuka (Global Scope).
 
 // 2. Ambil elemen HTML yang dibutuhkan
+// ambil element penampil judul global berdasarkan ID-nya, simpan ke variable judulGlobalEl
 const judulGlobalEl = document.querySelector("#judul-global");
+
+// ambil element penampil pesan privat berdasarkan ID-nya, simpan ke variable pesanPrivatEl
 const pesanPrivatEl = document.querySelector("#pesan-privat");
+
+// ambil element tombol baca berdasarkan ID-nya, simpan ke variable bacaBtn
 const bacaBtn = document.querySelector("#btn-baca");
 
 // Tampilkan variabel global ke layar langsung:
+// perbarui teks di dalam element judulGlobalEl dengan value dari variable global namaAplikasi
 judulGlobalEl.textContent = namaAplikasi;
 
 // 3. FUNGSI DENGAN WILAYAH PRIVAT (FUNCTION & BLOCK SCOPE)
+// saat bacaBtn di-click, jalankan function privat berikut:
 bacaBtn.addEventListener("click", () => {
-  // blok fungsi ini adalah ruangan privat:
-
-  // Variabel lokal privat di dalam fungsi:
+  // buat variable kodeRahasia di dalam function scope dan isi dengan string "XYZ-999"
   const kodeRahasia = "XYZ-999";
 
+  // jika kondisi true terpenuhi, maka masuk ke dalam block scope:
   if (true) {
-    // ini adalah kamar block scope lebih dalam lagi:
-    // kamar ini BISA membaca namaAplikasi dari luar (prinsip kaca satu arah / scope chain!)
+    // buat variable pesanKamar di dalam block scope yang menggabungkan teks dengan variable dari global scope (namaAplikasi)
     const pesanKamar = `Akses diberikan ke ${namaAplikasi}`;
 
-    // kamar ini juga bisa membaca kodeRahasia dari ruangan pembungkusnya
+    // perbarui teks di dalam element pesanPrivatEl dengan menggabungkan pesanKamar dan variable dari function scope (kodeRahasia)
     pesanPrivatEl.textContent = `${pesanKamar} | Kode: ${kodeRahasia}`;
   }
 

@@ -184,68 +184,102 @@ Mari kita bandingkan secara nyata waktu eksekusi antara **Layout Thrashing (Lamb
 
 ```javascript
 // 1. Inisialisasi 40 kotak uji coba di layar
+// ambil element wadah kotak berdasarkan ID-nya, simpan ke variable wadahKotak
 const wadahKotak = document.querySelector("#wadah-kotak");
+// lakukan perulangan dari 0 sampai 39 (sebanyak 40 kali)
 for (let i = 0; i < 40; i++) {
+  // buat element div baru dan simpan ke variable k
   const k = document.createElement("div");
+  // tambahkan class "item-kotak" pada element tersebut
   k.className = "item-kotak";
+  // masukkan element kotak tersebut ke dalam wadahKotak
   wadahKotak.appendChild(k);
 }
 
+// ambil semua element dengan class "item-kotak", simpan ke variable semuaKotak
 const semuaKotak = document.querySelectorAll(".item-kotak");
+// ambil element tombol thrash berdasarkan ID-nya, simpan ke variable tombolThrash
 const tombolThrash = document.querySelector("#btn-thrash");
+// ambil element tombol batch berdasarkan ID-nya, simpan ke variable tombolBatch
 const tombolBatch = document.querySelector("#btn-batch");
+// ambil element tombol geser berdasarkan ID-nya, simpan ke variable tombolGeser
 const tombolGeser = document.querySelector("#btn-geser");
+// ambil element kotak status berdasarkan ID-nya, simpan ke variable kotakStatus
 const kotakStatus = document.querySelector("#kotak-status");
+// ambil element kotak animasi berdasarkan ID-nya, simpan ke variable kotakAnimasi
 const kotakAnimasi = document.querySelector("#kotak-animasi");
 
 // ================================================================
 // EKSPERIMEN 1: LAYOUT THRASHING (BACA & TULIS BERGANTIAN)
 // ================================================================
+// saat tombolThrash di-click, jalankan function berikut:
 tombolThrash.addEventListener("click", () => {
+  // catat waktu mulai eksekusi dalam milidetik yang presisi, simpan ke variable mulai
   const mulai = performance.now();
 
   // Pola Buruk: Di setiap putaran loop membaca offsetWidth lalu mengubah style
+  // lakukan perulangan 100 iterasi
   for (let iterasi = 0; iterasi < 100; iterasi++) {
+    // lakukan perulangan untuk setiap kotak di dalam node list semuaKotak
     semuaKotak.forEach((kotak) => {
+      // BACA: ambil ukuran lebar kotak saat ini
       const lebar = kotak.offsetWidth; // 💥 PAKSA BROWSER BACA REFLOW
+      // TULIS: ubah gaya lebar kotak menjadi nilai baru
       kotak.style.width = `${(lebar % 40) + 1}px`; // 💥 TULIS DAN RUSAK LAYOUT
     });
   }
 
+  // catat waktu selesai eksekusi, simpan ke variable selesai
   const selesai = performance.now();
+  // hitung selisih waktu dalam desimal dan simpan ke variable durasi
   const durasi = (selesai - mulai).toFixed(2);
+  // ubah isi HTML di dalam kotakStatus dengan pesan peringatan dan durasi lambat
   kotakStatus.innerHTML = `⚠️ <strong>Layout Thrashing:</strong> Memakan waktu <strong>${durasi} ms</strong> karena browser dipaksa menghitung layout berulang kali!`;
 });
 
 // ================================================================
 // EKSPERIMEN 2: BATCHING DOM UPDATE (BACA SEMUA, BARU TULIS SEMUA)
 // ================================================================
+// saat tombolBatch di-click, jalankan function berikut:
 tombolBatch.addEventListener("click", () => {
+  // catat waktu mulai eksekusi dalam milidetik yang presisi, simpan ke variable mulai
   const mulai = performance.now();
 
+  // lakukan perulangan 100 iterasi
   for (let iterasi = 0; iterasi < 100; iterasi++) {
     // FASE 1: BACA SEMUA UKURAN TERLEBIH DAHULU (Hanya 1 kali reflow kalkulasi)
+    // baca ukuran semua kotak dan simpan dalam bentuk array ukuranList
     const ukuranList = Array.from(semuaKotak).map((k) => k.offsetWidth);
 
     // FASE 2: TULIS SEMUA PERUBAHAN TAMPILAN SEKALIGUS
+    // lakukan perulangan untuk setiap kotak
     semuaKotak.forEach((kotak, i) => {
+      // ubah ukuran lebar kotak berdasarkan nilai yang ada di ukuranList
       kotak.style.width = `${(ukuranList[i] % 40) + 1}px`;
     });
   }
 
+  // catat waktu selesai eksekusi, simpan ke variable selesai
   const selesai = performance.now();
+  // hitung selisih waktu dalam desimal dan simpan ke variable durasi
   const durasi = (selesai - mulai).toFixed(2);
+  // ubah isi HTML di dalam kotakStatus dengan pesan sukses dan durasi cepat
   kotakStatus.innerHTML = `✅ <strong>Batching Update:</strong> Selesai hanya dalam <strong>${durasi} ms</strong> (Jauh lebih cepat dan hemat daya baterai)!`;
 });
 
 // ================================================================
 // EKSPERIMEN 3: ANIMASI GPU MULUS 60 FPS (TRANSFORM)
 // ================================================================
+// buat variable boolean geserKanan dengan nilai awal false
 let geserKanan = false;
+// saat tombolGeser di-click, jalankan function berikut:
 tombolGeser.addEventListener("click", () => {
+  // ubah nilai geserKanan menjadi kebalikannya (toggle nilai true/false)
   geserKanan = !geserKanan;
   // Menggunakan CSS transform tidak memicu Layout ataupun Paint!
+  // ubah nilai transform dari style kotakAnimasi, bergeser 250px atau 0px sesuai kondisi
   kotakAnimasi.style.transform = geserKanan ? "translateX(250px)" : "translateX(0px)";
+  // ubah teks di dalam kotakStatus menjadi pesan sukses animasi GPU
   kotakStatus.textContent = "🚀 Animasi diproses langsung oleh GPU di tahap Composite.";
 });
 ```

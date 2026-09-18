@@ -131,21 +131,31 @@ Mari kita buat kalkulator belanja modular yang menggabungkan **Default Export** 
 // ================================================================
 
 // 1. NAMED EXPORT: Fungsi pembantu format teks rupiah
+// deklarasi dan export function formatRupiah yang menerima parameter angka
 export function formatRupiah(angka) {
+  // kembalikan string format rupiah dari angka
   return `Rp ${angka.toLocaleString("id-ID")}`;
 }
 
 // 2. NAMED EXPORT: Konstanta tarif pajak (11%)
+// buat dan export variable TARIF_PPN dengan value 0.11
 export const TARIF_PPN = 0.11;
 
 // 3. DEFAULT EXPORT: Fungsi utama kalkulator harga
+// deklarasi dan export default function hitungTotalBelanja yang menerima parameter hargaBarang
 export default function hitungTotalBelanja(hargaBarang) {
+  // kalikan hargaBarang dengan TARIF_PPN, simpan ke variable nilaiPajak
   const nilaiPajak = hargaBarang * TARIF_PPN;
+  // jumlahkan hargaBarang dengan nilaiPajak, simpan ke variable total
   const total = hargaBarang + nilaiPajak;
 
+  // kembalikan object berisi rincian perhitungan
   return {
+    // set property hargaAsli dengan value hargaBarang
     hargaAsli: hargaBarang,
+    // set property nilaiPajak dengan value nilaiPajak
     nilaiPajak: nilaiPajak,
+    // set property totalAkhir dengan value total
     totalAkhir: total,
   };
 }
@@ -160,21 +170,30 @@ export default function hitungTotalBelanja(hargaBarang) {
 // BERKAS UTAMA: app.js
 // Mengimpor Default Export (tanpa kurawal) dan Named Export (dengan kurawal)
 // ================================================================
+// impor function hitungTotalBelanja beserta formatRupiah dan TARIF_PPN dari file kalkulator.js
 import hitungTotalBelanja, { formatRupiah, TARIF_PPN } from "./kalkulator.js";
 
 // Ambil elemen HTML
+// ambil element input harga berdasarkan ID-nya, simpan ke variable inputHarga
 const inputHarga = document.querySelector("#input-harga");
+// ambil element tombol hitung berdasarkan ID-nya, simpan ke variable tombolHitung
 const tombolHitung = document.querySelector("#btn-hitung");
+// ambil element kotak hasil berdasarkan ID-nya, simpan ke variable kotakHasil
 const kotakHasil = document.querySelector("#kotak-hasil");
 
+// saat tombolHitung di-click, jalankan function berikut:
 tombolHitung.addEventListener("click", () => {
+  // ubah teks inputHarga menjadi tipe data Number dan simpan ke variable harga
   const harga = Number(inputHarga.value);
+  // jika harga kurang dari atau sama dengan nol, hentikan eksekusi function
   if (harga <= 0) return;
 
   // Jalankan fungsi default export:
+  // jalankan function hitungTotalBelanja dengan argument harga, simpan hasilnya ke variable hasil
   const hasil = hitungTotalBelanja(harga);
 
   // Tampilkan ke layar menggunakan bantuan named export:
+  // ubah isi HTML di dalam kotakHasil dengan detail perhitungan harga
   kotakHasil.innerHTML = `
     <strong>Harga Barang:</strong> ${formatRupiah(hasil.hargaAsli)}<br>
     <strong>PPN (${TARIF_PPN * 100}%):</strong> ${formatRupiah(hasil.nilaiPajak)}<br>

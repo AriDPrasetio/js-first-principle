@@ -111,45 +111,63 @@ Mari kita buat pencatat skor game privat yang tahan dari intervensi luar:
 
 ```javascript
 // 1. PABRIK SKOR (FUNGSI INDUK PENGHASIL CLOSURE)
+// deklarasi function buatPengelolaSkor yang menerima parameter tampilanElemen
 function buatPengelolaSkor(tampilanElemen) {
   // Variabel privat: terkunci aman di dalam closure
+  // buat variable nilaiSkor dan isi dengan number 0
   let nilaiSkor = 0;
 
+  // deklarasi function segarkanLayar untuk memperbarui tampilan
   function segarkanLayar() {
+    // perbarui teks di dalam element tampilanElemen dengan value dari nilaiSkor
     tampilanElemen.textContent = nilaiSkor;
   }
 
   // Mengembalikan kumpulan fungsi kendali resmi:
+  // kembalikan sebuah object berisi method tambahPoin dan resetSkor yang memiliki akses ke nilaiSkor
   return {
+    // deklarasi method tambahPoin yang menerima parameter tambahan
     tambahPoin: function (tambahan) {
+      // tambahkan nilaiSkor saat ini dengan parameter tambahan
       nilaiSkor = nilaiSkor + tambahan;
+      // panggil function segarkanLayar untuk memperbarui UI
       segarkanLayar();
     },
+    // deklarasi method resetSkor untuk mengembalikan skor ke 0
     resetSkor: function () {
+      // ubah nilaiSkor kembali menjadi 0
       nilaiSkor = 0;
+      // panggil function segarkanLayar untuk memperbarui UI
       segarkanLayar();
     },
   };
 }
 
 // 2. MENGHUBUNGKAN KE ELEMEN HTML
+// ambil element penampil skor berdasarkan ID-nya, simpan ke variable scoreDisplay
 const scoreDisplay = document.querySelector("#score-display");
+
+// jalankan function buatPengelolaSkor dengan argumen scoreDisplay, simpan object hasilnya ke variable scoreTracker
 const scoreTracker = buatPengelolaSkor(scoreDisplay);
 
 // 3. PASANG AKSI TOMBOL
+// saat element tombol tambah di-click, jalankan function berikut:
 document.querySelector("#btn-add").addEventListener("click", () => {
+  // panggil method tambahPoin dari object scoreTracker dengan argumen 5
   scoreTracker.tambahPoin(5);
 });
 
+// saat element tombol reset di-click, jalankan function berikut:
 document.querySelector("#btn-reset").addEventListener("click", () => {
+  // panggil method resetSkor dari object scoreTracker
   scoreTracker.resetSkor();
 });
+```
 
 // BUKTI KEAMANAN CLOSURE:
 // Coba ketik di Console browser: console.log(nilaiSkor);
 // Hasilnya: ReferenceError: nilaiSkor is not defined!
 // Nilai skor terenkapsulasi murni di dalam closure.
-```
 
 ---
 

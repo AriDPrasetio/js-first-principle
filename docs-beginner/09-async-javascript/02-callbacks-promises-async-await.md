@@ -175,26 +175,39 @@ Mari kita buat simulator pengunduh data pengguna yang mendukung **simulasi berha
 
 ```javascript
 // 1. Ambil elemen dari HTML
+// ambil element tombol sukses berdasarkan ID-nya, simpan ke variable tombolSukses
 const tombolSukses = document.querySelector("#btn-sukses");
+// ambil element tombol gagal berdasarkan ID-nya, simpan ke variable tombolGagal
 const tombolGagal = document.querySelector("#btn-gagal");
+// ambil element kotak profil berdasarkan ID-nya, simpan ke variable kotakProfil
 const kotakProfil = document.querySelector("#kotak-profil");
 
 // ================================================================
 // PEMBUATAN PROMISE: Meniru request jaringan selama 1.5 detik
 // Memperlihatkan kapan resolve() dan kapan reject() dipanggil
 // ================================================================
+// deklarasi function requestServerSimulasi yang menerima parameter harusSukses
 function requestServerSimulasi(harusSukses) {
+  // kembalikan object Promise baru dengan fungsi callback berisi resolve dan reject
   return new Promise((resolve, reject) => {
+    // jalankan setTimeout untuk menunggu selama 1.5 detik
     setTimeout(() => {
+      // jika value harusSukses adalah true, maka:
       if (harusSukses) {
         // Status Promise berubah menjadi FULFILLED
+        // panggil function resolve dengan data object user
         resolve({
+          // set property nama menjadi "Dewi Lestari"
           nama: "Dewi Lestari",
+          // set property kota menjadi "Bandung"
           kota: "Bandung",
+          // set property peran menjadi "Frontend Engineer"
           peran: "Frontend Engineer",
         });
+      // jika value harusSukses adalah false, maka:
       } else {
         // Status Promise berubah menjadi REJECTED
+        // panggil function reject dengan object Error baru
         reject(new Error("Koneksi ke server timeout (504 Gateway Error)"));
       }
     }, 1500);
@@ -204,41 +217,58 @@ function requestServerSimulasi(harusSukses) {
 // ================================================================
 // KONSUMSI MODERN: async / await dengan try...catch...finally
 // ================================================================
+// deklarasi function async jalankanPengunduhan yang menerima parameter modeSukses
 async function jalankanPengunduhan(modeSukses) {
   // 1. Set indikator loading
+  // ubah value property className dari kotakProfil menjadi "box loading"
   kotakProfil.className = "box loading";
+  // ubah teks di dalam kotakProfil menjadi pesan loading
   kotakProfil.textContent = "⏳ Menghubungi server... Mohon tunggu...";
+  // ubah value property disabled dari tombolSukses menjadi true
   tombolSukses.disabled = true;
+  // ubah value property disabled dari tombolGagal menjadi true
   tombolGagal.disabled = true;
 
+  // gunakan try untuk menangani kode yang mungkin menghasilkan error
   try {
     // 2. AWAIT: Tunggu Promise selesai tanpa memblokir thread UI browser
+    // tunggu hasil eksekusi dari requestServerSimulasi dan simpan ke variable hasil
     const hasil = await requestServerSimulasi(modeSukses);
 
     // 3. Jika resolve(), kode lanjut ke baris ini:
+    // ubah value property className dari kotakProfil menjadi "box sukses"
     kotakProfil.className = "box sukses";
+    // ubah isi HTML di dalam kotakProfil dengan data dari variable hasil
     kotakProfil.innerHTML = `
       <strong>Status:</strong> Berhasil Dimuat!<br>
       <strong>Nama:</strong> ${hasil.nama}<br>
       <strong>Kota:</strong> ${hasil.kota}<br>
       <strong>Peran:</strong> ${hasil.peran}
     `;
+  // tangkap error dari blok try ke dalam variable error
   } catch (error) {
     // 4. Jika reject(), eksekusi seketika melompat ke blok catch ini:
+    // ubah value property className dari kotakProfil menjadi "box error"
     kotakProfil.className = "box error";
+    // ubah isi HTML di dalam kotakProfil dengan pesan error
     kotakProfil.innerHTML = `
       <strong>Status:</strong> Permintaan Gagal!<br>
       <strong>Pesan:</strong> ${error.message}
     `;
+  // jalankan blok finally setelah try atau catch selesai
   } finally {
     // 5. FINALLY: Selalu dijalankan entah sukses maupun gagal
+    // ubah value property disabled dari tombolSukses menjadi false
     tombolSukses.disabled = false;
+    // ubah value property disabled dari tombolGagal menjadi false
     tombolGagal.disabled = false;
   }
 }
 
 // 2. Pasang pendengar klik
+// saat tombolSukses di-click, jalankan function jalankanPengunduhan dengan argument true
 tombolSukses.addEventListener("click", () => jalankanPengunduhan(true));
+// saat tombolGagal di-click, jalankan function jalankanPengunduhan dengan argument false
 tombolGagal.addEventListener("click", () => jalankanPengunduhan(false));
 ```
 

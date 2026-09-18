@@ -124,50 +124,74 @@ Mari kita buat kalkulator pembagian tagihan makan bersama yang aman dari pembagi
 ### Berkas 2: `app.js`
 
 ```javascript
-// ambil elemen input total tagihan berdasarkan ID-nya
+// ambil elemen input total tagihan berdasarkan ID-nya, simpan ke variable totalInput
 const totalInput = document.querySelector("#input-total");
-// ambil elemen input jumlah orang berdasarkan ID-nya
+
+// ambil elemen input jumlah orang berdasarkan ID-nya, simpan ke variable orangInput
 const orangInput = document.querySelector("#input-orang");
-// ambil tombol hitung berdasarkan ID-nya
+
+// ambil tombol hitung berdasarkan ID-nya, simpan ke variable hitungBtn
 const hitungBtn = document.querySelector("#btn-hitung");
-// ambil elemen kotak pesan hasil berdasarkan ID-nya
+
+// ambil elemen kotak pesan hasil berdasarkan ID-nya, simpan ke variable pesanBox
 const pesanBox = document.querySelector("#pesan-box");
-// ambil elemen status finally berdasarkan ID-nya
+
+// ambil elemen status finally berdasarkan ID-nya, simpan ke variable finallyStatus
 const finallyStatus = document.querySelector("#status-finally");
 
 // pasang aksi ketika tombol hitung diklik
+// saat hitungBtn di-click, jalankan function berikut:
 hitungBtn.addEventListener("click", () => {
+  // mulai eksekusi block kode yang aman, siap menangkap error jika terjadi:
   try {
     // 1. BLOK TRY: Lakukan operasi berisiko
+    // ambil value input tagihan dan paksa ubah menjadi tipe number, simpan ke variable totalTagihan
     const totalTagihan = Number(totalInput.value);
+    
+    // ambil value input orang dan paksa ubah menjadi tipe number, simpan ke variable jumlahOrang
     const jumlahOrang = Number(orangInput.value);
 
     // Validasi data input:
+    // jika totalTagihan tidak valid sebagai number (NaN) atau <= 0, maka:
     if (Number.isNaN(totalTagihan) || totalTagihan <= 0) {
+      // secara paksa lemparkan Error untuk membatalkan proses dan beralih ke catch
       throw new Error("Total tagihan harus berupa angka lebih dari 0!");
     }
 
+    // jika jumlahOrang tidak valid sebagai number (NaN) atau <= 0, maka:
     if (Number.isNaN(jumlahOrang) || jumlahOrang <= 0) {
+      // secara paksa lemparkan Error untuk membatalkan proses dan beralih ke catch
       throw new Error("Jumlah teman harus minimal 1 orang!");
     }
 
     // Hitung pembagian:
+    // bagikan totalTagihan dengan jumlahOrang dan simpan hasilnya ke variable bayarPerOrang
     const bayarPerOrang = totalTagihan / jumlahOrang;
 
     // Tampilkan sukses:
+    // ubah daftar class pada element pesanBox untuk memberi gaya styling yang sukses
     pesanBox.className = "kotak-pesan kotak-sukses";
+    
+    // perbarui teks di dalam element pesanBox untuk menunjukkan jumlah yang harus dibayar masing-masing
     pesanBox.textContent = `Masing-masing membayar: Rp${bayarPerOrang.toLocaleString("id-ID")}`;
 
   } catch (error) {
     // 2. BLOK CATCH: Jaring pengaman saat throw terjadi
+    // catat pesan error kegagalan ke console browser sebagai peringatan
     console.warn("Terjadi kegagalan input:", error.message);
 
+    // ubah daftar class pada element pesanBox untuk memberi gaya styling yang error
     pesanBox.className = "kotak-pesan kotak-error";
+    
+    // perbarui teks di dalam element pesanBox untuk memberi info kegagalan ke pengguna
     pesanBox.textContent = `❌ ${error.message}`;
 
   } finally {
     // 3. BLOK FINALLY: Selalu dieksekusi apapun yang terjadi
+    // dapatkan waktu jam lokal saat ini dan simpan ke variable waktu
     const waktu = new Date().toLocaleTimeString("id-ID");
+    
+    // perbarui teks di dalam element finallyStatus untuk menunjukkan waktu proses selesai, terlepas gagal atau sukses
     finallyStatus.textContent = `Operasi selesai diproses pada pukul ${waktu}`;
   }
 });

@@ -118,42 +118,60 @@ Mari kita buktikan bahwa fungsi biasa aman dipanggil sebelum posisinya, dan amat
 // padahal deklarasi fungsinya baru kita tulis di bagian BAWAH!
 // =======================================================
 
-// Berjalan normal tanpa error karena deklarasi function di-hoist sepenuhnya
+// jalankan function jalankanAplikasi, ini bekerja normal karena function declaration di-hoist
 jalankanAplikasi();
 
 // =======================================================
 // DEKLARASI FUNGSI FORMAL (DIANGKAT LENGKAP OLEH ENGINE)
 // =======================================================
 
+// deklarasi function jalankanAplikasi yang berisi logika utama program
 function jalankanAplikasi() {
+  // ambil element tombol sapa berdasarkan ID-nya, simpan ke variable sapaBtn
   const sapaBtn = document.querySelector("#btn-sapa");
+  
+  // ambil element tombol uji TDZ berdasarkan ID-nya, simpan ke variable tdzBtn
   const tdzBtn = document.querySelector("#btn-tdz");
+  
+  // ambil element penampil pesan berdasarkan ID-nya, simpan ke variable pesanEl
   const pesanEl = document.querySelector("#teks-pesan");
 
+  // saat sapaBtn di-click, jalankan function berikut:
   sapaBtn.addEventListener("click", () => {
+    // perbarui teks di dalam element pesanEl dengan hasil dari pemanggilan function buatSalam
     pesanEl.textContent = buatSalam("Kyo");
   });
 
+  // saat tdzBtn di-click, jalankan function berikut:
   tdzBtn.addEventListener("click", () => {
     // 1. var di-hoist tapi hanya dengan nilai undefined:
-    console.log("Nilai var sebelum deklarasi:", namaLama); // undefined
+    // cetak nilai dari variable namaLama sebelum baris deklarasinya untuk membuktikan var berisi undefined
+    console.log("Nilai var sebelum deklarasi:", namaLama);
+    
+    // buat variable namaLama menggunakan var dan isi dengan string "Budi (var)"
     var namaLama = "Budi (var)";
 
     // 2. let berada di TDZ sebelum deklarasi:
+    // coba eksekusi block kode berikut, tangkap error jika ada:
     try {
+      // cetak nilai dari variable namaBaru sebelum dideklarasikan untuk memicu error TDZ
       console.log("Mencoba membaca let sebelum deklarasi:", namaBaru);
     } catch (err) {
+      // jika terjadi error TDZ, tampilkan pesan error tersebut ke console
       console.log("Alarm TDZ berbunyi:", err.message);
-      // ReferenceError: Cannot access 'namaBaru' before initialization
     }
+    
+    // buat variable namaBaru menggunakan let dan isi dengan string "Ari (let)"
     let namaBaru = "Ari (let)";
 
+    // perbarui teks di dalam element pesanEl untuk mengindikasikan uji coba selesai
     pesanEl.textContent = "Uji coba selesai! Buka DevTools Console (F12) untuk melihat perbandingannya.";
   });
 }
 
+// deklarasi function buatSalam yang menerima parameter namaPengguna untuk memformat teks salam
 function buatSalam(namaPengguna) {
-  // fungsi pembantu ini juga dideklarasikan di bagian bawah:
+  // kembalikan string sapaan yang digabungkan dengan argumen namaPengguna
   return `Halo, ${namaPengguna}! Selamat datang di aplikasi.`;
 }
 ```

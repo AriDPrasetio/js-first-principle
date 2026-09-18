@@ -160,32 +160,43 @@ Mari kita buat kartu penghitung interaktif yang mendukung tombol penambah, tombo
 // ================================================================
 
 // Elemen tunggal dipilih dengan document.querySelector:
+// ambil element angka counter berdasarkan ID-nya, simpan ke variable displayAngka
 const displayAngka = document.querySelector("#angka-counter");
+// ambil element button reset berdasarkan ID-nya, simpan ke variable tombolReset
 const tombolReset = document.querySelector("#btn-reset");
+// ambil element info log berdasarkan ID-nya, simpan ke variable logInfo
 const logInfo = document.querySelector("#info-log");
 
 // Sekumpulan tombol dipilih dengan document.querySelectorAll:
+// ambil semua element tombol aksi berdasarkan class-nya, simpan ke variable kumpulanTombolAksi
 const kumpulanTombolAksi = document.querySelectorAll(".btn-aksi");
 
 // 2. Siapkan data angka di memori
+// buat variable jumlahHitungan untuk melacak angka dan set menjadi 0
 let jumlahHitungan = 0;
 
 // ================================================================
 // 3. PASANG SENSOR PADA BANYAK ELEMEN MENGGUNAKAN .forEach()
 // ================================================================
+// jalankan perulangan untuk setiap tombol dalam kumpulanTombolAksi
 kumpulanTombolAksi.forEach((tombol) => {
   // Tangkap objek 'event' pada parameter fungsi callback:
+  // saat tombol di-click, jalankan function berikut dan terima object event:
   tombol.addEventListener("click", (event) => {
     // Ambil data-delta dari tombol yang sedang diklik (misal: "1" atau "-1")
+    // ambil nilai dari dataset delta dan ubah menjadi Number, simpan ke variable nilaiPerubahan
     const nilaiPerubahan = Number(event.target.dataset.delta);
 
     // Update data di memori JavaScript
+    // perbarui nilai jumlahHitungan dengan menambahkannya dengan nilaiPerubahan
     jumlahHitungan += nilaiPerubahan;
 
     // Tampilkan data yang diperbarui ke layar dengan aman (.textContent)
+    // ubah teks konten pada element displayAngka menjadi jumlahHitungan
     displayAngka.textContent = jumlahHitungan;
 
     // Tampilkan informasi laporan kejadian dari event object
+    // ubah teks konten pada element logInfo menjadi teks laporan aksi
     logInfo.textContent = `Aksi: ${event.type} pada tombol "${event.target.textContent}"`;
   });
 });
@@ -193,9 +204,13 @@ kumpulanTombolAksi.forEach((tombol) => {
 // ================================================================
 // 4. PASANG SENSOR PADA TOMBOL RESET TUNGGAL
 // ================================================================
+// saat tombolReset di-click, jalankan function berikut:
 tombolReset.addEventListener("click", () => {
+  // set nilai jumlahHitungan kembali menjadi 0
   jumlahHitungan = 0;
+  // ubah teks konten pada element displayAngka menjadi jumlahHitungan
   displayAngka.textContent = jumlahHitungan;
+  // ubah teks konten pada element logInfo menjadi teks informasi reset
   logInfo.textContent = "Hitungan di-reset ke 0.";
 });
 ```

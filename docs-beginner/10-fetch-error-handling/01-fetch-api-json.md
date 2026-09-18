@@ -162,43 +162,61 @@ Mari kita buat kartu interaktif yang bisa mengambil data pengguna (GET) dan meng
 
 ```javascript
 // 1. Ambil elemen HTML
+// ambil element tombol ambil berdasarkan ID-nya, simpan ke variable tombolAmbil
 const tombolAmbil = document.querySelector("#btn-ambil");
+// ambil element tombol kirim berdasarkan ID-nya, simpan ke variable tombolKirim
 const tombolKirim = document.querySelector("#btn-kirim");
+// ambil element wadah pengguna berdasarkan ID-nya, simpan ke variable wadahPengguna
 const wadahPengguna = document.querySelector("#wadah-pengguna");
 
 // ================================================================
 // A. CONTOH METODE GET: Mengambil Data dari Server API
 // ================================================================
+// deklarasi function async ambilDataPengguna
 async function ambilDataPengguna() {
+  // ubah value property className dari wadahPengguna menjadi "box-data loading"
   wadahPengguna.className = "box-data loading";
+  // ubah teks di dalam wadahPengguna menjadi pesan loading
   wadahPengguna.textContent = "⏳ [GET] Menghubungi server...";
+  // ubah value property disabled dari tombolAmbil menjadi true
   tombolAmbil.disabled = true;
 
+  // gunakan try untuk menangani kode yang mungkin menghasilkan error
   try {
     // 1. Hubungi server internet (Langkah Await 1)
+    // jalankan fetch untuk mengambil data dan simpan hasil response ke variable responServer
     const responServer = await fetch(
       "https://jsonplaceholder.typicode.com/users/1",
     );
 
     // Periksa status selamat (200-299)
+    // jika property ok dari responServer adalah false, maka:
     if (!responServer.ok) {
+      // lemparkan object Error baru dengan pesan status server
       throw new Error(`Server bermasalah (HTTP Kode: ${responServer.status})`);
     }
 
     // 2. Terjemahkan teks JSON menjadi objek JavaScript (Langkah Await 2)
+    // jalankan metode json pada responServer dan simpan hasilnya ke variable dataUser
     const dataUser = await responServer.json();
 
     // 3. Tampilkan data objek JavaScript ke layar
+    // ubah value property className dari wadahPengguna menjadi "box-data sukses"
     wadahPengguna.className = "box-data sukses";
+    // ubah isi HTML di dalam wadahPengguna dengan data dari variable dataUser
     wadahPengguna.innerHTML = `
       <p><strong>Status:</strong> Data Berhasil Diambil (GET)</p>
       <p><strong>Nama:</strong> ${dataUser.name}</p>
       <p><strong>Email:</strong> ${dataUser.email}</p>
       <p><strong>Kota:</strong> ${dataUser.address.city}</p>
     `;
+  // tangkap error dari blok try ke dalam variable error
   } catch (error) {
+    // ubah teks di dalam wadahPengguna dengan pesan error
     wadahPengguna.textContent = `❌ Terjadi kesalahan: ${error.message}`;
+  // jalankan blok finally setelah try atau catch selesai
   } finally {
+    // ubah value property disabled dari tombolAmbil menjadi false
     tombolAmbil.disabled = false;
   }
 }
@@ -206,54 +224,79 @@ async function ambilDataPengguna() {
 // ================================================================
 // B. CONTOH METODE POST: Mengirimkan Data Baru ke Server
 // ================================================================
+// deklarasi function async kirimDataPengguna
 async function kirimDataPengguna() {
+  // ubah value property className dari wadahPengguna menjadi "box-data loading"
   wadahPengguna.className = "box-data loading";
+  // ubah teks di dalam wadahPengguna menjadi pesan loading POST
   wadahPengguna.textContent = "⏳ [POST] Mengirimkan data baru ke server...";
+  // ubah value property disabled dari tombolKirim menjadi true
   tombolKirim.disabled = true;
 
+  // gunakan try untuk menangani kode yang mungkin menghasilkan error
   try {
     // Data objek JavaScript yang ingin kita kirim:
+    // buat object data baru dan simpan ke variable dataBaru
     const dataBaru = {
+      // set property title menjadi "Belajar JavaScript First Principles"
       title: "Belajar JavaScript First Principles",
+      // set property body menjadi "Panduan lengkap memahami JavaScript dari akarnya."
       body: "Panduan lengkap memahami JavaScript dari akarnya.",
+      // set property userId menjadi 1
       userId: 1,
     };
 
     // Kirim menggunakan metode POST:
+    // jalankan fetch dengan opsi method POST, headers, body, lalu simpan hasil ke responServer
     const responServer = await fetch(
       "https://jsonplaceholder.typicode.com/posts",
       {
+        // set metode request menjadi "POST"
         method: "POST",
+        // tentukan headers dari request
         headers: {
           // Nyatakan tipe payload JSON
+          // set "Content-Type" menjadi "application/json"
           "Content-Type": "application/json",
         },
         // Ubah objek menjadi format string JSON
+        // konversi object dataBaru menjadi string JSON dan jadikan sebagai body request
         body: JSON.stringify(dataBaru),
       },
     );
 
+    // jika property ok dari responServer adalah false, maka:
     if (!responServer.ok) {
+      // lemparkan object Error baru dengan pesan status gagal
       throw new Error(`Gagal mengirim data! Status: ${responServer.status}`);
     }
 
+    // jalankan metode json pada responServer dan simpan hasilnya ke variable hasilRespons
     const hasilRespons = await responServer.json();
 
+    // ubah value property className dari wadahPengguna menjadi "box-data sukses"
     wadahPengguna.className = "box-data sukses";
+    // ubah isi HTML di dalam wadahPengguna dengan data dari variable hasilRespons
     wadahPengguna.innerHTML = `
       <p><strong>Status:</strong> Data Berhasil Dibuat di Server (201 Created)!</p>
       <p><strong>ID Baru:</strong> ${hasilRespons.id}</p>
       <p><strong>Judul:</strong> ${hasilRespons.title}</p>
     `;
+  // tangkap error dari blok try ke dalam variable error
   } catch (error) {
+    // ubah teks di dalam wadahPengguna dengan pesan error
     wadahPengguna.textContent = `❌ Terjadi kesalahan: ${error.message}`;
+  // jalankan blok finally setelah try atau catch selesai
   } finally {
+    // ubah value property disabled dari tombolKirim menjadi false
     tombolKirim.disabled = false;
   }
 }
 
 // 2. Hubungkan event klik ke fungsi masing-masing
+// saat tombolAmbil di-click, jalankan function ambilDataPengguna
 tombolAmbil.addEventListener("click", ambilDataPengguna);
+// saat tombolKirim di-click, jalankan function kirimDataPengguna
 tombolKirim.addEventListener("click", kirimDataPengguna);
 ```
 

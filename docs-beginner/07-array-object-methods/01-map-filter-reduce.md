@@ -150,15 +150,35 @@ Mari kita buat kasir mini toko buah yang mempraktikkan `map`, `filter`, dan `red
 ### Berkas 2: `app.js`
 
 ```javascript
+// simpan array of objects berisi daftar buah dan harga ke dalam variable keranjangBuah
 const keranjangBuah = [
-  { nama: "Apel", harga: 15000 },
-  { nama: "Jeruk", harga: 20000 },
-  { nama: "Mangga", harga: 30000 },
+  { 
+    // simpan string "Apel" ke property nama
+    nama: "Apel", 
+    // simpan number 15000 ke property harga
+    harga: 15000 
+  },
+  { 
+    // simpan string "Jeruk" ke property nama
+    nama: "Jeruk", 
+    // simpan number 20000 ke property harga
+    harga: 20000 
+  },
+  { 
+    // simpan string "Mangga" ke property nama
+    nama: "Mangga", 
+    // simpan number 30000 ke property harga
+    harga: 30000 
+  },
 ];
 
+// ambil element button map berdasarkan ID-nya, simpan ke variable tombolMap
 const tombolMap = document.querySelector("#btn-map");
+// ambil element button filter berdasarkan ID-nya, simpan ke variable tombolFilter
 const tombolFilter = document.querySelector("#btn-filter");
+// ambil element button reduce berdasarkan ID-nya, simpan ke variable tombolReduce
 const tombolReduce = document.querySelector("#btn-reduce");
+// ambil element output layar berdasarkan ID-nya, simpan ke variable outputLayar
 const outputLayar = document.querySelector("#output-layar");
 
 // Catatan utilitas:
@@ -166,33 +186,47 @@ const outputLayar = document.querySelector("#output-layar");
 // .join("<br>") merangkai deret array teks menjadi satu string dipisah baris baru HTML
 
 // 1. .map() -> Mengubah harga setiap buah
+// saat tombolMap di-click, jalankan function berikut:
 tombolMap.addEventListener("click", () => {
+  // simpan array baru hasil pengubahan data keranjangBuah ke dalam variable buahDiskon
   const buahDiskon = keranjangBuah.map((item) => {
+    // simpan kalkulasi diskon 10% dari harga item ke dalam variable hargaHemat
     const hargaHemat = item.harga * 0.9;
+    // kembalikan string yang berisi nama buah dan harga diskon
     return `${item.nama}: Rp ${hargaHemat.toLocaleString("id-ID")}`;
   });
 
+  // ubah properti innerHTML pada element outputLayar menjadi teks dan hasil gabungan array buahDiskon
   outputLayar.innerHTML = "Harga Diskon 10%:<br>" + buahDiskon.join("<br>");
 });
 
 // 2. .filter() -> Menyaring buah harga < 25.000
+// saat tombolFilter di-click, jalankan function berikut:
 tombolFilter.addEventListener("click", () => {
+  // simpan array baru hasil penyaringan keranjangBuah ke dalam variable buahMurah
   const buahMurah = keranjangBuah.filter((item) => {
     // predikat boolean: kembalikan true jika harga < 25000
+    // kembalikan true jika harga dari item kurang dari 25000
     return item.harga < 25000;
   });
 
+  // simpan array string hasil pemetaan array buahMurah ke dalam variable barisTeks
   const barisTeks = buahMurah.map((b) => `${b.nama} (Rp ${b.harga.toLocaleString("id-ID")})`);
+  // ubah properti innerHTML pada element outputLayar menjadi string teks daftar buah murah
   outputLayar.innerHTML = `Buah di bawah Rp 25.000:<br>` + barisTeks.join("<br>");
 });
 
 // 3. .reduce() -> Menjumlahkan total harga
+// saat tombolReduce di-click, jalankan function berikut:
 tombolReduce.addEventListener("click", () => {
   // Modal awal celengan diset 0:
+  // simpan satu nilai akhir dari total harga seluruh item di keranjangBuah ke dalam variable totalBiaya
   const totalBiaya = keranjangBuah.reduce((celengan, item) => {
+    // kembalikan hasil penjumlahan nilai akumulator celengan dengan harga item saat ini
     return celengan + item.harga;
   }, 0);
 
+  // ubah properti innerHTML pada element outputLayar menjadi string teks hasil total belanja
   outputLayar.innerHTML = `Total Semua Belanjaan: Rp ${totalBiaya.toLocaleString("id-ID")}`;
 });
 ```

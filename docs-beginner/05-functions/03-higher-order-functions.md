@@ -123,60 +123,89 @@ Mari kita buat pengolah daftar teks yang mendemonstrasikan kedua peran HOF: mene
 ### Berkas 2: `app.js`
 
 ```javascript
+// buat array berisi string nama-nama peserta dan simpan ke variable namaPeserta
 const namaPeserta = ["andi", "kyo", "budi"];
+// ambil element daftar hasil berdasarkan ID-nya, simpan ke variable listHasil
 const listHasil = document.querySelector("#daftar-hasil");
 
 // ========================================================
 // 1. HOF TIPE 1: MENERIMA FUNGSI CALLBACK SEBAGAI BAHAN
 // ========================================================
+// deklarasi function prosesDaftar yang menerima array deretData dan function callback fungsiPengubah
 function prosesDaftar(deretData, fungsiPengubah) {
+  // buat array kosong dan simpan ke variable hasilBaru
   const hasilBaru = [];
+  // loop melalui setiap item dalam array deretData
   for (const item of deretData) {
     // Jalankan fungsi callback yang disuntikkan dari luar:
+    // panggil fungsiPengubah dengan argumen item, lalu tambahkan hasilnya ke array hasilBaru
     hasilBaru.push(fungsiPengubah(item));
   }
+  // kembalikan array hasilBaru
   return hasilBaru;
 }
 
 // Dua fungsi pekerja spesialis (Callback):
+// simpan arrow function yang mengubah teks menjadi huruf kapital ke dalam variable jadikanKapital
 const jadikanKapital = (teks) => teks.toUpperCase();
+// simpan arrow function yang menambahkan karakter bintang di sekitar teks ke dalam variable beriBintang
 const beriBintang = (teks) => `⭐ ${teks} ⭐`;
 
+// deklarasi function tampilkanKeLayar yang menerima parameter arrayData
 function tampilkanKeLayar(arrayData) {
+  // bersihkan konten HTML dari element listHasil
   listHasil.innerHTML = "";
+  // loop melalui setiap baris dalam arrayData
   for (const baris of arrayData) {
+    // buat element <li> baru dan simpan ke variable li
     const li = document.createElement("li");
+    // set teks dari element li menjadi baris saat ini
     li.textContent = baris;
+    // tambahkan element li sebagai anak dari element listHasil
     listHasil.appendChild(li);
   }
 }
 
+// saat element dengan ID btn-kapital di-click, jalankan arrow function berikut:
 document.querySelector("#btn-kapital").addEventListener("click", () => {
+  // panggil prosesDaftar dengan array namaPeserta dan callback jadikanKapital, simpan ke variable hasil
   const hasil = prosesDaftar(namaPeserta, jadikanKapital);
+  // panggil tampilkanKeLayar dengan array hasil
   tampilkanKeLayar(hasil);
 });
 
+// saat element dengan ID btn-bintang di-click, jalankan arrow function berikut:
 document.querySelector("#btn-bintang").addEventListener("click", () => {
+  // panggil prosesDaftar dengan array namaPeserta dan callback beriBintang, simpan ke variable hasil
   const hasil = prosesDaftar(namaPeserta, beriBintang);
+  // panggil tampilkanKeLayar dengan array hasil
   tampilkanKeLayar(hasil);
 });
 
 // ========================================================
 // 2. HOF TIPE 2: MENGHASILKAN FUNGSI BARU (FACTORY)
 // ========================================================
+// deklarasi function buatHitungDiskon yang menerima parameter persenDiskon
 function buatHitungDiskon(persenDiskon) {
   // Mengembalikan fungsi baru yang mengingat persenDiskon lewat closure:
+  // kembalikan function tanpa nama (anonymous) yang menerima parameter hargaAsli
   return function (hargaAsli) {
+    // kembalikan hasil pengurangan hargaAsli dengan nilai diskon
     return hargaAsli - (hargaAsli * persenDiskon);
   };
 }
 
 // Cetak fungsi spesialis diskon 25%:
+// panggil buatHitungDiskon dengan argumen 0.25 dan simpan function hasilnya ke variable diskonMemberVip
 const diskonMemberVip = buatHitungDiskon(0.25);
 
+// saat element dengan ID btn-diskon di-click, jalankan arrow function berikut:
 document.querySelector("#btn-diskon").addEventListener("click", () => {
+  // panggil function diskonMemberVip dengan argumen 100000, simpan hasilnya ke variable harga100k
   const harga100k = diskonMemberVip(100000);
+  // panggil function diskonMemberVip dengan argumen 200000, simpan hasilnya ke variable harga200k
   const harga200k = diskonMemberVip(200000);
+  // panggil tampilkanKeLayar dengan array berisi string template teks harga
   tampilkanKeLayar([
     `Harga Rp100.000 (Diskon 25%) -> Rp${harga100k.toLocaleString("id-ID")}`,
     `Harga Rp200.000 (Diskon 25%) -> Rp${harga200k.toLocaleString("id-ID")}`,
