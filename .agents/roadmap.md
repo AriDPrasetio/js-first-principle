@@ -11,20 +11,20 @@ Setiap topik menyediakan dua versi panduan:
 
 ### 1. Introduction
 
-- [ ] Apa itu JavaScript, cara menjalankan JavaScript — [Panduan Pemula](../docs-beginner/01-introduction/apa-itu-javascript-dan-cara-menjalankan-javascript.md) • [Deep Dive](../docs/01-introduction/apa-itu-javascript-dan-cara-menjalankan-javascript.md)
+- [x] Apa itu JavaScript, cara menjalankan JavaScript — [Panduan Pemula](../docs-beginner/01-introduction/apa-itu-javascript-dan-cara-menjalankan-javascript.md) • [Deep Dive](../docs/01-introduction/apa-itu-javascript-dan-cara-menjalankan-javascript.md)
 
 ### 2. Syntax, Data Types & Operators
 
 - [ ] Expressions vs Statements — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/00-expressions-vs-statements.md) • [Deep Dive](../docs/02-syntax-datatypes/00-expressions-vs-statements.md)
-- [ ] Primitive types & Object — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/01-primitive-types-dan-object.md) • [Deep Dive](../docs/02-syntax-datatypes/01-primitive-types-dan-object.md)
-- [ ] `typeof` operator — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/02-typeof-operator.md) • [Deep Dive](../docs/02-syntax-datatypes/02-typeof-operator.md)
-- [ ] Type Casting (Coercion vs Conversion) — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/03-type-casting-coercion-vs-conversion.md) • [Deep Dive](../docs/02-syntax-datatypes/03-type-casting-coercion-vs-conversion.md)
-- [ ] Equality: `==` vs `===` — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/04-equality-strict-vs-loose.md) • [Deep Dive](../docs/02-syntax-datatypes/04-equality-strict-vs-loose.md)
+- [x] Primitive types & Object — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/01-primitive-types-dan-object.md) • [Deep Dive](../docs/02-syntax-datatypes/01-primitive-types-dan-object.md)
+- [x] `typeof` operator — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/02-typeof-operator.md) • [Deep Dive](../docs/02-syntax-datatypes/02-typeof-operator.md)
+- [x] Type Casting (Coercion vs Conversion) — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/03-type-casting-coercion-vs-conversion.md) • [Deep Dive](../docs/02-syntax-datatypes/03-type-casting-coercion-vs-conversion.md)
+- [x] Equality: `==` vs `===` — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/04-equality-strict-vs-loose.md) • [Deep Dive](../docs/02-syntax-datatypes/04-equality-strict-vs-loose.md)
 
 ### 3. Variables & Scope
 
-- [ ] `var`, `let`, `const` — [Panduan Pemula](../docs-beginner/03-variables-scope/01-var-let-const.md) • [Deep Dive](../docs/03-variables-scope/01-var-let-const.md)
-- [ ] Hoisting — [Panduan Pemula](../docs-beginner/03-variables-scope/02-hoisting.md) • [Deep Dive](../docs/03-variables-scope/02-hoisting.md)
+- [x] `var`, `let`, `const` — [Panduan Pemula](../docs-beginner/03-variables-scope/01-var-let-const.md) • [Deep Dive](../docs/03-variables-scope/01-var-let-const.md)
+- [x] Hoisting — [Panduan Pemula](../docs-beginner/03-variables-scope/02-hoisting.md) • [Deep Dive](../docs/03-variables-scope/02-hoisting.md)
 - [ ] Block, Function, Global Scope — [Panduan Pemula](../docs-beginner/03-variables-scope/03-block-function-global-scope.md) • [Deep Dive](../docs/03-variables-scope/03-block-function-global-scope.md)
 - [ ] Closures & Lexical Scoping — [Panduan Pemula](../docs-beginner/03-variables-scope/04-closures-dan-lexical-scoping.md) • [Deep Dive](../docs/03-variables-scope/04-closures-dan-lexical-scoping.md)
 
