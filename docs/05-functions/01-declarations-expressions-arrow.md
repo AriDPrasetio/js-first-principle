@@ -31,9 +31,9 @@ _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak
    - Fungsi biasa (`function`) memiliki slot internal `[[Call]]` (memungkinkannya dipanggil sebagai fungsi biasa) dan slot `[[Construct]]` (memungkinkannya dipanggil dengan `new` untuk membuat instans).
    - Arrow function (`() => {}`) **hanya memiliki slot `[[Call]]`**. Memanggil arrow function dengan `new` melempar `TypeError: ... is not a constructor`. Arrow function juga tidak memiliki properti `.prototype`.
 
-2. **Perbedaan Fase Inisialisasi Memori (Declaration vs Expression)**:
-   - **Function Declaration (`function foo() {}`)**: Diinisialisasi utuh ke _Environment Record_ saat _Creation Phase_. Dapat dipanggil di baris mana pun sebelum posisinya di kode.
-   - **Function Expression (`const foo = function() {}`)**: Diperlakukan sebagai ekspresi penugasan nilai biasa. Variabel penampung tunduk pada aturan _Temporal Dead Zone (TDZ)_ dan baru berisi fungsi saat baris tersebut dieksekusi.
+2. **Perbedaan Gramatikal & Fase Inisialisasi Memori (Declaration vs Expression)**:
+   - **Function Declaration (`function foo() {}`)**: Secara gramatikal adalah sebuah **Statement** (pernyataan formal, lihat [Expressions vs Statements](../02-syntax-datatypes/00-expressions-vs-statements.md)). Engine menginisialisasinya secara utuh bersama tubuh fungsinya ke _Environment Record_ saat _Creation Phase_. Oleh karena itu, fungsi dapat dipanggil di baris mana pun sebelum posisinya di kode (*hoisted* penuh).
+   - **Function Expression (`const foo = function() {}`)**: Secara gramatikal adalah sebuah **Expression** (ekspresi nilai). Objek fungsi dibuat sebagai nilai kelas satu yang ditugaskan ke sebuah variabel penampung. Variabel penampung tunduk pada aturan deklarasi variabel dan _Temporal Dead Zone (TDZ)_, sehingga fungsi baru terbentuk di memori saat baris penugasan tersebut dieksekusi.
 
 3. **Mekanisme Pewarisan Leksikal `this` pada Arrow Function**:
    Spesifikasi [ECMA-262 §15.3](https://tc39.es/ecma262/#sec-arrow-function-definitions) mendefinisikan bahwa arrow function tidak mengevaluasi _ThisBinding_ saat dipanggil. Nilai `this` di dalam arrow function diselesaikan secara leksikal dari _Scope Chain_ terdekat persis seperti variabel biasa.

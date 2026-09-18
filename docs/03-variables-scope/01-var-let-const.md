@@ -27,15 +27,21 @@ _Sebelum mengeksekusi, kita pisahkan noise dari masalah inti._
 
 _Elemen dasar berikut berakar pada spesifikasi web / perilaku browser yang tidak terbantahkan:_
 
-1. **Struktur Penyimpanan Environment Record (ECMA-262 §9.1.1)**:
+1. **Anatomi Deklarasi Variabel (Declaration vs Initialization vs Assignment)**:
+   Sebuah baris deklarasi variabel (misal `let x = 10;` atau `const y = 5 + 5;`) adalah sebuah **Declaration Statement**. Engine memprosesnya melalui tiga tahapan internal:
+   - **Declaration (Deklarasi)**: Mendaftarkan nama *identifier* ke dalam *Environment Record* saat *Creation Phase*.
+   - **Initialization (Inisialisasi)**: Menyiapkan slot memori pengikatan (*binding*). Pada `var`, variabel langsung diinisialisasi otomatis dengan nilai `undefined`. Pada `let` dan `const`, variabel dibiarkan dalam status belum diinisialisasi (*uninitialized*), menciptakan wilayah *Temporal Dead Zone (TDZ)*.
+   - **Assignment (Penugasan Nilai)**: Mengevaluasi *Expression* di sisi kanan tanda sama dengan (`=`), lalu mengikat nilai hasil evaluasi tersebut ke dalam identifier saat *Execution Phase*.
+
+2. **Struktur Penyimpanan Environment Record (ECMA-262 §9.1.1)**:
    - Variabel yang dideklarasikan dengan `var` di tingkat global didaftarkan langsung ke _Object Environment Record_, yang berarti variabel tersebut secara otomatis menjadi properti objek global browser (`window.namaVariabel = nilai`).
    - Sebaliknya, `let` dan `const` didaftarkan ke _Declarative Environment Record_. Mereka disimpan dalam slot memori terisolasi yang tidak dapat diakses sebagai properti dari `window`.
 
-2. **Cakupan Pengikatan: Blok `{}` vs Fungsi `function()`**:
+3. **Cakupan Pengikatan: Blok `{}` vs Fungsi `function()`**:
    - `var` tidak mengenal cakupan blok kurung kurawal `{}` (seperti di dalam blok `if`, `for`, atau `while`). Variabel `var` "bocor" keluar blok dan terikat pada fungsi pembungkus terdekatnya (_Function Scope_).
    - `let` dan `const` mengevaluasi setiap pasang tanda kurung kurawal `{}` sebagai batas wilayah leksikal baru (_Block Scope_), mencegah polusi nama ke lingkungan luar.
 
-3. **Immutability of Binding vs Immutability of Value**:
+4. **Immutability of Binding vs Immutability of Value**:
    Sintaks `const` menciptakan _Immutable Binding_. Engine menolak re-assignment pada identifier tersebut (`TypeError: Assignment to constant variable`). Namun, sifat mutabilitas objek yang ditunjuk tetap tunduk pada aturan alokasi memori Heap (sebagaimana dibahas pada prinsip tipe data).
 
 ---
@@ -84,15 +90,15 @@ _Solusi dibangun dari nol berdasarkan Kebenaran Fundamental di atas — bukan da
 _Checklist teknis untuk mewujudkan pendekatan optimal, disesuaikan skill level saya saat ini:_
 
 - [ ] **Langkah 1**: Uji kebocoran `var` di DevTools Console: tulis `if (true) { var bocor = 'ya'; let aman = 'tidak'; }`. Panggil `window.bocor` (hasil: `'ya'`), lalu panggil `window.aman` (hasil: `undefined`) untuk membuktikan batas isolasi scope.
-- [ ] **Langkah 2**: Aktifkan aturan linter `no-var: "error"` dan `prefer-const: "error"` di proyek untuk menegakkan penggunaan `const` dan `let` secara otomatis.
-- [ ] **Langkah 3**: Jika memiliki konfigurasi global atau kamus token desain yang tidak boleh berubah, selalu bungkus dengan `Object.freeze()` untuk melengkapi proteksi `const`.
+- [ ] **Langkah 2**: Pasang linter (ESLint) dengan aturan `prefer-const: error` dan `no-var: error` untuk menegakkan disiplin imutabilitas identifier secara otomatis di tim.
+- [ ] **Langkah 3**: Gunakan `Object.freeze()` untuk objek konstanta konfigurasi kritis guna menjamin kekekalan nilai (*value immutability*) secara penuh di runtime.
 
 > [!TIP]
 > **Parameter Kesuksesan (Success Metric)**
 >
-> Topik ini selesai dieksekusi dengan benar jika: **Tidak ada satu pun kata kunci `var` di dalam basis kode, dan seluruh variabel yang tidak di-reassign terproteksi menggunakan `const`**.
+> Topik ini selesai dieksekusi dengan benar jika: **Tidak ada satu pun kata kunci `var` di codebase, dan tidak ada bug mutasi tak terduga yang diakibatkan oleh kebocoran variabel keluar dari blok kurung kurawal `{}`**.
 
 > [!WARNING]
 > **Batas Kepastian**
 >
-> Memakai `const` secara default adalah **konvensi arsitektur industri untuk keamanan alur data**, bukan keharusan performa engine. Secara runtime di V8 modern, perbedaan performa antara `const` dan `let` yang tidak di-reassign hampir tidak ada.
+> `Object.freeze()` hanya melakukan pembekuan satu lapis (*shallow freeze*). Properti bersarang di dalamnya (*nested objects*) tetap dapat dimutasi kecuali dibekukan secara rekursif (*deep freeze*).

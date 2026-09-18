@@ -18,14 +18,14 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guid
 
 Bayangkan Anda seorang barista di kedai kopi:
 
-1. **Function Declaration (Resep di Papan Menu Besar)**:
-   Resep ini terpampang permanen di dinding atas kasir. Barista mana pun bisa membacanya kapan saja, bahkan sebelum kasir membuka pintu toko (*bisa dipanggil sebelum baris deklarasinya karena di-hoist penuh oleh browser*).
+1. **Function Declaration (Resep di Papan Menu Besar — Statement)**:
+   Secara gramatikal, ini adalah sebuah **Statement** (pernyataan formal, lihat panduan [Expression vs Statement](../02-syntax-datatypes/00-expressions-vs-statements.md)). Resep ini terpampang permanen di dinding atas kasir. Barista mana pun bisa membacanya kapan saja, bahkan sebelum kasir membuka pintu toko (*bisa dipanggil sebelum baris deklarasinya karena di-hoist penuh oleh browser*).
    ```javascript
    function buatKopi(ukuran) { return `Kopi ${ukuran}`; }
    ```
 
-2. **Function Expression (Resep di Buku Catatan Kasir)**:
-   Resep disimpan ke dalam wadah variabel. Barista baru bisa memakainya setelah buku catatan dibuka tepat di halaman tersebut.
+2. **Function Expression (Resep di Buku Catatan Kasir — Expression)**:
+   Secara gramatikal, fungsi di sini adalah sebuah **Expression** (menghasilkan nilai fungsi yang disimpan ke variabel). Barista baru bisa memakainya setelah alur kode melewati baris pembukaan buku catatan tersebut.
    ```javascript
    const buatKopi = function(ukuran) { return `Kopi ${ukuran}`; };
    ```

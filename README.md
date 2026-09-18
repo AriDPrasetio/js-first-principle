@@ -28,15 +28,15 @@ Tersedia **dua jalur dokumentasi** yang saling melengkapi:
 
 ---
 
-## 🗺️ Peta Kurikulum (12 Modul — 31 Topik)
+## 🗺️ Peta Kurikulum (12 Modul — 32 Topik)
 
 > [!NOTE]
-> Seluruh 31 topik telah lengkap tersedia baik di versi **Pemula** maupun **Deep Dive**. Pelacakan progres belajar aktif dilakukan melalui checklist di [`.agents/roadmap.md`](./.agents/roadmap.md).
+> Seluruh 32 topik telah lengkap tersedia baik di versi **Pemula** maupun **Deep Dive**. Pelacakan progres belajar aktif dilakukan melalui checklist di [`.agents/roadmap.md`](./.agents/roadmap.md).
 
 | Modul                          | Topik Materi                                                              |                                         Versi Pemula                                          |                                   Versi Deep Dive                                    |
 | :----------------------------- | :------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
 | **01. Introduction**           | Runtime JS, Host Environment, Parser-blocking, `defer`/`async`            | [Buka](./docs-beginner/01-introduction/apa-itu-javascript-dan-cara-menjalankan-javascript.md) | [Buka](./docs/01-introduction/apa-itu-javascript-dan-cara-menjalankan-javascript.md) |
-| **02. Syntax & Data Types**    | Primitive vs Object, `typeof`, Coercion vs Conversion, Equality `===`     |                         [Buka](./docs-beginner/02-syntax-datatypes/)                          |                         [Buka](./docs/02-syntax-datatypes/)                          |
+| **02. Syntax & Data Types**    | Expressions vs Statements, Primitive vs Object, `typeof`, Coercion vs Conversion, Equality `===` |                         [Buka](./docs-beginner/02-syntax-datatypes/)                          |                         [Buka](./docs/02-syntax-datatypes/)                          |
 | **03. Variables & Scope**      | `var`/`let`/`const`, Hoisting, Scope Chain, Closures                      |                          [Buka](./docs-beginner/03-variables-scope/)                          |                          [Buka](./docs/03-variables-scope/)                          |
 | **04. Control Flow**           | Conditionals (`??`), Loops (`for...of`), Exception Handling (`try/catch`) |                           [Buka](./docs-beginner/04-control-flow/)                            |                           [Buka](./docs/04-control-flow/)                            |
 | **05. Functions**              | Declaration vs Expression vs Arrow, Default/Rest, HOF, IIFE               |                             [Buka](./docs-beginner/05-functions/)                             |                             [Buka](./docs/05-functions/)                             |

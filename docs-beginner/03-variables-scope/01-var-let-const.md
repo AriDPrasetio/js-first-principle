@@ -18,7 +18,25 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ---
 
-## 1. Analogi Logis: Tiga Jenis Kotak Penyimpanan
+## 1. Apa itu Deklarasi Variabel? (Membuat Wadah vs Mengisi Nilai)
+
+Sebelum kita memilih jenis wadah (`const`, `let`, atau `var`), mari pahami dulu apa sebenarnya arti **Deklarasi**:
+
+Bayangkan Anda datang ke tempat penitipan barang di stasiun:
+1. **Deklarasi (Declaration)**: Anda mendaftar dan meminta sebuah loker, lalu petugas menempelkan stiker nama Anda di pintu loker itu (`let skor;`). Sekarang komputer tahu bahwa loker bernama `skor` sudah ada di memori, meskipun saat ini isinya masih kosong (`undefined`).
+2. **Inisialisasi & Penugasan (Initialization & Assignment)**: Anda membuka pintu loker dan meletakkan barang pertama ke dalamnya (`skor = 10;`).
+
+Ketika Anda menulis sebuah baris lengkap:
+```javascript
+const totalBelanja = 50000 + 25000;
+```
+Di balik layar, Anda sedang memadukan dua konsep dasar:
+- **Deklarasi (*Statement*)**: `const totalBelanja` adalah perintah deklarasi untuk memesan tempat permanen di memori.
+- **Ekspresi (*Expression*)**: Komputer menghitung ekspresi `50000 + 25000` (menghasilkan nilai `75000`), lalu memasukkan nilai tersebut ke dalam tempat penyimpanan.
+
+---
+
+## 2. Analogi Logis: Tiga Jenis Kotak Penyimpanan
 
 ### A. `const` (Kotak Bergembok Permanen)
 
@@ -50,7 +68,7 @@ Sebelum tahun 2015 (ES6), JavaScript hanya memiliki `var`:
 
 ---
 
-## 2. Tabel Perbandingan Karakteristik (First Principles)
+## 3. Tabel Perbandingan Karakteristik (First Principles)
 
 | Pembeda                                            |       `const`       |        `let`        |            `var` (Legacy)            |
 | :------------------------------------------------- | :-----------------: | :-----------------: | :----------------------------------: |
@@ -73,7 +91,7 @@ Sebelum tahun 2015 (ES6), JavaScript hanya memiliki `var`:
 
 ---
 
-## 3. Contoh Praktik Interaktif (HTML + JavaScript)
+## 4. Contoh Praktik Interaktif (HTML + JavaScript)
 
 Mari kita buat demonstrasi papan skor dan perbandingan kebocoran variabel `var` vs `let`:
 
@@ -196,7 +214,7 @@ ujiBocorBtn.addEventListener("click", () => {
 
 ---
 
-## 4. Solusi Praktis / Best Practice
+## 5. Solusi Praktis / Best Practice
 
 1. **Jadikan `const` sebagai pilihan bawaan (_Default_)**: Setiap kali membuat variabel baru, selalu ketik `const` terlebih dahulu.
 2. **Ganti ke `let` hanya jika nilainya perlu diubah**: Jika nanti variabel tersebut memang perlu diisi ulang nilainya (seperti counter di atas), barulah ganti menjadi `let`.
@@ -204,7 +222,7 @@ ujiBocorBtn.addEventListener("click", () => {
 
 ---
 
-## 5. Checklist Praktik Mandiri
+## 6. Checklist Praktik Mandiri
 
 - [x] Buka `index.html` di browser dan klik tombol **"+1 Poin"** beberapa kali.
 - [x] Klik tombol **"Uji Kebocoran var vs let"** dan buka Console DevTools (`F12`).
