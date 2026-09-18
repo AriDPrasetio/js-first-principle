@@ -15,7 +15,28 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ---
 
-## 1. Analogi Logis: Pesan Makanan Cepat Saji
+## 1. Perbedaan Mendasar: Parameter vs Argumen (Cetakan vs Isi)
+
+Banyak pemula sering tertukar antara kata **Parameter** dan **Argumen**. Keduanya memiliki peran dan posisi yang sangat berbeda:
+
+- **Parameter (Cetakan / Tempat Kosong)**:
+  Parameter adalah nama variabel penampung yang Anda deklarasikan di dalam tanda kurung **saat membuat (mendefinisikan) fungsi**. Ia bertindak seperti kolom formulir kosong: `Nama: [ ... ]`.
+- **Argumen (Bahan / Nilai Nyata)**:
+  Argumen adalah data nilai aktual yang Anda masukkan ke dalam tanda kurung **saat menjalankan (memanggil) fungsi**. Ia adalah tulisan asli yang Anda isikan ke dalam kolom formulir tersebut: `"Aria"`.
+
+```javascript
+// 'nama' dan 'usia' adalah PARAMETER (variabel penampung di definisi fungsi)
+function sapaPengguna(nama, usia) {
+  return `Halo, saya ${nama}, berumur ${usia} tahun.`;
+}
+
+// "Aria" dan 25 adalah ARGUMEN (nilai konkret yang dioper saat pemanggilan)
+sapaPengguna("Aria", 25);
+```
+
+---
+
+## 2. Analogi Logis: Pesan Makanan Cepat Saji (Default & Rest)
 
 ### A. Default Parameter (Paket Standar)
 Bayangkan Anda memesan paket nasi burger di kasir cepat saji:
@@ -54,7 +75,7 @@ buatPaket("Alat Tulis", ...belanjaan);
 
 ---
 
-## 2. Mengapa JavaScript Didesain Seperti Ini? (First Principles)
+## 3. Mengapa JavaScript Didesain Seperti Ini? (First Principles)
 
 1. **Menghapus Pengecekan Manual**:
    Dulu kita harus menulis `minuman = minuman || "Teh Manis"`, yang rentan rusak jika parameter bernilai `0` atau `false`. Default parameter modern hanya aktif jika nilainya strictly `undefined`.
@@ -64,7 +85,7 @@ buatPaket("Alat Tulis", ...belanjaan);
 
 ---
 
-## 3. Contoh Praktik Interaktif (HTML + JavaScript)
+## 4. Contoh Praktik Interaktif (HTML + JavaScript)
 
 Mari kita buat pencetak kartu undangan yang menerima judul acara dan daftar tamu tak terbatas:
 
@@ -184,7 +205,7 @@ cetakBtn.addEventListener("click", () => {
 
 ---
 
-## 4. Solusi Praktis / Best Practice
+## 5. Solusi Praktis / Best Practice
 
 1. **Selalu Letakkan Rest Parameter di Akhir**: `function hitung(kali, ...angka)` sah, tetapi `function hitung(...angka, kali)` akan menghasilkan error fatal `SyntaxError: Rest parameter must be last`.
 2. **Kirim `undefined` untuk Mengaktifkan Default Parameter**: Jika Anda secara eksplisit mengirim `null`, nilai default **tidak akan aktif** karena `null` dianggap nilai sah.
@@ -192,7 +213,7 @@ cetakBtn.addEventListener("click", () => {
 
 ---
 
-## 5. Checklist Praktik Mandiri
+## 6. Checklist Praktik Mandiri
 
 - [ ] Buka `index.html` di browser dan klik **"Cetak Undangan"**.
 - [ ] Kosongkan kolom nama acara, lalu klik cetak lagi. Amati bagaimana nama acara otomatis berubah menjadi `"Acara Syukuran"` berkat default parameter.

@@ -15,6 +15,7 @@ Setiap topik menyediakan dua versi panduan:
 
 ### 2. Syntax, Data Types & Operators
 
+- [ ] Expressions vs Statements — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/00-expressions-vs-statements.md) • [Deep Dive](../docs/02-syntax-datatypes/00-expressions-vs-statements.md)
 - [ ] Primitive types & Object — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/01-primitive-types-dan-object.md) • [Deep Dive](../docs/02-syntax-datatypes/01-primitive-types-dan-object.md)
 - [ ] `typeof` operator — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/02-typeof-operator.md) • [Deep Dive](../docs/02-syntax-datatypes/02-typeof-operator.md)
 - [ ] Type Casting (Coercion vs Conversion) — [Panduan Pemula](../docs-beginner/02-syntax-datatypes/03-type-casting-coercion-vs-conversion.md) • [Deep Dive](../docs/02-syntax-datatypes/03-type-casting-coercion-vs-conversion.md)
@@ -36,7 +37,7 @@ Setiap topik menyediakan dua versi panduan:
 ### 5. Functions
 
 - [ ] Function declaration, expression, arrow function — [Panduan Pemula](../docs-beginner/05-functions/01-declarations-expressions-arrow.md) • [Deep Dive](../docs/05-functions/01-declarations-expressions-arrow.md)
-- [ ] Default Params & Rest Params — [Panduan Pemula](../docs-beginner/05-functions/02-params-default-rest.md) • [Deep Dive](../docs/05-functions/02-params-default-rest.md)
+- [ ] Parameters (Default & Rest) vs Arguments — [Panduan Pemula](../docs-beginner/05-functions/02-params-default-rest.md) • [Deep Dive](../docs/05-functions/02-params-default-rest.md)
 - [ ] Higher-order functions (HOF) — [Panduan Pemula](../docs-beginner/05-functions/03-higher-order-functions.md) • [Deep Dive](../docs/05-functions/03-higher-order-functions.md)
 - [ ] IIFE — [Panduan Pemula](../docs-beginner/05-functions/04-iife.md) • [Deep Dive](../docs/05-functions/04-iife.md)
 
