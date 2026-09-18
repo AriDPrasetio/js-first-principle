@@ -132,38 +132,56 @@ Mari kita buat pencetak tiket konser yang memanfaatkan satu fungsi cetak untuk b
 ### Berkas 2: `app.js`
 
 ```javascript
+// ambil element teks nama berdasarkan ID-nya, simpan ke variable teksNama
 const teksNama = document.querySelector("#teks-nama");
+// ambil element teks zona berdasarkan ID-nya, simpan ke variable teksZona
 const teksZona = document.querySelector("#teks-zona");
+// ambil element teks pintu berdasarkan ID-nya, simpan ke variable teksPintu
 const teksPintu = document.querySelector("#teks-pintu");
 
+// ambil element button call berdasarkan ID-nya, simpan ke variable tombolCall
 const tombolCall = document.querySelector("#btn-call");
+// ambil element button apply berdasarkan ID-nya, simpan ke variable tombolApply
 const tombolApply = document.querySelector("#btn-apply");
+// ambil element button bind berdasarkan ID-nya, simpan ke variable tombolBind
 const tombolBind = document.querySelector("#btn-bind");
 
 // FUNGSI MANDIRI PENCETAK TIKET:
+// deklarasi function cetakTiket yang menerima parameter zona dan pintu
 function cetakTiket(zona, pintu) {
+  // perbarui textContent dari teksNama dengan namaPemesan dari konteks 'this' saat ini
   teksNama.textContent = `Nama: ${this.namaPemesan}`;
+  // perbarui textContent dari teksZona dengan nilai parameter zona
   teksZona.textContent = `Zona Kursi: ${zona}`;
+  // perbarui textContent dari teksPintu dengan nilai parameter pintu
   teksPintu.textContent = `Pintu Masuk: ${pintu}`;
 }
 
 // Data objek penonton yang tidak punya fungsi sendiri:
+// buat object userVIP yang berisi property namaPemesan
 const userVIP = { namaPemesan: "Siti Rahma (VIP)" };
+// buat object userFestival yang berisi property namaPemesan
 const userFestival = { namaPemesan: "Joko Anwar (Festival)" };
+// buat object panitiaAcara yang berisi property namaPemesan
 const panitiaAcara = { namaPemesan: "Rian (Staff Panitia)" };
 
 // ================================================================
 // 1. .call() -> Argumen dipisah dengan koma satu per satu
 // ================================================================
+// saat tombolCall di-click, jalankan arrow function berikut:
 tombolCall.addEventListener("click", () => {
+  // panggil langsung function cetakTiket dengan memaksa konteks 'this' menjadi userVIP dan mengirim parameter secara terpisah
   cetakTiket.call(userVIP, "VIP Row A-12", "Gate 1 (Khusus)");
 });
 
 // ================================================================
 // 2. .apply() -> Argumen dibungkus di dalam satu Array
 // ================================================================
+// saat tombolApply di-click, jalankan arrow function berikut:
 tombolApply.addEventListener("click", () => {
+  // buat array berisi string argument dan simpan ke variable dataTambahan
   const dataTambahan = ["Festival Barat", "Gate 3 (Umum)"];
+  // panggil langsung function cetakTiket dengan memaksa konteks 'this' menjadi userFestival dan mengirim argumen dari array
   cetakTiket.apply(userFestival, dataTambahan);
 });
 
@@ -172,6 +190,7 @@ tombolApply.addEventListener("click", () => {
 // ================================================================
 // Di sini .bind mengunci 'panitiaAcara' sebagai this,
 // SEKALIGUS mengunci zona "Backstage All-Access" dan pintu "Pintu Kru":
+// ciptakan function kembaran dari cetakTiket dengan 'this' terkunci pada panitiaAcara beserta argument awalnya, simpan ke variable cetakTiketPanitiaTerkunci
 const cetakTiketPanitiaTerkunci = cetakTiket.bind(
   panitiaAcara,
   "Backstage All-Access",
@@ -179,6 +198,7 @@ const cetakTiketPanitiaTerkunci = cetakTiket.bind(
 );
 
 // Saat tombol diklik, kita langsung panggil fungsi baru yang sudah terkunci ini:
+// saat tombolBind di-click, jalankan function cetakTiketPanitiaTerkunci yang sudah terikat
 tombolBind.addEventListener("click", cetakTiketPanitiaTerkunci);
 ```
 

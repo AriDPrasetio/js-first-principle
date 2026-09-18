@@ -178,49 +178,70 @@ Mari kita buat simulator oven roti yang memperlihatkan bagaimana kode sinkron da
 
 ```javascript
 // 1. Ambil elemen HTML
+// ambil element tombol panggang berdasarkan ID-nya, simpan ke variable tombolPanggang
 const tombolPanggang = document.querySelector("#btn-panggang");
+// ambil element tombol batal berdasarkan ID-nya, simpan ke variable tombolBatal
 const tombolBatal = document.querySelector("#btn-batal");
+// ambil element kotak status berdasarkan ID-nya, simpan ke variable kotakStatus
 const kotakStatus = document.querySelector("#kotak-status");
+// ambil element kotak log berdasarkan ID-nya, simpan ke variable kotakLog
 const kotakLog = document.querySelector("#kotak-log");
 
 // Token identitas untuk menyimpan Timer ID
+// buat variable idTimerOven dengan value null untuk menyimpan ID timer
 let idTimerOven = null;
 
 // ================================================================
 // 2. MEMULAI PROSES ASINKRON DENGAN setTimeout
 // ================================================================
+// saat tombolPanggang di-click, jalankan function berikut:
 tombolPanggang.addEventListener("click", () => {
   // Jika sedang memanggang, abaikan klik dobel
+  // jika idTimerOven tidak sama dengan null, maka hentikan eksekusi function
   if (idTimerOven !== null) return;
 
   // LANGKAH 1 (Call Stack Langsung): Eksekusi kode sinkron
+  // ubah teks di dalam kotakStatus menjadi pesan sedang memanggang
   kotakStatus.textContent = "⏳ Sedang memanggang... Tunggu 3 detik!";
+  // ubah teks di dalam kotakLog menjadi pesan log call stack
   kotakLog.textContent = "[Call Stack]: Perintah setTimeout dikirim ke Web APIs...";
 
   // LANGKAH 2 (Web APIs): Titipkan waktu tunggu ke browser selama 3.000 ms
+  // jalankan setTimeout untuk menunggu 3 detik dan simpan ID-nya ke variable idTimerOven
   idTimerOven = setTimeout(() => {
     // LANGKAH 4 (Dipindah Event Loop dari Queue ke Call Stack setelah 3 detik):
+    // ubah teks di dalam kotakStatus menjadi pesan roti matang
     kotakStatus.textContent = "🍞 Ting! Roti bakar matang dan siap disantap!";
+    // ubah teks di dalam kotakLog menjadi pesan log event loop
     kotakLog.textContent = "[Event Loop]: Callback dieksekusi dari Callback Queue!";
+    // kembalikan value idTimerOven menjadi null karena proses sudah selesai
     idTimerOven = null;
   }, 3000);
 
   // LANGKAH 3 (Call Stack Selesai):
+  // tampilkan pesan log ke dalam console
   console.log("Call Stack selesai memproses fungsi klik, thread utama bebas.");
 });
 
 // ================================================================
 // 3. MEMBATALKAN TIMER DENGAN clearTimeout
 // ================================================================
+// saat tombolBatal di-click, jalankan function berikut:
 tombolBatal.addEventListener("click", () => {
+  // jika idTimerOven tidak sama dengan null, maka:
   if (idTimerOven !== null) {
     // Batalkan timer sebelum sempat masuk ke Callback Queue
+    // batalkan timer menggunakan fungsi clearTimeout dengan argument idTimerOven
     clearTimeout(idTimerOven);
+    // kembalikan value idTimerOven menjadi null karena timer sudah dibatalkan
     idTimerOven = null;
 
+    // ubah teks di dalam kotakStatus menjadi pesan batal
     kotakStatus.textContent = "❌ Pemanggangan dibatalkan. Oven dimatikan.";
+    // ubah teks di dalam kotakLog menjadi pesan log batal timer
     kotakLog.textContent = "[Web APIs]: Timer ID dibatalkan via clearTimeout.";
   } else {
+    // ubah teks di dalam kotakStatus menjadi pesan tidak ada proses berjalan
     kotakStatus.textContent = "Tidak ada proses pemanggangan yang sedang berjalan.";
   }
 });

@@ -104,29 +104,38 @@ Mari kita buat widget pendeteksi spesifikasi layar perangkat yang berjalan otoma
 ### Berkas 2: `app.js`
 
 ```javascript
+// ambil element hasil deteksi berdasarkan ID-nya, simpan ke variable wadahHasil
 const wadahHasil = document.querySelector("#hasil-deteksi");
 
 // ================================================================
 // IIFE DENGAN ARROW FUNCTION & PENGIRIMAN ARGUMEN
 // Mengirim window ke dalam parameter 'w' untuk efisiensi
 // ================================================================
+// jalankan seketika arrow function yang menerima parameter w dan simpan hasil return-nya ke variable infoPerangkat
 const infoPerangkat = ((w) => {
   // Variabel-variabel di bawah ini bersifat privat dan aman di dalam kapsul:
+  // ambil value lebar jendela browser dari object w dan simpan ke variable lebarLayar
   const lebarLayar = w.innerWidth;
+  // ambil value tinggi jendela browser dari object w dan simpan ke variable tinggiLayar
   const tinggiLayar = w.innerHeight;
 
+  // jika lebarLayar kurang dari 768, set string "HP / Ponsel Pintar", jika tidak set "Komputer Desktop / Laptop" lalu simpan ke variable tipePerangkat
   const tipePerangkat =
     lebarLayar < 768 ? "HP / Ponsel Pintar" : "Komputer Desktop / Laptop";
 
   // Kembalikan satu objek hasil akhir ke variabel infoPerangkat:
+  // kembalikan object berisi property kategori dan resolusi
   return {
+    // simpan string kategori perangkat ke property kategori
     kategori: tipePerangkat,
+    // simpan string resolusi dari template literal ke property resolusi
     resolusi: `${lebarLayar} x ${tinggiLayar} piksel`,
   };
   // Argumen 'window' disuapkan ke parameter 'w':
 })(window);
 
 // Tampilkan hasil perhitungan IIFE ke halaman HTML:
+// perbarui textContent dari element wadahHasil menggunakan template literal berdasarkan object infoPerangkat
 wadahHasil.textContent = `${infoPerangkat.kategori} (${infoPerangkat.resolusi})`;
 
 // BUKTI ENKAPSULASI:

@@ -152,21 +152,27 @@ bandingBtn.addEventListener("click", () => {
   // ambil nilai opsi yang dipilih (ingat: bernilai string, contohnya teks "0")
   const selectedValue = selectEl.value;
 
-  // angka murni nol (bertipe number) sebagai nilai pembanding
+  // simpan angka murni nol (bertipe number) ke dalam variable targetAngka sebagai nilai pembanding
   const targetAngka = 0;
 
   // 1. Pengujian dengan Loose Equality (==):
-  // tanda '==' memicu coercion: teks "0" diubah menjadi angka 0 sehingga bernilai true
+  // periksa kesamaan loose antara selectedValue dan targetAngka, simpan hasil boolean ke variable isLooseEqual
   const isLooseEqual = selectedValue == targetAngka;
 
+  // ubah textContent dari element looseOut menjadi hasil perbandingan loose beserta penjelasannya
   looseOut.textContent = `${isLooseEqual} (Teks dipaksa dianggap sama dengan Angka)`;
+  
+  // ubah warna teks pada element looseOut menjadi merah
   looseOut.style.color = "red";
 
   // 2. Pengujian dengan Strict Equality (===):
-  // tanda '===' membandingkan tipe data: string !== number sehingga bernilai false
+  // periksa kesamaan strict antara selectedValue dan targetAngka, simpan hasil boolean ke variable isStrictEqual
   const isStrictEqual = selectedValue === targetAngka;
 
+  // ubah textContent dari element strictOut menjadi hasil perbandingan strict beserta penjelasannya
   strictOut.textContent = `${isStrictEqual} (Tepat! Tipe data berbeda string !== number)`;
+  
+  // ubah warna teks pada element strictOut menjadi hijau
   strictOut.style.color = "green";
 });
 ```

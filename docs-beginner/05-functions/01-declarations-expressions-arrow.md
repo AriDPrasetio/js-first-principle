@@ -139,39 +139,55 @@ Mari kita buat kalkulator diskon toko yang membandingkan ketiga jenis penulisan 
 ```javascript
 // 1. FUNCTION DECLARATION:
 // Di-hoist penuh; aman dipanggil di mana saja di dalam berkas
+// deklarasi function hitungDiskonDeclaration yang menerima parameter harga
 function hitungDiskonDeclaration(harga) {
   // diskon 10%
+  // kembalikan hasil perhitungan harga dikali 0.9
   return harga * 0.9;
 }
 
 // 2. FUNCTION EXPRESSION:
 // Disimpan ke dalam variabel const; tidak boleh dipanggil sebelum baris ini
+// simpan function tanpa nama (anonymous) yang menerima parameter harga ke dalam variable hitungDiskonExpression
 const hitungDiskonExpression = function (harga) {
   // diskon 20%
+  // kembalikan hasil perhitungan harga dikali 0.8
   return harga * 0.8;
 };
 
 // 3. ARROW FUNCTION (CONCISE BODY / IMPLICIT RETURN):
 // Sangat ringkas, tanpa kurung kurawal, mengembalikan nilai secara otomatis
 // diskon 30%
+// simpan arrow function yang menerima parameter harga dan secara implisit mengembalikan harga dikali 0.7 ke dalam variable hitungDiskonArrow
 const hitungDiskonArrow = (harga) => harga * 0.7;
 
 // Hubungkan ke elemen HTML:
+// ambil element input berdasarkan ID-nya, simpan ke variable hargaInput
 const hargaInput = document.querySelector("#input-harga");
+// ambil element kotak hasil berdasarkan ID-nya, simpan ke variable kotakHasil
 const kotakHasil = document.querySelector("#kotak-hasil");
 
+// saat element dengan ID btn-dec di-click, jalankan arrow function berikut:
 document.querySelector("#btn-dec").addEventListener("click", () => {
+  // konversi value dari hargaInput menjadi number dan simpan ke variable harga
   const harga = Number(hargaInput.value);
+  // perbarui textContent dari kotakHasil dengan hasil perhitungan diskon yang diformat
   kotakHasil.textContent = `Declaration (10%): Rp${hitungDiskonDeclaration(harga).toLocaleString("id-ID")}`;
 });
 
+// saat element dengan ID btn-exp di-click, jalankan arrow function berikut:
 document.querySelector("#btn-exp").addEventListener("click", () => {
+  // konversi value dari hargaInput menjadi number dan simpan ke variable harga
   const harga = Number(hargaInput.value);
+  // perbarui textContent dari kotakHasil dengan hasil perhitungan diskon yang diformat
   kotakHasil.textContent = `Expression (20%): Rp${hitungDiskonExpression(harga).toLocaleString("id-ID")}`;
 });
 
+// saat element dengan ID btn-arrow di-click, jalankan arrow function berikut:
 document.querySelector("#btn-arrow").addEventListener("click", () => {
+  // konversi value dari hargaInput menjadi number dan simpan ke variable harga
   const harga = Number(hargaInput.value);
+  // perbarui textContent dari kotakHasil dengan hasil perhitungan diskon yang diformat
   kotakHasil.textContent = `Arrow Function (30%): Rp${hitungDiskonArrow(harga).toLocaleString("id-ID")}`;
 });
 ```

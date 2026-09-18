@@ -131,14 +131,20 @@ Mari kita buat pencetak kartu undangan yang menerima judul acara dan daftar tamu
 // 1. FUNGSI DENGAN DEFAULT & REST PARAMETER:
 // namaAcara memiliki nilai default 'Acara Syukuran'
 // ...daftarTamu mengumpulkan seluruh nama tamu ke dalam satu Array
+// deklarasi function buatUndangan yang menerima parameter namaAcara (dengan default) dan rest parameter daftarTamu
 function buatUndangan(namaAcara = "Acara Syukuran", ...daftarTamu) {
+  // buat dan simpan teks "<ul>" ke dalam variable daftarHtml
   let daftarHtml = "<ul>";
 
+  // loop melalui setiap nama dalam array daftarTamu
   for (const nama of daftarTamu) {
+    // tambahkan element <li> berisi nama tamu ke dalam string daftarHtml
     daftarHtml += `<li>Tamu Terhormat: ${nama}</li>`;
   }
+  // tutup tag "<ul>" dengan menambahkannya ke dalam string daftarHtml
   daftarHtml += "</ul>";
 
+  // kembalikan template literal berisi undangan resmi, jumlah tamu, dan daftarHtml
   return `
     <strong>Undangan Resmi: ${namaAcara}</strong>
     <p>Total Tamu Terdaftar: ${daftarTamu.length} orang</p>
@@ -147,21 +153,31 @@ function buatUndangan(namaAcara = "Acara Syukuran", ...daftarTamu) {
 }
 
 // 2. Hubungkan ke Tombol HTML:
+// ambil element input berdasarkan ID-nya, simpan ke variable acaraInput
 const acaraInput = document.querySelector("#input-acara");
+// ambil element input tamu berdasarkan ID-nya, simpan ke variable tamuInput
 const tamuInput = document.querySelector("#input-tamu");
+// ambil element button cetak berdasarkan ID-nya, simpan ke variable cetakBtn
 const cetakBtn = document.querySelector("#btn-cetak");
+// ambil element wadah hasil berdasarkan ID-nya, simpan ke variable hasilWadah
 const hasilWadah = document.querySelector("#wadah-hasil");
 
+// saat cetakBtn di-click, jalankan arrow function berikut:
 cetakBtn.addEventListener("click", () => {
+  // ambil value dari acaraInput, hilangkan spasi ekstra, dan simpan ke variable teksAcara
   const teksAcara = acaraInput.value.trim();
   // Jika input kosong, kita kirim undefined agar Default Parameter aktif!
+  // jika teksAcara kosong, set judulTerkirim menjadi undefined, jika tidak, set menjadi teksAcara
   const judulTerkirim = teksAcara === "" ? undefined : teksAcara;
 
   // Baca daftar tamu dari teks dipisah koma:
+  // simpan value dari tamuInput ke dalam variable teksTamu
   const teksTamu = tamuInput.value;
+  // jika teksTamu ada isinya, pisahkan berdasarkan koma dan bersihkan spasi tiap nama lalu jadikan array, jika kosong set menjadi array kosong
   const listTamu = teksTamu ? teksTamu.split(",").map((t) => t.trim()) : [];
 
   // Panggil fungsi menggunakan SPREAD OPERATOR (...) untuk membuka array listTamu:
+  // perbarui innerHTML dari hasilWadah dengan memanggil buatUndangan menggunakan judulTerkirim dan menyebarkan array listTamu
   hasilWadah.innerHTML = buatUndangan(judulTerkirim, ...listTamu);
 });
 ```

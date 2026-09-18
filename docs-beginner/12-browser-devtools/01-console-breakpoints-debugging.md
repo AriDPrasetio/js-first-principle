@@ -163,56 +163,78 @@ Mari kita buat kasir toko yang mendemonstrasikan `console.table`, `console.dir`,
 
 ```javascript
 // 1. Data daftar pesanan toko
+// buat variable daftarPesanan berisi array dari object pesanan
 const daftarPesanan = [
   { id: 101, menu: "Kopi Susu Gula Aren", harga: 18000, jumlah: 2 },
   { id: 102, menu: "Croissant Cokelat", harga: 22000, jumlah: 1 },
   { id: 103, menu: "Air Mineral Botol", harga: 6000, jumlah: 3 },
 ];
 
+// ambil element tombol tabel berdasarkan ID-nya, simpan ke variable tombolTabel
 const tombolTabel = document.querySelector("#btn-tabel");
+// ambil element tombol dir berdasarkan ID-nya, simpan ke variable tombolDir
 const tombolDir = document.querySelector("#btn-dir");
+// ambil element tombol debug berdasarkan ID-nya, simpan ke variable tombolDebug
 const tombolDebug = document.querySelector("#btn-debug");
+// ambil element kotak status berdasarkan ID-nya, simpan ke variable kotakStatus
 const kotakStatus = document.querySelector("#kotak-status");
 
 // ================================================================
 // FITUR 1: console.table() & console.warn()
 // ================================================================
+// saat tombolTabel di-click, jalankan function berikut:
 tombolTabel.addEventListener("click", () => {
+  // tampilkan pesan log ke dalam console
   console.log("--- Daftar Pesanan Pembeli ---");
   // Cetak dalam bentuk tabel tabular:
+  // tampilkan isi array daftarPesanan dalam bentuk tabel ke dalam console
   console.table(daftarPesanan);
 
   // Berikan peringatan jika ada item yang harganya di atas 20.000:
+  // lakukan perulangan untuk setiap item di dalam daftarPesanan
   daftarPesanan.forEach((item) => {
+    // jika harga item lebih besar dari 20000, maka:
     if (item.harga > 20000) {
+      // tampilkan pesan peringatan dengan nama menu dan harga ke dalam console
       console.warn(`Menu premium terdeteksi: ${item.menu} (Rp ${item.harga})`);
     }
   });
 
+  // ubah teks di dalam kotakStatus menjadi pesan sukses
   kotakStatus.textContent = "✅ Tabel dan warning dicetak di tab Console!";
 });
 
 // ================================================================
 // FITUR 2: console.dir() UNTUK INSPEKSI POHON ELEMEN DOM
 // ================================================================
+// saat tombolDir di-click, jalankan function berikut:
 tombolDir.addEventListener("click", () => {
+  // tampilkan pesan log ke dalam console
   console.log("--- Inspeksi Properti Tombol ---");
   // console.log mencetak tag HTML, sedangkan console.dir membuka pohon propertinya:
+  // tampilkan struktur object dari element tombolDir ke dalam console
   console.dir(tombolDir);
 
+  // ubah teks di dalam kotakStatus menjadi pesan sukses
   kotakStatus.textContent = "✅ Pohon properti tombol dicetak via console.dir!";
 });
 
 // ================================================================
 // FITUR 3: KATA KUNCI debugger; DAN STEPPING CONTROL
 // ================================================================
+// saat tombolDebug di-click, jalankan function berikut:
 tombolDebug.addEventListener("click", () => {
+  // ubah teks di dalam kotakStatus menjadi pesan memproses
   kotakStatus.textContent = "⏳ Memproses kalkulasi tagihan...";
 
+  // buat variable totalTagihan dengan nilai awal 0
   let totalTagihan = 0;
 
+  // lakukan perulangan sebanyak jumlah item di dalam array daftarPesanan
   for (let i = 0; i < daftarPesanan.length; i++) {
+    // ambil item dari array daftarPesanan pada index ke-i dan simpan ke variable item
     const item = daftarPesanan[i];
+    // kalikan harga item dengan jumlahnya dan simpan hasilnya ke variable subtotal
     const subtotal = item.harga * item.jumlah;
 
     // ============================================================
@@ -221,11 +243,14 @@ tombolDebug.addEventListener("click", () => {
     // Cek nilai 'item', 'subtotal', dan 'totalTagihan'.
     // Tekan F10 (Step Over) untuk melangkah ke iterasi berikutnya!
     // ============================================================
+    // hentikan eksekusi kode sementara jika console devtools sedang terbuka
     debugger;
 
+    // tambahkan nilai subtotal ke dalam variable totalTagihan
     totalTagihan += subtotal;
   }
 
+  // ubah teks di dalam kotakStatus dengan nilai akhir totalTagihan
   kotakStatus.textContent = `Total Tagihan: Rp ${totalTagihan.toLocaleString("id-ID")}`;
 });
 ```

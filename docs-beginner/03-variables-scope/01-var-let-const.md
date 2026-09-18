@@ -138,41 +138,58 @@ Mari kita buat demonstrasi papan skor dan perbandingan kebocoran variabel `var` 
 
 ```javascript
 // 1. Deklarasi dengan const (karena elemen HTML tidak pernah diganti wadahnya)
+// ambil element penampil skor berdasarkan ID-nya, simpan ke variable skorDisplay
 const skorDisplay = document.querySelector("#skor-display");
+
+// ambil element tombol tambah berdasarkan ID-nya, simpan ke variable tambahBtn
 const tambahBtn = document.querySelector("#btn-tambah");
+
+// ambil element tombol uji bocor berdasarkan ID-nya, simpan ke variable ujiBocorBtn
 const ujiBocorBtn = document.querySelector("#btn-uji-bocor");
+
+// ambil element penampil info hasil berdasarkan ID-nya, simpan ke variable infoHasilEl
 const infoHasilEl = document.querySelector("#info-hasil");
 
 // 2. Deklarasi dengan let (karena nilai angka skor akan terus bertambah)
+// buat variable nilaiSkor dan isi dengan number 0
 let nilaiSkor = 0;
 
 // 3. Pasang aksi penambahan poin
+// saat tambahBtn di-click, jalankan function berikut:
 tambahBtn.addEventListener("click", () => {
-  // sah karena let mengizinkan penugasan ulang (re-assignment)
+  // ubah nilaiSkor menjadi ditambah 1
   nilaiSkor = nilaiSkor + 1;
+  
+  // perbarui teks di dalam element skorDisplay dengan value dari nilaiSkor yang baru
   skorDisplay.textContent = nilaiSkor;
 });
 
 // 4. Demonstrasi Nyata: Kebocoran var vs Isolasi let
+// saat ujiBocorBtn di-click, jalankan function berikut:
 ujiBocorBtn.addEventListener("click", () => {
+  // jika kondisi true terpenuhi, maka:
   if (true) {
-    // var tidak mengenal block scope
+    // buat variable pesanBocor menggunakan var dan isi dengan string teks
     var pesanBocor = "Saya dibuat di dalam if dengan var!";
-    // let terisolasi ketat di dalam block scope ini
+    
+    // buat variable pesanAman menggunakan let dan isi dengan string teks
     let pesanAman = "Saya dibuat di dalam if dengan let!";
   }
 
   // DI LUAR BLOK IF:
-  // var bocor keluar blok: "Saya dibuat di dalam if dengan var!"
+  // tampilkan nilai variable pesanBocor ke console untuk membuktikan var bocor ke luar block
   console.log("Di luar if:", pesanBocor);
 
+  // coba eksekusi block kode berikut, tangkap error jika ada:
   try {
+    // tampilkan nilai variable pesanAman ke console, ini akan memicu error karena let terisolasi
     console.log("Di luar if:", pesanAman);
   } catch (error) {
-    // let berhasil mengisolasi variabel (ReferenceError: pesanAman is not defined)
+    // jika terjadi error di block try, tampilkan pesan error tersebut ke console
     console.log("let berhasil mengisolasi variabel:", error.message);
   }
 
+  // perbarui teks di dalam element infoHasilEl dengan string hasil uji coba
   infoHasilEl.textContent = `var bocor keluar blok: "${pesanBocor}". Buka Console (F12) untuk melihat bukti isolasi let.`;
 });
 ```

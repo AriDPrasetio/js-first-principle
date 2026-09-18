@@ -126,6 +126,7 @@ Mari kita buat penyaring daftar barang yang mempraktikkan `for...of`, `continue`
 
 ```javascript
 // Data daftar inventaris gudang
+// buat array kumpulan object inventaris dan simpan ke variable inventaris
 const inventaris = [
   { nama: "Kopi Hitam", stok: 15 },
   { nama: "Gula Pasir", stok: 0 },  // stok kosong!
@@ -134,55 +135,96 @@ const inventaris = [
   { nama: "Keju Cheddar", stok: 5 },
 ];
 
+// ambil element container daftar barang HTML berdasarkan ID-nya, simpan ke variable listEl
 const listEl = document.querySelector("#daftar-barang");
+
+// ambil element tombol tampilkan semua berdasarkan ID-nya, simpan ke variable btnSemua
 const btnSemua = document.querySelector("#btn-tampilkan-semua");
+
+// ambil element tombol filter stok berdasarkan ID-nya, simpan ke variable btnFilter
 const btnFilter = document.querySelector("#btn-filter-stok");
+
+// ambil element tombol cari target berdasarkan ID-nya, simpan ke variable btnCari
 const btnCari = document.querySelector("#btn-cari-satu");
 
+// deklarasi function bersihkanLayar untuk mereset daftar list HTML
 function bersihkanLayar() {
+  // kosongkan isi HTML (inner html) di dalam element listEl
   listEl.innerHTML = "";
 }
 
 // 1. Tampilkan Semua Barang dengan for...of
+// saat btnSemua di-click, jalankan function berikut:
 btnSemua.addEventListener("click", () => {
+  // panggil function bersihkanLayar untuk mereset tampilan awal
   bersihkanLayar();
 
+  // untuk setiap item di dalam array inventaris, jalankan perintah ini berulang kali:
   for (const item of inventaris) {
+    // buat element HTML list item baru (li) dan simpan ke variable li
     const li = document.createElement("li");
+    
+    // perbarui teks di dalam element li dengan nama barang dan jumlah stoknya
     li.textContent = `${item.nama} (Stok: ${item.stok})`;
+    
+    // tambahkan element li ini ke dalam element container listEl di tampilan
     listEl.appendChild(li);
   }
 });
 
 // 2. Lewatkan Barang Stok 0 Menggunakan 'continue'
+// saat btnFilter di-click, jalankan function berikut:
 btnFilter.addEventListener("click", () => {
+  // panggil function bersihkanLayar untuk mereset tampilan awal
   bersihkanLayar();
 
+  // untuk setiap item di dalam array inventaris, periksa kondisinya berulang kali:
   for (const item of inventaris) {
+    // jika stok dari item adalah 0, maka:
     if (item.stok === 0) {
       // lewati barang ini dan langsung lompat ke putaran berikutnya
       continue;
     }
 
+    // buat element HTML list item baru (li) dan simpan ke variable li
     const li = document.createElement("li");
+    
+    // perbarui teks di dalam element li dengan teks yang menyatakan barang tersedia
     li.textContent = `✅ ${item.nama} (Tersedia: ${item.stok})`;
+    
+    // tambahkan element li ini ke dalam element container listEl
     listEl.appendChild(li);
   }
 });
 
 // 3. Hentikan Loop Seketika Begitu Ditemukan Menggunakan 'break'
+// saat btnCari di-click, jalankan function berikut:
 btnCari.addEventListener("click", () => {
+  // panggil function bersihkanLayar untuk mereset tampilan awal
   bersihkanLayar();
 
+  // untuk setiap item di dalam array inventaris, periksa kecocokannya:
   for (const item of inventaris) {
+    // buat element HTML list item baru (li) untuk melacak pencarian
     const li = document.createElement("li");
+    
+    // perbarui teks element li untuk menunjukkan barang yang sedang diperiksa
     li.textContent = `Memeriksa: ${item.nama}`;
+    
+    // tambahkan element li pelacakan ini ke dalam element container listEl
     listEl.appendChild(li);
 
+    // jika nama barang dari item tersebut adalah "Roti Tawar", maka:
     if (item.nama === "Roti Tawar") {
+      // buat element list item baru untuk menandakan target ditemukan
       const liKetemu = document.createElement("li");
+      
+      // perbarui isi HTML dari element dengan teks laporan keberhasilan
       liKetemu.innerHTML = "<strong>🎯 TARGET DITEMUKAN! Loop dihentikan seketika dengan break.</strong>";
+      
+      // tambahkan element liKetemu ini ke dalam element container listEl
       listEl.appendChild(liKetemu);
+      
       // rem darurat: hentikan loop total
       break;
     }

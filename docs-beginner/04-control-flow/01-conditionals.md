@@ -129,54 +129,85 @@ Mari kita buat kalkulator diskon yang mengombinasikan `switch` untuk level membe
 
 ```javascript
 // 1. Ambil elemen HTML
+// ambil element dropdown pilihan member berdasarkan ID-nya, simpan ke variable memberSelect
 const memberSelect = document.querySelector("#select-member");
+
+// ambil element input jumlah barang berdasarkan ID-nya, simpan ke variable qtyInput
 const qtyInput = document.querySelector("#input-qty");
+
+// ambil element tombol proses hitung berdasarkan ID-nya, simpan ke variable prosesBtn
 const prosesBtn = document.querySelector("#btn-proses");
+
+// ambil element penampil status pesan berdasarkan ID-nya, simpan ke variable pesanStatusEl
 const pesanStatusEl = document.querySelector("#pesan-status");
+
+// ambil element penampil total akhir pembayaran berdasarkan ID-nya, simpan ke variable totalAkhirEl
 const totalAkhirEl = document.querySelector("#total-akhir");
 
+// simpan angka harga per satuan ke dalam variable hargaSatuan
 const hargaSatuan = 50000;
 
+// saat prosesBtn di-click, jalankan function berikut:
 prosesBtn.addEventListener("click", () => {
+  // ambil value dari dropdown member yang dipilih, simpan ke variable levelMember
   const levelMember = memberSelect.value;
 
   // 2. TENTUKAN DISKON MENGGUNAKAN SWITCH:
+  // buat variable persentaseDiskon dan beri nilai awal 0
   let persentaseDiskon = 0;
 
+  // evaluasi nilai levelMember untuk menentukan diskon yang sesuai:
   switch (levelMember) {
     case "PLATINUM":
-      // diskon 30%
+      // ubah persentaseDiskon menjadi 0.3 untuk diskon 30%
       persentaseDiskon = 0.3;
       // Wajib: kunci rem agar tidak melorot ke case berikutnya
+      // hentikan switch dan keluar dari block pencabangan
       break;
     case "GOLD":
-      // diskon 20%
+      // ubah persentaseDiskon menjadi 0.2 untuk diskon 20%
       persentaseDiskon = 0.2;
+      // hentikan switch dan keluar dari block pencabangan
       break;
     case "SILVER":
-      // diskon 10%
+      // ubah persentaseDiskon menjadi 0.1 untuk diskon 10%
       persentaseDiskon = 0.1;
+      // hentikan switch dan keluar dari block pencabangan
       break;
     case "REGULER":
     default:
+      // ubah persentaseDiskon menjadi 0.0 jika tidak ada case yang cocok atau member reguler
       persentaseDiskon = 0.0;
+      // hentikan switch dan keluar dari block pencabangan
       break;
   }
 
   // 3. GUNAKAN OPERATOR ?? UNTUK NILAI DEFAULT:
   // Jika input kosong, qtyInput.value bernilai ""; kita konversi menjadi angka atau undefined
+  // ambil value input dan bersihkan spasi kosong di awal/akhir, simpan ke variable inputMentah
   const inputMentah = qtyInput.value.trim();
+  
+  // jika inputMentah bernilai kosong, simpan undefined, jika tidak ubah menjadi tipe data number
   const kuantitasAngka = inputMentah === "" ? undefined : Number(inputMentah);
   
   // Menggunakan ?? untuk menjamin default 1 jika input undefined:
+  // gunakan operator ?? untuk memilih kuantitasAngka jika ada, atau 1 jika undefined
   const kuantitasFinal = kuantitasAngka ?? 1;
 
   // Hitung total:
+  // kalikan hargaSatuan dengan kuantitasFinal untuk mendapat total sebelum diskon
   const totalKotor = hargaSatuan * kuantitasFinal;
+  
+  // kalikan totalKotor dengan persentaseDiskon untuk menghitung besaran potongan
   const potongan = totalKotor * persentaseDiskon;
+  
+  // kurangi totalKotor dengan potongan untuk mendapatkan nilai tagihan akhir
   const bayarAkhir = totalKotor - potongan;
 
+  // perbarui teks di dalam element pesanStatusEl dengan rincian level, diskon, dan jumlah item
   pesanStatusEl.textContent = `Level: ${levelMember} | Diskon: ${persentaseDiskon * 100}% | Jumlah: ${kuantitasFinal} item`;
+  
+  // perbarui teks di dalam element totalAkhirEl dengan format angka rupiah lokal
   totalAkhirEl.textContent = `Rp${bayarAkhir.toLocaleString("id-ID")}`;
 });
 ```
