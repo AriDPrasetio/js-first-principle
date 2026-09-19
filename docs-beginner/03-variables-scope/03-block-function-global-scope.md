@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Glossary/Scope"
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Scope adalah aturan "wilayah kekuasaan" variabel: kode yang berada di dalam ruangan privat bisa melihat data di luar (*Scope Chain*), tetapi kode di luar sama sekali tidak bisa mengintip data rahasia di dalam ruangan tertutup.
+> Scope adalah aturan "wilayah kekuasaan" variabel: kode yang berada di dalam ruangan privat bisa melihat data di luar (_Scope Chain_), tetapi kode di luar sama sekali tidak bisa mengintip data rahasia di dalam ruangan tertutup.
 
 ---
 
@@ -21,7 +21,7 @@ Bayangkan Anda sedang duduk di dalam mobil dengan kaca film gelap satu arah:
 - **Dari dalam mobil**: Anda bisa melihat pemandangan jalan raya, lampu lalu lintas, dan gedung di luar dengan sangat jelas.
 - **Dari luar mobil**: Orang yang lewat di trotoar sama sekali tidak bisa melihat apa yang ada di dalam mobil Anda.
 
-Aturan wilayah (*Scope*) di JavaScript bekerja persis seperti kaca satu arah ini:
+Aturan wilayah (_Scope_) di JavaScript bekerja persis seperti kaca satu arah ini:
 
 - **Melihat ke luar? BISA.** Kode di dalam selalu bisa membaca variabel di luarnya.
 - **Melihat ke dalam? TIDAK BISA.** Kode di luar dilarang menyentuh variabel yang dibuat di dalam kurung kurawal `{ }` atau di dalam fungsi.
@@ -39,7 +39,7 @@ Di JavaScript ada 3 tingkat wilayah:
 3. **Block Scope (Kamar Pribadi Berkurung `{ }`)**:
    Variabel `let` dan `const` yang dibuat di antara tanda kurung kurawal `{ }` (misal di dalam percabangan `if` atau perulangan `for`).
 
-### A. Rantai Pencarian Variabel (*Scope Chain*)
+### A. Rantai Pencarian Variabel (_Scope Chain_)
 
 Ketika Anda memanggil sebuah nama variabel, engine JavaScript mencarinya secara bertingkat dari dalam ke luar:
 
@@ -49,9 +49,9 @@ Ketika Anda memanggil sebuah nama variabel, engine JavaScript mencarinya secara 
 
 Engine mencari dari kamar saat ini. Jika tidak ditemukan, ia naik satu tingkat ke ruangan pembungkus, dan terus naik hingga ke tingkat Global. Jika di tingkat Global tetap tidak ada, barulah muncul pesan `ReferenceError: ... is not defined`.
 
-### B. Bahaya Menimpa Nama: *Variable Shadowing*
+### B. Bahaya Menimpa Nama: _Variable Shadowing_
 
-Jika Anda membuat variabel di dalam kamar privat dengan **nama yang sama persis** dengan variabel di luar, variabel dalam akan "membayangi" (*shadowing*) variabel luar:
+Jika Anda membuat variabel di dalam kamar privat dengan **nama yang sama persis** dengan variabel di luar, variabel dalam akan "membayangi" (_shadowing_) variabel luar:
 
 ```javascript
 const pengguna = "Budi (Global)";
@@ -66,7 +66,7 @@ sapa();
 console.log(pengguna); // Mencetak: "Budi (Global)"
 ```
 
-Meskipun sah secara sintaks, *shadowing* sering membingungkan pembaca kode karena sulit membedakan variabel mana yang sedang aktif.
+Meskipun sah secara sintaks, _shadowing_ sering membingungkan pembaca kode karena sulit membedakan variabel mana yang sedang aktif.
 
 ---
 
@@ -163,17 +163,17 @@ bacaBtn.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Prinsip Hak Akses Terkecil (*Least Privilege*)**: Selalu buat variabel di wilayah paling sempit yang membutuhkan. Jika variabel hanya dipakai di dalam satu blok tombol, jangan taruh di lingkup global!
+1. **Prinsip Hak Akses Terkecil (_Least Privilege_)**: Selalu buat variabel di wilayah paling sempit yang membutuhkan. Jika variabel hanya dipakai di dalam satu blok tombol, jangan taruh di lingkup global!
 2. **Hindari Polusi Global**: Variabel global mudah tertimpa tanpa sengaja dan memakan memori terus-menerus selama halaman aktif.
-3. **Hindari *Variable Shadowing***: Gunakan nama variabel yang jelas dan unik agar Anda tidak menutupi variabel luar secara tidak sengaja.
+3. **Hindari _Variable Shadowing_**: Gunakan nama variabel yang jelas dan unik agar Anda tidak menutupi variabel luar secara tidak sengaja.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik tombol **"Jalankan Fungsi Privat"**.
-- [ ] Perhatikan teks gabungan dari variabel global dan variabel privat berhasil dirender.
-- [ ] Buka Console browser (`F12`), ketik `console.log(namaAplikasi)` (hasil: muncul namanya). Lalu ketik `console.log(kodeRahasia)` (hasil: `ReferenceError`).
+- [x] Buka `index.html` di browser dan klik tombol **"Jalankan Fungsi Privat"**.
+- [x] Perhatikan teks gabungan dari variabel global dan variabel privat berhasil dirender.
+- [x] Buka Console browser (`F12`), ketik `console.log(namaAplikasi)` (hasil: muncul namanya). Lalu ketik `console.log(kodeRahasia)` (hasil: `ReferenceError`).
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
@@ -200,4 +200,7 @@ console.log(namaDalam); // Baris 2
 
 1. Apakah yang dicetak oleh **Baris 1**?
 2. Apakah yang terjadi pada **Baris 2**? Mengapa?
+
+```
+
 ```
