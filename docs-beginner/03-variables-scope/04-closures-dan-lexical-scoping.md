@@ -11,25 +11,24 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Clos
 > **Inti Konsep (The Ground Truth)**
 >
 > **Lexical Scope** berarti letak fisik di mana Anda menulis fungsi menentukan variabel apa saja yang bisa diaksesnya.
-> **Closure** adalah "ransel ingatan" bawaan fungsi: ketika fungsi anak dilahirkan di dalam fungsi induk, ia akan selalu mengingat dan membawa variabel milik induknya ke mana pun ia pergi, meskipun fungsi induknya sudah selesai dieksekusi.
+> **Closure** adalah "brankas memori" bawaan fungsi: ketika fungsi anak diciptakan di dalam fungsi induk, ia akan selalu menyimpan dan mengingat variabel milik induknya — seperti PIN yang tersimpan di sistem bank — meskipun fungsi induknya sudah selesai dieksekusi.
 
 ---
 
-## 1. Analogi Logis: Ransel Bekal Saat Keluar Rumah
+## 1. Analogi Logis: Rekening Bank dengan PIN Rahasia
 
-Bayangkan Anda tinggal bersama orang tua Anda di rumah (*Fungsi Induk*):
+Bayangkan Anda membuka rekening baru di bank (_Fungsi Induk_). Saat pembukaan rekening, bank membuat **PIN rahasia** (_Variabel Privat_) dan menyimpannya di sistemnya.
 
-1. **Lexical Scoping (Tempat Lahir yang Nyata)**:
-   Karena kamar Anda berada di dalam rumah orang tua Anda, Anda secara sah berhak menggunakan fasilitas di rumah tersebut. Hak akses ini ditentukan oleh **di mana letak rumah tempat Anda lahir**, bukan di mana Anda sedang nongkrong hari ini.
-2. **Closure (Ransel Bekal Warisan)**:
-   Sebelum Anda berangkat merantau (*Fungsi Anak dikembalikan keluar*), orang tua Anda membekali sebuah **ransel berisi resep keluarga** (*Variabel Privat*).
-   Meskipun Anda sudah tinggal di kota lain bertahun-tahun kemudian, **Anda tetap bisa membuka ransel itu kapan saja untuk membaca dan memperbarui resep tersebut.**
+1. **Lexical Scoping (Sistem Bank sebagai Tempat Asal)**:
+   PIN Anda tersimpan di **sistem bank tempat rekening dibuka** — bukan di ATM yang Anda pakai hari ini. Mesin ATM di mana pun di seluruh Indonesia bisa Anda gunakan, tetapi PIN yang valid tetap mengacu ke data yang ada **di sistem bank asal**.
+2. **Closure (Brankas Memori yang Tetap Hidup)**:
+   Staf bank yang membuka rekening Anda sudah pindah tugas (_Fungsi Induk selesai dieksekusi_), tetapi **PIN itu tidak ikut hilang**. PIN tersebut tetap hidup di sistem, dan Anda bisa menggunakannya kapan saja melalui "pintu resmi" — yaitu mesin ATM atau teller (_method yang dikembalikan_).
 
-Inilah **Closure**: Fungsi anak menyimpan referensi hidup (*live reference*) terhadap variabel induk tempat ia diciptakan.
+Inilah **Closure**: Fungsi anak menyimpan referensi hidup (_live reference_) terhadap variabel induk tempat ia diciptakan — data itu tetap ada meskipun fungsi induknya sudah selesai.
 
 ---
 
-## 2. Mengapa Pemula Membutuhkan Closure? (First Principles)
+## 2. Mengapa Pemula Perlu Memahami Closure? (First Principles)
 
 Di aplikasi web, ada data sensitif yang **tidak boleh diubah sembarangan oleh pihak luar**:
 
@@ -43,7 +42,7 @@ function buatPenghitung() {
   // variabel privat terkunci
   let hitungan = 0;
 
-  return function() {
+  return function () {
     // mengingat dan menambah variabel induk
     hitungan = hitungan + 1;
     return hitungan;
@@ -187,7 +186,9 @@ document.querySelector("#btn-reset").addEventListener("click", () => {
 - [ ] Ketik kode dasar di Console:
   ```javascript
   function pembuatSalam(kota) {
-    return function(nama) { return `Halo ${nama} dari ${kota}`; };
+    return function (nama) {
+      return `Halo ${nama} dari ${kota}`;
+    };
   }
   const salamBali = pembuatSalam("Bali");
   // Amati bagaimana "Bali" tetap diingat!
@@ -218,4 +219,7 @@ sapaBandung("Kyo");
 
 1. Apakah fungsi `sapaBandung("Kyo")` akan berhasil mencetak salam atau melempar error?
 2. Mengapa variabel `namaKota` masih bisa diakses padahal fungsi `buatPenyapa` sudah selesai dieksekusi di baris sebelumnya?
+
+```
+
 ```
