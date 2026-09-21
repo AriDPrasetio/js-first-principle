@@ -180,10 +180,10 @@ document.querySelector("#btn-reset").addEventListener("click", () => {
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik tombol **"+5 Poin"** beberapa kali.
-- [ ] Klik tombol **"Reset"** dan perhatikan angka kembali ke 0.
-- [ ] Buka Console browser (`F12`), coba ketik `nilaiSkor = 1000`. Perhatikan bahwa angka skor di layar tidak terpengaruh karena variabel aslinya terlindung di dalam closure.
-- [ ] Ketik kode dasar di Console:
+- [x] Buka `index.html` di browser dan klik tombol **"+5 Poin"** beberapa kali.
+- [x] Klik tombol **"Reset"** dan perhatikan angka kembali ke 0.
+- [x] Buka Console browser (`F12`), coba ketik `nilaiSkor = 1000`. Perhatikan bahwa angka skor di layar tidak terpengaruh karena variabel aslinya terlindung di dalam closure.
+- [x] Ketik kode dasar di Console:
   ```javascript
   function pembuatSalam(kota) {
     return function (nama) {
