@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan | Percabangan Kondisional</title>
+    <style>
+      .card {
+        font-family: sans-serif;
+        max-inline-size: 320px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        margin-inline: auto;
+      }
+      select,
+      input,
+      button {
+        padding: 0.5rem;
+        margin-block-start: 0.5rem;
+        inline-size: 100%;
+        box-sizing: border-box;
+      }
+      .label-jumlah-barang {
+        margin-block-start: 0.5rem;
+        display: block;
+      }
+      .hasil-box {
+        margin-block-start: 0.75rem;
+        padding: 0.5rem;
+        background: #f4f4f4;
+        border-radius: 0.25rem;
+      }
+    </style>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="card">
+      <h3>Kalkulator Diskon Member</h3>
+
+      <label for="select-member">Tingkat Membership:</label>
+      <select id="select-member">
+        <option value="REGULER">Member Reguler (0%)</option>
+        <option value="SILVER">Member Silver (10%)</option>
+        <option value="GOLD">Member Gold (20%)</option>
+        <option value="PLATINUM">Member Platinum (30%)</option>
+      </select>
+
+      <label for="input-qty" class="label-jumlah-barang"
+        >Jumlah Barang (Kosongkan untuk Default):</label
+      >
+      <input type="number" id="input-qty" placeholder="Default: 1 barang" />
+      <button type="button" id="btn-proses">Hitung Total Bayar</button>
+      <div class="hasil-box">
+        <p id="pesan-status">Status: Belum dihitung</p>
+        <p>Total Akhir: <strong id="total-akhir">Rp0</strong></p>
+      </div>
+    </div>
+  </body>
+</html>
