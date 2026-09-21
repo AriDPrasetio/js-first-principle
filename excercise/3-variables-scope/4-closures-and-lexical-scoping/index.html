@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan | Closure</title>
+    <style>
+      .card {
+        font-family: sans-serif;
+        max-inline-size: 320px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        margin-inline: auto;
+        text-align: center;
+      }
+      .skor {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #0077cc;
+        margin: 0.75rem 0;
+      }
+      button {
+        padding: 0.5rem 0.75rem;
+        cursor: pointer;
+        margin: 0.25rem;
+      }
+    </style>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="card">
+      <h3>Pencatat Skor Privat</h3>
+      <div id="score-display" class="skor">0</div>
+      <button type="button" id="btn-add">+5 Poin</button>
+      <button type="button" id="btn-reset">Reset</button>
+    </div>
+  </body>
+</html>
