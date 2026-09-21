@@ -22,3 +22,10 @@ yarn-error.log*
 # Backups & Legacy Agent Workflows
 *.bak
 .agents/workflows/
+
+# Panduan & Roadmap Lokal (Dokumen bimbingan pribadi, tidak perlu di-push)
+.panduan-milestone/
+PANDUAN-MILESTONE-WEB.md
+ROADMAP-WEB.md
+mapping-udemy-video-course.md
+
