@@ -12,7 +12,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 >
 > Percabangan adalah "rambu persimpangan jalan" di program Anda:
 >
-> 1. **`if/else` & Ternary (`? :`)**: Menguji kondisi benar (*truthy*) atau salah (*falsy*).
+> 1. **`if/else` & Ternary (`? :`)**: Menguji kondisi benar (_truthy_) atau salah (_falsy_).
 > 2. **`switch`**: Memilih satu dari banyak jalur diskrit yang sudah pasti nilainya.
 > 3. **`??` (Nullish Coalescing)**: Menetapkan nilai cadangan hanya jika data strictly bernilai `null` atau `undefined`.
 
@@ -21,7 +21,9 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 ## 1. Tiga Analogi Logis Pengambil Keputusan
 
 ### A. `if / else if / else` (Palang Pintu Otomatis Parkir)
+
 Bayangkan palang pintu di gedung parkir:
+
 - **Jika (`if`)** tiket parkir sudah dibayar lunas $\to$ palang terbuka hijau.
 - **Atau jika (`else if`)** memiliki kartu parkir khusus langganan $\to$ palang terbuka biru.
 - **Selain itu (`else`)** $\to$ palang tetap tertutup dan alarm berbunyi.
@@ -31,18 +33,22 @@ Cocok untuk: Menguji rentang angka atau kondisi majemuk (misal: `skor >= 80 && s
 ---
 
 ### B. `switch` (Papan Tombol Lift Gedung Bertingkat)
+
 Bayangkan Anda masuk ke dalam lift gedung perkantoran yang memiliki tombol Lantai 1, 2, 3, dan 4:
+
 - Anda menekan tombol lantai tujuan Anda: `case 3`.
 - Lift langsung meluncur ke Lantai 3 dan berhenti di sana karena ada pintu rem (**`break`**).
-- **Hukum Jatuh Bebas (*Fall-Through*)**: Jika Anda lupa menaruh rem `break`, lift akan terus meluncur ke lantai di bawahnya tanpa berhenti!
-- **`default`**: Jika seseorang menekan angka lantai yang tidak terdaftar di tombol gedung, lift menuju ke lantai lobi dasar (*default*).
+- **Hukum Jatuh Bebas (_Fall-Through_)**: Jika Anda lupa menaruh rem `break`, lift akan terus meluncur ke lantai di bawahnya tanpa berhenti!
+- **`default`**: Jika seseorang menekan angka lantai yang tidak terdaftar di tombol gedung, lift menuju ke lantai lobi dasar (_default_).
 
 Cocok untuk: Membandingkan **satu variabel tunggal dengan banyak opsi nilai pasti** (misal: kode kupon, status pesanan, peran akun).
 
 ---
 
 ### C. Operator Ternary (`kondisi ? ya : tidak`)
+
 Bentuk ringkas 1 baris untuk `if/else` sederhana:
+
 ```javascript
 const statusAkses = usia >= 17 ? "Dewasa" : "Anak-anak";
 ```
@@ -51,11 +57,11 @@ const statusAkses = usia >= 17 ? "Dewasa" : "Anak-anak";
 
 ## 2. Mengapa Pemula Wajib Tahu Operator `??`? (First Principles)
 
-Sering kali kita ingin memberikan **nilai cadangan (*fallback*)** jika pengguna tidak mengisi sesuatu:
+Sering kali kita ingin memberikan **nilai cadangan (_fallback_)** jika pengguna tidak mengisi sesuatu:
 
 1. **Bahaya Operator Lama `||` (Logical OR)**:
    Dulu pengembang memakai: `let jumlah = input || 1`.
-   **Masalah Fatal**: Di JavaScript, angka `0` dianggap bernilai salah (*Falsy*). Jika pengguna sengaja memesan `0` barang, operator `||` keliru menganggap data itu tidak ada dan menimpanya menjadi `1`!
+   **Masalah Fatal**: Di JavaScript, angka `0` dianggap bernilai salah (_Falsy_). Jika pengguna sengaja memesan `0` barang, operator `||` keliru menganggap data itu tidak ada dan menimpanya menjadi `1`!
 2. **Kecerdasan Modern Operator `??` (Nullish Coalescing)**:
    Operator `??` **HANYA** mengganti nilai jika datanya benar-benar kosong melompong (`null` atau `undefined`). Angka `0`, boolean `false`, dan teks `""` tetap dihormati dan tidak akan ditimpa!
 
@@ -82,7 +88,9 @@ Mari kita buat kalkulator diskon yang mengombinasikan `switch` untuk level membe
         border: 1px solid #ddd;
         border-radius: 8px;
       }
-      select, input, button {
+      select,
+      input,
+      button {
         padding: 8px;
         margin-top: 6px;
         width: 100%;
@@ -100,7 +108,7 @@ Mari kita buat kalkulator diskon yang mengombinasikan `switch` untuk level membe
   <body>
     <div class="card">
       <h3>Kalkulator Diskon Member</h3>
-      
+
       <label for="select-member">Tingkat Membership:</label>
       <select id="select-member">
         <option value="REGULER">Member Reguler (0%)</option>
@@ -109,7 +117,9 @@ Mari kita buat kalkulator diskon yang mengombinasikan `switch` untuk level membe
         <option value="PLATINUM">Member Platinum (30%)</option>
       </select>
 
-      <label for="input-qty" style="margin-top: 8px; display: block;">Jumlah Barang (Kosongkan untuk Default):</label>
+      <label for="input-qty" style="margin-top: 8px; display: block;"
+        >Jumlah Barang (Kosongkan untuk Default):</label
+      >
       <input type="number" id="input-qty" placeholder="Default: 1 barang" />
 
       <button type="button" id="btn-proses">Hitung Total Bayar</button>
@@ -186,10 +196,10 @@ prosesBtn.addEventListener("click", () => {
   // Jika input kosong, qtyInput.value bernilai ""; kita konversi menjadi angka atau undefined
   // ambil value input dan bersihkan spasi kosong di awal/akhir, simpan ke variable inputMentah
   const inputMentah = qtyInput.value.trim();
-  
+
   // jika inputMentah bernilai kosong, simpan undefined, jika tidak ubah menjadi tipe data number
   const kuantitasAngka = inputMentah === "" ? undefined : Number(inputMentah);
-  
+
   // Menggunakan ?? untuk menjamin default 1 jika input undefined:
   // gunakan operator ?? untuk memilih kuantitasAngka jika ada, atau 1 jika undefined
   const kuantitasFinal = kuantitasAngka ?? 1;
@@ -197,16 +207,16 @@ prosesBtn.addEventListener("click", () => {
   // Hitung total:
   // kalikan hargaSatuan dengan kuantitasFinal untuk mendapat total sebelum diskon
   const totalKotor = hargaSatuan * kuantitasFinal;
-  
+
   // kalikan totalKotor dengan persentaseDiskon untuk menghitung besaran potongan
   const potongan = totalKotor * persentaseDiskon;
-  
+
   // kurangi totalKotor dengan potongan untuk mendapatkan nilai tagihan akhir
   const bayarAkhir = totalKotor - potongan;
 
   // perbarui teks di dalam element pesanStatusEl dengan rincian level, diskon, dan jumlah item
   pesanStatusEl.textContent = `Level: ${levelMember} | Diskon: ${persentaseDiskon * 100}% | Jumlah: ${kuantitasFinal} item`;
-  
+
   // perbarui teks di dalam element totalAkhirEl dengan format angka rupiah lokal
   totalAkhirEl.textContent = `Rp${bayarAkhir.toLocaleString("id-ID")}`;
 });
@@ -217,18 +227,18 @@ prosesBtn.addEventListener("click", () => {
 ## 4. Solusi Praktis / Best Practice
 
 1. **Gunakan `if/else` untuk Evaluasi Rentang**: Misal `nilai >= 90` atau kondisi gabungan dengan logika `&&` dan `||`.
-2. **Gunakan `switch` untuk Opsi Pilihan Pasti**: Jika membandingkan nilai teks/status tertentu (`"SUKSES"`, `"PENDING"`, `"GAGAL"`), `switch` jauh lebih bersih daripada rentetan `if / else if / else if`.
-3. **Jangan Lupa Kata Kunci `break`**: Tanpa `break`, JavaScript mengeksekusi seluruh blok di bawahnya meskipun kondisinya tidak cocok (*fall-through*).
+2. **Gunakan `switch` untuk Opsi Pilihan Pasti**: Jika membandingkan nilai teks/status tertentu (`"SUKSES"`, `"PENDING"`, `"GAGAL"`), `switch` jauh lebih bersih daripada rentetan `if / else if / else`.
+3. **Jangan Lupa Kata Kunci `break`**: Tanpa `break`, JavaScript mengeksekusi seluruh blok di bawahnya meskipun kondisinya tidak cocok (_fall-through_).
 4. **Gunakan `??` daripada `||` untuk Nilai Bawaan**: Agar angka `0` atau string kosong `""` tidak tertimpa tanpa sengaja.
 
 ---
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser, pilih **Member Gold**, biarkan jumlah barang kosong, lalu klik tombol.
-- [ ] Perhatikan diskon 20% aktif dan jumlah barang otomatis terisi 1 berkat operator `??`.
-- [ ] Isi jumlah barang dengan angka `0`, lalu klik hitung. Perhatikan bahwa angka 0 tetap dihormati dan tidak tertimpa menjadi 1!
-- [ ] Buka `app.js`, coba hapus salah satu kata `break;` di dalam `switch` untuk melihat apa yang terjadi dengan diskon yang dihitung.
+- [x] Buka `index.html` di browser, pilih **Member Gold**, biarkan jumlah barang kosong, lalu klik tombol.
+- [x] Perhatikan diskon 20% aktif dan jumlah barang otomatis terisi 1 berkat operator `??`.
+- [x] Isi jumlah barang dengan angka `0`, lalu klik hitung. Perhatikan bahwa angka 0 tetap dihormati dan tidak tertimpa menjadi 1!
+- [x] Buka `app.js`, coba hapus salah satu kata `break;` di dalam `switch` untuk melihat apa yang terjadi dengan diskon yang dihitung.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
@@ -247,4 +257,7 @@ prosesBtn.addEventListener("click", () => {
    let hasilB = stokBarang ?? 10;
    ```
    Berapakah nilai `hasilA` dan `hasilB`? Mengapa hasilnya berbeda?
+
+```
+
 ```
