@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan | Loops</title>
+    <style>
+      .card {
+        font-family: sans-serif;
+        max-inline-size: 320px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        margin-inline: auto;
+      }
+      ul {
+        padding-inline-start: 1.25rem;
+      }
+      li {
+        margin-block-end: 0.25rem;
+      }
+      button {
+        padding: 0.5rem 0.75rem;
+        cursor: pointer;
+        inline-size: 100%;
+        margin-block-start: 0.5rem;
+      }
+    </style>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="card">
+      <h3>Daftar Barang Gudang</h3>
+      <button type="button" id="btn-tampilkan-semua">
+        Tampilkan Semua (for...of)
+      </button>
+      <button type="button" id="btn-filter-stok">
+        Lewatkan Stok Habis (continue)
+      </button>
+      <button type="button" id="btn-cari-satu">
+        Cari & Hentikan Pertama (break)
+      </button>
+      <ul id="daftar-barang"></ul>
+    </div>
+  </body>
+</html>

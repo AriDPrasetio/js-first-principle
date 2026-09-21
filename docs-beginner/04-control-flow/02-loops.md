@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guid
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Perulangan (*Loop*) adalah cara Anda menyuruh komputer melakukan hal yang sama berkali-kali secara otomatis tanpa menulis perintah berulang-ulang:
+> Perulangan (_Loop_) adalah cara Anda menyuruh komputer melakukan hal yang sama berkali-kali secara otomatis tanpa menulis perintah berulang-ulang:
 >
 > - **Loop Klasik `for (let i = 0; ...)`**: Kendali presisi berbasis angka indeks.
 > - **Loop Modern `for...of`**: Cara paling bersih dan manusiawi untuk membaca setiap isi elemen Array.
@@ -22,7 +22,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guid
 
 Bayangkan Anda bekerja di pabrik perakitan barang:
 
-- Di depan Anda ada ban berjalan (*conveyor belt*) yang membawa deretan kardus barang belanjaan.
+- Di depan Anda ada ban berjalan (_conveyor belt_) yang membawa deretan kardus barang belanjaan.
 - Anda mengambil kardus ke-1 $\to$ menempelkan stiker $\to$ selesai.
 - Anda mengambil kardus ke-2 $\to$ menempelkan stiker $\to$ selesai.
 - Proses ini terus berulang otomatis sampai barang terakhir selesai dan ban berhenti.
@@ -47,7 +47,8 @@ for (let i = 0; i < 5; i++) {
 ```
 
 Tanda kurung loop `for` memiliki 3 stasiun yang dipisahkan titik koma (`;`):
-1. **Inisialisasi (`let i = 0`)**: Membuat variabel penghitung (*counter*), dijalankan **hanya satu kali** di awal.
+
+1. **Inisialisasi (`let i = 0`)**: Membuat variabel penghitung (_counter_), dijalankan **hanya satu kali** di awal.
 2. **Kondisi Uji (`i < 5`)**: Diperiksa sebelum setiap putaran. Jika bernilai `true`, kode di dalam kurung kurawal dijalankan. Jika `false`, loop berhenti.
 3. **Penaikan Langkah (`i++`)**: Dijalankan di akhir setiap putaran untuk menambah nilai counter sebesar 1 (`i = i + 1`).
 
@@ -67,7 +68,7 @@ for (const buah of daftarBuah) {
 ```
 
 **Mengapa `for...of` Lebih Baik untuk Pemula?**
-Anda tidak perlu repot membuat variabel `i`, tidak perlu menghitung `.length`, dan tidak ada risiko salah ketik tanda titik koma. Sintaksnya berbunyi alami seperti bahasa manusia: *"Untuk setiap buah di dalam daftarBuah, lakukan perintah ini"*.
+Anda tidak perlu repot membuat variabel `i`, tidak perlu menghitung `.length`, dan tidak ada risiko salah ketik tanda titik koma. Sintaksnya berbunyi alami seperti bahasa manusia: _"Untuk setiap buah di dalam daftarBuah, lakukan perintah ini"_.
 
 ---
 
@@ -110,10 +111,16 @@ Mari kita buat penyaring daftar barang yang mempraktikkan `for...of`, `continue`
   <body>
     <div class="card">
       <h3>Daftar Barang Gudang</h3>
-      <button type="button" id="btn-tampilkan-semua">Tampilkan Semua (for...of)</button>
-      <button type="button" id="btn-filter-stok">Lewatkan Stok Habis (continue)</button>
-      <button type="button" id="btn-cari-satu">Cari & Hentikan Pertama (break)</button>
-      
+      <button type="button" id="btn-tampilkan-semua">
+        Tampilkan Semua (for...of)
+      </button>
+      <button type="button" id="btn-filter-stok">
+        Lewatkan Stok Habis (continue)
+      </button>
+      <button type="button" id="btn-cari-satu">
+        Cari & Hentikan Pertama (break)
+      </button>
+
       <ul id="daftar-barang"></ul>
     </div>
   </body>
@@ -129,9 +136,9 @@ Mari kita buat penyaring daftar barang yang mempraktikkan `for...of`, `continue`
 // buat array kumpulan object inventaris dan simpan ke variable inventaris
 const inventaris = [
   { nama: "Kopi Hitam", stok: 15 },
-  { nama: "Gula Pasir", stok: 0 },  // stok kosong!
+  { nama: "Gula Pasir", stok: 0 }, // stok kosong!
   { nama: "Roti Tawar", stok: 8 },
-  { nama: "Susu Kotak", stok: 0 },  // stok kosong!
+  { nama: "Susu Kotak", stok: 0 }, // stok kosong!
   { nama: "Keju Cheddar", stok: 5 },
 ];
 
@@ -163,10 +170,10 @@ btnSemua.addEventListener("click", () => {
   for (const item of inventaris) {
     // buat element HTML list item baru (li) dan simpan ke variable li
     const li = document.createElement("li");
-    
+
     // perbarui teks di dalam element li dengan nama barang dan jumlah stoknya
     li.textContent = `${item.nama} (Stok: ${item.stok})`;
-    
+
     // tambahkan element li ini ke dalam element container listEl di tampilan
     listEl.appendChild(li);
   }
@@ -188,10 +195,10 @@ btnFilter.addEventListener("click", () => {
 
     // buat element HTML list item baru (li) dan simpan ke variable li
     const li = document.createElement("li");
-    
+
     // perbarui teks di dalam element li dengan teks yang menyatakan barang tersedia
     li.textContent = `✅ ${item.nama} (Tersedia: ${item.stok})`;
-    
+
     // tambahkan element li ini ke dalam element container listEl
     listEl.appendChild(li);
   }
@@ -207,10 +214,10 @@ btnCari.addEventListener("click", () => {
   for (const item of inventaris) {
     // buat element HTML list item baru (li) untuk melacak pencarian
     const li = document.createElement("li");
-    
+
     // perbarui teks element li untuk menunjukkan barang yang sedang diperiksa
     li.textContent = `Memeriksa: ${item.nama}`;
-    
+
     // tambahkan element li pelacakan ini ke dalam element container listEl
     listEl.appendChild(li);
 
@@ -218,13 +225,14 @@ btnCari.addEventListener("click", () => {
     if (item.nama === "Roti Tawar") {
       // buat element list item baru untuk menandakan target ditemukan
       const liKetemu = document.createElement("li");
-      
+
       // perbarui isi HTML dari element dengan teks laporan keberhasilan
-      liKetemu.innerHTML = "<strong>🎯 TARGET DITEMUKAN! Loop dihentikan seketika dengan break.</strong>";
-      
+      liKetemu.innerHTML =
+        "<strong>🎯 TARGET DITEMUKAN! Loop dihentikan seketika dengan break.</strong>";
+
       // tambahkan element liKetemu ini ke dalam element container listEl
       listEl.appendChild(liKetemu);
-      
+
       // rem darurat: hentikan loop total
       break;
     }
@@ -244,10 +252,10 @@ btnCari.addEventListener("click", () => {
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser, klik tombol **"Tampilkan Semua"** dan amati 5 barang muncul.
-- [ ] Klik tombol **"Lewatkan Stok Habis"** dan amati bagaimana barang dengan stok 0 tidak ditampilkan berkat perintah `continue`.
-- [ ] Klik tombol **"Cari & Hentikan Pertama"** dan perhatikan bagaimana loop berhenti di "Roti Tawar" tanpa memeriksa barang-barang setelahnya berkat perintah `break`.
-- [ ] Buka Console (`F12`), coba ketik loop mundur klasik:
+- [x] Buka `index.html` di browser, klik tombol **"Tampilkan Semua"** dan amati 5 barang muncul.
+- [x] Klik tombol **"Lewatkan Stok Habis"** dan amati bagaimana barang dengan stok 0 tidak ditampilkan berkat perintah `continue`.
+- [x] Klik tombol **"Cari & Hentikan Pertama"** dan perhatikan bagaimana loop berhenti di "Roti Tawar" tanpa memeriksa barang-barang setelahnya berkat perintah `break`.
+- [x] Buka Console (`F12`), coba ketik loop mundur klasik:
   ```javascript
   for (let i = 3; i >= 1; i--) {
     console.log("Hitung mundur:", i);
@@ -280,6 +288,7 @@ for (const angka of angkaList) {
 ```
 
 Angka berapakah yang akan tercetak di konsol browser?
+
 - **A. 1, 3**
 - **B. 1, 2, 3, 4**
 - **C. 1, 3, 4**
