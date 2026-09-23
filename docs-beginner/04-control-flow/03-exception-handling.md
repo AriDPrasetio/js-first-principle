@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Error handling adalah jaring pengaman kode Anda: saat terjadi kegagalan tak terduga, program Anda tidak mati total (*crash* membeku), melainkan segera menangkap masalahnya di blok **`catch`**, menampilkan pesan ramah kepada pengguna, dan membereskan sisa pekerjaan di blok **`finally`**.
+> Error handling adalah jaring pengaman kode Anda: saat terjadi kegagalan tak terduga, program Anda tidak mati total (_crash_ membeku), melainkan segera menangkap masalahnya di blok **`catch`**, menampilkan pesan ramah kepada pengguna, dan membereskan sisa pekerjaan di blok **`finally`**.
 
 ---
 
@@ -20,15 +20,17 @@ Bayangkan Anda menonton pertunjukan akrobat sirkus di udara:
 
 - **`try` (Coba lakukan)**: Pemain akrobat melompat di udara. Ini adalah baris kode berisiko yang ingin Anda jalankan (misal memproses input pengguna, membaca format data, atau mengambil data jaringan).
 - **`throw` (Terjadi insiden)**: Tangan pemain meleset dari pegangan. Kode menyadari ada yang salah dan secara eksplisit "melemparkan" sinyal bahaya.
-- **`catch` (Jaring pengaman)**: Alih-alih jatuh menghantam lantai dan tewas (*program crash* total), pemain mendarat dengan selamat di atas jaring penahan. Program tetap hidup dan Anda bisa menyapa penonton dengan tenang.
+- **`catch` (Jaring pengaman)**: Alih-alih jatuh menghantam lantai dan tewas (_program crash_ total), pemain mendarat dengan selamat di atas jaring penahan. Program tetap hidup dan Anda bisa menyapa penonton dengan tenang.
 - **`finally` (Pasti dibereskan)**: Mau akrobatnya sukses atau jatuh ke jaring, lampu arena sirkus harus tetap dimatikan dan panggung disapu bersih di akhir pertunjukan.
 
 ---
 
 ## 2. Mengapa JavaScript Butuh `try...catch`? (First Principles)
 
-### A. Prinsip Pemutusan Alur Instan (*Call Stack Unwinding*)
+### A. Prinsip Pemutusan Alur Instan (_Call Stack Unwinding_)
+
 Ketika terjadi error atau perintah `throw new Error(...)` dieksekusi di dalam blok `try`:
+
 - **Semua baris kode di bawahnya di dalam blok `try` langsung dibatalkan seketika.**
 - Alur eksekusi melompat langsung ke kurung kurawal `catch (error)`.
 - Jika Anda tidak membungkus kode berisiko dengan `try...catch`, error tersebut akan naik terus sampai ke browser dan menghentikan seluruh program JavaScript di halaman web Anda.
@@ -37,12 +39,12 @@ Ketika terjadi error atau perintah `throw new Error(...)` dieksekusi di dalam bl
 
 Di DevTools Console, Anda pasti sering melihat pesan-pesan error ini:
 
-| Tipe Error Resmi | Penyebab Umum | Contoh Kode Rusak |
-| :--- | :--- | :--- |
-| **`TypeError`** | Mengoperasikan data pada tipe yang salah | `null.toUpperCase()`, `angka()` (memanggil variabel non-fungsi) |
-| **`ReferenceError`** | Membaca variabel yang tidak ada atau di TDZ | `console.log(namaGaib)`, membaca `let` sebelum deklarasi |
-| **`SyntaxError`** | Kesalahan tata bahasa kode JavaScript | Kurang tanda kurung `)`, salah ketik kata kunci |
-| **`RangeError`** | Memberikan angka di luar batas yang sah | `new Array(-5)` (panjang array tidak boleh negatif) |
+| Tipe Error Resmi     | Penyebab Umum                               | Contoh Kode Rusak                                               |
+| :------------------- | :------------------------------------------ | :-------------------------------------------------------------- |
+| **`TypeError`**      | Mengoperasikan data pada tipe yang salah    | `null.toUpperCase()`, `angka()` (memanggil variabel non-fungsi) |
+| **`ReferenceError`** | Membaca variabel yang tidak ada atau di TDZ | `console.log(namaGaib)`, membaca `let` sebelum deklarasi        |
+| **`SyntaxError`**    | Kesalahan tata bahasa kode JavaScript       | Kurang tanda kurung `)`, salah ketik kata kunci                 |
+| **`RangeError`**     | Memberikan angka di luar batas yang sah     | `new Array(-5)` (panjang array tidak boleh negatif)             |
 
 ---
 
@@ -67,7 +69,8 @@ Mari kita buat kalkulator pembagian tagihan makan bersama yang aman dari pembagi
         border: 1px solid #ddd;
         border-radius: 8px;
       }
-      input, button {
+      input,
+      button {
         padding: 8px;
         margin-top: 6px;
         width: 100%;
@@ -103,11 +106,13 @@ Mari kita buat kalkulator pembagian tagihan makan bersama yang aman dari pembagi
   <body>
     <div class="card">
       <h3>Bagi Tagihan Makan</h3>
-      
+
       <label for="input-total">Total Tagihan (Rp):</label>
       <input type="number" id="input-total" value="100000" />
 
-      <label for="input-orang" style="margin-top: 8px; display: block;">Jumlah Teman:</label>
+      <label for="input-orang" style="margin-top: 8px; display: block;"
+        >Jumlah Teman:</label
+      >
       <input type="number" id="input-orang" value="4" />
 
       <button type="button" id="btn-hitung">Hitung Patungan</button>
@@ -147,7 +152,7 @@ hitungBtn.addEventListener("click", () => {
     // 1. BLOK TRY: Lakukan operasi berisiko
     // ambil value input tagihan dan paksa ubah menjadi tipe number, simpan ke variable totalTagihan
     const totalTagihan = Number(totalInput.value);
-    
+
     // ambil value input orang dan paksa ubah menjadi tipe number, simpan ke variable jumlahOrang
     const jumlahOrang = Number(orangInput.value);
 
@@ -171,10 +176,9 @@ hitungBtn.addEventListener("click", () => {
     // Tampilkan sukses:
     // ubah daftar class pada element pesanBox untuk memberi gaya styling yang sukses
     pesanBox.className = "kotak-pesan kotak-sukses";
-    
+
     // perbarui teks di dalam element pesanBox untuk menunjukkan jumlah yang harus dibayar masing-masing
     pesanBox.textContent = `Masing-masing membayar: Rp${bayarPerOrang.toLocaleString("id-ID")}`;
-
   } catch (error) {
     // 2. BLOK CATCH: Jaring pengaman saat throw terjadi
     // catat pesan error kegagalan ke console browser sebagai peringatan
@@ -182,15 +186,14 @@ hitungBtn.addEventListener("click", () => {
 
     // ubah daftar class pada element pesanBox untuk memberi gaya styling yang error
     pesanBox.className = "kotak-pesan kotak-error";
-    
+
     // perbarui teks di dalam element pesanBox untuk memberi info kegagalan ke pengguna
     pesanBox.textContent = `❌ ${error.message}`;
-
   } finally {
     // 3. BLOK FINALLY: Selalu dieksekusi apapun yang terjadi
     // dapatkan waktu jam lokal saat ini dan simpan ke variable waktu
     const waktu = new Date().toLocaleTimeString("id-ID");
-    
+
     // perbarui teks di dalam element finallyStatus untuk menunjukkan waktu proses selesai, terlepas gagal atau sukses
     finallyStatus.textContent = `Operasi selesai diproses pada pukul ${waktu}`;
   }
@@ -201,7 +204,7 @@ hitungBtn.addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Selalu gunakan objek `new Error("pesan")` saat melempar**: Jangan lakukan `throw "gagal"` karena teks biasa tidak mencatat nomor baris dan riwayat asal-usul error (*stack trace*).
+1. **Selalu gunakan objek `new Error("pesan")` saat melempar**: Jangan lakukan `throw "gagal"` karena teks biasa tidak mencatat nomor baris dan riwayat asal-usul error (_stack trace_).
 2. **Gunakan `finally` untuk Membersihkan Tampilan**: Jika Anda memunculkan animasi loading saat proses dimulai, selalu matikan loading di blok `finally` agar tombol tidak terus berputar ketika terjadi error.
 3. **Jangan Menyembunyikan Error Tanpa Penanganan**: Hindari blok `catch (e) {}` kosong. Selalu catat error di konsol atau beri tahu pengguna agar bug tidak tersembunyi.
 
@@ -209,10 +212,10 @@ hitungBtn.addEventListener("click", () => {
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser, isi tagihan `100000` dan teman `4`, lalu klik tombol. Pastikan kotak hijau muncul.
-- [ ] Ubah jumlah teman menjadi `0` atau kosongkan kotaknya, lalu klik tombol. Perhatikan bagaimana program melempar `Error` buatan dan menangkapnya di kotak merah tanpa crash.
-- [ ] Amati bahwa baris waktu `finally` selalu diperbarui pada kondisi sukses maupun gagal.
-- [ ] Buka Console (`F12`), coba panggil fungsi yang tidak ada: `window.fungsiAneh()` untuk melihat contoh bawaan `TypeError`.
+- [x] Buka `index.html` di browser, isi tagihan `100000` dan teman `4`, lalu klik tombol. Pastikan kotak hijau muncul.
+- [x] Ubah jumlah teman menjadi `0` atau kosongkan kotaknya, lalu klik tombol. Perhatikan bagaimana program melempar `Error` buatan dan menangkapnya di kotak merah tanpa crash.
+- [x] Amati bahwa baris waktu `finally` selalu diperbarui pada kondisi sukses maupun gagal.
+- [x] Buka Console (`F12`), coba panggil fungsi yang tidak ada: `window.fungsiAneh()` untuk melihat contoh bawaan `TypeError`.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
@@ -225,4 +228,7 @@ hitungBtn.addEventListener("click", () => {
 
 1. Apa yang akan terjadi pada baris kode di bawah perintah `throw new Error(...)` di dalam blok `try` yang sama? Apakah baris tersebut tetap dijalankan?
 2. Jika sebuah fungsi di dalam blok `try` mengeksekusi perintah `return "SUKSES"`, apakah blok `finally` di bawahnya tetap akan dieksekusi oleh JavaScript?
+
+```
+
 ```
