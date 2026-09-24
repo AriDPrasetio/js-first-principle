@@ -1,0 +1,10 @@
+/* 1. SETTINGS */
+@import url("./01-settings/tokens-primitive.css");
+@import url("./01-settings/tokens-semantic.css");
+/* 2. GENERIC */
+@import url("./02-generic/reset.css");
+/* 3. ELEMENTS */
+@import url("./03-elements/typography.css");
+/* 4. OBJECTS - Akan dibuat nanti */
+/* 5. COMPONENTS - Akan dibuat nanti */
+/* 6. UTILITIES - Akan dibuat nanti */
