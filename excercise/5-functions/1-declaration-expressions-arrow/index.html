@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan | Tipe-tipe Fungsi</title>
+    <style>
+      .card {
+        font-family: sans-serif;
+        max-inline-size: 320px;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        margin-inline: auto;
+      }
+      input {
+        box-sizing: border-box;
+        inline-size: 100%;
+        padding: 0.5rem;
+        margin-block-end: 0.5rem;
+      }
+      .btn-group {
+        display: flex;
+        gap: 0.25rem;
+        margin-block-end: 0.5rem;
+      }
+      button {
+        flex: 1;
+        padding: 0.5rem 0.25rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+      .hasil {
+        padding: 0.75rem;
+        background-color: #f0f7ff;
+        border: 1px solid #cce3ff;
+        border-radius: 0.25rem;
+        font-weight: 600;
+      }
+    </style>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="card">
+      <h3>Kalkulator Diskon Toko</h3>
+      <input
+        type="number"
+        id="input-harga"
+        value="100000"
+        placeholder="Harga Barang"
+      />
+      <div class="btn-group">
+        <button type="button" id="btn-dec">Declaration (10%)</button>
+        <button type="button" id="btn-exp">Expression (20%)</button>
+        <button type="button" id="btn-arrow">Arrow Function (30%)</button>
+      </div>
+      <div id="kotak-hasil" class="hasil">
+        Klik salah satu tombol resep diskon.
+      </div>
+    </div>
+  </body>
+</html>
