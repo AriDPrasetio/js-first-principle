@@ -10,7 +10,7 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guid
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
 >
-> Fungsi (*Function*) adalah mesin pengolah resep: menerima bahan (*parameter*), mengolah logika, lalu mengeluarkan hasil olahan (*return*). Di JavaScript ada 3 cara utama menulis fungsi: **Declaration** (di-hoist penuh), **Expression** (disimpan ke variabel), dan **Arrow Function** (ringkas dan modern).
+> Fungsi (_Function_) adalah mesin pengolah resep: menerima bahan (_parameter_), mengolah logika, lalu mengeluarkan hasil olahan (_return_). Di JavaScript ada 3 cara utama menulis fungsi: **Declaration** (di-hoist penuh), **Expression** (disimpan ke variabel), dan **Arrow Function** (ringkas dan modern).
 
 ---
 
@@ -19,15 +19,21 @@ official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guid
 Bayangkan Anda seorang barista di kedai kopi:
 
 1. **Function Declaration (Resep di Papan Menu Besar — Statement)**:
-   Secara gramatikal, ini adalah sebuah **Statement** (pernyataan formal, lihat panduan [Expression vs Statement](../02-syntax-datatypes/00-expressions-vs-statements.md)). Resep ini terpampang permanen di dinding atas kasir. Barista mana pun bisa membacanya kapan saja, bahkan sebelum kasir membuka pintu toko (*bisa dipanggil sebelum baris deklarasinya karena di-hoist penuh oleh browser*).
+   Secara gramatikal, ini adalah sebuah **Statement** (pernyataan formal, lihat panduan [Expression vs Statement](../02-syntax-datatypes/00-expressions-vs-statements.md)). Resep ini terpampang permanen di dinding atas kasir. Barista mana pun bisa membacanya kapan saja, bahkan sebelum kasir membuka pintu toko (_bisa dipanggil sebelum baris deklarasinya karena di-hoist penuh oleh browser_).
+
    ```javascript
-   function buatKopi(ukuran) { return `Kopi ${ukuran}`; }
+   function buatKopi(ukuran) {
+     return `Kopi ${ukuran}`;
+   }
    ```
 
 2. **Function Expression (Resep di Buku Catatan Kasir — Expression)**:
    Secara gramatikal, fungsi di sini adalah sebuah **Expression** (menghasilkan nilai fungsi yang disimpan ke variabel). Barista baru bisa memakainya setelah alur kode melewati baris pembukaan buku catatan tersebut.
+
    ```javascript
-   const buatKopi = function(ukuran) { return `Kopi ${ukuran}`; };
+   const buatKopi = function (ukuran) {
+     return `Kopi ${ukuran}`;
+   };
    ```
 
 3. **Arrow Function (Resep Catatan Cepat Simbol Panah `=>`)**:
@@ -40,18 +46,19 @@ Bayangkan Anda seorang barista di kedai kopi:
 
 ## 2. Mengapa JavaScript Punya 3 Cara? (First Principles)
 
-### A. Dua Wajah Arrow Function: *Concise* vs *Block Body*
+### A. Dua Wajah Arrow Function: _Concise_ vs _Block Body_
 
 Penyebab nomor satu kebingungan pemula pada Arrow Function adalah penggunaan kurung kurawal:
 
-1. **Concise Body (*Implicit Return*)**:
+1. **Concise Body (_Implicit Return_)**:
    Jika fungsi Anda hanya terdiri dari satu baris ekspresi, **jangan gunakan `{}`**. Nilainya otomatis dikembalikan:
+
    ```javascript
    // Otomatis me-return x * 2 (implicit return)
    const kaliDua = (x) => x * 2;
    ```
 
-2. **Block Body (*Explicit Return*)**:
+2. **Block Body (_Explicit Return_)**:
    Jika fungsi memiliki lebih dari satu baris logika, Anda **wajib menggunakan `{}`** dan **wajib menulis kata `return`**:
    ```javascript
    const hitungTotal = (harga, pajak) => {
@@ -118,7 +125,12 @@ Mari kita buat kalkulator diskon toko yang membandingkan ketiga jenis penulisan 
   <body>
     <div class="card">
       <h3>Kalkulator Diskon Toko</h3>
-      <input type="number" id="input-harga" value="100000" placeholder="Harga Barang" />
+      <input
+        type="number"
+        id="input-harga"
+        value="100000"
+        placeholder="Harga Barang"
+      />
 
       <div class="btn-group">
         <button type="button" id="btn-dec">Declaration (10%)</button>
@@ -126,7 +138,9 @@ Mari kita buat kalkulator diskon toko yang membandingkan ketiga jenis penulisan 
         <button type="button" id="btn-arrow">Arrow (30%)</button>
       </div>
 
-      <div id="kotak-hasil" class="hasil">Klik salah satu tombol resep diskon.</div>
+      <div id="kotak-hasil" class="hasil">
+        Klik salah satu tombol resep diskon.
+      </div>
     </div>
   </body>
 </html>
@@ -196,7 +210,7 @@ document.querySelector("#btn-arrow").addEventListener("click", () => {
 
 ## 4. Solusi Praktis / Best Practice
 
-1. **Gunakan Function Declaration untuk Fungsi Utama / Helper Modul**: Memungkinkan struktur kode *top-down* yang rapi di mana fungsi bantuan ditaruh di bawah.
+1. **Gunakan Function Declaration untuk Fungsi Utama / Helper Modul**: Memungkinkan struktur kode _top-down_ yang rapi di mana fungsi bantuan ditaruh di bawah.
 2. **Gunakan Arrow Function untuk Callback Ringkas**: Sangat ideal untuk callback event listener atau pengolahan array (`array.map((item) => item.nama)`).
 3. **Waspadai Jebakan `{}` pada Arrow Function**: Jika Anda membuka kurung kurawal `() => { ... }`, Anda **wajib** menyertakan kata kunci `return`.
 
@@ -204,10 +218,12 @@ document.querySelector("#btn-arrow").addEventListener("click", () => {
 
 ## 5. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik ketiga tombol diskon secara bergantian.
-- [ ] Buka Console (`F12`), coba ketik:
+- [x] Buka `index.html` di browser dan klik ketiga tombol diskon secara bergantian.
+- [x] Buka Console (`F12`), coba ketik:
   ```javascript
-  const tambahSalah = (a, b) => { a + b };
+  const tambahSalah = (a, b) => {
+    a + b;
+  };
   console.log(tambahSalah(2, 3)); // Perhatikan hasilnya undefined!
   const tambahBenar = (a, b) => a + b;
   console.log(tambahBenar(2, 3)); // Hasilnya 5!
@@ -226,7 +242,9 @@ Perhatikan kode berikut:
 
 ```javascript
 const rumusA = (x) => x * 10;
-const rumusB = (x) => { x * 10; };
+const rumusB = (x) => {
+  x * 10;
+};
 
 console.log(rumusA(5)); // Baris 1
 console.log(rumusB(5)); // Baris 2
@@ -234,4 +252,7 @@ console.log(rumusB(5)); // Baris 2
 
 1. Berapakah hasil keluaran Baris 1?
 2. Berapakah hasil keluaran Baris 2? Mengapa hasilnya berbeda?
+
+```
+
 ```
