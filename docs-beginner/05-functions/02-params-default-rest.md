@@ -5,7 +5,7 @@ level: beginner
 official_docs_url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters"
 ---
 
-# Panduan Pemula: Parameter Default dan Rest Parameter di JavaScript
+# Panduan Pemula: Default Parameter dan Rest Parameter di JavaScript
 
 > [!NOTE]
 > **Inti Konsep (The Ground Truth)**
@@ -39,10 +39,12 @@ sapaPengguna("Aria", 25);
 ## 2. Analogi Logis: Pesan Makanan Cepat Saji (Default & Rest)
 
 ### A. Default Parameter (Paket Standar)
+
 Bayangkan Anda memesan paket nasi burger di kasir cepat saji:
-- Pelayan bertanya: *"Mau minum apa?"*.
-- Jika Anda tidak menyebut minuman apa pun (*tidak mengirim parameter*), sistem restoran otomatis menyajikan **Teh Manis Dingin** (*Default*).
-- Namun jika Anda menyebut: *"Es Jeruk"*, maka Es Jeruk yang disajikan menggantikan teh standar.
+
+- Pelayan bertanya: _"Mau minum apa?"_.
+- Jika Anda tidak menyebut minuman apa pun (_tidak mengirim parameter_), sistem restoran otomatis menyajikan **Teh Manis Dingin** (_Default_).
+- Namun jika Anda menyebut: _"Es Jeruk"_, maka Es Jeruk yang disajikan menggantikan teh standar.
 
 ```javascript
 function pesanMenu(makanan, minuman = "Teh Manis") {
@@ -57,6 +59,7 @@ pesanMenu("Burger"); // "Burger ditemani Teh Manis"
 
 > [!IMPORTANT]
 > **Perbedaan Mutlak Tanda Titik Tiga (`...`)**:
+>
 > - **Rest Parameter** (Di Dalam Kurung Definisi Fungsi): Mengumpulkan banyak bahan terpisah menjadi **1 bungkus Array**.
 > - **Spread Operator** (Di Titik Pemanggilan Fungsi): Membuka 1 bungkus Array menjadi **argumen-argumen terpisah**.
 
@@ -106,7 +109,8 @@ Mari kita buat pencetak kartu undangan yang menerima judul acara dan daftar tamu
         border: 1px solid #ddd;
         border-radius: 8px;
       }
-      input, button {
+      input,
+      button {
         padding: 8px;
         margin-top: 6px;
         width: 100%;
@@ -129,16 +133,24 @@ Mari kita buat pencetak kartu undangan yang menerima judul acara dan daftar tamu
   <body>
     <div class="card">
       <h3>Pembuat Undangan Acara</h3>
-      
-      <label for="input-acara">Nama Acara (Boleh Kosong):</label>
-      <input type="text" id="input-acara" placeholder="Default: Acara Syukuran" />
 
-      <label for="input-tamu" style="margin-top: 8px; display: block;">Nama Tamu (Pisahkan koma):</label>
+      <label for="input-acara">Nama Acara (Boleh Kosong):</label>
+      <input
+        type="text"
+        id="input-acara"
+        placeholder="Default: Acara Syukuran"
+      />
+
+      <label for="input-tamu" style="margin-top: 8px; display: block;"
+        >Nama Tamu (Pisahkan koma):</label
+      >
       <input type="text" id="input-tamu" value="Ari, Kyo, Budi" />
 
       <button type="button" id="btn-cetak">Cetak Undangan</button>
 
-      <div class="hasil-box" id="wadah-hasil">Hasil undangan akan muncul di sini.</div>
+      <div class="hasil-box" id="wadah-hasil">
+        Hasil undangan akan muncul di sini.
+      </div>
     </div>
   </body>
 </html>
@@ -215,9 +227,9 @@ cetakBtn.addEventListener("click", () => {
 
 ## 6. Checklist Praktik Mandiri
 
-- [ ] Buka `index.html` di browser dan klik **"Cetak Undangan"**.
-- [ ] Kosongkan kolom nama acara, lalu klik cetak lagi. Amati bagaimana nama acara otomatis berubah menjadi `"Acara Syukuran"` berkat default parameter.
-- [ ] Tambahkan beberapa nama tamu baru di kolom teks dipisah koma, perhatikan jumlah total tamu bertambah secara otomatis berkat rest parameter.
+- [x] Buka `index.html` di browser dan klik **"Cetak Undangan"**.
+- [x] Kosongkan kolom nama acara, lalu klik cetak lagi. Amati bagaimana nama acara otomatis berubah menjadi `"Acara Syukuran"` berkat default parameter.
+- [x] Tambahkan beberapa nama tamu baru di kolom teks dipisah koma, perhatikan jumlah total tamu bertambah secara otomatis berkat rest parameter.
 
 > [!TIP]
 > **Parameter Pemahaman Anda**
@@ -242,4 +254,7 @@ cetakTim(undefined, "Budi", "Siti", "Joko");
 1. Apakah nilai dari parameter `kapten` yang tercetak di konsol?
 2. Berapakah panjang array (`.length`) dari parameter `anggota`?
 3. Mengapa penulisan `function cetakTim(...anggota, kapten)` dilarang di JavaScript?
+
+```
+
 ```
