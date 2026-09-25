@@ -31,7 +31,7 @@ Tersedia **dua jalur dokumentasi** yang saling melengkapi:
 ## 🗺️ Peta Kurikulum (12 Modul — 32 Topik)
 
 > [!NOTE]
-> Seluruh 32 topik telah lengkap tersedia baik di versi **Pemula** maupun **Deep Dive**. Pelacakan progres belajar aktif dilakukan melalui checklist di [`.agents/roadmap.md`](./.agents/roadmap.md).
+> Seluruh 32 topik telah lengkap tersedia baik di versi **Pemula** maupun **Deep Dive**.
 
 | Modul                          | Topik Materi                                                              |                                         Versi Pemula                                          |                                   Versi Deep Dive                                    |
 | :----------------------------- | :------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
@@ -47,8 +47,6 @@ Tersedia **dua jalur dokumentasi** yang saling melengkapi:
 | **10. Fetch & Errors**         | Fetch API & JSON, Request Error Handling (`AbortController`)              |                       [Buka](./docs-beginner/10-fetch-error-handling/)                        |                       [Buka](./docs/10-fetch-error-handling/)                        |
 | **11. ES Modules**             | ES Modules (`import`/`export`, `<script type="module">`)                  |             [Buka](./docs-beginner/11-es-modules/01-es-modules-import-export.md)              |             [Buka](./docs/11-es-modules/01-es-modules-import-export.md)              |
 | **12. Browser DevTools**       | Breakpoints vs Console, Rendering Performance & Layout Thrashing          |                         [Buka](./docs-beginner/12-browser-devtools/)                          |                         [Buka](./docs/12-browser-devtools/)                          |
-
-👉 **Buka [`.agents/roadmap.md`](./.agents/roadmap.md)** untuk melihat rincian setiap topik dan menandai progres belajar harian Anda.
 
 ---
 
