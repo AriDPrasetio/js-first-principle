@@ -47,11 +47,14 @@ Di JavaScript, variabel tidak terikat pada satu tipe data (_dynamically typed_).
 2. **Pemeriksaan Aman Variabel yang Belum Dibuat (_Undeclared Safety Check_)**:
    Jika Anda mencoba membaca variabel yang tidak pernah dideklarasikan, browser akan melempar error fatal:
    ```javascript
-   console.log(variabelGaib); // Error: ReferenceError: variabelGaib is not defined
+   // 1. Coba tampilkan variabel yang belum dibuat ke konsol — memicu error ReferenceError
+   console.log(variabelGaib);
    ```
    Namun `typeof` memiliki kekebalan khusus—ia adalah satu-satunya operator yang aman memeriksa variabel asing tanpa memicu crash:
    ```javascript
+   // 1. Periksa apakah variabelGaib belum dideklarasikan dengan aman menggunakan typeof
    if (typeof variabelGaib === "undefined") {
+     // 2. Tampilkan pesan aman ke konsol jika variabel belum tersedia
      console.log("Aman! Variabel belum tersedia.");
    }
    ```
@@ -117,35 +120,34 @@ Mari kita buat pendeteksi tipe data input formulir:
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen HTML yang dibutuhkan
-// ambil elemen kotak isian input berdasarkan ID-nya
+// 1. Ambil elemen kotak input usia dari halaman berdasarkan ID-nya, simpan ke wadah usiaInput
 const usiaInput = document.querySelector("#input-usia");
 
-// ambil elemen tombol berdasarkan ID-nya
+// 2. Ambil elemen tombol dari halaman berdasarkan ID-nya, simpan ke wadah cekBtn
 const cekBtn = document.querySelector("#btn-cek");
 
-// ambil elemen penampil nilai berdasarkan ID-nya
+// 3. Ambil elemen penampil nilai dari halaman berdasarkan ID-nya, simpan ke wadah nilaiOut
 const nilaiOut = document.querySelector("#nilai-output");
 
-// ambil elemen penampil tipe berdasarkan ID-nya
+// 4. Ambil elemen penampil tipe dari halaman berdasarkan ID-nya, simpan ke wadah tipeOut
 const tipeOut = document.querySelector("#tipe-output");
 
-// 2. Pasang aksi ketika tombol diklik
-// saat tombol diklik, jalankan fungsi berikut:
+// 5. Pasang pendengar klik pada tombol cekBtn — setiap kali diklik, blok ini berjalan
 cekBtn.addEventListener("click", () => {
-  // baca nilai yang sedang tertulis di kotak input (meskipun input bertipe number, hasilnya selalu string!)
+  // 6. Baca nilai yang sedang tertulis di kotak input, simpan ke variabel nilaiMentah
+  // Catatan*: meskipun input bertipe 'number' di HTML, properti .value selalu mengembalikan string teks
   const nilaiMentah = usiaInput.value;
 
-  // gunakan operator typeof untuk memindai tipe data dari variabel nilaiMentah
+  // 7. Gunakan typeof untuk memindai tipe data variabel nilaiMentah, simpan hasilnya ke hasilTipe
   const hasilTipe = typeof nilaiMentah;
 
-  // tampilkan nilai mentah ke layar dengan tanda petik agar terlihat bahwa ini teks
+  // 8. Tampilkan nilai mentah ke layar dalam tanda petik agar terlihat jelas bahwa ini berupa teks
   nilaiOut.textContent = `"${nilaiMentah}"`;
 
-  // tampilkan hasil deteksi typeof ke layar (akan memunculkan kata 'string')
+  // 9. Tampilkan hasil pemindaian typeof ke layar — akan muncul kata 'string'
   tipeOut.textContent = hasilTipe;
 
-  // beri warna merah sebagai bukti visual bahwa input HTML masih berupa string teks
+  // 10. Beri warna merah pada teks tipeOut sebagai bukti visual bahwa input HTML masih bertipe string
   tipeOut.style.color = "red";
 });
 ```
@@ -157,14 +159,18 @@ cekBtn.addEventListener("click", () => {
 1. **Gunakan `Array.isArray(data)` untuk mengecek Array**:
    Karena di JavaScript Array adalah turunan dari Objek, `typeof [1, 2, 3]` selalu menghasilkan `"object"`. Untuk memastikan sebuah data adalah deret array asli, gunakan fungsi bawaan:
    ```javascript
-   Array.isArray([1, 2, 3]); // true
-   Array.isArray({ nama: "Ari" }); // false
+   // 1. Periksa apakah [1, 2, 3] adalah array asli — hasilnya true
+   Array.isArray([1, 2, 3]);
+   // 2. Periksa apakah objek biasa adalah array — hasilnya false
+   Array.isArray({ nama: "Ari" });
    ```
 2. **Hati-hati dengan `null`**:
    Karena `typeof null` menghasilkan `"object"`, selalu periksa kebenaran objek dengan mengecek nilainya bukan `null`:
    ```javascript
+   // 1. Periksa dua kondisi sekaligus: typeof harus "object" DAN nilainya bukan null
+   // Catatan*: typeof null menghasilkan "object" karena bug historis dari tahun 1995 — bukan perilaku normal
    if (typeof data === "object" && data !== null) {
-     // Aman! Benar-benar sebuah objek, bukan null.
+     // 2. Jalankan perintah di dalam blok ini hanya jika data benar-benar sebuah objek sejati
    }
    ```
 

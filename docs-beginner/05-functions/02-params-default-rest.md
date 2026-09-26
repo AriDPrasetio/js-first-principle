@@ -25,12 +25,13 @@ Banyak pemula sering tertukar antara kata **Parameter** dan **Argumen**. Keduany
   Argumen adalah data nilai aktual yang Anda masukkan ke dalam tanda kurung **saat menjalankan (memanggil) fungsi**. Ia adalah tulisan asli yang Anda isikan ke dalam kolom formulir tersebut: `"Aria"`.
 
 ```javascript
-// 'nama' dan 'usia' adalah PARAMETER (variabel penampung di definisi fungsi)
+// 1. Buat fungsi sapaPengguna dengan dua penampung kosong: nama dan usia.
 function sapaPengguna(nama, usia) {
+  // 2. Kembalikan kalimat gabungan yang menyisipkan nilai nama dan usia.
   return `Halo, saya ${nama}, berumur ${usia} tahun.`;
 }
 
-// "Aria" dan 25 adalah ARGUMEN (nilai konkret yang dioper saat pemanggilan)
+// 1. Jalankan fungsi sapaPengguna dengan mengirim nilai nyata "Aria" dan 25.
 sapaPengguna("Aria", 25);
 ```
 
@@ -47,9 +48,12 @@ Bayangkan Anda memesan paket nasi burger di kasir cepat saji:
 - Namun jika Anda menyebut: _"Es Jeruk"_, maka Es Jeruk yang disajikan menggantikan teh standar.
 
 ```javascript
+// 1. Buat fungsi pesanMenu dengan penampung makanan wajib dan minuman cadangan.
 function pesanMenu(makanan, minuman = "Teh Manis") {
+  // 2. Kembalikan kalimat pesanan yang menggabungkan nama makanan dan minuman.
   return `${makanan} ditemani ${minuman}`;
 }
+// 1. Panggil fungsi dengan satu porsi argumen saja — minuman otomatis mengambil "Teh Manis".
 pesanMenu("Burger"); // "Burger ditemani Teh Manis"
 ```
 
@@ -65,14 +69,17 @@ pesanMenu("Burger"); // "Burger ditemani Teh Manis"
 
 ```javascript
 // REST PARAMETER (Membungkus):
+// 1. Buat fungsi buatPaket yang menerima namaPaket, lalu kumpulkan sisanya ke dalam ...daftarBarang.
 function buatPaket(namaPaket, ...daftarBarang) {
-  // daftarBarang sekarang adalah Array: ["Buku", "Pulpen", "Penggaris"]
+  // Catatan*: daftarBarang di dalam sini otomatis menjadi Array sejati.
+  // 2. Cetak jumlah barang yang berhasil dikumpulkan ke layar.
   console.log(daftarBarang.length);
 }
 
 // SPREAD OPERATOR (Membuka):
+// 1. Buat daftar nama barang ke dalam wadah array belanjaan.
 const belanjaan = ["Buku", "Pulpen", "Penggaris"];
-// Membuka isi array menjadi argumen menggunakan spread operator
+// 2. Jalankan fungsi buatPaket, gunakan tiga titik (...) untuk mengeluarkan isi array belanjaan menjadi bahan terpisah.
 buatPaket("Alat Tulis", ...belanjaan);
 ```
 
@@ -162,22 +169,20 @@ Mari kita buat pencetak kartu undangan yang menerima judul acara dan daftar tamu
 
 ```javascript
 // 1. FUNGSI DENGAN DEFAULT & REST PARAMETER:
-// namaAcara memiliki nilai default 'Acara Syukuran'
-// ...daftarTamu mengumpulkan seluruh nama tamu ke dalam satu Array
-// deklarasi function buatUndangan yang menerima parameter namaAcara (dengan default) dan rest parameter daftarTamu
+// 1. Buat fungsi buatUndangan dengan judul cadangan dan ...daftarTamu untuk menampung sisa argumen.
 function buatUndangan(namaAcara = "Acara Syukuran", ...daftarTamu) {
-  // buat dan simpan teks "<ul>" ke dalam variable daftarHtml
+  // 2. Siapkan teks pembuka daftar HTML dan simpan ke variabel daftarHtml.
   let daftarHtml = "<ul>";
 
-  // loop melalui setiap nama dalam array daftarTamu
+  // 3. Putar setiap nama di dalam wadah daftarTamu satu per satu.
   for (const nama of daftarTamu) {
-    // tambahkan element <li> berisi nama tamu ke dalam string daftarHtml
+    // 4. Tambahkan baris baru berisi nama tamu ke dalam teks daftarHtml.
     daftarHtml += `<li>Tamu Terhormat: ${nama}</li>`;
   }
-  // tutup tag "<ul>" dengan menambahkannya ke dalam string daftarHtml
+  // 5. Tambahkan teks penutup daftar HTML di bagian paling akhir.
   daftarHtml += "</ul>";
 
-  // kembalikan template literal berisi undangan resmi, jumlah tamu, dan daftarHtml
+  // 6. Kembalikan kerangka utuh undangan beserta daftar nama tamu.
   return `
     <strong>Undangan Resmi: ${namaAcara}</strong>
     <p>Total Tamu Terdaftar: ${daftarTamu.length} orang</p>
@@ -186,31 +191,29 @@ function buatUndangan(namaAcara = "Acara Syukuran", ...daftarTamu) {
 }
 
 // 2. Hubungkan ke Tombol HTML:
-// ambil element input berdasarkan ID-nya, simpan ke variable acaraInput
+// 1. Ambil elemen masukan acara dari dokumen HTML lalu simpan ke acaraInput.
 const acaraInput = document.querySelector("#input-acara");
-// ambil element input tamu berdasarkan ID-nya, simpan ke variable tamuInput
+// 2. Ambil elemen masukan tamu dari dokumen HTML lalu simpan ke tamuInput.
 const tamuInput = document.querySelector("#input-tamu");
-// ambil element button cetak berdasarkan ID-nya, simpan ke variable cetakBtn
+// 3. Ambil elemen tombol cetak dari dokumen HTML lalu simpan ke cetakBtn.
 const cetakBtn = document.querySelector("#btn-cetak");
-// ambil element wadah hasil berdasarkan ID-nya, simpan ke variable hasilWadah
+// 4. Ambil kotak wadah hasil dari dokumen HTML lalu simpan ke hasilWadah.
 const hasilWadah = document.querySelector("#wadah-hasil");
 
-// saat cetakBtn di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol cetak.
 cetakBtn.addEventListener("click", () => {
-  // ambil value dari acaraInput, hilangkan spasi ekstra, dan simpan ke variable teksAcara
+  // 2. Baca isi kotak acara dan hilangkan spasi sisa di ujung teks.
   const teksAcara = acaraInput.value.trim();
-  // Jika input kosong, kita kirim undefined agar Default Parameter aktif!
-  // jika teksAcara kosong, set judulTerkirim menjadi undefined, jika tidak, set menjadi teksAcara
+  // 3. Jadikan nilai kosong sebagai undefined agar nilai cadangan (default) aktif saat dikirim.
+  // Catatan*: Nilai null tidak akan mengaktifkan default parameter, harus undefined.
   const judulTerkirim = teksAcara === "" ? undefined : teksAcara;
 
-  // Baca daftar tamu dari teks dipisah koma:
-  // simpan value dari tamuInput ke dalam variable teksTamu
+  // 4. Baca isi kotak tamu dari halaman HTML.
   const teksTamu = tamuInput.value;
-  // jika teksTamu ada isinya, pisahkan berdasarkan koma dan bersihkan spasi tiap nama lalu jadikan array, jika kosong set menjadi array kosong
+  // 5. Belah teks berdasarkan koma untuk menghasilkan daftar tamu.
   const listTamu = teksTamu ? teksTamu.split(",").map((t) => t.trim()) : [];
 
-  // Panggil fungsi menggunakan SPREAD OPERATOR (...) untuk membuka array listTamu:
-  // perbarui innerHTML dari hasilWadah dengan memanggil buatUndangan menggunakan judulTerkirim dan menyebarkan array listTamu
+  // 6. Jalankan fungsi dengan judul dan uraian daftar tamu, lalu cetak hasilnya ke dalam kotak HTML.
   hasilWadah.innerHTML = buatUndangan(judulTerkirim, ...listTamu);
 });
 ```
@@ -243,11 +246,15 @@ cetakBtn.addEventListener("click", () => {
 Perhatikan kode berikut:
 
 ```javascript
+// 1. Buat fungsi cetakTim dengan nama kapten cadangan dan daftar anggota tak terbatas.
 function cetakTim(kapten = "Anonim", ...anggota) {
+  // 2. Cetak nama kapten ke layar.
   console.log("Kapten:", kapten);
+  // 3. Cetak susunan anggota ke layar.
   console.log("Anggota:", anggota);
 }
 
+// 1. Jalankan fungsi dengan mengosongkan nama kapten (undefined) untuk memicu nilai default.
 cetakTim(undefined, "Budi", "Siti", "Joko");
 ```
 

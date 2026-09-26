@@ -37,14 +37,19 @@ Bayangkan sebuah pabrik pembuat stempel:
 
 ```javascript
 // HOF PENCETAK FUNGSI (FUNCTION FACTORY):
+// 1. Buat fungsi pembuat pengali yang menerima besaran faktor.
 function buatPengali(faktor) {
+  // 2. Kembalikan fungsi baru yang akan mengalikan angka dengan faktor tersebut.
+  // Catatan*: Nilai faktor akan terus diingat oleh fungsi baru ini karena fitur closure.
   return function (angka) {
+    // 3. Lakukan perkalian antara angka dan faktor, lalu kembalikan hasilnya.
     return angka * faktor;
   };
 }
 
-// Menghasilkan fungsi baru
+// 1. Cetak fungsi pengali dua dari pabrik buatPengali, lalu simpan ke variabel kaliDua.
 const kaliDua = buatPengali(2);
+// 2. Jalankan fungsi kaliDua dengan masukan 10.
 console.log(kaliDua(10)); // 20
 ```
 
@@ -123,89 +128,86 @@ Mari kita buat pengolah daftar teks yang mendemonstrasikan kedua peran HOF: mene
 ### Berkas 2: `app.js`
 
 ```javascript
-// buat array berisi string nama-nama peserta dan simpan ke variable namaPeserta
+// 1. Siapkan daftar nama di dalam wadah array namaPeserta.
 const namaPeserta = ["andi", "kyo", "budi"];
-// ambil element daftar hasil berdasarkan ID-nya, simpan ke variable listHasil
+// 2. Ambil elemen daftar HTML lalu simpan ke variabel listHasil.
 const listHasil = document.querySelector("#daftar-hasil");
 
 // ========================================================
 // 1. HOF TIPE 1: MENERIMA FUNGSI CALLBACK SEBAGAI BAHAN
 // ========================================================
-// deklarasi function prosesDaftar yang menerima array deretData dan function callback fungsiPengubah
+// 1. Buat fungsi pengolah daftar utama yang menerima daftar data dan fungsi pekerja tambahan.
 function prosesDaftar(deretData, fungsiPengubah) {
-  // buat array kosong dan simpan ke variable hasilBaru
+  // 2. Siapkan wadah kosong untuk menampung kumpulan hasil akhir.
   const hasilBaru = [];
-  // loop melalui setiap item dalam array deretData
+  // 3. Putar setiap isi daftar secara bergiliran.
   for (const item of deretData) {
-    // Jalankan fungsi callback yang disuntikkan dari luar:
-    // panggil fungsiPengubah dengan argumen item, lalu tambahkan hasilnya ke array hasilBaru
+    // 4. Minta fungsi pekerja mengubah bentuk item saat ini, lalu masukkan hasilnya ke wadah.
     hasilBaru.push(fungsiPengubah(item));
   }
-  // kembalikan array hasilBaru
+  // 5. Kembalikan daftar utuh yang sudah diubah.
   return hasilBaru;
 }
 
-// Dua fungsi pekerja spesialis (Callback):
-// simpan arrow function yang mengubah teks menjadi huruf kapital ke dalam variable jadikanKapital
+// 1. Buat fungsi spesialis pengubah huruf besar lalu simpan ke variabel jadikanKapital.
 const jadikanKapital = (teks) => teks.toUpperCase();
-// simpan arrow function yang menambahkan karakter bintang di sekitar teks ke dalam variable beriBintang
+// 1. Buat fungsi spesialis penempel bintang lalu simpan ke variabel beriBintang.
 const beriBintang = (teks) => `⭐ ${teks} ⭐`;
 
-// deklarasi function tampilkanKeLayar yang menerima parameter arrayData
+// 1. Buat fungsi penampil data ke layar HTML bernama tampilkanKeLayar.
 function tampilkanKeLayar(arrayData) {
-  // bersihkan konten HTML dari element listHasil
+  // 2. Bersihkan isi tampilan daftar dari sisa data sebelumnya.
   listHasil.innerHTML = "";
-  // loop melalui setiap baris dalam arrayData
+  // 3. Putar setiap baris kalimat secara bergiliran.
   for (const baris of arrayData) {
-    // buat element <li> baru dan simpan ke variable li
+    // 4. Bentuk elemen baris daftar HTML baru.
     const li = document.createElement("li");
-    // set teks dari element li menjadi baris saat ini
+    // 5. Masukkan teks kalimat ke dalam elemen tersebut.
     li.textContent = baris;
-    // tambahkan element li sebagai anak dari element listHasil
+    // 6. Tempelkan elemen baru ke tampilan utama halaman.
     listHasil.appendChild(li);
   }
 }
 
-// saat element dengan ID btn-kapital di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol pemicu huruf kapital.
 document.querySelector("#btn-kapital").addEventListener("click", () => {
-  // panggil prosesDaftar dengan array namaPeserta dan callback jadikanKapital, simpan ke variable hasil
+  // 2. Perintahkan pabrik prosesDaftar untuk mengolah nama peserta dengan pekerja jadikanKapital.
   const hasil = prosesDaftar(namaPeserta, jadikanKapital);
-  // panggil tampilkanKeLayar dengan array hasil
+  // 3. Tampilkan hasil akhirnya ke layar.
   tampilkanKeLayar(hasil);
 });
 
-// saat element dengan ID btn-bintang di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol pemicu emoji bintang.
 document.querySelector("#btn-bintang").addEventListener("click", () => {
-  // panggil prosesDaftar dengan array namaPeserta dan callback beriBintang, simpan ke variable hasil
+  // 2. Perintahkan pabrik prosesDaftar untuk mengolah nama peserta dengan pekerja beriBintang.
   const hasil = prosesDaftar(namaPeserta, beriBintang);
-  // panggil tampilkanKeLayar dengan array hasil
+  // 3. Tampilkan hasil akhirnya ke layar.
   tampilkanKeLayar(hasil);
 });
 
 // ========================================================
 // 2. HOF TIPE 2: MENGHASILKAN FUNGSI BARU (FACTORY)
 // ========================================================
-// deklarasi function buatHitungDiskon yang menerima parameter persenDiskon
+// 1. Buat pabrik pembuat rumus diskon yang menerima angka besaran potongan.
 function buatHitungDiskon(persenDiskon) {
-  // Mengembalikan fungsi baru yang mengingat persenDiskon lewat closure:
-  // kembalikan function tanpa nama (anonymous) yang menerima parameter hargaAsli
+  // 2. Cetak dan kembalikan fungsi baru untuk mengukur harga belanjaan.
+  // Catatan*: Nilai persen diskon dikunci dengan erat oleh fungsi baru berkat closure.
   return function (hargaAsli) {
-    // kembalikan hasil pengurangan hargaAsli dengan nilai diskon
+    // 3. Kembalikan angka sisa setelah dikurangi porsi potongan harganya.
     return hargaAsli - (hargaAsli * persenDiskon);
   };
 }
 
-// Cetak fungsi spesialis diskon 25%:
-// panggil buatHitungDiskon dengan argumen 0.25 dan simpan function hasilnya ke variable diskonMemberVip
+// 1. Pesan mesin potong diskon 25% dari pabrik dan simpan ke variabel diskonMemberVip.
 const diskonMemberVip = buatHitungDiskon(0.25);
 
-// saat element dengan ID btn-diskon di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol hitung potongan toko.
 document.querySelector("#btn-diskon").addEventListener("click", () => {
-  // panggil function diskonMemberVip dengan argumen 100000, simpan hasilnya ke variable harga100k
+  // 2. Masukkan angka harga pertama ke dalam mesin pemotong 25% tadi.
   const harga100k = diskonMemberVip(100000);
-  // panggil function diskonMemberVip dengan argumen 200000, simpan hasilnya ke variable harga200k
+  // 3. Masukkan angka harga kedua ke dalam mesin pemotong yang sama.
   const harga200k = diskonMemberVip(200000);
-  // panggil tampilkanKeLayar dengan array berisi string template teks harga
+  // 4. Gelar hasil akhirnya ke tampilan layar.
   tampilkanKeLayar([
     `Harga Rp100.000 (Diskon 25%) -> Rp${harga100k.toLocaleString("id-ID")}`,
     `Harga Rp200.000 (Diskon 25%) -> Rp${harga200k.toLocaleString("id-ID")}`,
@@ -228,8 +230,11 @@ document.querySelector("#btn-diskon").addEventListener("click", () => {
 - [ ] Klik tombol **"Hitung Diskon Toko"** dan perhatikan bagaimana fungsi hasil cetakan `buatHitungDiskon` bekerja mandiri.
 - [ ] Buka Console (`F12`), coba buat pengali sederhana:
   ```javascript
+  // 1. Buat mesin pencetak pengali angka ringkas.
   const cetakPengali = (n) => (x) => x * n;
+  // 2. Cetak mesin pengali lima dari pabrik tersebut.
   const kaliLima = cetakPengali(5);
+  // 3. Jalankan mesin pengali lima pada angka 4.
   console.log(kaliLima(4)); // 20
   ```
 
@@ -245,13 +250,18 @@ document.querySelector("#btn-diskon").addEventListener("click", () => {
 Perhatikan kode berikut:
 
 ```javascript
+// 1. Buat fungsi pabrik kata sapaan pembuka.
 function buatSapaan(kataAwal) {
+  // 2. Kembalikan fungsi baru pembuat kalimat utuh.
   return function (namaTujuan) {
+    // 3. Kembalikan kalimat gabungan sapaan dan nama tujuannya.
     return `${kataAwal}, ${namaTujuan}!`;
   };
 }
 
+// 1. Pesan mesin pembuat sapaan pagi dan simpan ke variabel.
 const sapaPagi = buatSapaan("Selamat Pagi");
+// 2. Jalankan mesin tersebut untuk menyapa seseorang.
 console.log(sapaPagi("Ari"));
 ```
 

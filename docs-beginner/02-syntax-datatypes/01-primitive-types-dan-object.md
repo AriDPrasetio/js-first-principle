@@ -45,8 +45,11 @@ Di JavaScript modern, terdapat **7 Tipe Data Primitive Resmi**:
 > Nilai primitif tidak pernah bisa diubah fisiknya di memori. Jika Anda memiliki `let kata = "kopi"`, lalu mencoba mengubah huruf pertamanya:
 >
 > ```javascript
+> // 1. Ubah huruf pertama pada string (percobaan mutasi)
+> // Catatan*: operasi ini tidak berdampak apa-apa karena nilai primitif bersifat immutable
 > kata[0] = "t";
-> console.log(kata); // Tetap "kopi"! Tidak berubah menjadi "topi".
+> // 2. Tampilkan isi variabel kata ke konsol — nilainya tetap "kopi"
+> console.log(kata);
 > ```
 >
 > Mengganti nilai variabel (`kata = "topi"`) bukanlah memutasi teks lama, melainkan membuang nilai lama dan menunjuk ke data baru yang segar di memori.
@@ -122,52 +125,52 @@ Anda bisa mencoba langsung di browser dengan membuat dua berkas dalam satu folde
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Primitive: pass-by-value (tidak mengubah variabel asal)
-// simpan teks "Frontend Dev" ke dalam variabel roleA
+// 1. Simpan teks "Frontend Dev" ke variabel roleA sebagai contoh tipe data primitive string
 let roleA = "Frontend Dev";
 
-// salin isi roleA ke dalam variabel roleB
+// 2. Salin nilai roleA ke variabel roleB — karena bertipe primitive, isi nilainya disalin mandiri
 let roleB = roleA;
 
-// ubah isi roleB menjadi "Tech Lead". Variabel roleA tetap "Frontend Dev" karena tipe primitive mandiri
+// 3. Ubah isi roleB menjadi "Tech Lead"
+// Catatan*: karena primitive bekerja dengan salinan nilai, roleA tetap "Frontend Dev" — tidak ikut berubah
 roleB = "Tech Lead";
 
-// 2. Object: pass-by-reference (berbagi alamat memori yang sama)
-// buat objek userProfile dengan properti nama "Ari" dan peran dari nilai roleA ("Frontend Dev")
+// 4. Buat objek userProfile berisi nama dan peran yang diambil dari nilai roleA saat ini
+// Catatan*: objek disimpan di memori heap — variabel hanya menyimpan alamat penunjuknya, bukan isinya langsung
 const userProfile = {
   name: "Ari",
   role: roleA,
 };
 
-// ambil elemen HTML dengan ID "user-name", simpan ke wadah nameEl
+// 5. Ambil elemen penampil nama dari halaman berdasarkan ID-nya, simpan ke wadah nameEl
 const nameEl = document.querySelector("#user-name");
 
-// ambil elemen HTML dengan ID "user-role", simpan ke wadah roleEl
+// 6. Ambil elemen penampil peran dari halaman berdasarkan ID-nya, simpan ke wadah roleEl
 const roleEl = document.querySelector("#user-role");
 
-// ambil elemen tombol HTML dengan ID "btn-update", simpan ke wadah updateBtn
+// 7. Ambil elemen tombol dari halaman berdasarkan ID-nya, simpan ke wadah updateBtn
 const updateBtn = document.querySelector("#btn-update");
 
-// 3. Render awal ke layar
-// tampilkan nama dari objek userProfile ke dalam teks elemen nameEl di layar
+// 8. Tampilkan nama dari objek userProfile ke elemen nameEl di layar
 nameEl.textContent = userProfile.name;
 
-// tampilkan peran dari objek userProfile ke dalam teks elemen roleEl di layar
+// 9. Tampilkan peran dari objek userProfile ke elemen roleEl di layar
 roleEl.textContent = userProfile.role;
 
-// 4. Interaksi tombol (Membuktikan sifat mutasi objek bersama)
-// saat tombol updateBtn diklik, jalankan perintah di dalam blok ini:
+// 10. Pasang pendengar klik pada tombol updateBtn — blok ini berjalan setiap kali tombol diklik
 updateBtn.addEventListener("click", () => {
-  // buat variabel baru yang menunjuk ke alamat objek userProfile yang sama di memori
+  // 11. Buat variabel profileAlias yang menunjuk ke alamat objek userProfile yang sama di memori
+  // Catatan*: ini bukan salinan baru — keduanya menunjuk ke rumah yang sama, bukan dua rumah berbeda
   const profileAlias = userProfile;
 
-  // ubah peran pada profileAlias menjadi roleB ("Tech Lead"). Tindakan ini otomatis mengubah userProfile.role aslinya
+  // 12. Ubah properti role pada profileAlias menjadi nilai roleB ("Tech Lead")
+  // Catatan*: karena profileAlias dan userProfile berbagi alamat yang sama, userProfile.role ikut berubah
   profileAlias.role = roleB;
 
-  // perbarui teks di layar menggunakan data userProfile asli untuk membuktikan bahwa data aslinya ikut berubah
+  // 13. Tampilkan isi userProfile.role ke layar — hasilnya sudah berubah, membuktikan mutasi lewat alias
   roleEl.textContent = `${userProfile.role} (Dimutasi lewat profileAlias!)`;
 
-  // ubah warna teks menjadi hijau sebagai penanda visual perubahan
+  // 14. Ubah warna teks menjadi hijau sebagai penanda visual bahwa data sudah dimutasi
   roleEl.style.color = "green";
 });
 ```
@@ -182,15 +185,20 @@ Jika Anda ingin membuat salinan objek yang benar-benar mandiri (agar perubahan d
 > Tanda titik tiga (`...`) bertindak membongkar dan menyalin properti objek satu per satu ke dalam wadah objek baru `{}` di memori. Sintaks praktis ini akan kita bedah lebih dalam di **Bab 07 (Array & Object Methods)**.
 
 ```javascript
+// 1. Buat objek userProfile dengan properti name dan role
 const userProfile = { name: "Ari", role: "Frontend Dev" };
 
-// Salin isi userProfile ke dalam objek baru yang terpisah di memori:
+// 2. Buat objek baru userMandiri dengan menyalin semua properti userProfile menggunakan spread operator
+// Catatan*: spread (...) membuat salinan mandiri — objek baru menempati alamat memori sendiri yang berbeda
 const userMandiri = { ...userProfile };
 
+// 3. Ubah properti role pada salinan mandiri userMandiri menjadi "Product Manager"
 userMandiri.role = "Product Manager";
 
-console.log(userProfile.role); // Tetap "Frontend Dev" (Aman dari mutasi!)
-console.log(userMandiri.role); // "Product Manager"
+// 4. Cetak role dari userProfile — hasilnya tetap "Frontend Dev" karena salinannya terpisah dari aslinya
+console.log(userProfile.role);
+// 5. Cetak role dari userMandiri — hasilnya "Product Manager" sesuai perubahan yang baru dilakukan
+console.log(userMandiri.role);
 ```
 
 ---
@@ -214,8 +222,11 @@ console.log(userMandiri.role); // "Product Manager"
 Coba tebak hasilnya sebelum dijalankan di komputer:
 
 ```javascript
+// 1. Buat variabel kotaAsal berisi teks "Jakarta"
 let kotaAsal = "Jakarta";
+// 2. Salin nilai kotaAsal ke variabel kotaTujuan
 let kotaTujuan = kotaAsal;
+// 3. Ubah nilai kotaTujuan menjadi "Bandung"
 kotaTujuan = "Bandung";
 
 // Pertanyaan: Berapakah isi variabel kotaAsal sekarang?

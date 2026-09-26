@@ -40,11 +40,14 @@ Bayangkan cara restoran melayani pesanan Anda sepanjang sejarah:
 #### 1. Generasi Pertama: Callback
 Fungsi asinkron lama menerima fungsi lain sebagai argumen penutup:
 ```javascript
-// ❌ Bahaya "Callback Hell" (Pyramid of Doom):
+// 1. Ambil data pengguna dan tunggu hasilnya
 ambilDataUser(id, (user) => {
+  // 2. Gunakan data pengguna untuk mengambil postingan
   ambilPostingan(user.id, (postingan) => {
+    // 3. Gunakan data postingan untuk mengambil komentar
     ambilKomentar(postingan[0].id, (komentar) => {
-      // Semakin menjorok ke kanan dan penanganan error sangat sulit:
+      // 4. Cetak komentar ke layar
+      // Catatan*: Struktur bersarang ini sulit dibaca dan rentan kesalahan.
       console.log(komentar);
     });
   });
@@ -54,25 +57,34 @@ ambilDataUser(id, (user) => {
 #### 2. Generasi Kedua: Promise (ES6)
 Objek Promise merapikan nesting callback menjadi rantai datar (*chaining*):
 ```javascript
-// ✅ Lebih rapi dengan Promise chaining:
+// 1. Ambil data pengguna lalu oper hasilnya ke fungsi berikutnya
 ambilDataUser(id)
+  // 2. Ambil postingan berdasarkan pengguna
   .then((user) => ambilPostingan(user.id))
+  // 3. Ambil komentar berdasarkan postingan pertama
   .then((postingan) => ambilKomentar(postingan[0].id))
+  // 4. Cetak komentar ke layar jika semua berhasil
   .then((komentar) => console.log(komentar))
-  // 1 catch untuk menangani error dari semua tahap di atas:
+  // 5. Tangkap dan cetak jika ada error di salah satu langkah
   .catch((error) => console.error("Terjadi error:", error));
 ```
 
 #### 3. Generasi Ketiga: `async` / `await` (ES2017)
 *Syntactic sugar* (penyederhana sintaks) di atas Promise. Di balik layar, mesin tetap memakai Promise, tetapi mata manusia membacanya secara alami dari atas ke bawah:
 ```javascript
-// 🚀 Paling intuitif & modern:
+// 1. Buat fungsi pintar yang bisa menunggu proses secara berurutan
 async function muatDataLengkap(id) {
+  // 2. Coba jalankan rangkaian perintah berikut
   try {
+    // 3. Tunggu data pengguna selesai diambil
     const user = await ambilDataUser(id);
+    // 4. Tunggu data postingan selesai diambil
     const postingan = await ambilPostingan(user.id);
+    // 5. Tunggu data komentar selesai diambil
     const komentar = await ambilKomentar(postingan[0].id);
+    // 6. Cetak komentar ke layar
     console.log(komentar);
+  // 7. Jika ada perintah yang gagal, tangkap pesan errornya
   } catch (error) {
     console.error("Gagal mengambil data:", error.message);
   }
@@ -174,40 +186,32 @@ Mari kita buat simulator pengunduh data pengguna yang mendukung **simulasi berha
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen dari HTML
-// ambil element tombol sukses berdasarkan ID-nya, simpan ke variable tombolSukses
+// 1. Ambil elemen tombol sukses dari halaman HTML
 const tombolSukses = document.querySelector("#btn-sukses");
-// ambil element tombol gagal berdasarkan ID-nya, simpan ke variable tombolGagal
+// 2. Ambil elemen tombol gagal dari halaman HTML
 const tombolGagal = document.querySelector("#btn-gagal");
-// ambil element kotak profil berdasarkan ID-nya, simpan ke variable kotakProfil
+// 3. Ambil elemen kotak profil dari halaman HTML
 const kotakProfil = document.querySelector("#kotak-profil");
 
 // ================================================================
 // PEMBUATAN PROMISE: Meniru request jaringan selama 1.5 detik
-// Memperlihatkan kapan resolve() dan kapan reject() dipanggil
 // ================================================================
-// deklarasi function requestServerSimulasi yang menerima parameter harusSukses
+// 4. Buat fungsi pensimulasi permintaan data
 function requestServerSimulasi(harusSukses) {
-  // kembalikan object Promise baru dengan fungsi callback berisi resolve dan reject
+  // 5. Kembalikan surat janji baru yang berisi cara menyatakan berhasil atau gagal
   return new Promise((resolve, reject) => {
-    // jalankan setTimeout untuk menunggu selama 1.5 detik
+    // 6. Tunda pekerjaan selama waktu yang ditentukan
     setTimeout(() => {
-      // jika value harusSukses adalah true, maka:
+      // 7. Periksa apakah simulasi diminta untuk sukses
       if (harusSukses) {
-        // Status Promise berubah menjadi FULFILLED
-        // panggil function resolve dengan data object user
+        // 8. Nyatakan janji ditepati dan berikan data pengguna
         resolve({
-          // set property nama menjadi "Dewi Lestari"
           nama: "Dewi Lestari",
-          // set property kota menjadi "Bandung"
           kota: "Bandung",
-          // set property peran menjadi "Frontend Engineer"
           peran: "Frontend Engineer",
         });
-      // jika value harusSukses adalah false, maka:
       } else {
-        // Status Promise berubah menjadi REJECTED
-        // panggil function reject dengan object Error baru
+        // 9. Nyatakan janji batal dan berikan pesan kesalahan
         reject(new Error("Koneksi ke server timeout (504 Gateway Error)"));
       }
     }, 1500);
@@ -217,58 +221,45 @@ function requestServerSimulasi(harusSukses) {
 // ================================================================
 // KONSUMSI MODERN: async / await dengan try...catch...finally
 // ================================================================
-// deklarasi function async jalankanPengunduhan yang menerima parameter modeSukses
+// 1. Buat fungsi pintar pelaksana pengunduhan
 async function jalankanPengunduhan(modeSukses) {
-  // 1. Set indikator loading
-  // ubah value property className dari kotakProfil menjadi "box loading"
+  // 2. Ubah tampilan kotak menjadi mode pemuatan data
   kotakProfil.className = "box loading";
-  // ubah teks di dalam kotakProfil menjadi pesan loading
   kotakProfil.textContent = "⏳ Menghubungi server... Mohon tunggu...";
-  // ubah value property disabled dari tombolSukses menjadi true
+  // 3. Kunci kedua tombol agar tidak bisa ditekan ganda
   tombolSukses.disabled = true;
-  // ubah value property disabled dari tombolGagal menjadi true
   tombolGagal.disabled = true;
 
-  // gunakan try untuk menangani kode yang mungkin menghasilkan error
+  // 4. Coba jalankan proses pengambilan data
   try {
-    // 2. AWAIT: Tunggu Promise selesai tanpa memblokir thread UI browser
-    // tunggu hasil eksekusi dari requestServerSimulasi dan simpan ke variable hasil
+    // 5. Tunggu fungsi peminta data selesai bekerja
     const hasil = await requestServerSimulasi(modeSukses);
 
-    // 3. Jika resolve(), kode lanjut ke baris ini:
-    // ubah value property className dari kotakProfil menjadi "box sukses"
+    // 6. Tampilkan data ke layar jika proses sukses
     kotakProfil.className = "box sukses";
-    // ubah isi HTML di dalam kotakProfil dengan data dari variable hasil
     kotakProfil.innerHTML = `
       <strong>Status:</strong> Berhasil Dimuat!<br>
       <strong>Nama:</strong> ${hasil.nama}<br>
       <strong>Kota:</strong> ${hasil.kota}<br>
       <strong>Peran:</strong> ${hasil.peran}
     `;
-  // tangkap error dari blok try ke dalam variable error
+  // 7. Tangkap dan tampilkan pesan masalah jika proses gagal
   } catch (error) {
-    // 4. Jika reject(), eksekusi seketika melompat ke blok catch ini:
-    // ubah value property className dari kotakProfil menjadi "box error"
     kotakProfil.className = "box error";
-    // ubah isi HTML di dalam kotakProfil dengan pesan error
     kotakProfil.innerHTML = `
       <strong>Status:</strong> Permintaan Gagal!<br>
       <strong>Pesan:</strong> ${error.message}
     `;
-  // jalankan blok finally setelah try atau catch selesai
+  // 8. Selalu buka kunci tombol terlepas berhasil atau tidaknya proses
   } finally {
-    // 5. FINALLY: Selalu dijalankan entah sukses maupun gagal
-    // ubah value property disabled dari tombolSukses menjadi false
     tombolSukses.disabled = false;
-    // ubah value property disabled dari tombolGagal menjadi false
     tombolGagal.disabled = false;
   }
 }
 
-// 2. Pasang pendengar klik
-// saat tombolSukses di-click, jalankan function jalankanPengunduhan dengan argument true
+// 1. Pasang pemantau klik pada tombol sukses untuk simulasi berhasil
 tombolSukses.addEventListener("click", () => jalankanPengunduhan(true));
-// saat tombolGagal di-click, jalankan function jalankanPengunduhan dengan argument false
+// 2. Pasang pemantau klik pada tombol gagal untuk simulasi masalah
 tombolGagal.addEventListener("click", () => jalankanPengunduhan(false));
 ```
 
@@ -281,7 +272,8 @@ tombolGagal.addEventListener("click", () => jalankanPengunduhan(false));
 2. **Kapan Memakai `Promise.all()`?**:
    Jika Anda perlu mengambil 3 API sekaligus yang independen (misal: data profil, data cuaca, dan data kurs dollar):
    ```javascript
-   // 🚀 Unduh ketiganya secara paralel, selesai bersamaan!
+   // 1. Tunggu tiga pengambilan data selesai secara bersamaan
+   // Catatan*: Teknik ini mempercepat proses jika data tidak saling bergantung.
    const [profil, cuaca, kurs] = await Promise.all([
      ambilProfil(),
      ambilCuaca(),

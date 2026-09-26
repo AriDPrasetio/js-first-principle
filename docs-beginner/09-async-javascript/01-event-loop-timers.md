@@ -58,13 +58,16 @@ Bayangkan sebuah kedai kopi yang sangat ramai:
 ### B. Mengapa `setTimeout(fn, 0)` Tidak Berjalan Seketika?
 Perhatikan teka-teki terkenal ini:
 ```javascript
+// 1. Cetak huruf pertama secara langsung
 console.log("A");
 
-// waktu tunggu 0 milidetik (masuk ke Web API lalu Callback Queue):
+// 2. Jadwalkan pencetakan huruf kedua dengan waktu nol detik
+// Catatan*: Ini tidak akan langsung mencetak, tetapi menitipkan tugas ini ke ruang antrean.
 setTimeout(() => {
   console.log("B");
 }, 0);
 
+// 3. Cetak huruf ketiga secara langsung
 console.log("C");
 ```
 Output di konsol adalah: **`A` $\to$ `C` $\to$ `B`** (bukan A-B-C). Mengapa?
@@ -79,14 +82,14 @@ Output di konsol adalah: **`A` $\to$ `C` $\to$ `B`** (bukan A-B-C). Mengapa?
 ### C. Menghentikan Timer: `clearTimeout` dan `clearInterval`
 Setiap kali Anda membuat timer, JavaScript memberikan sebuah **nomor token identitas (Timer ID)** berupa angka unik:
 ```javascript
-// 1. Timer Satu Kali (setTimeout):
+// 1. Jalankan sebuah perintah sekali saja setelah tiga detik lalu simpan tiketnya
 const idSatuKali = setTimeout(() => console.log("Selesai"), 3000);
-// Batalkan sebelum 3 detik lewat:
+// 2. Batalkan perintah tersebut dengan tiketnya agar tidak pernah terjadi
 clearTimeout(idSatuKali);
 
-// 2. Timer Berulang Berkala (setInterval):
+// 3. Jalankan sebuah perintah berulang kali setiap satu detik lalu simpan tiketnya
 const idBerulang = setInterval(() => console.log("Detik bertambah..."), 1000);
-// Hentikan pengulangan berkala:
+// 4. Hentikan siklus berulang tersebut
 clearInterval(idBerulang);
 ```
 
@@ -177,71 +180,63 @@ Mari kita buat simulator oven roti yang memperlihatkan bagaimana kode sinkron da
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen HTML
-// ambil element tombol panggang berdasarkan ID-nya, simpan ke variable tombolPanggang
+// ─── 1. AMBIL ELEMEN HTML ────────────────────────────────────────────────────
+// 1. Ambil empat elemen dari layar HTML dan simpan ke masing-masing variabel
 const tombolPanggang = document.querySelector("#btn-panggang");
-// ambil element tombol batal berdasarkan ID-nya, simpan ke variable tombolBatal
-const tombolBatal = document.querySelector("#btn-batal");
-// ambil element kotak status berdasarkan ID-nya, simpan ke variable kotakStatus
-const kotakStatus = document.querySelector("#kotak-status");
-// ambil element kotak log berdasarkan ID-nya, simpan ke variable kotakLog
-const kotakLog = document.querySelector("#kotak-log");
+const tombolBatal    = document.querySelector("#btn-batal");
+const kotakStatus    = document.querySelector("#kotak-status");
+const kotakLog       = document.querySelector("#kotak-log");
 
-// Token identitas untuk menyimpan Timer ID
-// buat variable idTimerOven dengan value null untuk menyimpan ID timer
+// 2. Sediakan wadah kosong untuk menyimpan nomor identitas antrean waktu
+// Catatan*: Nilai null berarti tidak ada antrean waktu yang sedang aktif.
 let idTimerOven = null;
 
 // ================================================================
 // 2. MEMULAI PROSES ASINKRON DENGAN setTimeout
 // ================================================================
-// saat tombolPanggang di-click, jalankan function berikut:
+// 3. Pasang pemantau klik pada tombol pemanggang
 tombolPanggang.addEventListener("click", () => {
-  // Jika sedang memanggang, abaikan klik dobel
-  // jika idTimerOven tidak sama dengan null, maka hentikan eksekusi function
+  // 4. Batalkan klik jika mesin pemanggang sedang bekerja
   if (idTimerOven !== null) return;
 
-  // LANGKAH 1 (Call Stack Langsung): Eksekusi kode sinkron
-  // ubah teks di dalam kotakStatus menjadi pesan sedang memanggang
+  // 5. Ubah teks di layar menjadi status sedang memanggang
   kotakStatus.textContent = "⏳ Sedang memanggang... Tunggu 3 detik!";
-  // ubah teks di dalam kotakLog menjadi pesan log call stack
+  // 6. Beri informasi awal ke dalam kotak log
   kotakLog.textContent = "[Call Stack]: Perintah setTimeout dikirim ke Web APIs...";
 
-  // LANGKAH 2 (Web APIs): Titipkan waktu tunggu ke browser selama 3.000 ms
-  // jalankan setTimeout untuk menunggu 3 detik dan simpan ID-nya ke variable idTimerOven
+  // 7. Daftarkan tugas yang ditunda selama tiga detik dan simpan nomor tiketnya
+  // Catatan*: Perintah di dalam ini akan masuk ke antrean dulu dan menunggu giliran.
   idTimerOven = setTimeout(() => {
-    // LANGKAH 4 (Dipindah Event Loop dari Queue ke Call Stack setelah 3 detik):
-    // ubah teks di dalam kotakStatus menjadi pesan roti matang
+    // 8. Tampilkan pesan berhasil ke layar
     kotakStatus.textContent = "🍞 Ting! Roti bakar matang dan siap disantap!";
-    // ubah teks di dalam kotakLog menjadi pesan log event loop
+    // 9. Perbarui isi kotak log untuk menandakan tugas selesai
     kotakLog.textContent = "[Event Loop]: Callback dieksekusi dari Callback Queue!";
-    // kembalikan value idTimerOven menjadi null karena proses sudah selesai
+    // 10. Kosongkan kembali nomor tiket karena tugas sudah tuntas
     idTimerOven = null;
   }, 3000);
 
-  // LANGKAH 3 (Call Stack Selesai):
-  // tampilkan pesan log ke dalam console
+  // 11. Cetak keterangan ke dalam konsol bahwa tahap pembukaan klik selesai
   console.log("Call Stack selesai memproses fungsi klik, thread utama bebas.");
 });
 
 // ================================================================
 // 3. MEMBATALKAN TIMER DENGAN clearTimeout
 // ================================================================
-// saat tombolBatal di-click, jalankan function berikut:
+// 1. Pasang pemantau klik pada tombol pembatalan
 tombolBatal.addEventListener("click", () => {
-  // jika idTimerOven tidak sama dengan null, maka:
+  // 2. Cek apakah ada nomor tiket waktu yang aktif tersimpan
   if (idTimerOven !== null) {
-    // Batalkan timer sebelum sempat masuk ke Callback Queue
-    // batalkan timer menggunakan fungsi clearTimeout dengan argument idTimerOven
+    // 3. Hancurkan tiket tersebut agar jadwalnya dibatalkan
     clearTimeout(idTimerOven);
-    // kembalikan value idTimerOven menjadi null karena timer sudah dibatalkan
+    // 4. Kosongkan variabel penyimpan tiket tersebut
     idTimerOven = null;
 
-    // ubah teks di dalam kotakStatus menjadi pesan batal
+    // 5. Ubah teks status di layar dengan tanda gagal
     kotakStatus.textContent = "❌ Pemanggangan dibatalkan. Oven dimatikan.";
-    // ubah teks di dalam kotakLog menjadi pesan log batal timer
+    // 6. Tambahkan pesan peringatan di kotak log
     kotakLog.textContent = "[Web APIs]: Timer ID dibatalkan via clearTimeout.";
   } else {
-    // ubah teks di dalam kotakStatus menjadi pesan tidak ada proses berjalan
+    // 7. Berikan informasi bahwa tidak ada jadwal yang bisa dibatalkan
     kotakStatus.textContent = "Tidak ada proses pemanggangan yang sedang berjalan.";
   }
 });
@@ -266,8 +261,11 @@ tombolBatal.addEventListener("click", () => {
 - [ ] Klik **"Panggang (3 Detik)"** lagi, lalu sebelum 3 detik berlalu segera klik **"Batal Panggang"** $\to$ pastikan proses pemanggangan berhasil digagalkan tepat waktu berkat `clearTimeout`.
 - [ ] Buka Console browser (F12), jalankan:
   ```javascript
+  // 1. Cetak huruf pertama ke layar
   console.log("1");
+  // 2. Siapkan pencetakan huruf kedua yang akan diantrekan nol detik
   setTimeout(() => console.log("2"), 0);
+  // 3. Cetak huruf ketiga ke layar
   console.log("3");
   ```
   Pastikan output yang keluar adalah `1`, `3`, baru kemudian `2`.

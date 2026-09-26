@@ -39,13 +39,15 @@ Dengan membungkus fungsi di dalam tanda kurung:
 ### B. Dua Variasi Sintaks IIFE Modern
 
 ```javascript
-// 1. Variasi Fungsi Reguler Klasik (Mendukung pengiriman parameter):
+// 1. Buat ekspresi fungsi biasa di dalam kurung dan langsung jalankan pemicunya di ujung.
 (function (nama) {
+  // 2. Cetak kalimat sapaan menggunakan nama yang dilemparkan masuk.
   console.log(`Halo dari IIFE Klasik, ${nama}!`);
 })("Kyo");
 
-// 2. Variasi Arrow Function Modern:
+// 1. Buat ekspresi fungsi ringkas dengan tanda panah lalu langsung tembakkan pemicunya.
 ((nama) => {
+  // 2. Cetak kalimat sapaan dari dalam lingkup terisolasi.
   console.log(`Halo dari IIFE Arrow, ${nama}!`);
 })("Ari");
 ```
@@ -104,42 +106,38 @@ Mari kita buat widget pendeteksi spesifikasi layar perangkat yang berjalan otoma
 ### Berkas 2: `app.js`
 
 ```javascript
-// ambil element hasil deteksi berdasarkan ID-nya, simpan ke variable wadahHasil
+// 1. Ambil kotak wadah HTML lalu simpan ke variabel wadahHasil.
 const wadahHasil = document.querySelector("#hasil-deteksi");
 
 // ================================================================
 // IIFE DENGAN ARROW FUNCTION & PENGIRIMAN ARGUMEN
 // Mengirim window ke dalam parameter 'w' untuk efisiensi
 // ================================================================
-// jalankan seketika arrow function yang menerima parameter w dan simpan hasil return-nya ke variable infoPerangkat
+// 1. Buat dan langsung jalankan pelindung kode berwujud fungsi, lempar ruang jendela web masuk.
+// Catatan*: Lingkup fungsi menjaga semua ukuran tetap privat agar tidak tercecer keluar.
 const infoPerangkat = ((w) => {
-  // Variabel-variabel di bawah ini bersifat privat dan aman di dalam kapsul:
-  // ambil value lebar jendela browser dari object w dan simpan ke variable lebarLayar
+  // 2. Intip ukuran datar dari jendela web.
   const lebarLayar = w.innerWidth;
-  // ambil value tinggi jendela browser dari object w dan simpan ke variable tinggiLayar
+  // 3. Intip ukuran tegak dari jendela web.
   const tinggiLayar = w.innerHeight;
 
-  // jika lebarLayar kurang dari 768, set string "HP / Ponsel Pintar", jika tidak set "Komputer Desktop / Laptop" lalu simpan ke variable tipePerangkat
+  // 4. Pilih label gawai bergantung dari besaran layarnya.
   const tipePerangkat =
     lebarLayar < 768 ? "HP / Ponsel Pintar" : "Komputer Desktop / Laptop";
 
-  // Kembalikan satu objek hasil akhir ke variabel infoPerangkat:
-  // kembalikan object berisi property kategori dan resolusi
+  // 5. Kembalikan bungkusan info lengkap dari fungsi ini untuk disimpan di luar.
   return {
-    // simpan string kategori perangkat ke property kategori
     kategori: tipePerangkat,
-    // simpan string resolusi dari template literal ke property resolusi
     resolusi: `${lebarLayar} x ${tinggiLayar} piksel`,
   };
-  // Argumen 'window' disuapkan ke parameter 'w':
+// 6. Picu pengeksekusian dengan melemparkan jendela halaman web asli ke dalamnya.
 })(window);
 
-// Tampilkan hasil perhitungan IIFE ke halaman HTML:
-// perbarui textContent dari element wadahHasil menggunakan template literal berdasarkan object infoPerangkat
+// 1. Tempel ringkasan bacaan tersebut ke tampilan kotak web.
 wadahHasil.textContent = `${infoPerangkat.kategori} (${infoPerangkat.resolusi})`;
 
 // BUKTI ENKAPSULASI:
-// Variabel lebarLayar dan tinggiLayar tidak bisa diakses dari luar:
+// 1. Coba intip besaran layar dari luar, ia akan melempar kesalahan tanda kode tertutup rapat.
 // console.log(lebarLayar); // ReferenceError: lebarLayar is not defined
 ```
 
@@ -170,7 +168,9 @@ wadahHasil.textContent = `${infoPerangkat.kategori} (${infoPerangkat.resolusi})`
 1. Apa fungsi dari tanda kurung pembungkus terluar `( function() {} )` pada sebuah IIFE? Apa yang terjadi jika tanda kurung tersebut dihilangkan?
 2. Perhatikan kode berikut:
    ```javascript
+   // 1. Buat perkalian terlindungi dan tampung hasil kembaliannya ke variabel hasil.
    const hasil = ((a, b) => {
+     // 2. Kembalikan angka hasil perkalian kedua bilangan.
      return a * b;
    })(4, 5);
    ```

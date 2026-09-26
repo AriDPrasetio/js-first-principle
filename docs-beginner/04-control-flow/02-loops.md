@@ -41,7 +41,9 @@ Di JavaScript:
 ### A. Anatomi Loop Klasik `for` (3 Bagian Mesin)
 
 ```javascript
+// 1. Buat penghitung i mulai dari 0, jalankan selama i kurang dari 5, dan tambah i dengan 1 setiap putaran
 for (let i = 0; i < 5; i++) {
+  // 2. Cetak nomor putaran saat ini ke konsol
   console.log("Putaran ke:", i);
 }
 ```
@@ -60,9 +62,12 @@ Saat Anda membutuhkan indeks angka secara presisi, ingin melompat per 2 langkah 
 ### B. Loop Modern `for...of` (Pilihan Utama untuk Array)
 
 ```javascript
+// 1. Buat wadah konstan daftarBuah dan isi dengan kumpulan nama buah
 const daftarBuah = ["Apel", "Jeruk", "Mangga"];
 
+// 2. Untuk setiap buah di dalam daftarBuah, jalankan perintah di dalam blok ini
 for (const buah of daftarBuah) {
+  // 3. Cetak nama buah ke konsol
   console.log("Nama buah:", buah);
 }
 ```
@@ -133,107 +138,96 @@ Mari kita buat penyaring daftar barang yang mempraktikkan `for...of`, `continue`
 
 ```javascript
 // Data daftar inventaris gudang
-// buat array kumpulan object inventaris dan simpan ke variable inventaris
+// 1. Buat wadah konstan inventaris dan isi dengan daftar barang (array dari objek)
 const inventaris = [
   { nama: "Kopi Hitam", stok: 15 },
-  { nama: "Gula Pasir", stok: 0 }, // stok kosong!
+  { nama: "Gula Pasir", stok: 0 },
   { nama: "Roti Tawar", stok: 8 },
-  { nama: "Susu Kotak", stok: 0 }, // stok kosong!
+  { nama: "Susu Kotak", stok: 0 },
   { nama: "Keju Cheddar", stok: 5 },
 ];
 
-// ambil element container daftar barang HTML berdasarkan ID-nya, simpan ke variable listEl
+// 2. Ambil elemen-elemen HTML yang dibutuhkan dari halaman dan simpan ke dalam wadah konstan
 const listEl = document.querySelector("#daftar-barang");
-
-// ambil element tombol tampilkan semua berdasarkan ID-nya, simpan ke variable btnSemua
 const btnSemua = document.querySelector("#btn-tampilkan-semua");
-
-// ambil element tombol filter stok berdasarkan ID-nya, simpan ke variable btnFilter
 const btnFilter = document.querySelector("#btn-filter-stok");
-
-// ambil element tombol cari target berdasarkan ID-nya, simpan ke variable btnCari
 const btnCari = document.querySelector("#btn-cari-satu");
 
-// deklarasi function bersihkanLayar untuk mereset daftar list HTML
+// 3. Buat fungsi pembantu bersihkanLayar untuk mengosongkan isi daftar HTML
 function bersihkanLayar() {
-  // kosongkan isi HTML (inner html) di dalam element listEl
+  // 4. Hapus seluruh isi elemen listEl
   listEl.innerHTML = "";
 }
 
-// 1. Tampilkan Semua Barang dengan for...of
-// saat btnSemua di-click, jalankan function berikut:
+// Tampilkan Semua Barang dengan for...of
+// 5. Pasang aksi pada tombol tampilkan semua untuk dijalankan saat diklik
 btnSemua.addEventListener("click", () => {
-  // panggil function bersihkanLayar untuk mereset tampilan awal
+  // 6. Bersihkan layar sebelum menampilkan data
   bersihkanLayar();
 
-  // untuk setiap item di dalam array inventaris, jalankan perintah ini berulang kali:
+  // 7. Ulangi proses untuk setiap item di dalam inventaris
   for (const item of inventaris) {
-    // buat element HTML list item baru (li) dan simpan ke variable li
+    // 8. Buat elemen li (baris daftar) baru
     const li = document.createElement("li");
 
-    // perbarui teks di dalam element li dengan nama barang dan jumlah stoknya
+    // 9. Isi elemen li dengan nama barang dan jumlah stoknya
     li.textContent = `${item.nama} (Stok: ${item.stok})`;
 
-    // tambahkan element li ini ke dalam element container listEl di tampilan
+    // 10. Pasang elemen li ke dalam daftar HTML listEl
     listEl.appendChild(li);
   }
 });
 
-// 2. Lewatkan Barang Stok 0 Menggunakan 'continue'
-// saat btnFilter di-click, jalankan function berikut:
+// Lewatkan Barang Stok 0 Menggunakan 'continue'
+// 11. Pasang aksi pada tombol filter stok untuk dijalankan saat diklik
 btnFilter.addEventListener("click", () => {
-  // panggil function bersihkanLayar untuk mereset tampilan awal
+  // 12. Bersihkan layar sebelum menampilkan data
   bersihkanLayar();
 
-  // untuk setiap item di dalam array inventaris, periksa kondisinya berulang kali:
+  // 13. Ulangi proses untuk setiap item di dalam inventaris
   for (const item of inventaris) {
-    // jika stok dari item adalah 0, maka:
+    // 14. Periksa jika stok item adalah 0
     if (item.stok === 0) {
-      // lewati barang ini dan langsung lompat ke putaran berikutnya
+      // 15. Hentikan putaran saat ini dan langsung lompat ke item berikutnya
       continue;
     }
 
-    // buat element HTML list item baru (li) dan simpan ke variable li
+    // 16. Buat elemen li (baris daftar) baru
     const li = document.createElement("li");
 
-    // perbarui teks di dalam element li dengan teks yang menyatakan barang tersedia
+    // 17. Isi elemen li dengan tanda dan info barang
     li.textContent = `✅ ${item.nama} (Tersedia: ${item.stok})`;
 
-    // tambahkan element li ini ke dalam element container listEl
+    // 18. Pasang elemen li ke dalam daftar HTML listEl
     listEl.appendChild(li);
   }
 });
 
-// 3. Hentikan Loop Seketika Begitu Ditemukan Menggunakan 'break'
-// saat btnCari di-click, jalankan function berikut:
+// Hentikan Loop Seketika Begitu Ditemukan Menggunakan 'break'
+// 19. Pasang aksi pada tombol cari target untuk dijalankan saat diklik
 btnCari.addEventListener("click", () => {
-  // panggil function bersihkanLayar untuk mereset tampilan awal
+  // 20. Bersihkan layar sebelum mencari data
   bersihkanLayar();
 
-  // untuk setiap item di dalam array inventaris, periksa kecocokannya:
+  // 21. Ulangi proses untuk setiap item di dalam inventaris
   for (const item of inventaris) {
-    // buat element HTML list item baru (li) untuk melacak pencarian
+    // 22. Buat elemen li pelacak baru
     const li = document.createElement("li");
-
-    // perbarui teks element li untuk menunjukkan barang yang sedang diperiksa
+    // 23. Isi teks elemen li dengan nama barang yang sedang diperiksa
     li.textContent = `Memeriksa: ${item.nama}`;
-
-    // tambahkan element li pelacakan ini ke dalam element container listEl
+    // 24. Pasang elemen li ke dalam daftar HTML listEl
     listEl.appendChild(li);
 
-    // jika nama barang dari item tersebut adalah "Roti Tawar", maka:
+    // 25. Periksa jika nama item cocok dengan "Roti Tawar"
     if (item.nama === "Roti Tawar") {
-      // buat element list item baru untuk menandakan target ditemukan
+      // 26. Buat elemen li baru untuk tanda target ditemukan
       const liKetemu = document.createElement("li");
-
-      // perbarui isi HTML dari element dengan teks laporan keberhasilan
-      liKetemu.innerHTML =
-        "<strong>🎯 TARGET DITEMUKAN! Loop dihentikan seketika dengan break.</strong>";
-
-      // tambahkan element liKetemu ini ke dalam element container listEl
+      // 27. Isi elemen li tersebut dengan pesan target
+      liKetemu.innerHTML = "<strong>🎯 TARGET DITEMUKAN! Loop dihentikan seketika dengan break.</strong>";
+      // 28. Pasang elemen ke dalam daftar HTML listEl
       listEl.appendChild(liKetemu);
 
-      // rem darurat: hentikan loop total
+      // 29. Hentikan perulangan sepenuhnya
       break;
     }
   }
@@ -257,7 +251,9 @@ btnCari.addEventListener("click", () => {
 - [x] Klik tombol **"Cari & Hentikan Pertama"** dan perhatikan bagaimana loop berhenti di "Roti Tawar" tanpa memeriksa barang-barang setelahnya berkat perintah `break`.
 - [x] Buka Console (`F12`), coba ketik loop mundur klasik:
   ```javascript
+  // 1. Buat penghitung i mulai dari 3, jalankan selama i >= 1, dan kurangi i setiap putaran
   for (let i = 3; i >= 1; i--) {
+    // 2. Cetak hitung mundur ke konsol
     console.log("Hitung mundur:", i);
   }
   ```
@@ -274,15 +270,20 @@ btnCari.addEventListener("click", () => {
 Perhatikan kode berikut:
 
 ```javascript
+// 1. Buat wadah angkaList dan isi dengan deretan angka
 const angkaList = [1, 2, 3, 4, 5];
 
+// 2. Ulangi proses untuk setiap angka di dalam angkaList
 for (const angka of angkaList) {
+  // 3. Evaluasi apakah angka bernilai 2, jika iya lewati (continue)
   if (angka === 2) {
     continue;
   }
+  // 4. Evaluasi apakah angka bernilai 4, jika iya hentikan total (break)
   if (angka === 4) {
     break;
   }
+  // 5. Cetak angka ke konsol
   console.log(angka);
 }
 ```

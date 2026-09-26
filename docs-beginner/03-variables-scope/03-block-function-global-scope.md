@@ -54,16 +54,25 @@ Engine mencari dari kamar saat ini. Jika tidak ditemukan, ia naik satu tingkat k
 Jika Anda membuat variabel di dalam kamar privat dengan **nama yang sama persis** dengan variabel di luar, variabel dalam akan "membayangi" (_shadowing_) variabel luar:
 
 ```javascript
+// 1. Buat wadah pengguna di lingkup global dan isi dengan teks "Budi (Global)"
 const pengguna = "Budi (Global)";
 
 function sapa() {
-  // Shadowing! Menutupi variabel pengguna luar
+  // 2. Buat wadah baru dengan nama yang sama persis di dalam fungsi
+  // Catatan*: Terjadi shadowing! Wadah dalam menutupi wadah luar yang bernama sama
   const pengguna = "Andi (Lokal)";
-  console.log(pengguna); // Mencetak: "Andi (Lokal)"
+  
+  // 3. Cetak isi wadah pengguna ke konsol
+  // Catatan*: Yang terbaca adalah versi lokal karena berada di dalam lingkup terdekat
+  console.log(pengguna);
 }
 
+// 4. Panggil fungsi sapa untuk mengeksekusi kode di dalamnya
 sapa();
-console.log(pengguna); // Mencetak: "Budi (Global)"
+
+// 5. Cetak isi wadah pengguna ke konsol setelah fungsi selesai
+// Catatan*: Yang terbaca adalah versi global karena versi lokal sudah dihapus
+console.log(pengguna);
 ```
 
 Meskipun sah secara sintaks, _shadowing_ sering membingungkan pembaca kode karena sulit membedakan variabel mana yang sedang aktif.
@@ -116,47 +125,42 @@ Mari kita buktikan isolasi wilayah ini di browser:
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. WILAYAH GLOBAL (Bisa dibaca oleh siapa saja)
-// buat variable namaAplikasi di global scope dan isi dengan string "Portal Belajar Kyo"
+// WILAYAH GLOBAL (Bisa dibaca oleh siapa saja di seluruh berkas)
+// 1. Buat wadah namaAplikasi di lingkup global dan isi dengan nama aplikasi
 const namaAplikasi = "Portal Belajar Kyo";
 
-// 2. Ambil elemen HTML yang dibutuhkan
-// ambil element penampil judul global berdasarkan ID-nya, simpan ke variable judulGlobalEl
+// 2. Ambil elemen-elemen HTML yang dibutuhkan dari halaman dan simpan ke dalam wadah konstan
 const judulGlobalEl = document.querySelector("#judul-global");
-
-// ambil element penampil pesan privat berdasarkan ID-nya, simpan ke variable pesanPrivatEl
 const pesanPrivatEl = document.querySelector("#pesan-privat");
-
-// ambil element tombol baca berdasarkan ID-nya, simpan ke variable bacaBtn
 const bacaBtn = document.querySelector("#btn-baca");
 
-// Tampilkan variabel global ke layar langsung:
-// perbarui teks di dalam element judulGlobalEl dengan value dari variable global namaAplikasi
+// 3. Tampilkan isi wadah global namaAplikasi langsung ke elemen judulGlobalEl
 judulGlobalEl.textContent = namaAplikasi;
 
-// 3. FUNGSI DENGAN WILAYAH PRIVAT (FUNCTION & BLOCK SCOPE)
-// saat bacaBtn di-click, jalankan function privat berikut:
+// FUNGSI DENGAN WILAYAH PRIVAT (FUNCTION & BLOCK SCOPE)
+// 4. Pasang aksi pada tombol baca untuk dijalankan saat diklik
 bacaBtn.addEventListener("click", () => {
-  // buat variable kodeRahasia di dalam function scope dan isi dengan string "XYZ-999"
+  // 5. Buat wadah kodeRahasia di dalam lingkup fungsi
+  // Catatan*: Wadah ini hanya hidup selama fungsi tombol diklik berjalan
   const kodeRahasia = "XYZ-999";
 
-  // jika kondisi true terpenuhi, maka masuk ke dalam block scope:
+  // 6. Buat ruang lingkup baru menggunakan kurung kurawal if
   if (true) {
-    // buat variable pesanKamar di dalam block scope yang menggabungkan teks dengan variable dari global scope (namaAplikasi)
+    // 7. Buat wadah pesanKamar di dalam lingkup blok
+    // Catatan*: Kode ini bisa membaca namaAplikasi yang berada di luar lingkup (global)
     const pesanKamar = `Akses diberikan ke ${namaAplikasi}`;
 
-    // perbarui teks di dalam element pesanPrivatEl dengan menggabungkan pesanKamar dan variable dari function scope (kodeRahasia)
+    // 8. Tampilkan gabungan teks pesanKamar (dari blok) dan kodeRahasia (dari fungsi) ke elemen pesanPrivatEl
     pesanPrivatEl.textContent = `${pesanKamar} | Kode: ${kodeRahasia}`;
   }
 
-  // ERROR! Di luar blok if, pesanKamar tidak terlihat:
+  // 9. Contoh percobaan mengakses pesanKamar di luar blok if yang akan memicu error
   // console.log(pesanKamar);
 });
 
 // BUKTI KACA SATU ARAH:
-// Jika kita mencoba membaca kodeRahasia di luar ruangan:
+// 10. Contoh percobaan membaca kodeRahasia di luar ruangan fungsi yang akan memicu ReferenceError
 // console.log(kodeRahasia);
-// Hasilnya: ReferenceError: kodeRahasia is not defined (Aman terlindungi!)
 ```
 
 ---
@@ -187,15 +191,21 @@ bacaBtn.addEventListener("click", () => {
 Perhatikan kode berikut:
 
 ```javascript
+// 1. Buat wadah namaLuar di lingkup global dan isi dengan teks
 let namaLuar = "Aria";
 
+// 2. Buat fungsi tesScope yang memiliki lingkup privat
 function tesScope() {
+  // 3. Buat wadah namaDalam di lingkup fungsi
   let namaDalam = "Budi";
-  console.log(namaLuar); // Baris 1
+  // 4. Cetak namaLuar (Baris 1)
+  console.log(namaLuar);
 }
 
+// 5. Panggil fungsi tesScope
 tesScope();
-console.log(namaDalam); // Baris 2
+// 6. Cetak namaDalam (Baris 2)
+console.log(namaDalam);
 ```
 
 1. Apakah yang dicetak oleh **Baris 1**?

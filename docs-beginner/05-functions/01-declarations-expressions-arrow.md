@@ -22,7 +22,10 @@ Bayangkan Anda seorang barista di kedai kopi:
    Secara gramatikal, ini adalah sebuah **Statement** (pernyataan formal, lihat panduan [Expression vs Statement](../02-syntax-datatypes/00-expressions-vs-statements.md)). Resep ini terpampang permanen di dinding atas kasir. Barista mana pun bisa membacanya kapan saja, bahkan sebelum kasir membuka pintu toko (_bisa dipanggil sebelum baris deklarasinya karena di-hoist penuh oleh browser_).
 
    ```javascript
+   // 1. Buat fungsi buatKopi yang menerima nama ukuran.
+   // Catatan*: Fungsi ini bisa dipanggil dari baris atas karena fitur hoisting.
    function buatKopi(ukuran) {
+     // 2. Kembalikan teks gabungan kata Kopi dan nilainya.
      return `Kopi ${ukuran}`;
    }
    ```
@@ -31,7 +34,10 @@ Bayangkan Anda seorang barista di kedai kopi:
    Secara gramatikal, fungsi di sini adalah sebuah **Expression** (menghasilkan nilai fungsi yang disimpan ke variabel). Barista baru bisa memakainya setelah alur kode melewati baris pembukaan buku catatan tersebut.
 
    ```javascript
+   // 1. Simpan fungsi ke dalam variabel buatKopi yang menerima ukuran.
+   // Catatan*: Fungsi ini baru bisa dipakai setelah pembacaan melewati baris ini.
    const buatKopi = function (ukuran) {
+     // 2. Kembalikan teks gabungan kata Kopi dan nilainya.
      return `Kopi ${ukuran}`;
    };
    ```
@@ -39,6 +45,7 @@ Bayangkan Anda seorang barista di kedai kopi:
 3. **Arrow Function (Resep Catatan Cepat Simbol Panah `=>`)**:
    Cara tulis singkat dan ramping untuk instruksi ringkas tanpa menulis kata `function`.
    ```javascript
+   // 1. Buat fungsi ringkas pencetak kopi dan simpan ke variabel buatKopi.
    const buatKopi = (ukuran) => `Kopi ${ukuran}`;
    ```
 
@@ -54,16 +61,20 @@ Penyebab nomor satu kebingungan pemula pada Arrow Function adalah penggunaan kur
    Jika fungsi Anda hanya terdiri dari satu baris ekspresi, **jangan gunakan `{}`**. Nilainya otomatis dikembalikan:
 
    ```javascript
-   // Otomatis me-return x * 2 (implicit return)
+   // 1. Buat fungsi kaliDua dengan kembalian otomatis tanpa kurung kurawal.
+   // Catatan*: Nilai x dikalikan 2 lalu langsung dikembalikan (implicit return).
    const kaliDua = (x) => x * 2;
    ```
 
 2. **Block Body (_Explicit Return_)**:
    Jika fungsi memiliki lebih dari satu baris logika, Anda **wajib menggunakan `{}`** dan **wajib menulis kata `return`**:
    ```javascript
+   // 1. Buat fungsi hitungTotal menggunakan kurung kurawal untuk banyak baris logika.
    const hitungTotal = (harga, pajak) => {
+     // 2. Tambahkan harga dengan pajak lalu simpan di variabel subtotal.
      const subtotal = harga + pajak;
-     // Wajib ada return! Jika lupa, hasilnya undefined!
+     // 3. Kembalikan nilai subtotal sebagai hasil akhir.
+     // Catatan*: Wajib menulis kata return, jika tidak hasilnya akan undefined.
      return subtotal;
    };
    ```
@@ -151,57 +162,59 @@ Mari kita buat kalkulator diskon toko yang membandingkan ketiga jenis penulisan 
 ### Berkas 2: `app.js`
 
 ```javascript
+// ========================================================
 // 1. FUNCTION DECLARATION:
-// Di-hoist penuh; aman dipanggil di mana saja di dalam berkas
-// deklarasi function hitungDiskonDeclaration yang menerima parameter harga
+// ========================================================
+// 1. Buat fungsi hitungDiskonDeclaration yang menerima angka harga.
+// Catatan*: Browser akan mengangkat fungsi ini ke atas (hoisting) sehingga siap digunakan di mana saja.
 function hitungDiskonDeclaration(harga) {
-  // diskon 10%
-  // kembalikan hasil perhitungan harga dikali 0.9
+  // 2. Kalikan harga dengan 0.9 (potongan 10%) lalu kembalikan hasilnya.
   return harga * 0.9;
 }
 
+// ========================================================
 // 2. FUNCTION EXPRESSION:
-// Disimpan ke dalam variabel const; tidak boleh dipanggil sebelum baris ini
-// simpan function tanpa nama (anonymous) yang menerima parameter harga ke dalam variable hitungDiskonExpression
+// ========================================================
+// 1. Simpan fungsi tanpa nama pengolah diskon 20% ke dalam variabel hitungDiskonExpression.
+// Catatan*: Fungsi baru siap digunakan setelah melewati baris eksekusi ini (tidak di-hoist).
 const hitungDiskonExpression = function (harga) {
-  // diskon 20%
-  // kembalikan hasil perhitungan harga dikali 0.8
+  // 2. Kalikan harga dengan 0.8 (potongan 20%) lalu kembalikan hasilnya.
   return harga * 0.8;
 };
 
+// ========================================================
 // 3. ARROW FUNCTION (CONCISE BODY / IMPLICIT RETURN):
-// Sangat ringkas, tanpa kurung kurawal, mengembalikan nilai secara otomatis
-// diskon 30%
-// simpan arrow function yang menerima parameter harga dan secara implisit mengembalikan harga dikali 0.7 ke dalam variable hitungDiskonArrow
+// ========================================================
+// 1. Buat fungsi satu baris pemotong harga 30% dan simpan ke variabel hitungDiskonArrow.
+// Catatan*: Angka hasil otomatis dikembalikan tanpa perlu mengetik kata return.
 const hitungDiskonArrow = (harga) => harga * 0.7;
 
-// Hubungkan ke elemen HTML:
-// ambil element input berdasarkan ID-nya, simpan ke variable hargaInput
+// 1. Ambil elemen masukan harga dari dokumen HTML lalu simpan ke variabel hargaInput.
 const hargaInput = document.querySelector("#input-harga");
-// ambil element kotak hasil berdasarkan ID-nya, simpan ke variable kotakHasil
+// 2. Ambil elemen wadah tampilan dari dokumen HTML lalu simpan ke variabel kotakHasil.
 const kotakHasil = document.querySelector("#kotak-hasil");
 
-// saat element dengan ID btn-dec di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol Declaration.
 document.querySelector("#btn-dec").addEventListener("click", () => {
-  // konversi value dari hargaInput menjadi number dan simpan ke variable harga
+  // 2. Baca isi kotak masukan dan ubah menjadi bentuk angka, lalu simpan ke variabel harga.
   const harga = Number(hargaInput.value);
-  // perbarui textContent dari kotakHasil dengan hasil perhitungan diskon yang diformat
+  // 3. Ubah teks pada kotak hasil dengan angka setelah dipotong diskon 10%.
   kotakHasil.textContent = `Declaration (10%): Rp${hitungDiskonDeclaration(harga).toLocaleString("id-ID")}`;
 });
 
-// saat element dengan ID btn-exp di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol Expression.
 document.querySelector("#btn-exp").addEventListener("click", () => {
-  // konversi value dari hargaInput menjadi number dan simpan ke variable harga
+  // 2. Baca isi kotak masukan dan ubah menjadi bentuk angka, lalu simpan ke variabel harga.
   const harga = Number(hargaInput.value);
-  // perbarui textContent dari kotakHasil dengan hasil perhitungan diskon yang diformat
+  // 3. Ubah teks pada kotak hasil dengan angka setelah dipotong diskon 20%.
   kotakHasil.textContent = `Expression (20%): Rp${hitungDiskonExpression(harga).toLocaleString("id-ID")}`;
 });
 
-// saat element dengan ID btn-arrow di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol Arrow Function.
 document.querySelector("#btn-arrow").addEventListener("click", () => {
-  // konversi value dari hargaInput menjadi number dan simpan ke variable harga
+  // 2. Baca isi kotak masukan dan ubah menjadi bentuk angka, lalu simpan ke variabel harga.
   const harga = Number(hargaInput.value);
-  // perbarui textContent dari kotakHasil dengan hasil perhitungan diskon yang diformat
+  // 3. Ubah teks pada kotak hasil dengan angka setelah dipotong diskon 30%.
   kotakHasil.textContent = `Arrow Function (30%): Rp${hitungDiskonArrow(harga).toLocaleString("id-ID")}`;
 });
 ```
@@ -221,12 +234,18 @@ document.querySelector("#btn-arrow").addEventListener("click", () => {
 - [x] Buka `index.html` di browser dan klik ketiga tombol diskon secara bergantian.
 - [x] Buka Console (`F12`), coba ketik:
   ```javascript
+  // 1. Buat fungsi tambahSalah yang memakai kurung kurawal tapi lupa menulis return.
   const tambahSalah = (a, b) => {
+    // 2. Lakukan penjumlahan namun nilainya dibiarkan menguap begitu saja.
     a + b;
   };
-  console.log(tambahSalah(2, 3)); // Perhatikan hasilnya undefined!
+  // 3. Cetak hasil eksekusi tambahSalah ke layar.
+  // Catatan*: Hasilnya undefined karena tidak ada instruksi return.
+  console.log(tambahSalah(2, 3));
+  // 1. Buat fungsi tambahBenar yang langsung menjumlahkan dan mengembalikan hasil (implicit return).
   const tambahBenar = (a, b) => a + b;
-  console.log(tambahBenar(2, 3)); // Hasilnya 5!
+  // 2. Cetak hasil dari tambahBenar ke layar (mendapatkan angka 5).
+  console.log(tambahBenar(2, 3));
   ```
 
 > [!TIP]
@@ -241,12 +260,17 @@ document.querySelector("#btn-arrow").addEventListener("click", () => {
 Perhatikan kode berikut:
 
 ```javascript
+// 1. Buat fungsi rumusA yang langsung mengembalikan hasil kali 10 (implicit return).
 const rumusA = (x) => x * 10;
+// 1. Buat fungsi rumusB dengan kurung kurawal namun tanpa kata return.
 const rumusB = (x) => {
+  // 2. Kalikan nilai masukan dengan 10 tanpa instruksi pengembalian (hasilnya menguap).
   x * 10;
 };
 
+// 1. Cetak hasil dari rumusA ke layar.
 console.log(rumusA(5)); // Baris 1
+// 2. Cetak hasil dari rumusB ke layar.
 console.log(rumusB(5)); // Baris 2
 ```
 

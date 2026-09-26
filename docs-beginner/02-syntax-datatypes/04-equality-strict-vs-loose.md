@@ -54,8 +54,11 @@ Di antarmuka web, dropdown pilihan (`<select>`) selalu mengembalikan nilai berti
 Banyak pemula terkejut saat membandingkan dua objek atau array yang isinya tampak sama persis:
 
 ```javascript
-console.log({ id: 1 } === { id: 1 }); // FALSE!
-console.log([] === []); // FALSE!
+// 1. Bandingkan dua objek berbeda yang isinya sama persis — hasilnya FALSE
+// Catatan*: meskipun isinya identik, keduanya adalah objek baru yang menempati alamat memori berbeda
+console.log({ id: 1 } === { id: 1 });
+// 2. Bandingkan dua array berbeda yang kosong — hasilnya juga FALSE karena alasan yang sama
+console.log([] === []);
 ```
 
 **Mengapa `false`?**
@@ -63,11 +66,13 @@ Ingat First Principle dari Bab 2.1: Objek dan Array adalah **Reference Type**.
 Operator `===` pada objek **tidak memeriksa isi propertinya**, melainkan memeriksa **apakah kedua variabel menunjuk ke alamat memori fisik yang sama di heap**:
 
 ```javascript
+// 1. Buat objek userA berisi properti nama
 const userA = { nama: "Ari" };
-// Menyalin alamat memori yang sama
+// 2. Salin alamat memori userA ke userB
 const userB = userA;
 
-console.log(userA === userB); // TRUE! (Keduanya menunjuk ke alamat fisik yang identik)
+// 3. Bandingkan userA dan userB dengan strict equality — hasilnya TRUE karena menunjuk ke memori yang sama
+console.log(userA === userB);
 ```
 
 ---
@@ -133,46 +138,45 @@ Mari kita buktikan perbedaan perbandingan ini pada pemilihan status akun:
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen yang dibutuhkan
-// ambil elemen dropdown pilihan berdasarkan ID-nya
+// 1. Ambil elemen dropdown pilihan dari halaman berdasarkan ID-nya, simpan ke wadah selectEl
 const selectEl = document.querySelector("#select-status");
 
-// ambil tombol bandingkan berdasarkan ID-nya
+// 2. Ambil tombol bandingkan dari halaman berdasarkan ID-nya, simpan ke wadah bandingBtn
 const bandingBtn = document.querySelector("#btn-banding");
 
-// ambil elemen penampil hasil loose equality berdasarkan ID-nya
+// 3. Ambil elemen penampil hasil loose equality dari halaman berdasarkan ID-nya, simpan ke wadah looseOut
 const looseOut = document.querySelector("#loose-out");
 
-// ambil elemen penampil hasil strict equality berdasarkan ID-nya
+// 4. Ambil elemen penampil hasil strict equality dari halaman berdasarkan ID-nya, simpan ke wadah strictOut
 const strictOut = document.querySelector("#strict-out");
 
-// 2. Pasang aksi ketika tombol diklik
-// saat tombol diklik, jalankan fungsi perbandingan berikut:
+// 5. Pasang pendengar klik pada tombol bandingBtn — setiap kali diklik, blok ini berjalan
 bandingBtn.addEventListener("click", () => {
-  // ambil nilai opsi yang dipilih (ingat: bernilai string, contohnya teks "0")
+  // 6. Baca nilai opsi yang dipilih, simpan ke variabel selectedValue
+  // Catatan*: nilai ini bertipe string (contohnya teks "0")
   const selectedValue = selectEl.value;
 
-  // simpan angka murni nol (bertipe number) ke dalam variable targetAngka sebagai nilai pembanding
+  // 7. Simpan angka murni 0 (bertipe number) ke dalam variabel targetAngka
   const targetAngka = 0;
 
-  // 1. Pengujian dengan Loose Equality (==):
-  // periksa kesamaan loose antara selectedValue dan targetAngka, simpan hasil boolean ke variable isLooseEqual
+  // PENGUJIAN LOOSE EQUALITY (==):
+  // 8. Periksa kesamaan loose antara selectedValue dan targetAngka, simpan hasilnya ke isLooseEqual
   const isLooseEqual = selectedValue == targetAngka;
 
-  // ubah textContent dari element looseOut menjadi hasil perbandingan loose beserta penjelasannya
+  // 9. Tampilkan hasil perbandingan loose ke layar beserta penjelasannya
   looseOut.textContent = `${isLooseEqual} (Teks dipaksa dianggap sama dengan Angka)`;
   
-  // ubah warna teks pada element looseOut menjadi merah
+  // 10. Ubah warna teks pada elemen looseOut menjadi merah
   looseOut.style.color = "red";
 
-  // 2. Pengujian dengan Strict Equality (===):
-  // periksa kesamaan strict antara selectedValue dan targetAngka, simpan hasil boolean ke variable isStrictEqual
+  // PENGUJIAN STRICT EQUALITY (===):
+  // 11. Periksa kesamaan strict antara selectedValue dan targetAngka, simpan hasilnya ke isStrictEqual
   const isStrictEqual = selectedValue === targetAngka;
 
-  // ubah textContent dari element strictOut menjadi hasil perbandingan strict beserta penjelasannya
+  // 12. Tampilkan hasil perbandingan strict ke layar beserta penjelasannya
   strictOut.textContent = `${isStrictEqual} (Tepat! Tipe data berbeda string !== number)`;
   
-  // ubah warna teks pada element strictOut menjadi hijau
+  // 13. Ubah warna teks pada elemen strictOut menjadi hijau
   strictOut.style.color = "green";
 });
 ```
@@ -197,7 +201,7 @@ bandingBtn.addEventListener("click", () => {
   ```javascript
   const boxA = { warna: "merah" };
   const boxB = { warna: "merah" };
-  // Amati hasilnya false!
+  // 1. Bandingkan dua objek dengan isi yang sama — hasilnya false karena alamat memori berbeda
   console.log(boxA === boxB);
   ```
 

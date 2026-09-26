@@ -44,20 +44,20 @@ Saat event bubbling melayang naik, objek `event` menyimpan dua informasi krusial
 ### B. Kunci Rahasia Pencarian: `.closest()`
 Saat pengguna mengklik teks atau ikon di dalam tombol, `event.target` bisa saja merupakan tag `<span>` di dalam tombol.
 Agar kode kita selalu menemukan elemen tombol pembungkusnya, gunakan metode bawaan:
-```javascript
+// 1. Cari elemen dengan class .btn-hapus mulai dari elemen yang disentuh lalu naik ke atas
 const tombolHapus = event.target.closest(".btn-hapus");
-```
 Perintah `.closest(".btn-hapus")` bekerja seperti kacamata pintar: ia memeriksa apakah elemen yang disentuh memiliki class `.btn-hapus`. Jika tidak, ia memeriksa elemen induk di atasnya hingga tombol target ditemukan.
 
 ### C. Menghentikan Gelembung: `event.stopPropagation()`
 Bagaimana jika kita **tidak ingin** sinyal klik melayang naik ke atas?
 Contohnya: Di dalam kartu artikel yang bisa diklik untuk membuka berita, terdapat tombol kecil "Suka ❤️". Jika pengunjung mengklik tombol "Suka", kita ingin tombol suka bertambah tanpa memicu pembukaan halaman berita!
-```javascript
+// 1. Pasang pemantau klik pada tombol suka
 tombolSuka.addEventListener("click", (event) => {
-  event.stopPropagation(); // ⛔ Stop! Jangan biarkan gelembung klik naik ke kartu induk!
+  // 2. Hentikan sinyal klik agar tidak melayang naik ke atas
+  event.stopPropagation();
+  // 3. Jalankan fungsi penambah jumlah suka
   tambahJumlahSuka();
 });
-```
 
 ### D. Jembatan Konsep: Manipulasi DOM Dinamis
 Sebelum masuk ke contoh interaktif, ada tiga metode DOM bawaan yang sangat sering bekerja bersama Event Delegation:
@@ -171,86 +171,69 @@ Mari kita buktikan kehebatan Event Delegation melalui aplikasi to-do list dinami
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen yang kita perlukan
-// ambil element daftar tugas berdasarkan ID-nya, simpan ke variable wadahDaftarTugas
+// 1. Ambil keempat elemen yang diperlukan dari halaman HTML
 const wadahDaftarTugas = document.querySelector("#daftar-tugas");
-// ambil element input tugas berdasarkan ID-nya, simpan ke variable inputTugas
-const inputTugas = document.querySelector("#input-tugas");
-// ambil element button tambah berdasarkan ID-nya, simpan ke variable tombolTambah
-const tombolTambah = document.querySelector("#btn-tambah");
-// ambil element status info berdasarkan ID-nya, simpan ke variable statusInfo
-const statusInfo = document.querySelector("#status-info");
+const inputTugas       = document.querySelector("#input-tugas");
+const tombolTambah     = document.querySelector("#btn-tambah");
+const statusInfo       = document.querySelector("#status-info");
 
 // ================================================================
 // EVENT DELEGATION: CUKUP 1 LISTENER PADA WADAH INDUK (<ul>)
-// Listener tunggal ini melayani semua tombol hapus (sekarang & masa depan)
 // ================================================================
-// saat wadahDaftarTugas di-click, jalankan function berikut:
+// 2. Pasang satu pemantau klik pada wadah induk untuk mengelola semua isinya
+// Catatan*: Klik pada elemen anak mana pun akan selalu merambat naik ke wadah ini berkat event bubbling.
 wadahDaftarTugas.addEventListener("click", (event) => {
-  // Inspeksi perbedaan target vs currentTarget:
-  // tampilkan target event ke console
+  // 3. Cetak ke layar data elemen apa yang sebenarnya ditekan oleh jari
   console.log("Elemen yang disentuh jari (target):", event.target);
-  // tampilkan target listener ke console
-  console.log("Elemen pemilik pos satpam (currentTarget):", event.currentTarget);
+  // 4. Cetak ke layar data elemen mana yang menjadi tempat pemantau terpasang
+  console.log("Elemen pemilik pemantau (currentTarget):", event.currentTarget);
 
-  // Periksa apakah elemen yang diklik adalah tombol hapus (atau berada di dalamnya):
-  // cari elemen terdekat dengan class btn-hapus, simpan ke variable tombolHapus
+  // 5. Cari elemen tombol hapus dengan memeriksa elemen yang ditekan lalu naik ke induknya
+  // Catatan*: Terkadang pengguna tidak mengklik tombol, tapi teks di dalam tombol tersebut.
   const tombolHapus = event.target.closest(".btn-hapus");
 
-  // Jika yang diklik adalah area teks atau garis putih (bukan tombol hapus), abaikan:
-  // jika tombolHapus tidak ditemukan, hentikan eksekusi function
+  // 6. Jika tidak ada tombol hapus yang ditemukan di area klik, hentikan eksekusi
   if (!tombolHapus) return;
 
-  // Jika benar tombol hapus, cari baris <li> pembungkus terdekat:
-  // cari elemen terdekat dengan tag li, simpan ke variable barisTugas
+  // 7. Ambil wadah baris tunggal tugas yang merupakan induk dari tombol hapus
   const barisTugas = tombolHapus.closest("li");
-  // ambil teks dari elemen span di dalam barisTugas, simpan ke variable teksTugas
+  // 8. Baca teks nama tugas yang ada di dalam baris tersebut
   const teksTugas = barisTugas.querySelector("span").textContent;
 
-  // Hapus baris tugas dari struktur DOM browser:
-  // hapus element barisTugas dari DOM
+  // 9. Hilangkan baris tugas tersebut dari layar
   barisTugas.remove();
 
-  // Perbarui pesan status
-  // ubah teks konten pada element statusInfo menjadi informasi penghapusan
+  // 10. Tampilkan pesan berhasil menghapus tugas ke kotak log
   statusInfo.textContent = `Tugas "${teksTugas}" berhasil dihapus via Event Delegation!`;
 });
 
 // ================================================================
 // 2. LOGIKA MENAMBAH TUGAS BARU DINAMIS
 // ================================================================
-// saat tombolTambah di-click, jalankan function berikut:
+// 1. Pasang pemantau klik pada tombol tambah tugas baru
 tombolTambah.addEventListener("click", () => {
-  // bersihkan spasi awal dan akhir dari input, simpan ke variable teks
+  // 2. Ambil teks yang diketik lalu bersihkan spasi kosong di awal dan akhir
   const teks = inputTugas.value.trim();
-  // jika teks kosong, hentikan eksekusi function
+  // 3. Batalkan penambahan jika kotak isian ternyata kosong
   if (teks === "") return;
 
-  // 1. Buat elemen <li> baru di memori
-  // buat elemen list baru, simpan ke variable liBaru
+  // 4. Siapkan sebuah wadah baris tugas kosong di memori komputer
   const liBaru = document.createElement("li");
 
-  // 2. Isi kontennya
-  // ubah properti innerHTML pada element liBaru menjadi struktur list item
+  // 5. Masukkan struktur dan isi konten ke dalam baris tugas baru tersebut
+  // Catatan*: Karena data sudah dipastikan murni teks biasa, innerHTML aman untuk dipakai.
   liBaru.innerHTML = `
     <span>${teks}</span>
     <button type="button" class="btn-hapus">Hapus</button>
   `;
 
-  // 3. Tempelkan ke wadah induk <ul>
-  // tambahkan element liBaru ke dalam wadahDaftarTugas
+  // 6. Tampilkan baris tugas yang sudah jadi ke layar dengan cara menempelkannya
   wadahDaftarTugas.appendChild(liBaru);
 
-  // 4. Kosongkan input
-  // set nilai pada element inputTugas menjadi kosong
+  // 7. Kosongkan kembali kotak isian teks
   inputTugas.value = "";
-  // ubah teks konten pada element statusInfo menjadi informasi penambahan
+  // 8. Tampilkan pesan berhasil menambah tugas ke kotak log
   statusInfo.textContent = `Tugas baru "${teks}" ditambahkan. Coba hapus!`;
-
-  // CATATAN PENTING:
-  // Kita TIDAK PERLU menulis liBaru.querySelector('.btn-hapus').addEventListener(...)!
-  // Karena saat tombol hapus baru ini diklik, sinyalnya otomatis melayang naik (bubbling)
-  // ke wadahDaftarTugas yang sudah memiliki satpam penjaga di atas!
 });
 ```
 

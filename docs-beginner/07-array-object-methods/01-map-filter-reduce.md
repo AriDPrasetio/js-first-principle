@@ -41,7 +41,9 @@ Ketiga metode ini adalah *Higher-Order Functions* yang menerima fungsi callback.
 ### A. Kontrak `.map(callback)`
 Fungsi callback menerima `(item, index)`. **Nilai apa pun yang Anda `return` akan menjadi elemen baru di array hasil**:
 ```javascript
+// 1. Buat array berisi daftar angka
 const angka = [1, 2, 3];
+// 2. Kalikan setiap angka dengan dua dan simpan hasilnya ke array baru
 const kaliDua = angka.map((item) => item * 2); // [2, 4, 6]
 ```
 
@@ -50,14 +52,18 @@ Fungsi callback menerima `(item, index)`. **Wajib mengembalikan nilai boolean (`
 - Kembalikan `true` jika ingin mempertahankan item.
 - Kembalikan `false` jika ingin membuangnya.
 ```javascript
+// 1. Buat array berisi daftar angka
 const angka = [10, 25, 5];
+// 2. Saring angka yang bernilai sepuluh atau lebih dan simpan ke array baru
 const lolos = angka.filter((item) => item >= 10); // [10, 25]
 ```
 
 ### C. Kontrak `.reduce(callback, initialValue)`
 Fungsi callback menerima `(akumulator, item)`. **Nilai `return` pada putaran saat ini akan menjadi nilai `akumulator` untuk putaran berikutnya**:
 ```javascript
+// 1. Buat array berisi daftar harga
 const harga = [10, 20, 30];
+// 2. Jumlahkan semua harga dengan nilai awal nol dan simpan hasilnya ke variabel baru
 const total = harga.reduce((celengan, item) => celengan + item, 0); // 60
 ```
 
@@ -150,83 +156,66 @@ Mari kita buat kasir mini toko buah yang mempraktikkan `map`, `filter`, dan `red
 ### Berkas 2: `app.js`
 
 ```javascript
-// simpan array of objects berisi daftar buah dan harga ke dalam variable keranjangBuah
+// 1. Buat daftar buah beserta harganya
 const keranjangBuah = [
-  { 
-    // simpan string "Apel" ke property nama
-    nama: "Apel", 
-    // simpan number 15000 ke property harga
-    harga: 15000 
-  },
-  { 
-    // simpan string "Jeruk" ke property nama
-    nama: "Jeruk", 
-    // simpan number 20000 ke property harga
-    harga: 20000 
-  },
-  { 
-    // simpan string "Mangga" ke property nama
-    nama: "Mangga", 
-    // simpan number 30000 ke property harga
-    harga: 30000 
-  },
+  { nama: "Apel",   harga: 15000 },
+  { nama: "Jeruk",  harga: 20000 },
+  { nama: "Mangga", harga: 30000 },
 ];
 
-// ambil element button map berdasarkan ID-nya, simpan ke variable tombolMap
+// 2. Ambil elemen tombol map dari halaman HTML
 const tombolMap = document.querySelector("#btn-map");
-// ambil element button filter berdasarkan ID-nya, simpan ke variable tombolFilter
+// 3. Ambil elemen tombol filter dari halaman HTML
 const tombolFilter = document.querySelector("#btn-filter");
-// ambil element button reduce berdasarkan ID-nya, simpan ke variable tombolReduce
+// 4. Ambil elemen tombol reduce dari halaman HTML
 const tombolReduce = document.querySelector("#btn-reduce");
-// ambil element output layar berdasarkan ID-nya, simpan ke variable outputLayar
+// 5. Ambil elemen layar hasil dari halaman HTML
 const outputLayar = document.querySelector("#output-layar");
 
-// Catatan utilitas:
-// .toLocaleString("id-ID") memformat angka menjadi format rupiah (misal 15000 -> 15.000)
-// .join("<br>") merangkai deret array teks menjadi satu string dipisah baris baru HTML
+// Catatan*: .toLocaleString("id-ID") mengubah format angka mentah menjadi format ribuan lokal Indonesia (contoh: 15000 menjadi 15.000).
 
-// 1. .map() -> Mengubah harga setiap buah
-// saat tombolMap di-click, jalankan function berikut:
+// ─── HOF TIPE 1: .map() ───────────────────────────────────────────────────────
+// 1. Pasang pemantau klik pada tombol map
 tombolMap.addEventListener("click", () => {
-  // simpan array baru hasil pengubahan data keranjangBuah ke dalam variable buahDiskon
+  // 2. Buat daftar baru berisi teks harga buah setelah diskon sepuluh persen
   const buahDiskon = keranjangBuah.map((item) => {
-    // simpan kalkulasi diskon 10% dari harga item ke dalam variable hargaHemat
+    // 3. Kalikan harga buah dengan 0.9 untuk mendapatkan harga diskon
     const hargaHemat = item.harga * 0.9;
-    // kembalikan string yang berisi nama buah dan harga diskon
+    // 4. Kembalikan teks harga diskon untuk buah ini
     return `${item.nama}: Rp ${hargaHemat.toLocaleString("id-ID")}`;
   });
 
-  // ubah properti innerHTML pada element outputLayar menjadi teks dan hasil gabungan array buahDiskon
+  // 5. Tampilkan daftar harga diskon ke layar
   outputLayar.innerHTML = "Harga Diskon 10%:<br>" + buahDiskon.join("<br>");
 });
 
-// 2. .filter() -> Menyaring buah harga < 25.000
-// saat tombolFilter di-click, jalankan function berikut:
+// ─── HOF TIPE 2: .filter() ───────────────────────────────────────────────────
+// 1. Pasang pemantau klik pada tombol filter
 tombolFilter.addEventListener("click", () => {
-  // simpan array baru hasil penyaringan keranjangBuah ke dalam variable buahMurah
+  // 2. Saring buah yang harganya di bawah dua puluh lima ribu
+  // Catatan*: .filter() hanya mempertahankan elemen jika fungsi pemeriksa mengembalikan nilai true.
   const buahMurah = keranjangBuah.filter((item) => {
-    // predikat boolean: kembalikan true jika harga < 25000
-    // kembalikan true jika harga dari item kurang dari 25000
+    // 3. Pastikan harga buah kurang dari dua puluh lima ribu
     return item.harga < 25000;
   });
 
-  // simpan array string hasil pemetaan array buahMurah ke dalam variable barisTeks
+  // 4. Ubah daftar buah murah menjadi teks tampilan
   const barisTeks = buahMurah.map((b) => `${b.nama} (Rp ${b.harga.toLocaleString("id-ID")})`);
-  // ubah properti innerHTML pada element outputLayar menjadi string teks daftar buah murah
+  // 5. Tampilkan teks buah murah ke layar
   outputLayar.innerHTML = `Buah di bawah Rp 25.000:<br>` + barisTeks.join("<br>");
 });
 
-// 3. .reduce() -> Menjumlahkan total harga
-// saat tombolReduce di-click, jalankan function berikut:
+// ─── HOF TIPE 3: .reduce() ───────────────────────────────────────────────────
+// 1. Pasang pemantau klik pada tombol reduce
 tombolReduce.addEventListener("click", () => {
-  // Modal awal celengan diset 0:
-  // simpan satu nilai akhir dari total harga seluruh item di keranjangBuah ke dalam variable totalBiaya
+  // 2. Hitung total harga semua buah di keranjang
+  // Catatan*: Nilai nol di akhir adalah nilai awal untuk celengan. Jika tidak diberikan pada daftar kosong, program akan melempar error.
   const totalBiaya = keranjangBuah.reduce((celengan, item) => {
-    // kembalikan hasil penjumlahan nilai akumulator celengan dengan harga item saat ini
+    // 3. Tambahkan harga buah ke jumlah celengan
     return celengan + item.harga;
   }, 0);
 
-  // ubah properti innerHTML pada element outputLayar menjadi string teks hasil total belanja
+  // 4. Tampilkan total harga buah ke layar
   outputLayar.innerHTML = `Total Semua Belanjaan: Rp ${totalBiaya.toLocaleString("id-ID")}`;
 });
 ```
@@ -247,7 +236,8 @@ tombolReduce.addEventListener("click", () => {
 - [ ] Perhatikan bahwa data asli `keranjangBuah` tetap utuh saat Anda menekan tombol berkali-kali.
 - [ ] Buka Console (`F12`), coba jalankan `.reduce()` tanpa modal awal pada array kosong:
   ```javascript
-  // Amati error TypeError yang muncul jika tanpa nilai awal:
+  // 1. Panggil reduce pada daftar kosong tanpa nilai awal
+  // Catatan*: Ini akan melempar error TypeError karena tidak ada nilai untuk memulai perhitungan.
   [].reduce((acc, curr) => acc + curr);
   ```
 

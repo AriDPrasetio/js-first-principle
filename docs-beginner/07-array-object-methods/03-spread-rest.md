@@ -37,9 +37,13 @@ Bayangkan Anda memiliki setoples permen:
 2. **Aturan "Siapa di Kanan Menang Menimpa"**:
    Saat menggabungkan objek dengan spread, properti yang ditulis belakangan di sisi kanan akan menimpa nilai yang ada di sisi kiri:
    ```javascript
-   const akunLama = { nama: "Ari", role: "User" };
-   const akunBaru = { ...akunLama, role: "Admin" };
-   console.log(akunBaru.role); // "Admin" (Nilai lama berhasil ditimpa dengan aman!)
+// 1. Buat data objek lama dengan peran pengguna
+const akunLama = { nama: "Ari", role: "User" };
+// 2. Salin seluruh isi objek lama dan ganti properti peran menjadi Admin
+const akunBaru = { ...akunLama, role: "Admin" };
+// 3. Cetak peran baru ke layar
+// Catatan*: Nilai lama akan tertimpa karena properti role diletakkan di akhir (kanan)
+console.log(akunBaru.role); // "Admin"
    ```
 
 ---
@@ -107,109 +111,74 @@ Mari kita buat demonstrasi Array Spread, Array Rest, dan Object Spread/Rest:
 ### Berkas 2: `app.js`
 
 ```javascript
-// ambil element button spread berdasarkan ID-nya, simpan ke variable tombolSpread
+// 1. Ambil keempat elemen dari halaman HTML
 const tombolSpread = document.querySelector("#btn-spread");
-// ambil element button rest berdasarkan ID-nya, simpan ke variable tombolRest
-const tombolRest = document.querySelector("#btn-rest");
-// ambil element button object berdasarkan ID-nya, simpan ke variable tombolObj
-const tombolObj = document.querySelector("#btn-obj");
-// ambil element kotak hasil berdasarkan ID-nya, simpan ke variable kotakHasil
-const kotakHasil = document.querySelector("#kotak-hasil");
+const tombolRest   = document.querySelector("#btn-rest");
+const tombolObj    = document.querySelector("#btn-obj");
+const kotakHasil   = document.querySelector("#kotak-hasil");
 
-// 1. ARRAY SPREAD:
-// saat tombolSpread di-click, jalankan function berikut:
+// ─── 1. ARRAY SPREAD ──────────────────────────────────────────────────────────
+// 1. Pasang pemantau klik pada tombol spread
 tombolSpread.addEventListener("click", () => {
-  // simpan array berisi daftar makanan ringan ke dalam variable makananRingan
-  const makananRingan = [
-    // simpan string "Keripik" ke elemen array
-    "Keripik", 
-    // simpan string "Kacang" ke elemen array
-    "Kacang"
-  ];
-  // simpan array berisi daftar makanan berat ke dalam variable makananBerat
-  const makananBerat = [
-    // simpan string "Nasi Goreng" ke elemen array
-    "Nasi Goreng", 
-    // simpan string "Sate" ke elemen array
-    "Sate"
-  ];
-  // simpan array baru hasil penggabungan makananRingan, makananBerat, dan teks ke dalam variable menuLengkap menggunakan spread
+  // 2. Buat dua daftar makanan yang berbeda
+  const makananRingan = ["Keripik", "Kacang"];
+  const makananBerat  = ["Nasi Goreng", "Sate"];
+
+  // 3. Gabungkan kedua daftar dan tambahkan satu minuman baru
+  // Catatan*: Tanda tiga titik menyalin isi dari masing-masing daftar lama ke daftar baru.
   const menuLengkap = [
-    // tebar elemen array makananRingan ke sini
-    ...makananRingan, 
-    // tebar elemen array makananBerat ke sini
-    ...makananBerat, 
-    // tambahkan string "Es Teh" ke elemen terakhir
+    ...makananRingan,
+    ...makananBerat,
     "Es Teh"
   ];
 
-  // ubah properti innerHTML pada element kotakHasil menjadi teks gabungan menuLengkap
+  // 4. Tampilkan daftar menu lengkap ke layar
   kotakHasil.innerHTML = `
     <strong>Hasil Gabungan Menu (Array Spread):</strong><br>
     ${menuLengkap.join(" • ")}
   `;
 });
 
-// 2. ARRAY REST:
-// saat tombolRest di-click, jalankan function berikut:
+// ─── 2. ARRAY REST ────────────────────────────────────────────────────────────
+// 1. Pasang pemantau klik pada tombol rest
 tombolRest.addEventListener("click", () => {
-  // simpan array berisi daftar peserta ke dalam variable pesertaLomba
-  const pesertaLomba = [
-    // simpan string nama ke elemen array
-    "Andi (Juara 1)", 
-    "Budi", 
-    "Cici", 
-    "Doni"
-  ];
-  // bongkar elemen pertama dan kumpulkan sisa elemen ke dalam array kruCadangan menggunakan rest
-  const [
-    // ekstrak elemen pertama ke variable pemenangUtama
-    pemenangUtama, 
-    // kumpulkan sisa elemen array ke variable kruCadangan
-    ...kruCadangan
-  ] = pesertaLomba;
+  // 2. Buat daftar peserta lomba beserta keterangan juaranya
+  const pesertaLomba = ["Andi (Juara 1)", "Budi", "Cici", "Doni"];
 
-  // ubah properti innerHTML pada element kotakHasil menjadi teks informasi pemenang dan sisa peserta
+  // 3. Ambil nama pemenang utama dan kemas sisa peserta ke dalam wadah baru
+  // Catatan*: Tanda tiga titik di sebelah kiri (rest) harus selalu berada di urutan paling akhir.
+  const [pemenangUtama, ...kruCadangan] = pesertaLomba;
+
+  // 4. Tampilkan informasi pemenang dan sisa tim ke layar
   kotakHasil.innerHTML = `
     <p><strong>Pemenang Utama:</strong> ${pemenangUtama}</p>
     <p><strong>Sisa Peserta (${kruCadangan.length} orang):</strong> ${kruCadangan.join(", ")}</p>
   `;
 });
 
-// 3. OBJECT SPREAD & OBJECT REST:
-// saat tombolObj di-click, jalankan function berikut:
+// ─── 3. OBJECT SPREAD & OBJECT REST ──────────────────────────────────────────
+// 1. Pasang pemantau klik pada tombol objek
 tombolObj.addEventListener("click", () => {
-  // simpan object data akun ke dalam variable akunAsal
+  // 2. Buat objek data akun awal
   const akunAsal = {
-    // simpan string "ari_dev" ke property username
     username: "ari_dev",
-    // simpan string "ari@example.com" ke property email
     email: "ari@example.com",
-    // simpan string "rahasia123" ke property kataSandi
     kataSandi: "rahasia123",
-    // simpan string "User" ke property role
     role: "User",
   };
 
-  // Gunakan Object Spread untuk memperbarui role:
-  // simpan object baru hasil salinan akunAsal dan penimpaan role ke dalam variable akunUpdate
-  const akunUpdate = { 
-    // tebar seluruh property dari object akunAsal ke sini
-    ...akunAsal, 
-    // timpa nilai role menjadi "SuperAdmin"
-    role: "SuperAdmin" 
+  // 3. Salin seluruh isi data akun awal dan perbarui perannya
+  // Catatan*: Data role baru akan menimpa role lama karena posisinya di sebelah kanan.
+  const akunUpdate = {
+    ...akunAsal,
+    role: "SuperAdmin"
   };
 
-  // Gunakan Object Rest untuk menyembunyikan kata sandi sebelum ditampilkan:
-  // bongkar properti kataSandi dan kumpulkan sisa properti ke dalam object akunAman
-  const { 
-    // ekstrak properti kataSandi ke variable kataSandi
-    kataSandi, 
-    // kumpulkan sisa properti lainnya ke object akunAman
-    ...akunAman 
-  } = akunUpdate;
+  // 4. Pisahkan kata sandi agar tidak terbawa, dan kemas sisa data ke variabel baru
+  // Catatan*: Teknik ini dipakai untuk membuang properti rahasia tanpa mengubah objek asli.
+  const { kataSandi, ...akunAman } = akunUpdate;
 
-  // ubah properti innerHTML pada element kotakHasil menjadi teks informasi akun yang aman
+  // 5. Tampilkan data akun yang sudah bersih dari kata sandi ke layar
   kotakHasil.innerHTML = `
     <p><strong>Username:</strong> ${akunAman.username}</p>
     <p><strong>Role Baru:</strong> ${akunAman.role}</p>
@@ -227,6 +196,7 @@ tombolObj.addEventListener("click", () => {
 2. **Solusi Salinan Dalam (*Deep Copy*) Modern**:
    Jika Anda membutuhkan salinan murni yang benar-benar mandiri sampai ke tingkat terdalam, gunakan fungsi standar modern web platform:
    ```javascript
+   // 1. Buat salinan baru yang benar-benar terpisah dari aslinya
    const salinanMurni = structuredClone(objekBersarang);
    ```
 3. **Posisi Rest Selalu Terakhir**: Operator rest wajib berada di urutan penutup: `const [a, ...sisa] = arr;`. Menaruh rest di tengah `[...sisa, z]` adalah kesalahan sintaks.
@@ -240,10 +210,15 @@ tombolObj.addEventListener("click", () => {
 - [ ] Klik tombol **"3. Update Objek Aman"** dan amati bagaimana role terupdate serta properti sensitif kata sandi disingkirkan lewat object rest.
 - [ ] Buka Console (`F12`), coba uji fungsi duplikasi murni `structuredClone`:
   ```javascript
+  // 1. Buat objek yang memiliki data bersarang di dalamnya
   const asli = { profil: { nama: "Andi" } };
+  // 2. Gandakan objek tersebut secara mendalam
   const klon = structuredClone(asli);
+  // 3. Ubah nama pada objek hasil gandaan
   klon.profil.nama = "Budi";
-  console.log(asli.profil.nama); // Tetap "Andi"! Aman 100% dari mutasi.
+  // 4. Cetak nama pada objek asli ke layar
+  // Catatan*: Data asli tidak ikut berubah karena struktur cloning terpisah sepenuhnya
+  console.log(asli.profil.nama); // "Andi"
   ```
 
 > [!TIP]
