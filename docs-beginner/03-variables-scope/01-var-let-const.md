@@ -28,6 +28,7 @@ Bayangkan Anda datang ke tempat penitipan barang di stasiun:
 
 Ketika Anda menulis sebuah baris lengkap:
 ```javascript
+// 1. Buat wadah konstan totalBelanja dan isi dengan hasil perhitungan 50000 + 25000
 const totalBelanja = 50000 + 25000;
 ```
 Di balik layar, Anda sedang memadukan dua konsep dasar:
@@ -82,10 +83,12 @@ Sebelum tahun 2015 (ES6), JavaScript hanya memiliki `var`:
 1. **Mencegah Penimpaan Tak Sengaja**: Menjaga data tidak berubah secara acak di tengah ratusan baris kode.
 2. **Catatan Penting untuk Objek & Array**: Kata kunci `const` mengunci **wadahnya**, bukan isi perabot di dalamnya:
    ```javascript
+   // 1. Buat wadah konstan profil dan isi dengan objek
    const profil = { nama: "Ari" };
-   // ✅ Boleh! Isi properti di dalam objek boleh diubah
+   // 2. Ubah properti nama di dalam objek tersebut
+   // Catatan*: Isi di dalam objek tetap bisa diubah meskipun menggunakan const
    profil.nama = "Budi";
-   // ❌ Error! Wadah profil tidak boleh diganti objek baru:
+   // 3. Contoh upaya mengganti seluruh wadah yang akan memicu error
    // profil = { nama: "Joko" };
    ```
 
@@ -155,59 +158,58 @@ Mari kita buat demonstrasi papan skor dan perbandingan kebocoran variabel `var` 
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Deklarasi dengan const (karena elemen HTML tidak pernah diganti wadahnya)
-// ambil element penampil skor berdasarkan ID-nya, simpan ke variable skorDisplay
+// 1. Ambil elemen HTML penampil skor berdasarkan ID dan simpan ke wadah konstan skorDisplay
 const skorDisplay = document.querySelector("#skor-display");
 
-// ambil element tombol tambah berdasarkan ID-nya, simpan ke variable tambahBtn
+// 2. Ambil tombol tambah poin berdasarkan ID dan simpan ke wadah konstan tambahBtn
 const tambahBtn = document.querySelector("#btn-tambah");
 
-// ambil element tombol uji bocor berdasarkan ID-nya, simpan ke variable ujiBocorBtn
+// 3. Ambil tombol uji kebocoran berdasarkan ID dan simpan ke wadah konstan ujiBocorBtn
 const ujiBocorBtn = document.querySelector("#btn-uji-bocor");
 
-// ambil element penampil info hasil berdasarkan ID-nya, simpan ke variable infoHasilEl
+// 4. Ambil kotak info hasil berdasarkan ID dan simpan ke wadah konstan infoHasilEl
 const infoHasilEl = document.querySelector("#info-hasil");
 
-// 2. Deklarasi dengan let (karena nilai angka skor akan terus bertambah)
-// buat variable nilaiSkor dan isi dengan number 0
+// 5. Buat wadah angka nilaiSkor dan isi awal dengan angka 0
+// Catatan*: Gunakan let karena isi wadah ini akan berubah saat tombol diklik
 let nilaiSkor = 0;
 
-// 3. Pasang aksi penambahan poin
-// saat tambahBtn di-click, jalankan function berikut:
+// 6. Pasang aksi pada tombol tambah untuk dijalankan saat diklik
 tambahBtn.addEventListener("click", () => {
-  // ubah nilaiSkor menjadi ditambah 1
+  // 7. Tambahkan 1 ke nilaiSkor saat ini
   nilaiSkor = nilaiSkor + 1;
-  
-  // perbarui teks di dalam element skorDisplay dengan value dari nilaiSkor yang baru
+
+  // 8. Perbarui teks di elemen skorDisplay dengan angka terbaru
   skorDisplay.textContent = nilaiSkor;
 });
 
-// 4. Demonstrasi Nyata: Kebocoran var vs Isolasi let
-// saat ujiBocorBtn di-click, jalankan function berikut:
+// Demonstrasi Nyata: Kebocoran var vs Isolasi let
+// 9. Pasang aksi pada tombol uji bocor untuk dijalankan saat diklik
 ujiBocorBtn.addEventListener("click", () => {
-  // jika kondisi true terpenuhi, maka:
+  // 10. Buat ruang lingkup baru menggunakan kurung kurawal if
   if (true) {
-    // buat variable pesanBocor menggunakan var dan isi dengan string teks
-    var pesanBocor = "Saya dibuat di dalam if dengan var!";
-    
-    // buat variable pesanAman menggunakan let dan isi dengan string teks
-    let pesanAman = "Saya dibuat di dalam if dengan let!";
+    // 11. Buat wadah pesanBocor menggunakan var
+    // Catatan*: var mengabaikan kurung kurawal blok ini dan bocor ke luar
+    var pesanBocor = "Dibuat di dalam if dengan var!";
+
+    // 12. Buat wadah pesanAman menggunakan let
+    // Catatan*: let terkurung rapat di dalam blok ini
+    let pesanAman = "Dibuat di dalam if dengan let!";
   }
 
-  // DI LUAR BLOK IF:
-  // tampilkan nilai variable pesanBocor ke console untuk membuktikan var bocor ke luar block
+  // 13. Tampilkan pesanBocor ke konsol
   console.log("Di luar if:", pesanBocor);
 
-  // coba eksekusi block kode berikut, tangkap error jika ada:
+  // 14. Coba akses pesanAman yang berada di luar jangkauan
   try {
-    // tampilkan nilai variable pesanAman ke console, ini akan memicu error karena let terisolasi
+    // 15. Baris ini akan memicu error karena let terisolasi
     console.log("Di luar if:", pesanAman);
   } catch (error) {
-    // jika terjadi error di block try, tampilkan pesan error tersebut ke console
+    // 16. Tangkap pesan error dan tampilkan ke konsol
     console.log("let berhasil mengisolasi variabel:", error.message);
   }
 
-  // perbarui teks di dalam element infoHasilEl dengan string hasil uji coba
+  // 17. Tampilkan ringkasan hasil uji coba ke elemen infoHasilEl
   infoHasilEl.textContent = `var bocor keluar blok: "${pesanBocor}". Buka Console (F12) untuk melihat bukti isolasi let.`;
 });
 ```
@@ -229,10 +231,16 @@ ujiBocorBtn.addEventListener("click", () => {
 - [x] Perhatikan bagaimana `pesanBocor` bisa terbaca di luar kurung kurawal `if`, sedangkan `pesanAman` melempar `ReferenceError`.
 - [x] Coba ketik di Console:
   ```javascript
+  // 1. Buat wadah angka dengan var dan isi nilai 10
   var angka = 10;
-  // Boleh tanpa error di var (rawan tertimpa!)
+  // 2. Buat ulang wadah angka dengan var dan isi nilai 20
+  // Catatan*: var mengizinkan pembuatan ulang nama yang sama tanpa pesan error
   var angka = 20;
+  
+  // 3. Buat wadah skor dengan let dan isi nilai 10
   let skor = 10;
+  // 4. Buat ulang wadah skor dengan let dan isi nilai 20
+  // Catatan*: let akan menolak deklarasi ulang dan menampilkan pesan error
   let skor = 20; // SyntaxError: Identifier 'skor' has already been declared
   ```
 
@@ -248,17 +256,17 @@ ujiBocorBtn.addEventListener("click", () => {
 Pilihlah kata kunci yang tepat (`const` atau `let`) untuk situasi berikut:
 
 ```javascript
-// Situasi 1: Menyimpan tanggal lahir pengguna yang bersifat permanen
+// 1. Simpan tanggal lahir pengguna yang bersifat permanen
 ___ tanggalLahir = "1998-05-12";
 
-// Situasi 2: Menyimpan jumlah detik countdown yang terus berkurang setiap detik
+// 2. Simpan jumlah detik countdown yang terus berkurang setiap detik
 ___ sisaDetik = 60;
 
-// Situasi 3: Menyimpan tombol submit di halaman web
+// 3. Simpan tombol submit yang diambil dari halaman web
 ___ submitBtn = document.querySelector("#btn-submit");
 
-// Situasi 4: Apa yang terjadi jika baris ini dijalankan:
+// 4. Analisis hasil dari eksekusi baris-baris berikut
 // const nama = "Ari";
 // nama = "Budi";
-// Apakah berhasil atau menghasilkan error? Error jenis apa?
+// (Apakah berhasil atau menghasilkan error? Error jenis apa?)
 ```

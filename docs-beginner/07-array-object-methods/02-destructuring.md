@@ -40,28 +40,37 @@ Perbedaan Objek vs Array:
 > Jika server mengirimkan `{ hobi: null }` atau `{ hobi: "" }`, nilai cadangan **TIDAK AKAN AKTIF**, dan variabel akan tetap menampung `null` atau `""`!
 
 ```javascript
+// 1. Buat objek pengguna pertama dengan hobi kosong
 const userA = { hobi: undefined };
+// 2. Bongkar properti hobi dengan nilai cadangan jika kosong
 const { hobi = "Membaca" } = userA;
-console.log(hobi); // "Membaca" (Default aktif karena undefined!)
+// 3. Cetak nilai hobi yang berhasil diambil
+// Catatan*: Nilai cadangan dipakai karena data asli adalah undefined
+console.log(hobi); // "Membaca"
 
+// 4. Buat objek pengguna kedua dengan hobi null
 const userB = { hobi: null };
+// 5. Bongkar properti hobi dan ganti nama variabel dengan nilai cadangan
 const { hobi: hobiB = "Membaca" } = userB;
-console.log(hobiB); // null (Default TIDAK aktif karena null dianggap nilai sah!)
+// 6. Cetak nilai hobiB
+// Catatan*: Nilai cadangan tidak dipakai karena null dianggap ada isinya
+console.log(hobiB); // null
 ```
 
 ### B. Mengganti Nama Variabel (*Aliasing*)
 Di dalam objek biasa, tanda titik dua `{ key: value }` berarti menetapkan nilai. Namun di dalam destructuring, tanda titik dua bermakna **mengganti nama variabel**:
 ```javascript
+// 1. Ambil nilai dari properti nama_lengkap lalu simpan ke variabel baru
 const { nama_lengkap: namaPanggilan } = data;
-// Baca properti 'nama_lengkap', simpan ke variabel baru bernama 'namaPanggilan'
 ```
 
 ### C. Trik Menukar Nilai Tanpa Variabel Sementara
 Dengan Array Destructuring, Anda bisa menukar isi dua variabel dengan sangat elegan:
 ```javascript
+// 1. Buat dua variabel dengan nilai masing-masing
 let a = 1;
 let b = 2;
-// Tukar isi variabel secara instan: nilai a jadi 2, nilai b jadi 1
+// 2. Tukar posisi nilai kedua variabel tanpa perantara
 [a, b] = [b, a];
 ```
 
@@ -125,51 +134,40 @@ Mari kita buat pembaca data akun pengguna yang mendemonstrasikan Destructuring O
 ### Berkas 2: `app.js`
 
 ```javascript
-// simpan object berisi data pengguna ke dalam variable dataPengguna
+// 1. Buat objek berisi data profil pengguna
 const dataPengguna = {
-  // simpan number 101 ke property id
   id: 101,
-  // simpan string "Siti Rahayu" ke property nama_lengkap
   nama_lengkap: "Siti Rahayu",
-  // simpan string "Surabaya" ke property kotaAsal
   kotaAsal: "Surabaya",
-  // properti hobi tidak didefinisikan (undefined) untuk menguji default value
+  // properti hobi sengaja tidak diisi (undefined) untuk menguji nilai cadangan
 };
 
-// simpan array berisi daftar pemenang ke dalam variable daftarPemenangLomba
+// 2. Buat array berisi daftar pemenang lomba
 const daftarPemenangLomba = ["Emas: Budi", "Perak: Siti", "Perunggu: Doni"];
 
-// ambil element button bongkar berdasarkan ID-nya, simpan ke variable tombolBongkar
+// 3. Ambil elemen tombol dari halaman HTML
 const tombolBongkar = document.querySelector("#btn-bongkar");
-// ambil element kotak profil berdasarkan ID-nya, simpan ke variable kotakProfil
+// 4. Ambil elemen kotak profil dari halaman HTML
 const kotakProfil = document.querySelector("#kotak-profil");
 
-// saat tombolBongkar di-click, jalankan function berikut:
+// 5. Pasang pemantau klik pada tombol bongkar
 tombolBongkar.addEventListener("click", () => {
-  // 1. OBJECT DESTRUCTURING:
-  // - nama_lengkap: namaPanggilan -> alias nama variabel baru
-  // - hobi = "Membaca Buku"       -> nilai cadangan hanya jika undefined
-  // bongkar properti nama_lengkap, kotaAsal, dan hobi dari dataPengguna ke dalam variable baru
+  // 6. Bongkar data dari objek pengguna sekaligus pasang nilai cadangan
+  // Catatan*: Tanda titik dua digunakan untuk mengganti nama variabel, bukan mengisi nilai.
   const {
-    // ambil nilai nama_lengkap dari object dan simpan ke variable namaPanggilan
     nama_lengkap: namaPanggilan,
-    // ambil nilai kotaAsal dari object dan simpan ke variable kotaAsal
     kotaAsal,
-    // ambil nilai hobi dari object dan simpan ke variable hobi dengan fallback
     hobi = "Membaca Buku",
   } = dataPengguna;
 
-  // 2. ARRAY DESTRUCTURING:
-  // mengambil posisi indeks ke-0 dan indeks ke-1
-  // bongkar elemen pertama dan kedua dari daftarPemenangLomba ke dalam variable juaraSatu dan juaraDua
+  // 7. Ambil juara satu dan dua dari array pemenang
+  // Catatan*: Pada array, urutan posisi menentukan urutan pengambilan data.
   const [
-    // ambil elemen ke-0 dari array dan simpan ke variable juaraSatu
-    juaraSatu, 
-    // ambil elemen ke-1 dari array dan simpan ke variable juaraDua
+    juaraSatu,
     juaraDua
   ] = daftarPemenangLomba;
 
-  // ubah properti innerHTML pada element kotakProfil menjadi string HTML yang berisi data hasil destructuring
+  // 8. Tampilkan gabungan data ke layar dalam bentuk teks
   kotakProfil.innerHTML = `
     <p><strong>Nama:</strong> ${namaPanggilan}</p>
     <p><strong>Kota:</strong> ${kotaAsal}</p>
@@ -188,9 +186,12 @@ tombolBongkar.addEventListener("click", () => {
 1. **Destructuring Parameter Fungsi**:
    Di ekosistem modern (seperti komponen React), Anda bisa langsung membongkar objek parameter di dalam tanda kurung fungsi:
    ```javascript
+   // 1. Buat fungsi yang langsung membongkar data pada bagian parameter
    function sapaPengguna({ nama, role = "User" } = {}) {
+     // 2. Cetak pesan ke layar dengan data yang sudah dibongkar
      console.log(`Halo ${nama}, peran: ${role}`);
    }
+   // 3. Jalankan fungsi dengan data objek
    sapaPengguna({ nama: "Ari" }); // "Halo Ari, peran: User"
    ```
 2. **Benteng Pertahanan `= {}`**:
@@ -205,10 +206,15 @@ tombolBongkar.addEventListener("click", () => {
 - [ ] Perhatikan bahwa `namaPanggilan` berhasil menampung `nama_lengkap`, dan hobi otomatis terisi `"Membaca Buku"`.
 - [ ] Buka Console (`F12`), coba uji coba bukti `undefined` vs `null`:
   ```javascript
+  // 1. Bongkar data yang kosong untuk memicu nilai cadangan
   const { x = "Cadangan" } = { x: undefined };
+  // 2. Cetak nilai cadangan ke layar
   console.log(x); // "Cadangan"
+
+  // 3. Bongkar data yang berisi null
   const { y = "Cadangan" } = { y: null };
-  console.log(y); // null! (tidak diganti cadangan)
+  // 4. Cetak nilai asli tanpa memicu cadangan
+  console.log(y); // null
   ```
 
 > [!TIP]
@@ -223,7 +229,9 @@ tombolBongkar.addEventListener("click", () => {
 1. Apakah urutan penulisan nama variabel berpengaruh pada Object Destructuring `{ kota, nama } = profil`? Bagaimana dengan Array Destructuring `[ kota, nama ] = list`?
 2. Perhatikan kode berikut:
    ```javascript
+   // 1. Buat data objek dengan usia kosong
    const data = { usia: null };
+   // 2. Bongkar usia dengan nilai cadangan 
    const { usia = 20 } = data;
    ```
    Berapakah nilai variabel `usia` setelah baris di atas dijalankan? Mengapa bukan `20`?

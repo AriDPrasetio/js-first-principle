@@ -162,79 +162,71 @@ Mari kita buat kasir toko yang mendemonstrasikan `console.table`, `console.dir`,
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Data daftar pesanan toko
-// buat variable daftarPesanan berisi array dari object pesanan
+// 1. Buat daftar pesanan sebagai data uji coba
 const daftarPesanan = [
   { id: 101, menu: "Kopi Susu Gula Aren", harga: 18000, jumlah: 2 },
   { id: 102, menu: "Croissant Cokelat", harga: 22000, jumlah: 1 },
   { id: 103, menu: "Air Mineral Botol", harga: 6000, jumlah: 3 },
 ];
 
-// ambil element tombol tabel berdasarkan ID-nya, simpan ke variable tombolTabel
+// 2. Ambil elemen-elemen tombol dan status dari halaman
 const tombolTabel = document.querySelector("#btn-tabel");
-// ambil element tombol dir berdasarkan ID-nya, simpan ke variable tombolDir
 const tombolDir = document.querySelector("#btn-dir");
-// ambil element tombol debug berdasarkan ID-nya, simpan ke variable tombolDebug
 const tombolDebug = document.querySelector("#btn-debug");
-// ambil element kotak status berdasarkan ID-nya, simpan ke variable kotakStatus
 const kotakStatus = document.querySelector("#kotak-status");
 
 // ================================================================
 // FITUR 1: console.table() & console.warn()
 // ================================================================
-// saat tombolTabel di-click, jalankan function berikut:
+// 3. Pasang pemantau klik pada tombol cetak tabel
 tombolTabel.addEventListener("click", () => {
-  // tampilkan pesan log ke dalam console
+  // 4. Cetak teks pemisah ke layar konsol
   console.log("--- Daftar Pesanan Pembeli ---");
-  // Cetak dalam bentuk tabel tabular:
-  // tampilkan isi array daftarPesanan dalam bentuk tabel ke dalam console
+  // 5. Tampilkan data pesanan dalam bentuk tabel baris dan kolom yang rapi
   console.table(daftarPesanan);
 
-  // Berikan peringatan jika ada item yang harganya di atas 20.000:
-  // lakukan perulangan untuk setiap item di dalam daftarPesanan
+  // 6. Periksa setiap item pesanan satu per satu
   daftarPesanan.forEach((item) => {
-    // jika harga item lebih besar dari 20000, maka:
+    // 7. Jika harga item di atas 20 ribu, beri peringatan kuning di konsol
     if (item.harga > 20000) {
-      // tampilkan pesan peringatan dengan nama menu dan harga ke dalam console
       console.warn(`Menu premium terdeteksi: ${item.menu} (Rp ${item.harga})`);
     }
   });
 
-  // ubah teks di dalam kotakStatus menjadi pesan sukses
+  // 8. Tampilkan pesan berhasil di layar
   kotakStatus.textContent = "✅ Tabel dan warning dicetak di tab Console!";
 });
 
 // ================================================================
 // FITUR 2: console.dir() UNTUK INSPEKSI POHON ELEMEN DOM
 // ================================================================
-// saat tombolDir di-click, jalankan function berikut:
+// 1. Pasang pemantau klik pada tombol inspeksi
 tombolDir.addEventListener("click", () => {
-  // tampilkan pesan log ke dalam console
+  // 2. Cetak teks pemisah ke layar konsol
   console.log("--- Inspeksi Properti Tombol ---");
-  // console.log mencetak tag HTML, sedangkan console.dir membuka pohon propertinya:
-  // tampilkan struktur object dari element tombolDir ke dalam console
+  // 3. Bedah seluruh struktur properti di dalam elemen tombol ini
   console.dir(tombolDir);
 
-  // ubah teks di dalam kotakStatus menjadi pesan sukses
+  // 4. Tampilkan pesan sukses di layar
   kotakStatus.textContent = "✅ Pohon properti tombol dicetak via console.dir!";
 });
 
 // ================================================================
 // FITUR 3: KATA KUNCI debugger; DAN STEPPING CONTROL
 // ================================================================
-// saat tombolDebug di-click, jalankan function berikut:
+// 1. Pasang pemantau klik pada tombol pembeku waktu
 tombolDebug.addEventListener("click", () => {
-  // ubah teks di dalam kotakStatus menjadi pesan memproses
+  // 2. Ganti teks layar dengan status memproses
   kotakStatus.textContent = "⏳ Memproses kalkulasi tagihan...";
 
-  // buat variable totalTagihan dengan nilai awal 0
+  // 3. Sediakan wadah angka nol untuk total harga
   let totalTagihan = 0;
 
-  // lakukan perulangan sebanyak jumlah item di dalam array daftarPesanan
+  // 4. Lakukan perhitungan untuk setiap pesanan secara berurutan
   for (let i = 0; i < daftarPesanan.length; i++) {
-    // ambil item dari array daftarPesanan pada index ke-i dan simpan ke variable item
+    // 5. Ambil data pesanan saat ini
     const item = daftarPesanan[i];
-    // kalikan harga item dengan jumlahnya dan simpan hasilnya ke variable subtotal
+    // 6. Hitung harga subtotal dari item tersebut
     const subtotal = item.harga * item.jumlah;
 
     // ============================================================
@@ -243,14 +235,15 @@ tombolDebug.addEventListener("click", () => {
     // Cek nilai 'item', 'subtotal', dan 'totalTagihan'.
     // Tekan F10 (Step Over) untuk melangkah ke iterasi berikutnya!
     // ============================================================
-    // hentikan eksekusi kode sementara jika console devtools sedang terbuka
+    // 7. Bekukan eksekusi browser di titik ini
+    // Catatan*: Hanya berlaku jika jendela alat pengembang terbuka.
     debugger;
 
-    // tambahkan nilai subtotal ke dalam variable totalTagihan
+    // 8. Tambahkan subtotal saat ini ke total keseluruhan
     totalTagihan += subtotal;
   }
 
-  // ubah teks di dalam kotakStatus dengan nilai akhir totalTagihan
+  // 9. Cetak hasil akhirnya ke layar
   kotakStatus.textContent = `Total Tagihan: Rp ${totalTagihan.toLocaleString("id-ID")}`;
 });
 ```

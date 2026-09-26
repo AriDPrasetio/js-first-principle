@@ -132,43 +132,41 @@ Mari kita buat halaman interaktif pertama Anda di browser. Buat dua berkas dalam
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen HTML yang dibutuhkan dari halaman
-// ambil elemen dengan ID 'lampu' (lingkaran lampu), simpan ke wadah lampuEl
+// 1. Ambil elemen lampu dari halaman berdasarkan ID-nya, simpan ke wadah lampuEl
 const lampuEl = document.querySelector("#lampu");
 
-// ambil elemen teks status dengan ID 'teks-status', simpan ke wadah teksStatusEl
+// 2. Ambil elemen teks status berdasarkan ID-nya, simpan ke wadah teksStatusEl
 const teksStatusEl = document.querySelector("#teks-status");
 
-// ambil tombol saklar dengan ID 'btn-saklar', simpan ke wadah saklarBtn
+// 3. Ambil elemen tombol saklar berdasarkan ID-nya, simpan ke wadah saklarBtn
 const saklarBtn = document.querySelector("#btn-saklar");
 
-// 2. Simpan status lampu di memori JavaScript
-// buat variabel penanda status bernilai false (artinya mula-mula lampu mati)
+// 4. Buat penanda status lampu dengan nilai awal false (artinya lampu mati saat pertama kali dimuat)
 let isLampuMenyala = false;
 
-// 3. Pasang aksi ketika tombol saklar diklik
-// saat tombol saklarBtn diklik oleh pengguna, jalankan perintah di dalam blok ini:
+// 5. Pasang pendengar klik pada tombol saklarBtn — setiap kali tombol diklik, blok ini berjalan
 saklarBtn.addEventListener("click", () => {
-  // balikkan status: jika sebelumnya mati (false) jadikan menyala (true), dan sebaliknya
+  // 6. Balik nilai penanda: false menjadi true, atau true menjadi false
+  // Catatan*: tanda seru (!) membalik nilai boolean — inilah cara toggle paling ringkas di JS
   isLampuMenyala = !isLampuMenyala;
 
   if (isLampuMenyala) {
-    // jika status lampu menyala, ubah warna latar lingkaran lampu menjadi kuning terang
+    // 7. Jika lampu sekarang menyala, ubah warna lingkaran menjadi kuning terang
     lampuEl.style.backgroundColor = "#ffcc00";
 
-    // perbarui teks status di layar menjadi 'Lampu Menyala!'
+    // 8. Perbarui teks di layar menjadi 'Lampu Menyala!'
     teksStatusEl.textContent = "Lampu Menyala!";
 
-    // ubah label tombol menjadi 'Matikan Lampu'
+    // 9. Ganti label tombol menjadi 'Matikan Lampu'
     saklarBtn.textContent = "Matikan Lampu";
   } else {
-    // jika status lampu mati, kembalikan warna lingkaran lampu menjadi abu-abu
+    // 10. Jika lampu sekarang mati, kembalikan warna lingkaran menjadi abu-abu
     lampuEl.style.backgroundColor = "#ccc";
 
-    // kembalikan teks status menjadi 'Lampu Sedang Mati'
+    // 11. Kembalikan teks di layar menjadi 'Lampu Sedang Mati'
     teksStatusEl.textContent = "Lampu Sedang Mati";
 
-    // kembalikan label tombol menjadi 'Nyalakan Lampu'
+    // 12. Kembalikan label tombol menjadi 'Nyalakan Lampu'
     saklarBtn.textContent = "Nyalakan Lampu";
   }
 });

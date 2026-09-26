@@ -38,21 +38,28 @@ Di aplikasi web, ada data sensitif yang **tidak boleh diubah sembarangan oleh pi
 
 ```javascript
 // CONTOH DASAR FIRST PRINCIPLES:
+// 1. Buat fungsi pembuat brankas bernama buatPenghitung
 function buatPenghitung() {
-  // variabel privat terkunci
+  // 2. Buat wadah hitungan yang tersembunyi di dalam lingkup fungsi ini (privat)
   let hitungan = 0;
 
+  // 3. Kembalikan sebuah fungsi anak yang bertindak sebagai pintu akses resmi
   return function () {
-    // mengingat dan menambah variabel induk
+    // 4. Tambahkan 1 ke dalam wadah hitungan
+    // Catatan*: Fungsi anak ini terus mengingat wadah hitungan dari fungsi induknya (Closure)
     hitungan = hitungan + 1;
+    // 5. Kembalikan isi terbaru dari wadah hitungan
     return hitungan;
   };
 }
 
+// 6. Jalankan fungsi pembuat brankas dan simpan fungsi akses resminya ke wadah klikCounter
 const klikCounter = buatPenghitung();
-console.log(klikCounter()); // 1
-console.log(klikCounter()); // 2
-// Variabel 'hitungan' tidak bisa dibajak dari luar!
+
+// 7. Panggil fungsi akses resmi berulang kali
+// Catatan*: Angka akan terus bertambah karena wadah privat masih hidup di memori
+console.log(klikCounter());
+console.log(klikCounter());
 ```
 
 ---
@@ -109,56 +116,55 @@ Mari kita buat pencatat skor game privat yang tahan dari intervensi luar:
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. PABRIK SKOR (FUNGSI INDUK PENGHASIL CLOSURE)
-// deklarasi function buatPengelolaSkor yang menerima parameter tampilanElemen
+// PABRIK SKOR (FUNGSI INDUK PENGHASIL CLOSURE)
+// 1. Buat fungsi pembuat pengelola skor yang menerima target elemen HTML
 function buatPengelolaSkor(tampilanElemen) {
-  // Variabel privat: terkunci aman di dalam closure
-  // buat variable nilaiSkor dan isi dengan number 0
+  // 2. Buat wadah privat nilaiSkor yang hanya ada di dalam fungsi ini
   let nilaiSkor = 0;
 
-  // deklarasi function segarkanLayar untuk memperbarui tampilan
+  // 3. Buat fungsi privat untuk memperbarui teks angka di layar
   function segarkanLayar() {
-    // perbarui teks di dalam element tampilanElemen dengan value dari nilaiSkor
+    // 4. Tulis isi wadah nilaiSkor ke dalam elemen HTML
     tampilanElemen.textContent = nilaiSkor;
   }
 
-  // Mengembalikan kumpulan fungsi kendali resmi:
-  // kembalikan sebuah object berisi method tambahPoin dan resetSkor yang memiliki akses ke nilaiSkor
+  // 5. Kembalikan objek berisi alat kendali resmi yang bisa dipakai dari luar
   return {
-    // deklarasi method tambahPoin yang menerima parameter tambahan
+    // 6. Buat alat penambah poin yang menerima jumlah poin tambahan
     tambahPoin: function (tambahan) {
-      // tambahkan nilaiSkor saat ini dengan parameter tambahan
+      // 7. Tambahkan poin ke wadah privat nilaiSkor
       nilaiSkor = nilaiSkor + tambahan;
-      // panggil function segarkanLayar untuk memperbarui UI
+      // 8. Perbarui layar
       segarkanLayar();
     },
-    // deklarasi method resetSkor untuk mengembalikan skor ke 0
+    // 9. Buat alat penyetel ulang skor
     resetSkor: function () {
-      // ubah nilaiSkor kembali menjadi 0
+      // 10. Kembalikan nilai wadah privat menjadi 0
       nilaiSkor = 0;
-      // panggil function segarkanLayar untuk memperbarui UI
+      // 11. Perbarui layar
       segarkanLayar();
     },
   };
 }
 
-// 2. MENGHUBUNGKAN KE ELEMEN HTML
-// ambil element penampil skor berdasarkan ID-nya, simpan ke variable scoreDisplay
+// MENGHUBUNGKAN KE ELEMEN HTML
+// 12. Ambil elemen HTML yang digunakan untuk menampilkan skor
 const scoreDisplay = document.querySelector("#score-display");
 
-// jalankan function buatPengelolaSkor dengan argumen scoreDisplay, simpan object hasilnya ke variable scoreTracker
+// 13. Buat alat pengelola skor khusus untuk elemen tersebut dan simpan di wadah scoreTracker
+// Catatan*: Wadah nilaiSkor kini hidup di dalam closure milik scoreTracker dan aman dari luar
 const scoreTracker = buatPengelolaSkor(scoreDisplay);
 
-// 3. PASANG AKSI TOMBOL
-// saat element tombol tambah di-click, jalankan function berikut:
+// PASANG AKSI TOMBOL
+// 14. Pasang aksi pada tombol tambah untuk dijalankan saat diklik
 document.querySelector("#btn-add").addEventListener("click", () => {
-  // panggil method tambahPoin dari object scoreTracker dengan argumen 5
+  // 15. Gunakan alat resmi tambahPoin untuk menyuntikkan 5 poin
   scoreTracker.tambahPoin(5);
 });
 
-// saat element tombol reset di-click, jalankan function berikut:
+// 16. Pasang aksi pada tombol reset untuk dijalankan saat diklik
 document.querySelector("#btn-reset").addEventListener("click", () => {
-  // panggil method resetSkor dari object scoreTracker
+  // 17. Gunakan alat resmi resetSkor untuk mengembalikan ke posisi awal
   scoreTracker.resetSkor();
 });
 ```
@@ -185,13 +191,20 @@ document.querySelector("#btn-reset").addEventListener("click", () => {
 - [x] Buka Console browser (`F12`), coba ketik `nilaiSkor = 1000`. Perhatikan bahwa angka skor di layar tidak terpengaruh karena variabel aslinya terlindung di dalam closure.
 - [x] Ketik kode dasar di Console:
   ```javascript
+  // 1. Buat pabrik pembuat salam yang mengingat kota
   function pembuatSalam(kota) {
+    // 2. Kembalikan fungsi yang merakit pesan salam
     return function (nama) {
+      // 3. Gunakan wadah nama (dari luar) dan wadah kota (dari fungsi induk)
       return `Halo ${nama} dari ${kota}`;
     };
   }
+  
+  // 4. Buat pembuat salam khusus untuk kota Bali
   const salamBali = pembuatSalam("Bali");
-  // Amati bagaimana "Bali" tetap diingat!
+  
+  // 5. Cetak hasil sapaan ke konsol
+  // Catatan*: Wadah kota berisi "Bali" tetap diingat berkat closure
   console.log(salamBali("Kyo"));
   ```
 
@@ -207,13 +220,18 @@ document.querySelector("#btn-reset").addEventListener("click", () => {
 Perhatikan kode pencipta salam berikut:
 
 ```javascript
+// 1. Buat fungsi pembuat penyapa yang menyimpan informasi nama kota
 function buatPenyapa(namaKota) {
+  // 2. Kembalikan fungsi pencetak salam ke konsol
   return function (namaOrang) {
+    // 3. Cetak gabungan nama orang dengan nama kota
     console.log(`Halo ${namaOrang}, selamat datang di ${namaKota}!`);
   };
 }
 
+// 4. Buat penyapa khusus untuk Bandung
 const sapaBandung = buatPenyapa("Bandung");
+// 5. Panggil penyapa tersebut untuk menyapa "Kyo"
 sapaBandung("Kyo");
 ```
 

@@ -129,72 +129,63 @@ Mari kita buat kalkulator pembagian tagihan makan bersama yang aman dari pembagi
 ### Berkas 2: `app.js`
 
 ```javascript
-// ambil elemen input total tagihan berdasarkan ID-nya, simpan ke variable totalInput
+// 1. Ambil elemen-elemen HTML yang dibutuhkan dari halaman dan simpan ke dalam wadah konstan
 const totalInput = document.querySelector("#input-total");
-
-// ambil elemen input jumlah orang berdasarkan ID-nya, simpan ke variable orangInput
 const orangInput = document.querySelector("#input-orang");
-
-// ambil tombol hitung berdasarkan ID-nya, simpan ke variable hitungBtn
 const hitungBtn = document.querySelector("#btn-hitung");
-
-// ambil elemen kotak pesan hasil berdasarkan ID-nya, simpan ke variable pesanBox
 const pesanBox = document.querySelector("#pesan-box");
-
-// ambil elemen status finally berdasarkan ID-nya, simpan ke variable finallyStatus
 const finallyStatus = document.querySelector("#status-finally");
 
-// pasang aksi ketika tombol hitung diklik
-// saat hitungBtn di-click, jalankan function berikut:
+// 2. Pasang aksi pada tombol hitung untuk dijalankan saat diklik
 hitungBtn.addEventListener("click", () => {
-  // mulai eksekusi block kode yang aman, siap menangkap error jika terjadi:
+  // 3. Mulai blok try untuk menjalankan kode berisiko yang bisa memicu error
   try {
-    // 1. BLOK TRY: Lakukan operasi berisiko
-    // ambil value input tagihan dan paksa ubah menjadi tipe number, simpan ke variable totalTagihan
+    // BLOK TRY: Lakukan operasi berisiko
+    // 4. Ambil nilai masukan tagihan, ubah menjadi tipe angka, dan simpan ke wadah totalTagihan
     const totalTagihan = Number(totalInput.value);
 
-    // ambil value input orang dan paksa ubah menjadi tipe number, simpan ke variable jumlahOrang
+    // 5. Ambil nilai masukan jumlah orang, ubah menjadi tipe angka, dan simpan ke wadah jumlahOrang
     const jumlahOrang = Number(orangInput.value);
 
     // Validasi data input:
-    // jika totalTagihan tidak valid sebagai number (NaN) atau <= 0, maka:
+    // 6. Periksa jika totalTagihan tidak valid (NaN) atau bernilai kurang dari sama dengan 0
     if (Number.isNaN(totalTagihan) || totalTagihan <= 0) {
-      // secara paksa lemparkan Error untuk membatalkan proses dan beralih ke catch
+      // 7. Hentikan proses secara paksa dan lemparkan error ke blok catch
+      // Catatan*: Sisa baris di dalam blok try akan dilewati
       throw new Error("Total tagihan harus berupa angka lebih dari 0!");
     }
 
-    // jika jumlahOrang tidak valid sebagai number (NaN) atau <= 0, maka:
+    // 8. Periksa jika jumlahOrang tidak valid atau kurang dari sama dengan 0
     if (Number.isNaN(jumlahOrang) || jumlahOrang <= 0) {
-      // secara paksa lemparkan Error untuk membatalkan proses dan beralih ke catch
+      // 9. Lemparkan error ke blok catch
       throw new Error("Jumlah teman harus minimal 1 orang!");
     }
 
     // Hitung pembagian:
-    // bagikan totalTagihan dengan jumlahOrang dan simpan hasilnya ke variable bayarPerOrang
+    // 10. Bagikan total tagihan dengan jumlah orang dan simpan ke wadah bayarPerOrang
     const bayarPerOrang = totalTagihan / jumlahOrang;
 
     // Tampilkan sukses:
-    // ubah daftar class pada element pesanBox untuk memberi gaya styling yang sukses
+    // 11. Ubah tampilan kotak pesan agar berwarna hijau (sukses)
     pesanBox.className = "kotak-pesan kotak-sukses";
-
-    // perbarui teks di dalam element pesanBox untuk menunjukkan jumlah yang harus dibayar masing-masing
+    // 12. Tampilkan hasil perhitungan pembagian tagihan ke dalam kotak pesan
     pesanBox.textContent = `Masing-masing membayar: Rp${bayarPerOrang.toLocaleString("id-ID")}`;
   } catch (error) {
-    // 2. BLOK CATCH: Jaring pengaman saat throw terjadi
-    // catat pesan error kegagalan ke console browser sebagai peringatan
+    // 13. Tangkap lemparan error dari blok try
+    // BLOK CATCH: Jaring pengaman saat throw terjadi
+    // 14. Cetak pesan peringatan ke konsol peramban
     console.warn("Terjadi kegagalan input:", error.message);
 
-    // ubah daftar class pada element pesanBox untuk memberi gaya styling yang error
+    // 15. Ubah tampilan kotak pesan agar berwarna merah (gagal)
     pesanBox.className = "kotak-pesan kotak-error";
-
-    // perbarui teks di dalam element pesanBox untuk memberi info kegagalan ke pengguna
+    // 16. Tampilkan isi pesan error ke dalam kotak pesan
     pesanBox.textContent = `❌ ${error.message}`;
   } finally {
-    // 3. BLOK FINALLY: Selalu dieksekusi apapun yang terjadi
-    // dapatkan waktu jam lokal saat ini dan simpan ke variable waktu
+    // 17. Jalankan blok finally terlepas dari keberhasilan maupun kegagalan
+    // BLOK FINALLY: Selalu dieksekusi apapun yang terjadi
+    // 18. Ambil jam lokal saat ini
     const waktu = new Date().toLocaleTimeString("id-ID");
-
-    // perbarui teks di dalam element finallyStatus untuk menunjukkan waktu proses selesai, terlepas gagal atau sukses
+    // 19. Perbarui teks status waktu agar pengguna tahu proses telah usai
     finallyStatus.textContent = `Operasi selesai diproses pada pukul ${waktu}`;
   }
 });

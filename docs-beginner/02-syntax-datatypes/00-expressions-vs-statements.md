@@ -50,14 +50,21 @@ Aturan emas termudah untuk membedakan Expression vs Statement:
 
 ```javascript
 // ✅ BISA DITARUH DI KANAN: Semuanya adalah EXPRESSION!
-const a = 10; // Angka literal adalah ekspresi
-const b = 5 + 5; // Operasi matematika adalah ekspresi
-const c = "Halo " + "Dunia"; // Penggabungan teks adalah ekspresi
-const d = Math.random(); // Pemanggilan fungsi menghasilkan nilai (ekspresi)
-const e = true ? "Buka" : "Tutup"; // Ternary menghasilkan nilai (ekspresi)
+// 1. Simpan angka literal 10 ke variabel a — angka literal langsung menghasilkan nilai
+const a = 10;
+// 2. Hitung 5 + 5 lalu simpan hasilnya ke variabel b — operasi matematika menghasilkan nilai
+const b = 5 + 5;
+// 3. Gabungkan dua teks lalu simpan hasilnya ke variabel c — penyambungan teks menghasilkan nilai
+const c = "Halo " + "Dunia";
+// 4. Panggil Math.random() lalu simpan nilainya ke variabel d — pemanggilan fungsi menghasilkan nilai
+const d = Math.random();
+// 5. Evaluasi ternary lalu simpan hasilnya ke variabel e — ternary memilih satu dari dua nilai
+const e = true ? "Buka" : "Tutup";
 
 // ❌ GAGAL TOTAL: STATEMENT tidak bisa ditaruh di sebelah kanan!
+// 6. Coba simpan blok if ke variabel f — memicu error karena if adalah instruksi, bukan nilai
 // const f = if (true) { "Buka" }; // ERROR! SyntaxError: Unexpected token 'if'
+// 7. Coba simpan pengulangan for ke variabel g — memicu error dengan alasan yang sama
 // const g = for (let i = 0; i < 3; i++) {}; // ERROR! SyntaxError
 ```
 
@@ -66,12 +73,11 @@ const e = true ? "Buka" : "Tutup"; // Ternary menghasilkan nilai (ekspresi)
 Sebuah ekspresi bisa diubah menjadi satu kalimat instruksi mandiri cukup dengan menambahkan tanda titik koma (`;`) di ujungnya:
 
 ```javascript
-// '10 + 20' adalah Expression (menghasilkan 30)
-// '10 + 20;' adalah Expression Statement (perintah mandiri untuk menghitung)
+// 1. Tulis ekspresi '10 + 20' diakhiri titik koma — ekspresi ini menjadi instruksi mandiri (expression statement)
+// Catatan*: hasilnya tidak disimpan ke variabel mana pun, nilai 30 langsung dibuang
 10 + 20;
 
-// 'console.log("Hai")' adalah Expression (pemanggilan fungsi)
-// Ditambah ';' menjadi Expression Statement (perintah eksekusi cetak teks)
+// 2. Panggil console.log("Hai") diakhiri titik koma — instruksi ini langsung mencetak teks ke konsol
 console.log("Hai");
 ```
 
@@ -147,41 +153,45 @@ Salin kode di bawah ini ke dalam satu folder untuk menguji langsung perbedaan ke
 ### Berkas 2: `app.js`
 
 ```javascript
-// Menangkap elemen antarmuka
+// 1. Ambil tiga elemen antarmuka dari halaman berdasarkan ID-nya
 const tombolExpression = document.getElementById("btn-expression");
 const tombolStatement = document.getElementById("btn-statement");
 const kotakHasil = document.getElementById("kotak-hasil");
 
-// 1. PENGUJIAN EXPRESSION:
-// Ternary operator adalah EXPRESSION karena menghasilkan nilai yang langsung
-// bisa disimpan ke variabel 'statusToko'.
+// HOF TIPE 1: PENGUJIAN EXPRESSION
+// 2. Pasang pendengar klik pada tombol Expression — blok ini berjalan setiap kali tombol diklik
 tombolExpression.addEventListener("click", () => {
+  // 3. Simpan angka 14 ke variabel jamSekarang sebagai jam yang sedang disimulasikan
   const jamSekarang = 14;
 
-  // Sisi kanan tanda '=' mengevaluasi nilai secara langsung:
+  // 4. Evaluasi ternary: jika jam antara 9-17 hasilkan "TOKO BUKA", selainnya "TOKO TUTUP"
+  // Catatan*: ternary adalah EXPRESSION — hasilnya langsung bisa disimpan ke variabel statusToko
   const statusToko =
     jamSekarang >= 9 && jamSekarang <= 17 ? "TOKO BUKA" : "TOKO TUTUP";
 
+  // 5. Tampilkan nilai statusToko ke dalam kotak hasil di layar
   kotakHasil.innerHTML = `
     <strong>Hasil Expression:</strong><br>
     Nilai langsung disimpan ke variabel: <code>"${statusToko}"</code>
   `;
 });
 
-// 2. PENGUJIAN STATEMENT:
-// 'if...else' adalah STATEMENT. Ia tidak menghasilkan nilai langsung, melainkan
-// menjalankan blok instruksi di dalamnya.
+// HOF TIPE 2: PENGUJIAN STATEMENT
+// 6. Pasang pendengar klik pada tombol Statement — blok ini berjalan setiap kali tombol diklik
 tombolStatement.addEventListener("click", () => {
+  // 7. Simpan angka 20 ke variabel jamSekarang sebagai jam yang sedang disimulasikan
   const jamSekarang = 20;
-  let statusToko = ""; // Siapkan variabel penampung terlebih dahulu
+  // 8. Siapkan wadah kosong statusToko yang akan diisi oleh blok if/else di bawah
+  let statusToko = "";
 
-  // Statement mengendalikan ke mana alur logika harus melompat:
+  // 9. Jalankan blok if/else untuk menentukan isi statusToko — if/else adalah STATEMENT, bukan ekspresi
   if (jamSekarang >= 9 && jamSekarang <= 17) {
     statusToko = "TOKO BUKA";
   } else {
     statusToko = "TOKO TUTUP";
   }
 
+  // 10. Tampilkan nilai statusToko yang sudah diisi ke dalam kotak hasil di layar
   kotakHasil.innerHTML = `
     <strong>Hasil Statement (if/else):</strong><br>
     Instruksi dijalankan berurutan: <code>"${statusToko}"</code>

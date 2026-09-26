@@ -59,14 +59,14 @@ Pernahkah Anda mencoba memanggil API lalu muncul error warna merah: *Cross-Origi
 
 ### C. Anatomi `AbortController` dan Batas Waktu Modern
 ```javascript
-// 1. Cara Manual (Menggunakan Controller):
+// 1. Buat alat pemutus hubungan baru
 const controller = new AbortController();
-// Hubungkan sinyal antena pembatal:
+// 2. Sambungkan alat pemutus ke perintah permintaan data
 fetch(url, { signal: controller.signal });
-// Tekan tombol merah untuk membatalkan request kapan saja:
+// 3. Batalkan proses pengambilan data seketika itu juga
 controller.abort();
 
-// 2. Cara Modern (Otomatis Batal Jika Lebih dari 5 Detik):
+// 4. Gunakan fitur batas waktu untuk batal otomatis setelah lima detik
 fetch(url, { signal: AbortSignal.timeout(5000) });
 ```
 
@@ -156,118 +156,98 @@ Mari kita buat alat penguji jaringan interaktif yang mensimulasikan ketiga skena
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen HTML
-// ambil element tombol sukses berdasarkan ID-nya, simpan ke variable tombolSukses
+// 1. Ambil seluruh elemen tombol dan layar dari halaman HTML
 const tombolSukses = document.querySelector("#btn-sukses");
-// ambil element tombol http error berdasarkan ID-nya, simpan ke variable tombolHttpError
 const tombolHttpError = document.querySelector("#btn-http-error");
-// ambil element tombol network error berdasarkan ID-nya, simpan ke variable tombolNetworkError
 const tombolNetworkError = document.querySelector("#btn-network-error");
-// ambil element tombol batal berdasarkan ID-nya, simpan ke variable tombolBatal
 const tombolBatal = document.querySelector("#btn-batal");
-// ambil element kotak status berdasarkan ID-nya, simpan ke variable kotakStatus
 const kotakStatus = document.querySelector("#kotak-status");
 
-// Variabel untuk memegang remote pengendali pembatalan
-// buat variable pengendaliBatal dengan value null untuk menyimpan objek AbortController
+// 2. Siapkan tempat untuk menaruh tombol pemutus darurat
 let pengendaliBatal = null;
 
 // ================================================================
 // FUNGSI UMUM DENGAN PENANGANAN 3 KATEGORI ERROR
 // ================================================================
-// deklarasi function async mintaData dengan parameter urlTarget
+// 3. Buat fungsi pintar yang menangani alamat server yang berbeda-beda
 async function mintaData(urlTarget) {
-  // Buat remote pembatal baru untuk request ini
-  // buat object AbortController baru dan simpan ke variable pengendaliBatal
+  // 4. Siapkan remote pengendali baru setiap kali mulai meminta data
   pengendaliBatal = new AbortController();
 
-  // ubah value property className dari kotakStatus menjadi "status-kotak"
+  // 5. Ganti tampilan kotak dengan tulisan loading
   kotakStatus.className = "status-kotak";
-  // ubah teks di dalam kotakStatus menjadi pesan loading
   kotakStatus.textContent = "⏳ Sedang menghubungi server...";
 
-  // gunakan try untuk menangani kode yang mungkin menghasilkan error
+  // 6. Mulai percobaan koneksi data
   try {
-    // Sambungkan antena sinyal ke konfigurasi fetch:
-    // jalankan fetch untuk mengambil data dengan signal pembatal, simpan ke respon
+    // 7. Mulai penghubungan sambil menancapkan antena pembatalan
     const respon = await fetch(urlTarget, {
       signal: pengendaliBatal.signal,
     });
 
     // ============================================================
     // KATEGORI 2: HTTP Status Error (404, 500, dll)
-    // Server berhasil dihubungi secara fisik jaringan, tetapi
-    // server memberi balasan status gagal!
     // ============================================================
-    // jika property ok dari respon adalah false, maka:
+    // 8. Cek apakah balasan server buruk kendati sambungan berhasil
+    // Catatan*: 404 Not Found tidak dianggap rusak jaringannya, jadi harus diperiksa sendiri.
     if (!respon.ok) {
-      // lemparkan object Error baru dengan pesan status server
+      // 9. Lempar masalah jika balasannya merah
       throw new Error(`HTTP Error! Status: ${respon.status} (${respon.statusText})`);
     }
 
-    // jalankan metode json pada respon dan simpan hasilnya ke variable data
+    // 10. Jika aman, bongkar isi surat JSON menjadi data siap pakai
     const data = await respon.json();
-    // ubah value property className dari kotakStatus menjadi "status-kotak sukses"
+    // 11. Tampilkan pesan berhasil bersama judul data ke layar
     kotakStatus.className = "status-kotak sukses";
-    // ubah teks di dalam kotakStatus dengan pesan sukses berisi data
     kotakStatus.textContent = `✅ Sukses! Data: "${data.title || data.name}"`;
+  // 12. Tangkap semua lemparan dari masalah yang terjadi
   } catch (error) {
     // ============================================================
     // KATEGORI 3: Pembatalan Disengaja oleh Pengguna (AbortError)
     // ============================================================
-    // jika property name dari error adalah "AbortError", maka:
+    // 13. Bedakan jika masalahnya adalah akibat tombol batal ditekan
     if (error.name === "AbortError") {
-      // ubah value property className dari kotakStatus menjadi "status-kotak batal"
+      // 14. Ganti layar status ke informasi pembatalan manual
       kotakStatus.className = "status-kotak batal";
-      // ubah teks di dalam kotakStatus dengan pesan dibatalkan
       kotakStatus.textContent = "🛑 Request dibatalkan oleh pengguna via AbortController!";
     } 
     // ============================================================
     // KATEGORI 1: Kegagalan Jaringan Murni (Network Error / CORS)
     // ============================================================
-    // jika tidak (berarti error lainnya), maka:
+    // 15. Tangani kemungkinan jaringan putus atau ditolak satpam web
     else {
-      // ubah value property className dari kotakStatus menjadi "status-kotak error"
+      // 16. Tampilkan pesan masalah putus jaringan ke layar
       kotakStatus.className = "status-kotak error";
-      // ubah isi HTML di dalam kotakStatus dengan pesan error
       kotakStatus.innerHTML = `❌ <strong>Terjadi Kesalahan:</strong><br>${error.message}`;
     }
+  // 17. Pastikan tombol darurat dikosongkan setelah proses berakhir
   } finally {
-    // kembalikan value pengendaliBatal menjadi null karena request telah selesai
     pengendaliBatal = null;
   }
 }
 
-// 2. Hubungkan ke tombol-tombol pengujian
-// saat tombolSukses di-click, jalankan function berikut:
+// 1. Hubungkan tombol hijau dengan permintaan normal
 tombolSukses.addEventListener("click", () => {
-  // jalankan function mintaData dengan URL yang valid
   mintaData("https://jsonplaceholder.typicode.com/todos/1");
 });
 
-// saat tombolHttpError di-click, jalankan function berikut:
+// 2. Hubungkan tombol merah dengan alamat yang pasti tidak ada
 tombolHttpError.addEventListener("click", () => {
-  // Memanggil endpoint palsu yang akan memicu balasan HTTP 404 dari server
-  // jalankan function mintaData dengan URL yang tidak ditemukan
   mintaData("https://jsonplaceholder.typicode.com/halaman-ini-pasti-404");
 });
 
-// saat tombolNetworkError di-click, jalankan function berikut:
+// 3. Hubungkan tombol oranye dengan alamat aneh yang akan memutuskan kabel
 tombolNetworkError.addEventListener("click", () => {
-  // Domain asal-asalan yang tidak ada di DNS dunia -> memicu Network Error
-  // jalankan function mintaData dengan domain yang salah
   mintaData("https://domain-palsu-yang-sama-sekali-tidak-ada-12345.com/data");
 });
 
-// saat tombolBatal di-click, jalankan function berikut:
+// 4. Pasang tombol interupsi untuk membatalkan sinyal permintaan saat itu juga
 tombolBatal.addEventListener("click", () => {
-  // jika pengendaliBatal tidak null, maka:
+  // 5. Tekan tombol pemutus di alat hanya jika ada alat pembatal yang aktif
   if (pengendaliBatal) {
-    // Tekan tombol merah remote!
-    // batalkan request dengan menjalankan metode abort
     pengendaliBatal.abort();
   } else {
-    // ubah teks di dalam kotakStatus dengan pesan tidak ada request aktif
+    // 6. Tampilkan peringatan jika tidak ada koneksi yang perlu diputus
     kotakStatus.textContent = "Tidak ada request aktif yang sedang berjalan.";
   }
 });
@@ -279,14 +259,22 @@ tombolBatal.addEventListener("click", () => {
 
 1. **Struktur Penanganan Wajib untuk Semua Kode `fetch`**:
    ```javascript
+   // 1. Uji percobaan mengambil data
    try {
+     // 2. Ambil data beserta alat pemutus daruratnya
      const res = await fetch(url, { signal });
+     // 3. Lemparkan masalah jika balasan status bukan berhasil
      if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+     // 4. Ubah format dari teks pesan menjadi objek hidup
      const data = await res.json();
+     // 5. Kembalikan data tersebut
      return data;
+   // 6. Tangkap jika terjadi error
    } catch (err) {
+     // 7. Cek apakah ini pembatalan yang disengaja
      if (err.name === "AbortError") {
        console.log("Dibatalkan sengaja.");
+     // 8. Tampilkan koneksi jaringan murni yang putus
      } else {
        console.error("Gagal koneksi:", err.message);
      }

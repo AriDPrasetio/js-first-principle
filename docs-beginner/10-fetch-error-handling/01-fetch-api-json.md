@@ -63,14 +63,15 @@ Banyak pemula heran: _"Mengapa kita harus menulis kata kunci `await` sebanyak du
 ### Metode Permintaan: Mengambil (GET) vs Mengirim (POST)
 Secara bawaan, `fetch(url)` menjalankan metode **GET** (hanya mengambil data). Jika Anda ingin **mengirimkan data baru** ke server (metode **POST**), sertakan objek konfigurasi:
 ```javascript
-// Mengirim data baru ke server (POST):
+// 1. Hubungi server dengan memberikan instruksi pengiriman data baru
 const respon = await fetch("https://api.contoh.com/pengguna", {
+  // 2. Gunakan metode POST untuk mengirim data
   method: "POST",
   headers: {
-    // Beri tahu server bahwa kita mengirim format JSON
+    // 3. Beri tahu server bahwa jenis data yang dikirim adalah teks JSON
     "Content-Type": "application/json",
   },
-  // Bungkus objek jadi teks string JSON
+  // 4. Ubah data objek menjadi teks JSON sebelum dikirimkan
   body: JSON.stringify({ nama: "Dewi", kota: "Jakarta" }),
 });
 ```
@@ -161,62 +162,52 @@ Mari kita buat kartu interaktif yang bisa mengambil data pengguna (GET) dan meng
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen HTML
-// ambil element tombol ambil berdasarkan ID-nya, simpan ke variable tombolAmbil
+// 1. Ambil ketiga elemen dari halaman HTML
 const tombolAmbil = document.querySelector("#btn-ambil");
-// ambil element tombol kirim berdasarkan ID-nya, simpan ke variable tombolKirim
 const tombolKirim = document.querySelector("#btn-kirim");
-// ambil element wadah pengguna berdasarkan ID-nya, simpan ke variable wadahPengguna
 const wadahPengguna = document.querySelector("#wadah-pengguna");
 
 // ================================================================
 // A. CONTOH METODE GET: Mengambil Data dari Server API
 // ================================================================
-// deklarasi function async ambilDataPengguna
+// 2. Buat fungsi pintar untuk mengambil data dari server
 async function ambilDataPengguna() {
-  // ubah value property className dari wadahPengguna menjadi "box-data loading"
+  // 3. Ubah tampilan wadah dengan pesan bahwa proses sedang berjalan
   wadahPengguna.className = "box-data loading";
-  // ubah teks di dalam wadahPengguna menjadi pesan loading
   wadahPengguna.textContent = "⏳ [GET] Menghubungi server...";
-  // ubah value property disabled dari tombolAmbil menjadi true
+  // 4. Kunci tombol agar tidak diklik dua kali
   tombolAmbil.disabled = true;
 
-  // gunakan try untuk menangani kode yang mungkin menghasilkan error
+  // 5. Coba jalankan proses permintaan data
   try {
-    // 1. Hubungi server internet (Langkah Await 1)
-    // jalankan fetch untuk mengambil data dan simpan hasil response ke variable responServer
+    // 6. Hubungi alamat server dan tunggu jawabannya
+    // Catatan*: Tahap ini hanya menunggu sinyal koneksi, bukan mengunduh isi pesannya.
     const responServer = await fetch(
       "https://jsonplaceholder.typicode.com/users/1",
     );
 
-    // Periksa status selamat (200-299)
-    // jika property ok dari responServer adalah false, maka:
+    // 7. Periksa apakah server memberikan lampu hijau
     if (!responServer.ok) {
-      // lemparkan object Error baru dengan pesan status server
+      // 8. Hentikan proses dan lempar kesalahan jika statusnya buruk
       throw new Error(`Server bermasalah (HTTP Kode: ${responServer.status})`);
     }
 
-    // 2. Terjemahkan teks JSON menjadi objek JavaScript (Langkah Await 2)
-    // jalankan metode json pada responServer dan simpan hasilnya ke variable dataUser
+    // 9. Terjemahkan isi pesan yang diunduh dari format teks ke objek JavaScript
     const dataUser = await responServer.json();
 
-    // 3. Tampilkan data objek JavaScript ke layar
-    // ubah value property className dari wadahPengguna menjadi "box-data sukses"
+    // 10. Tampilkan data yang sudah jadi objek ke layar
     wadahPengguna.className = "box-data sukses";
-    // ubah isi HTML di dalam wadahPengguna dengan data dari variable dataUser
     wadahPengguna.innerHTML = `
       <p><strong>Status:</strong> Data Berhasil Diambil (GET)</p>
       <p><strong>Nama:</strong> ${dataUser.name}</p>
       <p><strong>Email:</strong> ${dataUser.email}</p>
       <p><strong>Kota:</strong> ${dataUser.address.city}</p>
     `;
-  // tangkap error dari blok try ke dalam variable error
+  // 11. Tangkap jika terjadi kegagalan jaringan atau server
   } catch (error) {
-    // ubah teks di dalam wadahPengguna dengan pesan error
     wadahPengguna.textContent = `❌ Terjadi kesalahan: ${error.message}`;
-  // jalankan blok finally setelah try atau catch selesai
+  // 12. Selalu lepaskan kunci tombol di akhir proses
   } finally {
-    // ubah value property disabled dari tombolAmbil menjadi false
     tombolAmbil.disabled = false;
   }
 }
@@ -224,79 +215,64 @@ async function ambilDataPengguna() {
 // ================================================================
 // B. CONTOH METODE POST: Mengirimkan Data Baru ke Server
 // ================================================================
-// deklarasi function async kirimDataPengguna
+// 1. Buat fungsi pintar untuk mengirim data ke server
 async function kirimDataPengguna() {
-  // ubah value property className dari wadahPengguna menjadi "box-data loading"
+  // 2. Ubah tampilan wadah menjadi mode pemrosesan
   wadahPengguna.className = "box-data loading";
-  // ubah teks di dalam wadahPengguna menjadi pesan loading POST
   wadahPengguna.textContent = "⏳ [POST] Mengirimkan data baru ke server...";
-  // ubah value property disabled dari tombolKirim menjadi true
+  // 3. Kunci tombol pengiriman
   tombolKirim.disabled = true;
 
-  // gunakan try untuk menangani kode yang mungkin menghasilkan error
+  // 4. Coba jalankan proses pengiriman data
   try {
-    // Data objek JavaScript yang ingin kita kirim:
-    // buat object data baru dan simpan ke variable dataBaru
+    // 5. Siapkan data objek yang akan dikirim
     const dataBaru = {
-      // set property title menjadi "Belajar JavaScript First Principles"
       title: "Belajar JavaScript First Principles",
-      // set property body menjadi "Panduan lengkap memahami JavaScript dari akarnya."
       body: "Panduan lengkap memahami JavaScript dari akarnya.",
-      // set property userId menjadi 1
       userId: 1,
     };
 
-    // Kirim menggunakan metode POST:
-    // jalankan fetch dengan opsi method POST, headers, body, lalu simpan hasil ke responServer
+    // 6. Hubungi server sambil membawa data baru tersebut
     const responServer = await fetch(
       "https://jsonplaceholder.typicode.com/posts",
       {
-        // set metode request menjadi "POST"
+        // 7. Ubah metode menjadi POST karena akan mengirim data
         method: "POST",
-        // tentukan headers dari request
         headers: {
-          // Nyatakan tipe payload JSON
-          // set "Content-Type" menjadi "application/json"
+          // 8. Nyatakan bahwa isi dokumen berupa teks JSON
           "Content-Type": "application/json",
         },
-        // Ubah objek menjadi format string JSON
-        // konversi object dataBaru menjadi string JSON dan jadikan sebagai body request
+        // 9. Bungkus objek ke dalam string agar bisa terkirim lewat internet
         body: JSON.stringify(dataBaru),
       },
     );
 
-    // jika property ok dari responServer adalah false, maka:
+    // 10. Pastikan pengiriman dianggap sukses oleh server
     if (!responServer.ok) {
-      // lemparkan object Error baru dengan pesan status gagal
       throw new Error(`Gagal mengirim data! Status: ${responServer.status}`);
     }
 
-    // jalankan metode json pada responServer dan simpan hasilnya ke variable hasilRespons
+    // 11. Baca balasan dari server yang menyatakan hasil pembuatannya
     const hasilRespons = await responServer.json();
 
-    // ubah value property className dari wadahPengguna menjadi "box-data sukses"
+    // 12. Tampilkan balasan pembuatan ke layar
     wadahPengguna.className = "box-data sukses";
-    // ubah isi HTML di dalam wadahPengguna dengan data dari variable hasilRespons
     wadahPengguna.innerHTML = `
       <p><strong>Status:</strong> Data Berhasil Dibuat di Server (201 Created)!</p>
       <p><strong>ID Baru:</strong> ${hasilRespons.id}</p>
       <p><strong>Judul:</strong> ${hasilRespons.title}</p>
     `;
-  // tangkap error dari blok try ke dalam variable error
+  // 13. Tangkap jika ada masalah saat pengiriman
   } catch (error) {
-    // ubah teks di dalam wadahPengguna dengan pesan error
     wadahPengguna.textContent = `❌ Terjadi kesalahan: ${error.message}`;
-  // jalankan blok finally setelah try atau catch selesai
+  // 14. Buka kembali kunci tombol di akhir
   } finally {
-    // ubah value property disabled dari tombolKirim menjadi false
     tombolKirim.disabled = false;
   }
 }
 
-// 2. Hubungkan event klik ke fungsi masing-masing
-// saat tombolAmbil di-click, jalankan function ambilDataPengguna
+// 1. Hubungkan tombol ke fungsinya masing-masing
 tombolAmbil.addEventListener("click", ambilDataPengguna);
-// saat tombolKirim di-click, jalankan function kirimDataPengguna
 tombolKirim.addEventListener("click", kirimDataPengguna);
 ```
 
@@ -307,6 +283,7 @@ tombolKirim.addEventListener("click", kirimDataPengguna);
 1. **Selalu Ingat Rumus `response.ok`**:
    `fetch()` hanya melempar error jaringan secara otomatis jika komputer mati sambungan atau URL sama sekali tidak ada di DNS. Jika server membalas `404 Not Found`, `fetch()` tidak melempar error! Maka dari itu, selalu pasang:
    ```javascript
+   // 1. Lemparkan sebuah masalah jika status pengiriman bukan lampu hijau
    if (!respon.ok) throw new Error(`HTTP Error: ${respon.status}`);
    ```
 2. **Jangan Membaca Body Dua Kali**:

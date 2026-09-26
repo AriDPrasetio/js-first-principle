@@ -24,16 +24,19 @@ Bayangkan Anda memiliki sepeda di rumah:
 - Anda cukup meminjam speedometer tetangga dan menerapkannya ke sepeda Anda:
 
 ```javascript
+// 1. Buat objek mobil dengan isian data merek dan fungsi laju.
 const mobil = {
   merek: "Toyota",
+  // 2. Buat fungsi laju yang mengembalikan kalimat kecepatan kendaraan berdasarkan merek.
   laju: function(kecepatan) {
     return `${this.merek} melaju pada kecepatan ${kecepatan} km/jam`;
   }
 };
 
+// 1. Buat objek sepeda yang hanya memiliki properti merek.
 const sepeda = { merek: "Polygon" };
 
-// Sepeda meminjam fungsi milik mobil menggunakan .call:
+// 1. Jalankan fungsi laju milik objek mobil, lalu pinjamkan agar this merujuk pada objek sepeda.
 console.log(mobil.laju.call(sepeda, 25)); 
 // "Polygon melaju pada kecepatan 25 km/jam"
 ```
@@ -130,32 +133,32 @@ Mari kita ambil elemen daftar belanja dari halaman HTML, lalu pinjam metode Arra
 ### Berkas 2: `app.js`
 
 ```javascript
-// ambil element button pinjam berdasarkan ID-nya, simpan ke variable tombolPinjam
+// 1. Ambil elemen tombol pinjam dari HTML.
 const tombolPinjam = document.querySelector("#btn-pinjam");
-// ambil element wadah hasil berdasarkan ID-nya, simpan ke variable wadahHasil
+// 2. Ambil kotak wadah hasil dari HTML.
 const wadahHasil = document.querySelector("#wadah-hasil");
 
-// saat tombolPinjam di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol.
 tombolPinjam.addEventListener("click", () => {
   // Ambil semua elemen <li> (bertipe NodeList, bukan Array sejati):
-  // ambil semua element dengan class item-menu dan simpan kumpulan NodeList-nya ke variable kumpulanLi
+  // 2. Kumpulkan semua elemen menu ke dalam daftar NodeList.
   const kumpulanLi = document.querySelectorAll(".item-menu");
 
   // ================================================================
   // PINJAM METODE: Array.prototype.map.call(kumpulanLi, callback)
   // Atau versi ringkas: [].map.call(kumpulanLi, callback)
   // ================================================================
-  // pinjam method map dari array kosong [], panggil dengan konteks 'this' diarahkan ke kumpulanLi, dan simpan hasil array barunya ke variable daftarTeksMenu
+  // 3. Pinjam fungsi .map dari objek Array kosong, lalu paksa bekerja pada kumpulanLi.
   const daftarTeksMenu = [].map.call(kumpulanLi, (elemenLi) => {
-    // kembalikan teks di dalam element tersebut
+    // 4. Ambil teks asli dari setiap elemen.
     return elemenLi.textContent;
   });
 
   // Gabungkan array hasil olahan menjadi satu string rapi:
-  // gabungkan semua string di dalam array daftarTeksMenu menjadi satu string menggunakan pembatas " + ", lalu simpan ke variable kalimatMenu
+  // 5. Rangkai kumpulan teks menu menjadi satu kalimat panjang.
   const kalimatMenu = daftarTeksMenu.join(" + ");
 
-  // perbarui textContent dari element wadahHasil dengan menggabungkan teks "Paket Hemat: " dan string kalimatMenu
+  // 6. Cetak kalimat panjang tersebut ke layar.
   wadahHasil.textContent = `Paket Hemat: ${kalimatMenu}`;
 });
 ```
@@ -167,12 +170,15 @@ tombolPinjam.addEventListener("click", () => {
 1. **Gunakan `Array.from()` di Kode Modern**:
    Meminjam fungsi dengan `.call()` sangat penting untuk memahami cara kerja engine JS dan saat membaca kode pustaka lawas. Namun di aplikasi modern, ubah saja langsung menjadi array murni:
    ```javascript
+   // 1. Ubah kumpulan elemen HTML menjadi daftar Array sejati menggunakan Array.from.
    const arrayMurni = Array.from(kumpulanLi);
+   // 2. Olah daftar tersebut secara normal menggunakan metode bawaan Array.
    const teksMenu = arrayMurni.map((li) => li.textContent);
    ```
 2. **Pengganti Modern untuk `hasOwnProperty`**:
    Alih-alih menulis peminjaman kuno: `Object.prototype.hasOwnProperty.call(obj, "kunci")`, JavaScript modern (ES2022) menyediakan metode bawaan yang jauh lebih bersih:
    ```javascript
+   // 1. Periksa apakah objek memiliki properti "kunci" secara langsung.
    Object.hasOwn(obj, "kunci"); // true / false
    ```
 

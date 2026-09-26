@@ -50,6 +50,7 @@ Cocok untuk: Membandingkan **satu variabel tunggal dengan banyak opsi nilai past
 Bentuk ringkas 1 baris untuk `if/else` sederhana:
 
 ```javascript
+// 1. Evaluasi apakah usia >= 17, jika benar isi dengan "Dewasa", jika salah isi dengan "Anak-anak"
 const statusAkses = usia >= 17 ? "Dewasa" : "Anak-anak";
 ```
 
@@ -138,86 +139,73 @@ Mari kita buat kalkulator diskon yang mengombinasikan `switch` untuk level membe
 ### Berkas 2: `app.js`
 
 ```javascript
-// 1. Ambil elemen HTML
-// ambil element dropdown pilihan member berdasarkan ID-nya, simpan ke variable memberSelect
+// 1. Ambil elemen-elemen HTML yang dibutuhkan dari halaman dan simpan ke dalam wadah konstan
 const memberSelect = document.querySelector("#select-member");
-
-// ambil element input jumlah barang berdasarkan ID-nya, simpan ke variable qtyInput
 const qtyInput = document.querySelector("#input-qty");
-
-// ambil element tombol proses hitung berdasarkan ID-nya, simpan ke variable prosesBtn
 const prosesBtn = document.querySelector("#btn-proses");
-
-// ambil element penampil status pesan berdasarkan ID-nya, simpan ke variable pesanStatusEl
 const pesanStatusEl = document.querySelector("#pesan-status");
-
-// ambil element penampil total akhir pembayaran berdasarkan ID-nya, simpan ke variable totalAkhirEl
 const totalAkhirEl = document.querySelector("#total-akhir");
 
-// simpan angka harga per satuan ke dalam variable hargaSatuan
+// 2. Buat wadah konstan untuk harga satuan barang
 const hargaSatuan = 50000;
 
-// saat prosesBtn di-click, jalankan function berikut:
+// 3. Pasang aksi pada tombol proses untuk dijalankan saat diklik
 prosesBtn.addEventListener("click", () => {
-  // ambil value dari dropdown member yang dipilih, simpan ke variable levelMember
+  // 4. Ambil nilai level member yang dipilih dari elemen dropdown
   const levelMember = memberSelect.value;
 
-  // 2. TENTUKAN DISKON MENGGUNAKAN SWITCH:
-  // buat variable persentaseDiskon dan beri nilai awal 0
+  // TENTUKAN DISKON MENGGUNAKAN SWITCH:
+  // 5. Buat wadah persentaseDiskon dan isi awal dengan angka 0
   let persentaseDiskon = 0;
 
-  // evaluasi nilai levelMember untuk menentukan diskon yang sesuai:
+  // 6. Periksa levelMember dan tentukan diskon yang sesuai menggunakan switch
   switch (levelMember) {
     case "PLATINUM":
-      // ubah persentaseDiskon menjadi 0.3 untuk diskon 30%
+      // 7. Ubah nilai persentaseDiskon menjadi 0.3 untuk member Platinum
       persentaseDiskon = 0.3;
-      // Wajib: kunci rem agar tidak melorot ke case berikutnya
-      // hentikan switch dan keluar dari block pencabangan
+      // 8. Hentikan switch dan keluar dari blok agar tidak meluncur ke bawah
       break;
     case "GOLD":
-      // ubah persentaseDiskon menjadi 0.2 untuk diskon 20%
+      // 9. Ubah nilai persentaseDiskon menjadi 0.2 untuk member Gold
       persentaseDiskon = 0.2;
-      // hentikan switch dan keluar dari block pencabangan
+      // 10. Hentikan switch dan keluar dari blok
       break;
     case "SILVER":
-      // ubah persentaseDiskon menjadi 0.1 untuk diskon 10%
+      // 11. Ubah nilai persentaseDiskon menjadi 0.1 untuk member Silver
       persentaseDiskon = 0.1;
-      // hentikan switch dan keluar dari block pencabangan
+      // 12. Hentikan switch dan keluar dari blok
       break;
     case "REGULER":
     default:
-      // ubah persentaseDiskon menjadi 0.0 jika tidak ada case yang cocok atau member reguler
+      // 13. Ubah nilai persentaseDiskon menjadi 0.0 sebagai nilai cadangan
       persentaseDiskon = 0.0;
-      // hentikan switch dan keluar dari block pencabangan
+      // 14. Hentikan switch dan keluar dari blok
       break;
   }
 
-  // 3. GUNAKAN OPERATOR ?? UNTUK NILAI DEFAULT:
-  // Jika input kosong, qtyInput.value bernilai ""; kita konversi menjadi angka atau undefined
-  // ambil value input dan bersihkan spasi kosong di awal/akhir, simpan ke variable inputMentah
+  // GUNAKAN OPERATOR ?? UNTUK NILAI DEFAULT:
+  // 15. Ambil teks masukan jumlah barang dan bersihkan dari spasi tepi
   const inputMentah = qtyInput.value.trim();
 
-  // jika inputMentah bernilai kosong, simpan undefined, jika tidak ubah menjadi tipe data number
+  // 16. Ubah teks menjadi angka jika ada isinya, atau kosongkan dengan nilai undefined jika tidak ada
   const kuantitasAngka = inputMentah === "" ? undefined : Number(inputMentah);
 
-  // Menggunakan ?? untuk menjamin default 1 jika input undefined:
-  // gunakan operator ?? untuk memilih kuantitasAngka jika ada, atau 1 jika undefined
+  // 17. Gunakan operator ?? untuk memberikan nilai bawaan 1 bila kuantitas tidak diisi
   const kuantitasFinal = kuantitasAngka ?? 1;
 
-  // Hitung total:
-  // kalikan hargaSatuan dengan kuantitasFinal untuk mendapat total sebelum diskon
+  // 18. Hitung total biaya sebelum dipotong diskon
   const totalKotor = hargaSatuan * kuantitasFinal;
 
-  // kalikan totalKotor dengan persentaseDiskon untuk menghitung besaran potongan
+  // 19. Hitung nilai potongan harga berdasarkan persentase
   const potongan = totalKotor * persentaseDiskon;
 
-  // kurangi totalKotor dengan potongan untuk mendapatkan nilai tagihan akhir
+  // 20. Hitung tagihan akhir setelah dikurangi potongan
   const bayarAkhir = totalKotor - potongan;
 
-  // perbarui teks di dalam element pesanStatusEl dengan rincian level, diskon, dan jumlah item
+  // 21. Tampilkan informasi status member ke layar
   pesanStatusEl.textContent = `Level: ${levelMember} | Diskon: ${persentaseDiskon * 100}% | Jumlah: ${kuantitasFinal} item`;
 
-  // perbarui teks di dalam element totalAkhirEl dengan format angka rupiah lokal
+  // 22. Tampilkan jumlah yang harus dibayar ke layar dalam format Rupiah
   totalAkhirEl.textContent = `Rp${bayarAkhir.toLocaleString("id-ID")}`;
 });
 ```
@@ -252,8 +240,11 @@ prosesBtn.addEventListener("click", () => {
 1. Apa yang akan terjadi jika Anda lupa menuliskan kata kunci `break` di dalam sebuah `case` pada pernyataan `switch`?
 2. Perhatikan potongan kode ini:
    ```javascript
+   // 1. Buat wadah stokBarang dan isi dengan nilai 0
    let stokBarang = 0;
+   // 2. Evaluasi menggunakan logika OR
    let hasilA = stokBarang || 10;
+   // 3. Evaluasi menggunakan nullish coalescing
    let hasilB = stokBarang ?? 10;
    ```
    Berapakah nilai `hasilA` dan `hasilB`? Mengapa hasilnya berbeda?

@@ -44,15 +44,22 @@ Bagaimana engine JavaScript menentukan nilai `this`? Ada 4 aturan berurutan (*pr
 Kesalahan terbesar pemula adalah memisahkan fungsi metode dari objek pemiliknya:
 
 ```javascript
+// 1. Buat objek profil dengan isian data nama dan fungsi sapa.
 const profil = {
   nama: "Andi",
+  // 2. Buat fungsi sapa biasa agar kata kunci this dapat bekerja mengarah ke objek pemilik.
   sapa: function() { console.log("Nama saya:", this.nama); }
 };
 
-profil.sapa(); // "Nama saya: Andi" (Implicit Binding bekerja!)
+// 1. Jalankan fungsi sapa melalui objek profil.
+// Catatan*: this otomatis merujuk pada objek di sebelah kiri tanda titik (profil).
+profil.sapa(); // "Nama saya: Andi"
 
+// 1. Salin fungsi sapa ke variabel baru sehingga ia terlepas dari objek pemiliknya.
 const sapaLepas = profil.sapa;
-sapaLepas(); // "Nama saya: undefined" (ERROR! Jatuh ke Default Binding karena dipanggil sendirian!)
+// 2. Jalankan fungsi dari variabel yang berdiri sendiri.
+// Catatan*: Memisahkan fungsi dari objeknya membuat this kehilangan arah (menjadi undefined).
+sapaLepas(); // "Nama saya: undefined"
 ```
 
 ---
@@ -120,71 +127,63 @@ Mari kita buat kartu profil pengguna dan amati bagaimana `this` membaca nama pem
 ### Berkas 2: `app.js`
 
 ```javascript
-// ambil element button andi berdasarkan ID-nya, simpan ke variable tombolAndi
+// 1. Ambil elemen tombol Andi dari halaman HTML.
 const tombolAndi = document.querySelector("#btn-andi");
-// ambil element button budi berdasarkan ID-nya, simpan ke variable tombolBudi
+// 2. Ambil elemen tombol Budi dari halaman HTML.
 const tombolBudi = document.querySelector("#btn-budi");
-// ambil element button lepas berdasarkan ID-nya, simpan ke variable tombolLepas
+// 3. Ambil elemen tombol lepas dari halaman HTML.
 const tombolLepas = document.querySelector("#btn-lepas");
-// ambil element output sapaan berdasarkan ID-nya, simpan ke variable outputSapaan
+// 4. Ambil kotak tampilan pesan hasil dari halaman HTML.
 const outputSapaan = document.querySelector("#output-sapaan");
 
-// Satu fungsi berbagi logika:
-// deklarasi function perkenalkanDiri
+// 1. Buat fungsi umum perkenalkanDiri yang akan dibagikan ke banyak objek.
 function perkenalkanDiri() {
-  // kembalikan template literal yang menggunakan property namaLengkap dan pekerjaan dari konteks 'this' saat ini
+  // 2. Kembalikan kalimat sapaan menggunakan data nama dan pekerjaan dari konteks this.
+  // Catatan*: Operator ?? memberikan nilai cadangan jika properti tidak ditemukan.
   return `Halo! Saya ${this.namaLengkap ?? "Tanpa Nama"}, bekerja sebagai ${this.pekerjaan ?? "Tanpa Pekerjaan"}.`;
 }
 
-// Dua objek terpisah:
-// buat object profilAndi yang memiliki property namaLengkap, pekerjaan, dan method sapa
+// 1. Buat objek profilAndi dan hubungkan fungsi perkenalkanDiri ke dalam properti sapa.
 const profilAndi = {
-  // simpan string "Andi Pratama" ke property namaLengkap
   namaLengkap: "Andi Pratama",
-  // simpan string "Desainer Web" ke property pekerjaan
   pekerjaan: "Desainer Web",
-  // simpan referensi function perkenalkanDiri ke property sapa
   sapa: perkenalkanDiri,
 };
 
-// buat object profilBudi yang memiliki property namaLengkap, pekerjaan, dan method sapa
+// 1. Buat objek profilBudi dan hubungkan fungsi yang sama ke dalam properti sapa.
 const profilBudi = {
-  // simpan string "Budi Santoso" ke property namaLengkap
   namaLengkap: "Budi Santoso",
-  // simpan string "Programmer JS" ke property pekerjaan
   pekerjaan: "Programmer JS",
-  // simpan referensi function perkenalkanDiri ke property sapa
   sapa: perkenalkanDiri,
 };
 
 // 1. Implicit Binding: dipanggil lewat profilAndi
-// saat tombolAndi di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol Andi.
 tombolAndi.addEventListener("click", () => {
-  // perbarui textContent dari outputSapaan dengan hasil pemanggilan method sapa dari object profilAndi
+  // 2. Jalankan fungsi sapa milik profilAndi dan tampilkan ke layar (this mengarah ke profilAndi).
   outputSapaan.textContent = profilAndi.sapa();
-  // perbarui warna teks outputSapaan menjadi biru tua
+  // 3. Atur warna teks kotak hasil menjadi biru tua.
   outputSapaan.style.color = "#3730a3";
 });
 
 // 2. Implicit Binding: dipanggil lewat profilBudi
-// saat tombolBudi di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol Budi.
 tombolBudi.addEventListener("click", () => {
-  // perbarui textContent dari outputSapaan dengan hasil pemanggilan method sapa dari object profilBudi
+  // 2. Jalankan fungsi sapa milik profilBudi dan tampilkan ke layar (this mengarah ke profilBudi).
   outputSapaan.textContent = profilBudi.sapa();
-  // perbarui warna teks outputSapaan menjadi biru tua
+  // 3. Atur warna teks kotak hasil menjadi biru tua.
   outputSapaan.style.color = "#3730a3";
 });
 
 // 3. Default Binding (Lost Context):
-// saat tombolLepas di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol lepas.
 tombolLepas.addEventListener("click", () => {
-  // Mencopot fungsi dari objek
-  // simpan referensi function profilAndi.sapa ke dalam variable fungsiSendirian
+  // 2. Salin fungsi dari profilAndi ke variabel baru sehingga ia terlepas dari objek aslinya.
+  // Catatan*: this akan kehilangan arah dan jatuh ke Default Binding (menjadi undefined).
   const fungsiSendirian = profilAndi.sapa;
-  // Dipanggil sendirian tanpa pemilik di kiri titik:
-  // perbarui textContent dari outputSapaan dengan hasil pemanggilan function sendirian
+  // 3. Jalankan fungsi mandiri tersebut dan tampilkan ke layar.
   outputSapaan.textContent = `Panggilan Terpisah: ${fungsiSendirian()}`;
-  // perbarui warna teks outputSapaan menjadi merah
+  // 4. Atur warna teks kotak hasil menjadi merah sebagai penanda error.
   outputSapaan.style.color = "#b91c1c";
 });
 ```
@@ -196,9 +195,10 @@ tombolLepas.addEventListener("click", () => {
 1. **Aturan Emas**: Untuk mengetahui apa isi `this`, lihat **tepat di titik kurung pemanggilan `()`**. Jika ada `objek.fungsi()`, maka `this` adalah objek tersebut.
 2. **Jangan gunakan Arrow Function sebagai metode objek**:
    ```javascript
+   // 1. Buat objek profil dengan isian data nama dan fungsi sapa versi panah.
    const profil = {
      nama: "Andi",
-     // ERROR: Arrow function meminjam this dari luar objek (window)!
+     // Catatan*: Arrow function tidak memiliki this sendiri — this akan tembus ke luar objek (menjadi undefined).
      sapa: () => `Saya ${this.nama}`,
    };
    ```

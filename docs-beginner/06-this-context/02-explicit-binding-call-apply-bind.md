@@ -38,14 +38,17 @@ Bayangkan Anda memiliki sebuah megafon pengumuman:
 Selain mengunci `this`, method `.bind()` memiliki kekuatan istimewa: ia bisa **mengunci nilai parameter awal fungsi sekaligus**:
 
 ```javascript
+// 1. Buat fungsi hitungOngkir yang menerima tujuan pengiriman kota dan berat.
 function hitungOngkir(kota, beratKg) {
+  // 2. Cetak kalimat gabungan ongkos kirim ke layar.
   console.log(`Kirim ke ${kota} seberat ${beratKg}kg`);
 }
 
-// Kunci parameter 'kota' menjadi 'Surabaya' sejak awal:
+// 1. Buat cetakan fungsi baru dengan parameter kota yang terkunci permanen menjadi "Surabaya".
 const kirimSurabaya = hitungOngkir.bind(null, "Surabaya");
 
-// Saat dipanggil nanti, kita cukup mengirim sisa parameternya (beratKg):
+// 2. Jalankan fungsi yang sudah terkunci dengan memberikan nilai sisa untuk berat.
+// Catatan*: Argumen awal yang sudah dikunci oleh bind tidak dapat diubah lagi.
 kirimSurabaya(5); // "Kirim ke Surabaya seberat 5kg"
 ```
 
@@ -132,56 +135,56 @@ Mari kita buat pencetak tiket konser yang memanfaatkan satu fungsi cetak untuk b
 ### Berkas 2: `app.js`
 
 ```javascript
-// ambil element teks nama berdasarkan ID-nya, simpan ke variable teksNama
+// 1. Ambil elemen teks nama dari HTML.
 const teksNama = document.querySelector("#teks-nama");
-// ambil element teks zona berdasarkan ID-nya, simpan ke variable teksZona
+// 2. Ambil elemen teks zona dari HTML.
 const teksZona = document.querySelector("#teks-zona");
-// ambil element teks pintu berdasarkan ID-nya, simpan ke variable teksPintu
+// 3. Ambil elemen teks pintu dari HTML.
 const teksPintu = document.querySelector("#teks-pintu");
 
-// ambil element button call berdasarkan ID-nya, simpan ke variable tombolCall
+// 4. Ambil elemen tombol call dari HTML.
 const tombolCall = document.querySelector("#btn-call");
-// ambil element button apply berdasarkan ID-nya, simpan ke variable tombolApply
+// 5. Ambil elemen tombol apply dari HTML.
 const tombolApply = document.querySelector("#btn-apply");
-// ambil element button bind berdasarkan ID-nya, simpan ke variable tombolBind
+// 6. Ambil elemen tombol bind dari HTML.
 const tombolBind = document.querySelector("#btn-bind");
 
 // FUNGSI MANDIRI PENCETAK TIKET:
-// deklarasi function cetakTiket yang menerima parameter zona dan pintu
+// 1. Buat fungsi umum cetakTiket yang menerima zona dan pintu.
 function cetakTiket(zona, pintu) {
-  // perbarui textContent dari teksNama dengan namaPemesan dari konteks 'this' saat ini
+  // 2. Ganti teks pada layar menggunakan properti namaPemesan dari target this.
   teksNama.textContent = `Nama: ${this.namaPemesan}`;
-  // perbarui textContent dari teksZona dengan nilai parameter zona
+  // 3. Ganti teks zona pada layar.
   teksZona.textContent = `Zona Kursi: ${zona}`;
-  // perbarui textContent dari teksPintu dengan nilai parameter pintu
+  // 4. Ganti teks pintu pada layar.
   teksPintu.textContent = `Pintu Masuk: ${pintu}`;
 }
 
 // Data objek penonton yang tidak punya fungsi sendiri:
-// buat object userVIP yang berisi property namaPemesan
+// 1. Buat wadah profil untuk penonton VIP.
 const userVIP = { namaPemesan: "Siti Rahma (VIP)" };
-// buat object userFestival yang berisi property namaPemesan
+// 2. Buat wadah profil untuk penonton Festival.
 const userFestival = { namaPemesan: "Joko Anwar (Festival)" };
-// buat object panitiaAcara yang berisi property namaPemesan
+// 3. Buat wadah profil untuk panitia.
 const panitiaAcara = { namaPemesan: "Rian (Staff Panitia)" };
 
 // ================================================================
 // 1. .call() -> Argumen dipisah dengan koma satu per satu
 // ================================================================
-// saat tombolCall di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol call.
 tombolCall.addEventListener("click", () => {
-  // panggil langsung function cetakTiket dengan memaksa konteks 'this' menjadi userVIP dan mengirim parameter secara terpisah
+  // 2. Jalankan fungsi cetakTiket secara paksa menggunakan profil userVIP dan argumen koma.
   cetakTiket.call(userVIP, "VIP Row A-12", "Gate 1 (Khusus)");
 });
 
 // ================================================================
 // 2. .apply() -> Argumen dibungkus di dalam satu Array
 // ================================================================
-// saat tombolApply di-click, jalankan arrow function berikut:
+// 1. Tambahkan pendeteksi klik pada tombol apply.
 tombolApply.addEventListener("click", () => {
-  // buat array berisi string argument dan simpan ke variable dataTambahan
+  // 2. Siapkan daftar argumen dalam bentuk array.
   const dataTambahan = ["Festival Barat", "Gate 3 (Umum)"];
-  // panggil langsung function cetakTiket dengan memaksa konteks 'this' menjadi userFestival dan mengirim argumen dari array
+  // 3. Jalankan fungsi secara paksa menggunakan profil userFestival dan lemparkan array tersebut.
   cetakTiket.apply(userFestival, dataTambahan);
 });
 
@@ -190,15 +193,14 @@ tombolApply.addEventListener("click", () => {
 // ================================================================
 // Di sini .bind mengunci 'panitiaAcara' sebagai this,
 // SEKALIGUS mengunci zona "Backstage All-Access" dan pintu "Pintu Kru":
-// ciptakan function kembaran dari cetakTiket dengan 'this' terkunci pada panitiaAcara beserta argument awalnya, simpan ke variable cetakTiketPanitiaTerkunci
+// 1. Buat cetakan fungsi baru yang terkunci secara permanen pada profil panitiaAcara beserta dua argumen pertamanya.
 const cetakTiketPanitiaTerkunci = cetakTiket.bind(
   panitiaAcara,
   "Backstage All-Access",
   "Pintu Kru",
 );
 
-// Saat tombol diklik, kita langsung panggil fungsi baru yang sudah terkunci ini:
-// saat tombolBind di-click, jalankan function cetakTiketPanitiaTerkunci yang sudah terikat
+// 2. Pasangkan fungsi cetak yang terkunci ini ke tombol bind.
 tombolBind.addEventListener("click", cetakTiketPanitiaTerkunci);
 ```
 

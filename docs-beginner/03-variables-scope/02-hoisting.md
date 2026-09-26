@@ -45,7 +45,10 @@ Karena fungsi formal diangkat lengkap bersama tubuh logikanya:
 Di era lama, ketika `var` diakses sebelum deklarasinya, JavaScript mengembalikan `undefined` tanpa memunculkan pesan error:
 
 ```javascript
-console.log(hargaBarang); // undefined (Bukan error, tapi nilainya salah!)
+// 1. Cetak isi wadah hargaBarang ke konsol sebelum wadahnya dibuat
+// Catatan*: var diangkat (hoisting) secara diam-diam sehingga menghasilkan undefined, bukan error
+console.log(hargaBarang);
+// 2. Buat wadah hargaBarang menggunakan var dan isi dengan 50000
 var hargaBarang = 50000;
 ```
 
@@ -54,7 +57,10 @@ Karena itu, pada tahun 2015, komite ECMAScript (TC39) menerapkan **Prinsip Fail-
 Jika Anda mencoba membaca variabel `let` atau `const` sebelum baris deklarasinya, JavaScript sengaja melempar error seketika:
 
 ```javascript
-console.log(hargaBarang); // ReferenceError: Cannot access 'hargaBarang' before initialization
+// 1. Cetak isi wadah hargaBarang ke konsol sebelum wadahnya dibuat
+// Catatan*: let menciptakan area larangan akses (TDZ), sehingga seketika memicu error
+console.log(hargaBarang);
+// 2. Buat wadah hargaBarang menggunakan let dan isi dengan 50000
 let hargaBarang = 50000;
 ```
 
@@ -119,65 +125,61 @@ Mari kita buktikan bahwa fungsi biasa aman dipanggil sebelum posisinya, dan amat
 ```javascript
 // =======================================================
 // BUKTI HOISTING FUNGSI FORMAL:
-// Kita memanggil fungsi jalankanAplikasi() di baris PALING ATAS,
-// padahal deklarasi fungsinya baru kita tulis di bagian BAWAH!
+// Pemanggilan jalankanAplikasi() dilakukan di baris PALING ATAS,
+// padahal deklarasi fungsinya baru ditulis di bagian BAWAH!
 // =======================================================
 
-// jalankan function jalankanAplikasi, ini bekerja normal karena function declaration di-hoist
+// 1. Panggil fungsi jalankanAplikasi sebelum posisinya ditulis
+// Catatan*: Berhasil karena fungsi formal diangkat sepenuhnya (hoisting) ke atas
 jalankanAplikasi();
 
 // =======================================================
 // DEKLARASI FUNGSI FORMAL (DIANGKAT LENGKAP OLEH ENGINE)
 // =======================================================
 
-// deklarasi function jalankanAplikasi yang berisi logika utama program
+// 2. Buat fungsi jalankanAplikasi yang berisi seluruh logika utama program
 function jalankanAplikasi() {
-  // ambil element tombol sapa berdasarkan ID-nya, simpan ke variable sapaBtn
+  // 3. Ambil elemen-elemen tombol dan penampil pesan dari halaman berdasarkan ID
   const sapaBtn = document.querySelector("#btn-sapa");
-
-  // ambil element tombol uji TDZ berdasarkan ID-nya, simpan ke variable tdzBtn
   const tdzBtn = document.querySelector("#btn-tdz");
-
-  // ambil element penampil pesan berdasarkan ID-nya, simpan ke variable pesanEl
   const pesanEl = document.querySelector("#teks-pesan");
 
-  // saat sapaBtn di-click, jalankan function berikut:
+  // 4. Pasang aksi pada tombol sapa untuk dijalankan saat diklik
   sapaBtn.addEventListener("click", () => {
-    // perbarui teks di dalam element pesanEl dengan hasil dari pemanggilan function buatSalam
+    // 5. Panggil fungsi buatSalam dengan teks "Kyo" dan simpan hasilnya sebagai teks di elemen pesanEl
     pesanEl.textContent = buatSalam("Kyo");
   });
 
-  // saat tdzBtn di-click, jalankan function berikut:
+  // 6. Pasang aksi pada tombol uji TDZ untuk dijalankan saat diklik
   tdzBtn.addEventListener("click", () => {
-    // 1. var di-hoist tapi hanya dengan nilai undefined:
-    // cetak nilai dari variable namaLama sebelum baris deklarasinya untuk membuktikan var berisi undefined
+    // 7. Cetak isi wadah namaLama sebelum baris pembuatannya
+    // Catatan*: var menghasilkan undefined saat dibaca sebelum waktunya
     console.log("Nilai var sebelum deklarasi:", namaLama);
 
-    // buat variable namaLama menggunakan var dan isi dengan string "Budi (var)"
+    // 8. Buat wadah namaLama menggunakan var dan isi dengan teks
     var namaLama = "Budi (var)";
 
-    // 2. let berada di TDZ sebelum deklarasi:
-    // coba eksekusi block kode berikut, tangkap error jika ada:
+    // 9. Coba akses wadah namaBaru yang belum dibuat
     try {
-      // cetak nilai dari variable namaBaru sebelum dideklarasikan untuk memicu error TDZ
+      // 10. Baris ini akan memicu error TDZ karena let menolak akses dini
       console.log("Mencoba membaca let sebelum deklarasi:", namaBaru);
     } catch (err) {
-      // jika terjadi error TDZ, tampilkan pesan error tersebut ke console
+      // 11. Tangkap pesan error TDZ dan tampilkan ke konsol
       console.log("Alarm TDZ berbunyi:", err.message);
     }
 
-    // buat variable namaBaru menggunakan let dan isi dengan string "Ari (let)"
+    // 12. Buat wadah namaBaru menggunakan let dan isi dengan teks
     let namaBaru = "Ari (let)";
 
-    // perbarui teks di dalam element pesanEl untuk mengindikasikan uji coba selesai
+    // 13. Perbarui teks pada elemen pesanEl sebagai tanda uji coba selesai
     pesanEl.textContent =
       "Uji coba selesai! Buka DevTools Console (F12) untuk melihat perbandingannya.";
   });
 }
 
-// deklarasi function buatSalam yang menerima parameter namaPengguna untuk memformat teks salam
+// 14. Buat fungsi pembantu buatSalam yang menerima data namaPengguna
 function buatSalam(namaPengguna) {
-  // kembalikan string sapaan yang digabungkan dengan argumen namaPengguna
+  // 15. Kembalikan kalimat sapaan hasil gabungan teks tetap dan namaPengguna
   return `Halo, ${namaPengguna}! Selamat datang di aplikasi.`;
 }
 ```
@@ -212,18 +214,22 @@ Perhatikan potongan kode berikut:
 
 ```javascript
 // Kasus A:
+// 1. Panggil fungsi sapaHalo sebelum blok pembuatannya
 sapaHalo();
+// 2. Buat fungsi formal sapaHalo
 function sapaHalo() {
   console.log("Halo Dunia!");
 }
 
 // Kasus B:
+// 3. Panggil fungsi sapaKawan sebelum blok pembuatannya
 sapaKawan();
+// 4. Buat fungsi sapaKawan menggunakan bentuk arrow function dan const
 const sapaKawan = () => {
   console.log("Halo Kawan!");
 };
 
-// Pertanyaan:
-// 1. Apakah Kasus A berjalan sukses atau error?
-// 2. Apakah Kasus B berjalan sukses atau error? Mengapa Kasus B berbeda dengan Kasus A?
+// 5. Analisis hasil dari dua kasus di atas:
+// - Apakah Kasus A berjalan sukses atau error?
+// - Apakah Kasus B berjalan sukses atau error? Mengapa Kasus B berbeda dengan Kasus A?
 ```

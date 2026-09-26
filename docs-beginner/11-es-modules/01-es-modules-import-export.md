@@ -127,35 +127,28 @@ Mari kita buat kalkulator belanja modular yang menggabungkan **Default Export** 
 ```javascript
 // ================================================================
 // BERKAS MODUL: kalkulator.js
-// Memperlihatkan Named Export dan Default Export dalam satu berkas
 // ================================================================
 
-// 1. NAMED EXPORT: Fungsi pembantu format teks rupiah
-// deklarasi dan export function formatRupiah yang menerima parameter angka
+// 1. Ekspor fungsi pembantu format teks rupiah
 export function formatRupiah(angka) {
-  // kembalikan string format rupiah dari angka
+  // 2. Kembalikan string angka berformat rupiah
   return `Rp ${angka.toLocaleString("id-ID")}`;
 }
 
-// 2. NAMED EXPORT: Konstanta tarif pajak (11%)
-// buat dan export variable TARIF_PPN dengan value 0.11
+// 3. Ekspor nilai paten untuk tarif pajak
 export const TARIF_PPN = 0.11;
 
-// 3. DEFAULT EXPORT: Fungsi utama kalkulator harga
-// deklarasi dan export default function hitungTotalBelanja yang menerima parameter hargaBarang
+// 4. Jadikan fungsi kalkulator harga sebagai ekspor utama dari file ini
 export default function hitungTotalBelanja(hargaBarang) {
-  // kalikan hargaBarang dengan TARIF_PPN, simpan ke variable nilaiPajak
+  // 5. Hitung nilai pajak dengan mengalikan harga dengan tarif
   const nilaiPajak = hargaBarang * TARIF_PPN;
-  // jumlahkan hargaBarang dengan nilaiPajak, simpan ke variable total
+  // 6. Jumlahkan harga barang dengan pajak untuk mendapat total akhir
   const total = hargaBarang + nilaiPajak;
 
-  // kembalikan object berisi rincian perhitungan
+  // 7. Kembalikan semua rincian hitungan sebagai objek
   return {
-    // set property hargaAsli dengan value hargaBarang
     hargaAsli: hargaBarang,
-    // set property nilaiPajak dengan value nilaiPajak
     nilaiPajak: nilaiPajak,
-    // set property totalAkhir dengan value total
     totalAkhir: total,
   };
 }
@@ -168,32 +161,26 @@ export default function hitungTotalBelanja(hargaBarang) {
 ```javascript
 // ================================================================
 // BERKAS UTAMA: app.js
-// Mengimpor Default Export (tanpa kurawal) dan Named Export (dengan kurawal)
 // ================================================================
-// impor function hitungTotalBelanja beserta formatRupiah dan TARIF_PPN dari file kalkulator.js
+// 1. Impor fungsi utama dan fungsi pelengkap dari modul kalkulator
 import hitungTotalBelanja, { formatRupiah, TARIF_PPN } from "./kalkulator.js";
 
-// Ambil elemen HTML
-// ambil element input harga berdasarkan ID-nya, simpan ke variable inputHarga
+// 2. Ambil ketiga elemen dari halaman HTML
 const inputHarga = document.querySelector("#input-harga");
-// ambil element tombol hitung berdasarkan ID-nya, simpan ke variable tombolHitung
 const tombolHitung = document.querySelector("#btn-hitung");
-// ambil element kotak hasil berdasarkan ID-nya, simpan ke variable kotakHasil
 const kotakHasil = document.querySelector("#kotak-hasil");
 
-// saat tombolHitung di-click, jalankan function berikut:
+// 3. Pasang pemantau klik pada tombol hitung
 tombolHitung.addEventListener("click", () => {
-  // ubah teks inputHarga menjadi tipe data Number dan simpan ke variable harga
+  // 4. Ubah teks input menjadi angka
   const harga = Number(inputHarga.value);
-  // jika harga kurang dari atau sama dengan nol, hentikan eksekusi function
+  // 5. Batalkan perhitungan jika harga kosong atau minus
   if (harga <= 0) return;
 
-  // Jalankan fungsi default export:
-  // jalankan function hitungTotalBelanja dengan argument harga, simpan hasilnya ke variable hasil
+  // 6. Hitung total belanja menggunakan fungsi dari modul
   const hasil = hitungTotalBelanja(harga);
 
-  // Tampilkan ke layar menggunakan bantuan named export:
-  // ubah isi HTML di dalam kotakHasil dengan detail perhitungan harga
+  // 7. Tampilkan hasil hitungan ke layar menggunakan fungsi pemformat teks
   kotakHasil.innerHTML = `
     <strong>Harga Barang:</strong> ${formatRupiah(hasil.hargaAsli)}<br>
     <strong>PPN (${TARIF_PPN * 100}%):</strong> ${formatRupiah(hasil.nilaiPajak)}<br>
@@ -217,6 +204,7 @@ tombolHitung.addEventListener("click", () => {
 3. **Mengganti Nama Impor dengan `as`**:
    Jika nama fungsi dari modul luar bertabrakan dengan variabel di file Anda, gunakan alias:
    ```javascript
+   // 1. Impor alat namun ganti namanya agar tidak bentrok
    import { formatRupiah as rupiahID } from "./kalkulator.js";
    ```
 
